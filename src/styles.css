@@ -1,1 +1,33 @@
-/* You can add global styles to this file, and also import other style files */
+@font-face {
+    font-family: 'Open Sans';
+    font-weight: 800;
+    font-style: normal;
+    src: url('./assets/fonts/OpenSans-Regular/OpenSans-Regular.eot');
+    src: url('./assets/fonts/OpenSans-Regular/OpenSans-Regular.eot?#iefix') format('embedded-opentype'),
+    url('./assets/fonts/OpenSans-Regular/OpenSans-Regular.woff2') format('woff2'),
+    url('./assets/fonts/OpenSans-Regular/OpenSans-Regular.woff') format('woff'),
+    url('./assets/fonts/OpenSans-Regular/OpenSans-Regular.ttf') format('truetype'),
+    url('./assets/fonts/OpenSans-Regular/OpenSans-Regular.svg#OpenSansOpenSans-Regular') format('svg');
+}
+
+* {
+    font-family: 'Open sans'
+}
+html,
+body { 
+  height: calc(100% - 5px);
+  margin: 0;
+  padding: 0;
+  background-color: lightgray;
+}
+
+body { 
+  padding: 5px;
+}
+
+app-videos-list {
+  height: 100%;
+}
+input:focus {
+    outline: none;
+}

@@ -1,0 +1,22 @@
+#playersContainer {
+}
+#playerBox {
+    margin-bottom: 10px;
+}
+.playerLeft {
+    display: flex;
+    flex-direction: row;
+}
+.playerRight{
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+.currInfo {
+    cursor: default;
+    width: 300px;
+}
+.control {
+    display: flex;
+    flex-direction: column;
+}

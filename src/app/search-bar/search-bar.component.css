@@ -1,0 +1,83 @@
+#searchBar {
+    position: relative;
+    font-size: 1rem;
+}
+
+/* Search box */
+#searchBox {
+    font-size: 1rem;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+}
+
+#searchBox input[type='text'] {
+    padding: 4px;
+    width: calc(100% - 108px);
+    height: 24px;
+    border: 1px solid transparent;
+    z-index: 5;
+}
+#searchBox input[type='text']:focus {
+    outline: none !important;
+    border: 1px solid #6398ed;
+    box-shadow: inset 0 0 2px #6398ed;
+}
+
+#searchBox input[type='button'] {
+    padding: 5px;
+    width: 100px;
+    height: auto;
+    border: none;
+}
+
+/* Suggests box */
+#suggestsBox {
+    color: black;
+    background-color: white;
+    z-index: 2;
+    position: absolute;
+    min-height: 0px;
+    height: 280px;
+    -webkit-box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.75);
+    box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.75);
+}
+
+.suggestItem {
+    padding-top: 2px;
+    padding-right: 2px;
+    padding-bottom: 2px;
+    padding-left: 3px;
+    font-size: 0.8rem;
+
+    cursor: pointer;
+    height: 24px;
+    line-height: 24px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+
+}
+.suggestItem:hover {
+    background-color: lightgray;
+}
+
+.suggestItem img {
+    
+}
+.active {
+    background-color: darkgray;
+}
+
+.suggestItem div {
+    height: 24px;
+}
+
+.suggestItem .suggestText,
+.suggestItem .suggestText b {
+    height: 24px;
+    line-height: 24px;
+    overflow: hidden;
+}

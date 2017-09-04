@@ -1,0 +1,32 @@
+<div id="slider-{{ side }}">
+    <div id="sliderBox" class="volume line-border">
+
+        <label for="">{{ name }}</label>
+
+        <div id="slider-range-output" class="output"><span *ngIf="name === 'Speed'">x</span> {{ value }}</div>
+        
+        <div class="round-btn top-btn">
+        <input id="slider-more" type="button" value="+" (click)="up()"/>
+        </div>
+
+        <div class="slider-input-{{ side }}">
+          <div class="vert-ticks">
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+          </div>
+          <input id="slider-range" type="range" [(ngModel)]="value" value="{{ value }}" min="{{ min }}" max="{{ max }}" step="{{ step }}"/>
+        </div>
+
+        <div class="round-btn">
+        <input id="slider-less" type="button" value="-" (click)="down()"/>
+        </div>
+
+    </div>
+</div>

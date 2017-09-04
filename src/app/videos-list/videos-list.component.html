@@ -1,0 +1,56 @@
+<div id="listContainer">
+
+    <div class="list listLeft">
+        <div id="infoBar" class="listHeader">
+            <div class="infoBarItem itemList infoBarBtn"><input [class.active]="isPlaylist" type="button" value="Playlist" (click)="getPlaylist()"></div>
+            <div class="infoBarItem itemList infoBarBtn"><input [class.active]="!isPlaylist" type="button" value="Historic" (click)="getHistoric()"></div>
+            <div class="infoBarItem itemList">
+                <span class="output">{{ playList.length }}</span> video<span *ngIf="playList.length > 1">s</span> | Total time: <span class="output">{{ totalDuration | duration:true }}</span>
+            </div>
+        </div>
+
+        <ul *ngIf="isPlaylist" id="pl" class="container itemList" [dragula]='"bag-items"' [dragulaModel]='playList' >
+            <div *ngIf="displayDrop && playList.length < 1" class="dropInfos">Drag and drop item here &#8595;</div>
+
+            <li *ngFor="let video of playList" data-id="{{ video.videoId }}" class="item">
+            <app-videos-list-item class="item" [videoModel]="video"></app-videos-list-item>
+            
+            <div >
+            <input type="button" name="" value="Play left" (click)="playLeft(video)">
+            <input type="button" name="" value="Play right" (click)="playRight(video)">
+            </div>
+            
+            <input type="button" name="" value="X" (click)="removeItem(video)">
+            </li>
+        </ul>
+
+        <ul *ngIf="!isPlaylist" id="pl" class="container itemList">
+
+            <div *ngIf="!isPlaylist"></div>
+            <li *ngFor="let video of historic" data-id="{{ video.videoId }}" class="item">
+            <app-videos-list-item class="item" [videoModel]="video"></app-videos-list-item>
+            
+            <div >
+            <input type="button" name="" value="Add to playlist" (click)="addItem(video)">
+            </div>
+            
+            <input type="button" name="" value="X" (click)="removeItemHistoric(video)">
+            </li>
+        </ul>
+
+
+    </div>
+
+    <div class="list listRight">
+        <div class="listHeader itemList"><app-search-bar></app-search-bar></div>
+
+        <ul id="rl" class="container itemList" [dragula]='"bag-items"' [dragulaModel]='resultsList'>
+            <li *ngFor="let video of resultsList" data-id="{{ video.videoId }}" class="item">
+            <app-videos-list-item class="item" [videoModel]="video"></app-videos-list-item>
+            <div class="addBtn"><input type="button" name="" wrap="soft" value="Add to 
+            playlist" (click)="addItem(video)"></div>
+            </li>
+        </ul>
+    </div>
+
+</div>

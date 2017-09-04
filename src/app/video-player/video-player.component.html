@@ -1,0 +1,13 @@
+
+<div id="playerBox">
+    <div id="playersContainer" [class.playerLeft]="sidePlayer === 'left'" [class.playerRight]="sidePlayer === 'right'">
+        <youtube-player [width]="300" [height]="200" [videoId]="id" (ready)="savePlayer($event)" (change)="onStateChange($event)"></youtube-player>
+        <div class="control">
+            <input type="button" class="btn btn-default" (click)="playPauseVideo()" value="{{ playBtn }}" />
+            <input type="button" class="btn btn-default" (click)="mute()"           value="{{ muteBtn }}"/>
+        </div>
+    </div>
+    <div class="currInfo">
+    <app-videos-list-item *ngIf="video" class="item" [videoModel]="video"></app-videos-list-item>
+    </div>
+</div>
