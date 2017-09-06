@@ -5,6 +5,7 @@ import { HttpModule, JsonpModule } from '@angular/http';
 
 import { DragulaModule } from 'ng2-dragula';
 import { YoutubePlayerModule } from 'ng2-youtube-player';
+import { Angular2FontawesomeModule } from 'angular2-fontawesome/angular2-fontawesome';
 // import { SharedModule } from './_shared/shared.module';
 
 import { AppComponent } from './app.component';
@@ -35,7 +36,8 @@ import { RangeSliderComponent } from './range-slider/range-slider.component';
       HttpModule,
       JsonpModule,
       DragulaModule,
-      YoutubePlayerModule
+      YoutubePlayerModule,
+      Angular2FontawesomeModule
       // SharedModule
   ],
   providers: [

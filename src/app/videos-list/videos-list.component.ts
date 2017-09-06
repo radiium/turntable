@@ -53,6 +53,12 @@ export class VideosListComponent implements OnDestroy {
         dragulaService.setOptions('bag-items', {
             removeOnSpill: true,
             revertOnSpill: true,
+            moves: (el: Element, source: Element, handle: Element, sibling: Element): boolean => {
+                if (el.id === 'dropInfos') {
+                    return false;
+                }
+                return true;
+            },
             copy: (el: Element, source: Element): boolean => {
                 if (source.id === 'rl') { return true; }
                 return false;

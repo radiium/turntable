@@ -10,17 +10,32 @@
         </div>
 
         <ul *ngIf="isPlaylist" id="pl" class="container itemList" [dragula]='"bag-items"' [dragulaModel]='playList' >
-            <div *ngIf="displayDrop && playList.length < 1" class="dropInfos">Drag and drop item here &#8595;</div>
+            <div *ngIf="displayDrop && playList.length < 1" id="dropInfos" class="dropInfos">Drag and drop item here &#8595;</div>
 
             <li *ngFor="let video of playList" data-id="{{ video.videoId }}" class="item">
             <app-videos-list-item class="item" [videoModel]="video"></app-videos-list-item>
+           
+            <div class="playlistBtn">
+                <button class="carret" name="" (click)="playLeft(video)">
+                    <div class="icon"><fa [name]="'caret-left'" [size]="2"></fa></div>
+                    <span>Play Left</span>
+                </button>
+               
+               
+                <button class="trash" name="" (click)="removeItem(video)">
+                    <div class="icon"><fa [name]="'trash'" [size]="2"></fa></div>
+                    <span>Remove</span>
+                </button>
+              
+              
+                <button class="carret"name="" (click)="playRight(video)">
+                    <div class="icon"><fa [name]="'caret-right'" [size]="2"></fa>
+                    </div><span>Play Right</span>
+                </button>
             
-            <div >
-            <input type="button" name="" value="Play left" (click)="playLeft(video)">
-            <input type="button" name="" value="Play right" (click)="playRight(video)">
+            
             </div>
             
-            <input type="button" name="" value="X" (click)="removeItem(video)">
             </li>
         </ul>
 

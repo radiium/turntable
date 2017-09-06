@@ -9,5 +9,4 @@ export class DurationPipe implements PipeTransform {
         if (args) { format = 'HH:mm:ss'; }
         return moment.utc(value).format(format);
     }
-
 }

@@ -7,38 +7,38 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 })
 export class RangeSliderComponent implements OnInit {
 
+    @Input()  isPlayerReady: boolean;
+    @Input()  name: string;
+    @Input()  side: string;
+    @Input()  step: number;
+    @Input()  min: number;
+    @Input()  max: number;
+    @Input()  default: number;
+    @Input()  value: number;
+    @Output() valueChange: EventEmitter<number>;
 
-    @Input()
-    name: string;
-
-    @Input()
-    side: string;
-
-    @Input()
-    step: number;
-
-    @Input()
-    min: number;
-
-    @Input()
-    max: number;
-
-    @Input()
-    value: number;
-
-    @Input()
-    default: number;
-
-    @Output()
-    valueChange: EventEmitter<number> = new EventEmitter<number>();
-
-    constructor() { }
+    constructor() {
+        this.valueChange = new EventEmitter<number>();
+    }
 
     ngOnInit() {
         this.value = this.default;
     }
 
+    onInputChange(e) {
+        if (!this.isPlayerReady) {
+            this.value = this.default;
+            e.target.value = this.default;
+            return;
+        }
+
+        this.value = e.target.value;
+        this.valueChange.emit(this.value);
+    }
+
     up() {
+        if (!this.isPlayerReady) { return; }
+
         this.value = this.value + this.step;
         if (this.value >= this.max) {
             this.value = this.max;
@@ -49,6 +49,8 @@ export class RangeSliderComponent implements OnInit {
     }
 
     down() {
+        if (!this.isPlayerReady) { return; }
+
         this.value = this.value - this.step;
         if (this.value >= this.max) {
             this.value = this.max;
@@ -57,5 +59,4 @@ export class RangeSliderComponent implements OnInit {
         }
         this.valueChange.emit(this.value);
     }
-
 }

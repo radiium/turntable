@@ -6,15 +6,21 @@
     flex-direction: row;
     flex-wrap: nowrap;
     justify-content: space-between;
-    height: 305px;
+    height: 244px;
 }
 
 #appVideoList {
-    height: calc(100% - 349px);
+    height: calc(100% - 284px);
 }
 
 #controlBox {
-    background-color: gray;
+	background: url("../assets/images/mix.png") center no-repeat;
+	background-color: #5C5B5B;
+	width: 100%;
+	margin-left: 5px;
+	margin-right: 5px;
+	margin-bottom: 5px;
+    /*background-color: gray;*/
     display: flex;
     flex-wrap: nowrap;
     flex-direction: column;
@@ -34,8 +40,10 @@
 /* CROSSFADER */
 
 #crossfader-box {
-	margin-top: 10px;
+	margin-top: 150px;
 	margin-bottom: 10px;
+	margin-left: auto;
+	margin-right: auto;
 	padding: 10px;
 }
 
@@ -103,5 +111,15 @@
 	width: 10%;
 	height: 8px;
 	border-left: 1px solid #25E1DA;
+}
+
+.megaLoader {
+	padding: 0;
+	margin: 0;
+	z-index: 10000;
+	position: absolute;
+    width: calc(100% - 10px);
+    height: calc(100% - 10px);
+    background-color: red;
 }
 

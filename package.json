@@ -1,22 +1,19 @@
 {
-    "name": "TurnTable",
+    "name": "Turntable",
+    "productName": "Turntable",
     "version": "0.0.1",
     "main": "dist/main.js",
     "scripts": {
         "test": "ng test",
         "lint": "ng lint",
         "e2e": "ng e2e",
-
         "start-electron": "npm run build-electron && electron dist/main.js",
         "build-electron": "ng build --base-href . && cp src/electron/* dist",
-
-        "package-mac":     "npm run build-electron && electron-packager . --overwrite --asar=true --platform=darwin --arch=x64  --prune=true --out=release-builds --ignore=node_modules/.bin",
-        "package-windows": "npm run build-electron && electron-packager . --overwrite --asar=true --platform=win32  --arch=ia32 --prune=true --out=release-builds --ignore=node_modules/.bin",
-        "package-linux":   "npm run build-electron && electron-packager . --overwrite --asar=true --platform=linux  --arch=x64  --prune=true --out=release-builds --ignore=node_modules/.bin",
-        
-        "create-installer-mac": "electron-installer-dmg ./release-builds/Electron\\ Angular\\ Boilerplate-darwin-x64/Electron\\ Angular\\ Boilerplate.app electron-boilerplate-app --out=release-builds --overwrite",
+        "package-mac": "npm run build-electron && electron-packager . Turntable --overwrite --asar=true --platform=darwin --arch=x64  --icon=src/assets/icons/mac/turntable1024.icns  --prune=true --out=release-builds --ignore=node_modules/.bin",
+        "package-windows": "npm run build-electron && electron-packager . Turntable --overwrite --asar=true --platform=win32  --arch=ia32 --icon=src/assets/icons/win/turntable1024.ico   --prune=true --out=release-builds --ignore=node_modules/.bin",
+        "package-linux": "npm run build-electron && electron-packager . Turntable --overwrite --asar=true --platform=linux  --arch=x64  --icon=src/assets/icons/linux/turntable1024.png --prune=true --out=release-builds --ignore=node_modules/.bin",
+        "create-installer-mac": "node installers/mac/createinstaller.js",
         "create-installer-windows": "node installers/windows/createinstaller.js",
-        
         "full-build-mac": "npm run build-electron && npm run package-mac && npm run create-installer-mac",
         "full-build-windows": "npm run build-electron && npm run package-windows && npm run create-installer-windows"
     },
@@ -32,7 +29,9 @@
         "@angular/platform-browser-dynamic": "^4.2.4",
         "@angular/router": "^4.2.4",
         "@types/youtube": "0.0.29",
+        "angular2-fontawesome": "^0.9.3",
         "core-js": "^2.4.1",
+        "font-awesome": "^4.7.0",
         "moment": "^2.18.1",
         "ng2-dragula": "^1.5.0",
         "ng2-youtube-player": "0.0.3",
@@ -50,6 +49,7 @@
         "electron": "^1.7.5",
         "electron-installer-dmg": "^0.2.1",
         "electron-packager": "^9.0.1",
+        "electron-winstaller": "^2.6.3",
         "jasmine-core": "~2.6.2",
         "jasmine-spec-reporter": "~4.1.0",
         "karma": "~1.7.0",
