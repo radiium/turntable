@@ -42,7 +42,7 @@ export class VideoPlayerComponent implements OnChanges, OnDestroy {
     private timerControl$: Subject<number>;
     private timer$;
     private sub: Subscription;
-    private currDuration: string;
+    public  currDuration: string;
     @Output() nearEnd: EventEmitter<any>;
 
 
