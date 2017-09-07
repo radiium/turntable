@@ -1,23 +1,88 @@
 {
     "name": "Turntable",
-    "productName": "Turntable",
-    "version": "0.0.1",
+    "version": "0.1.0-beta1",
+    "license": "MIT",
+    "description": "Simple youtube DJ app made with Electron and Angular4",
+    "homepage": "https://github.com/radiium/turntable",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/radiium/turntable.git"
+    },
+    "bugs": {
+        "url": "https://github.com/radiium/turntable/issues",
+        "email": "remip.dev@gmail.com"
+    },
+    "author": {
+        "name": "radiium",
+        "email": "remip.dev@gmail.com",
+        "url": "https://github.com/radiium"
+    },
+    "keywords": ["electron", "youtube", "youtubeplayer", "dj", "angular", "javascript","typescript" ],
+    "private": true,
     "main": "dist/main.js",
     "scripts": {
-        "test": "ng test",
-        "lint": "ng lint",
-        "e2e": "ng e2e",
-        "start-electron": "npm run build-electron && electron dist/main.js",
-        "build-electron": "ng build --base-href . && cp src/electron/* dist",
-        "package-mac": "npm run build-electron && electron-packager . Turntable --overwrite --asar=true --platform=darwin --arch=x64  --icon=src/assets/icons/mac/turntable1024.icns  --prune=true --out=release-builds --ignore=node_modules/.bin",
-        "package-windows": "npm run build-electron && electron-packager . Turntable --overwrite --asar=true --platform=win32  --arch=ia32 --icon=src/assets/icons/win/turntable1024.ico   --prune=true --out=release-builds --ignore=node_modules/.bin",
-        "package-linux": "npm run build-electron && electron-packager . Turntable --overwrite --asar=true --platform=linux  --arch=x64  --icon=src/assets/icons/linux/turntable1024.png --prune=true --out=release-builds --ignore=node_modules/.bin",
-        "create-installer-mac": "node installers/mac/createinstaller.js",
-        "create-installer-windows": "node installers/windows/createinstaller.js",
-        "full-build-mac": "npm run build-electron && npm run package-mac && npm run create-installer-mac",
-        "full-build-windows": "npm run build-electron && npm run package-windows && npm run create-installer-windows"
+        "electrontsc": "    tsc -p electron/",
+        "start": "          ng serve",
+        "lint": "           tslint \"src/**/*.ts\"",
+        "test": "           ng test",
+        "e2e": "            ng e2e",
+        "dev": "            ng build",
+        "build": "          ng build --prod",
+        "pack": "           electron-builder --dir",
+        "dist": "           electron-builder",
+        "dist2": "          build -l",
+
+
+        "prepare:dev": "    npm run dev && npm run electrontsc && ncp electron/package.json dist/package.json",
+        "prepare:prod": "   npm run build && npm run electrontsc && ncp electron/package.json dist/package.json",
+        "prepare": "        npm run prepare:dev",
+        "electron:dev": "   npm run prepare:dev && electron dist",
+        "electron:prod": "  npm run prepare:prod && electron dist",
+        "electron": "       npm run electron:dev",
+        "package:dev": "    npm run prepare:dev  && electron-packager dist --out=release --overwrite",
+        "package:prod": "   npm run prepare:prod && electron-packager dist --out=release --asar=true --overwrite",
+        "package": "        npm run package:dev",
+        "release": "        npm run package:prod && build"
     },
-    "private": true,
+    "build": {
+        "appId": "Turntable",
+        "directories": {
+            "app": "dist",
+            "output": "release",
+            "buildResources": "build"
+        },
+        "mac": {
+            "identity": null,
+            "target": "dmg",
+            "icon": "build/icons/mac/turntable-installer.icns"
+        },
+        "dmg": {
+            "contents": [
+                {
+                    "x": 110,
+                    "y": 150
+                },
+                {
+                    "x": 240,
+                    "y": 150,
+                    "type": "link",
+                    "path": "/Applications"
+                }
+            ]
+        },
+        "linux": {
+            "target": [
+                "AppImage",
+                "deb"
+            ],
+            "icon": "build/icons/linux/",
+            "category": "AudioVideo"
+        },
+        "win": {
+            "target": "nsis",
+            "icon": "build/icons/win/turntable-installer.ico"
+        }
+    },
     "dependencies": {
         "@angular/animations": "^4.2.4",
         "@angular/common": "^4.2.4",
@@ -47,9 +112,8 @@
         "@types/node": "~6.0.60",
         "codelyzer": "~3.1.1",
         "electron": "^1.7.5",
-        "electron-installer-dmg": "^0.2.1",
-        "electron-packager": "^9.0.1",
-        "electron-winstaller": "^2.6.3",
+        "electron-builder": "^19.27.3",
+        "electron-builder-squirrel-windows": "^19.27.3",
         "jasmine-core": "~2.6.2",
         "jasmine-spec-reporter": "~4.1.0",
         "karma": "~1.7.0",
@@ -58,6 +122,7 @@
         "karma-coverage-istanbul-reporter": "^1.2.1",
         "karma-jasmine": "~1.1.0",
         "karma-jasmine-html-reporter": "^0.2.2",
+        "ncp": "^2.0.0",
         "path": "^0.12.7",
         "protractor": "~5.1.2",
         "ts-node": "~3.2.0",

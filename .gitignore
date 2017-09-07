@@ -4,7 +4,7 @@
 /dist
 /tmp
 /out-tsc
-/psd
+/build/psd
 
 # dependencies
 /node_modules

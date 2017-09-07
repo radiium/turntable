@@ -23,15 +23,15 @@ export class VideoPlayerComponent implements OnChanges, OnDestroy {
     @Input() speed: number;
 
     // Player
-    private player: any;                 // Player object api
+    player: any;                 // Player object api
     private ytEvent: any;                // Player state
-    private id: String;                  // Video id
+    id: String;                  // Video id
     private isPlayerLoaded: boolean;     // state of player
     @Input() sidePlayer: String;         // Side of player (left or right)
 
     // Player control
-    private isPlaying: boolean;          // Play/Pause button
-    private isMuted: boolean;            // Mute/Unmute button
+    isPlaying: boolean;          // Play/Pause button
+    isMuted: boolean;            // Mute/Unmute button
 
     // Video(s)
     @Input() video: VideoModel;          // Current played video

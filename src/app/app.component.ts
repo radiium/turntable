@@ -21,14 +21,14 @@ export class AppComponent {
 
     private playList: VideoModel[] = [];
 
-    private videoLeft;
+    videoLeft;
     @ViewChild('left') playerLeft;
     volLeft: any;
     speedLeft: any;
     currVolLeft: any;
 
 
-    private videoRight;
+    videoRight;
     @ViewChild('right') playerRight;
     volRight: any;
     speedRight: any;

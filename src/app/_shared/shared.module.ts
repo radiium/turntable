@@ -1,21 +1,22 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
-import { DurationPipe } from './_pipes/duration.pipe';
+// import { DurationPipe } from './_pipes/duration.pipe';
 
 // import { VideoModel } from './_models/video.model';
 
 
 @NgModule({
     imports: [
-        BrowserModule,
-        CommonModule
+        // BrowserModule,
+        // CommonModule
     ],
     declarations: [
-    DurationPipe],
+        // DurationPipe
+    ],
     exports: [
-        BrowserModule,
-        CommonModule
+        // BrowserModule,
+        // CommonModule
     ],
     providers: [],
 })
