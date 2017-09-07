@@ -1,7 +1,6 @@
-# turntable 
+# turntable 0.1.0-beta1
 
-> A simple youtube dj app made with Electron  
-> (in progress)
+> A simple youtube dj app made with Electron (in progress)
   
 ## Captures:
 ![turntable capture 1](/captures/capture1.png)
@@ -11,9 +10,12 @@
 ![turntable capture 3](/captures/capture3.png)
   
 ## Releases:
+Soon...
+<!---
 - ![Mac OS X (x64)]()
 - ![Linux (x64)]()
 - ![Windows (ia32)]()
+-->
   
 ## Made with
   
@@ -23,4 +25,4 @@
 - ![electron](https://electron.atom.io/)
   
 ## License  
-![License MIT](LICENSE.md)
+![License MIT](LICENCE.md)
