@@ -1,44 +1,33 @@
-// console.log(process.env);
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 console.log(`Electron launching with NODE_ENV: ${process.env.NODE_ENV}`);
 
-// electron
+// Dependencies
 const electron      = require('electron');
 const app           = electron.app;
 const Menu: any     = electron.Menu;
 const shell: any    = electron.shell;
 const BrowserWindow = electron.BrowserWindow;
-// const {crashReporter} = require('electron');
 
 let mainWindow: any = null;
 let template: any;
 let menu: any;
 
-// app
-import {Sample} from './sample/';
-
-// Sample
-// You would need a valid `submitURL` to use
-// crashReporter.start({
-//   productName: 'YourName',
-//   companyName: 'YourCompany',
-//   submitURL: 'https://your-domain.com/url-to-submit',
-//   autoSubmit: true
-// })
-
 if (process.env.NODE_ENV === 'development') {
   // require('electron-debug')();
 }
 
+
+// On close app event
 app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') {
-    app.quit();
-  }
+    if (process.platform !== 'darwin') {
+        app.quit();
+    }
 });
 
+// On ready app event
 app.on('ready', () => {
 
-    // Initialize the window to our specified dimensions
+    // Initialize main window
     mainWindow = new BrowserWindow({
         width: 1080,
         height: 620,
@@ -46,12 +35,12 @@ app.on('ready', () => {
         minHeight: 620
     });
 
-    // Tell Electron where to load the entry point from
+    // App entry point
     mainWindow.loadURL('file://' + __dirname + '/index.html');
 
     // Clear out the main window when the app is closed
     mainWindow.on('closed', () => {
-    mainWindow = null;
+        mainWindow = null;
     });
 
     // mainWindow.webContents.on('did-navigate-in-page', (e: any, url: string) => {
@@ -59,25 +48,7 @@ app.on('ready', () => {
     // });
 
 
-    const SampleMenu: any = {
-        label: 'Sample',
-        submenu: []
-    };
-
-    for (const sam of Sample.SAMPLES_ARRAY) {
-        const code = sam.code;
-        const sampleOption = {
-            label: sam.title,
-            click: () => {
-                console.log(`Change sample: ${code}`);
-                mainWindow.webContents
-                .executeJavaScript(`window.dispatchEvent(new CustomEvent('changeSample', {detail: { value: '${code}'} }));`);
-            }
-        };
-        SampleMenu.submenu.push(sampleOption);
-    }
-    console.log(SampleMenu);
-
+    // Create menu
     const helpMenu: any = {
         label: 'Help',
         submenu: [{
@@ -224,7 +195,6 @@ app.on('ready', () => {
                 ector: 'arrangeInFront:'
             }]
         },
-        SampleMenu,
         helpMenu];
 
         menu = Menu.buildFromTemplate(template);
@@ -271,10 +241,10 @@ app.on('ready', () => {
             }
         }]
         },
-        SampleMenu,
         helpMenu];
+
+        // Add menu to main window app
         menu = Menu.buildFromTemplate(template);
         mainWindow.setMenu(menu);
     }
-
 });
