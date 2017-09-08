@@ -1,0 +1,49 @@
+appId: com.radiium.turntable
+copyright: "LICENSE MIT "
+productName: Turntable
+# forceCodeSigning: true
+asar: true
+artifactName: "${productName}-${os}-${arch}-${version}.${ext}"
+compression: maximum
+directories:
+  app: "dist"
+  output: "release"
+  buildResources: "build"
+
+mac:
+  icon: "build/icons/mac/turntable1024.icns"
+  category: "public.app-category.entertainment"
+  identity: null
+  target:
+    - dmg
+dmg:
+  icon: "build/icons/mac/turntable128.icns"
+  iconSize: 128
+  background: "build/icons/mac/turntable-bcg.png"
+  contents:
+    - x: 532
+      y: 249
+      type: link
+      path: /Applications
+    - x: 281
+      y: 249
+      type: file
+
+linux:
+  icon: "build/icons/linux/"
+  category: "GNOME;GTK;Music;AudioVideo"
+  packageCategory: "GNOME;GTK;Music;AudioVideo"
+  description: "Simple youtube DJ app made with Electron and Angular4"
+  maintainer: "Radiium <remip.dev@gmail.com>"
+  target:
+    - deb
+    - rpm
+    - AppImage
+
+win:
+  icon: "build/icons/win/turntable1024.ico"
+  target:
+    - nsis
+nsis:
+  oneClick: true
+  perMachine: true

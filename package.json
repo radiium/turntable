@@ -17,72 +17,42 @@
         "email": "remip.dev@gmail.com",
         "url": "https://github.com/radiium"
     },
-    "keywords": ["electron", "youtube", "youtubeplayer", "dj", "angular", "javascript","typescript" ],
+    "keywords": [
+        "electron",
+        "youtube",
+        "youtubeplayer",
+        "dj",
+        "angular",
+        "javascript",
+        "typescript"
+    ],
     "private": true,
     "main": "dist/main.js",
     "scripts": {
         "electrontsc": "tsc -p electron/",
+        "lint": " tslint --type-check --project tsconfig.json src/**/*.ts",
         "start": "ng serve",
-        "lint": "tslint --type-check --project tsconfig.json src/**/*.ts",
-        "test": "ng test",
-        "e2e": "ng e2e",
-        "dev": "ng build",
-        "build": "ng build --prod",
-        "pack": "electron-builder --dir",
-        "dist": "electron-builder",
-        "dist2": "build -l",
-
-
-        "prepare:dev": "    npm run dev && npm run electrontsc && ncp electron/package.json dist/package.json",
-        "prepare:prod": "   npm run build && npm run electrontsc && ncp electron/package.json dist/package.json",
-        "prepare": "        npm run prepare:dev",
+        "test": " ng test",
+        "e2e": "  ng e2e",
+       
+        "prepare": "        ng build        && tsc -p electron/ && ncp electron/package.json dist/package.json",
+        "prepare:dev": "    ng build        && tsc -p electron/ && ncp electron/package.json dist/package.json",
+        "prepare:prod": "   ng build --prod && tsc -p electron/ && ncp electron/package.json dist/package.json",
+       
+        "electron": "       npm run electron:dev",
         "electron:dev": "   npm run prepare:dev && electron dist",
         "electron:prod": "  npm run prepare:prod && electron dist",
-        "electron": "       npm run electron:dev",
+
         "package:dev": "    npm run prepare:dev  && electron-packager dist --out=release --overwrite",
         "package:prod": "   npm run prepare:prod && electron-packager dist --out=release --asar=true --overwrite",
+       
         "package": "        npm run package:dev",
-        "release": "        npm run package:prod && build"
+        "release": "        npm run package:prod && build",
+      
+        "pack": "           electron-builder -lmw --config electron-builder.yml --dir",
+        "dist": "           electron-builder -lmw --config electron-builder.yml"
     },
-    "build": {
-        "appId": "Turntable",
-        "directories": {
-            "app": "dist",
-            "output": "release",
-            "buildResources": "build"
-        },
-        "mac": {
-            "identity": null,
-            "target": "dmg",
-            "icon": "build/icons/mac/turntable-installer.icns"
-        },
-        "dmg": {
-            "contents": [
-                {
-                    "x": 110,
-                    "y": 150
-                },
-                {
-                    "x": 240,
-                    "y": 150,
-                    "type": "link",
-                    "path": "/Applications"
-                }
-            ]
-        },
-        "linux": {
-            "target": [
-                "AppImage",
-                "deb"
-            ],
-            "icon": "build/icons/linux/",
-            "category": "AudioVideo"
-        },
-        "win": {
-            "target": "nsis",
-            "icon": "build/icons/win/turntable-installer.ico"
-        }
-    },
+   
     "dependencies": {
         "@angular/animations": "^4.2.4",
         "@angular/common": "^4.2.4",
@@ -112,8 +82,8 @@
         "@types/node": "~6.0.60",
         "codelyzer": "~3.1.1",
         "electron": "^1.7.5",
-        "electron-builder": "^19.27.3",
-        "electron-builder-squirrel-windows": "^19.27.3",
+        "electron-builder": "^19.27.7",
+        "electron-builder-squirrel-windows": "^19.28.0",
         "jasmine-core": "~2.6.2",
         "jasmine-spec-reporter": "~4.1.0",
         "karma": "~1.7.0",
