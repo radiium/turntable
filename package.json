@@ -52,7 +52,6 @@
         "pack": "           electron-builder -lmw --config electron-builder.yml --dir",
         "dist": "           electron-builder -lmw --config electron-builder.yml"
     },
-   
     "dependencies": {
         "@angular/animations": "^4.2.4",
         "@angular/common": "^4.2.4",
