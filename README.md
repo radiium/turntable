@@ -5,7 +5,7 @@
 ## Captures:
 ![turntable capture 1](/captures/capture1.png)
   
-![turntable capture 3](/captures/capture3.png)
+![turntable capture 1](/captures/capture2.png)
   
 ## Releases:
 Soon...

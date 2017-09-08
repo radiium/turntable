@@ -1,15 +1,14 @@
 // Import dependencies
 import { app, BrowserWindow } from 'electron';
-import { createPrefsWindow} from '../preferences/preferences';
+import { createSettingsWindow} from '../settings/settings';
 
 // Export menu items object
 export const fileMenuTemplate = {
     label: 'File',
         submenu: [{
-            label: 'Preferences',
+            label: 'Settings',
             click: () => {
-            // prefsWindow.show();
-            createPrefsWindow();
+            createSettingsWindow();
             }
         }, {
             label: `About File`,
