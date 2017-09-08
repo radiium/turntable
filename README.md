@@ -5,8 +5,6 @@
 ## Captures:
 ![turntable capture 1](/captures/capture1.png)
   
-![turntable capture 2](/captures/capture2.png)
-  
 ![turntable capture 3](/captures/capture3.png)
   
 ## Releases:
@@ -25,4 +23,4 @@ Soon...
 - ![electron](https://electron.atom.io/)
   
 ## License  
-![License MIT](LICENCE.md)
+![MIT](LICENCE.md)
