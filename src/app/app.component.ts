@@ -1,6 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { DragulaService, dragula } from 'ng2-dragula/ng2-dragula';
-import { OnlineService } from './_core/_services/online.service';
 
 @Component({
     selector: 'app-root',
@@ -9,25 +8,12 @@ import { OnlineService } from './_core/_services/online.service';
     viewProviders:  [DragulaService]
 })
 export class AppComponent implements OnInit, OnDestroy {
-    isOnline: Boolean = false;
+
     dragulaBagName = 'drag-drop-list';
 
-    constructor(
-        private onlineService: OnlineService,
-        private dragulaService: DragulaService) {
-
-        this.onlineService.isOnline$.subscribe((isOnline) => {
-            this.isOnline = isOnline;
-        });
-    }
-
-    ngOnInit() {
-        this.initDragula();
-    }
-
-    ngOnDestroy() {
-        this.destroyDragula();
-    }
+    constructor(private dragulaService: DragulaService) {}
+    ngOnInit() { this.initDragula(); }
+    ngOnDestroy() { this.destroyDragula(); }
 
     // Init dragula service options
     initDragula() {

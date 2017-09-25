@@ -1,14 +1,59 @@
-<div class="loginBox">
-    <div *ngIf="!user" class="userBox">
-        <button (click)="login()">Login with google</button>
-    </div>
+<div class="loginContainer">
 
-    <div *ngIf="user" class="userBox">
-        <div class="userInfos">
-            <img src="{{ user.img }}" alt="">
-            <span>{{ user.name }}</span>
+    <div class="loginBox">
+
+        <!-- Online status -->
+        <div id="onlineBox">
+        <div *ngIf="isOnline" class="onlineBtn green">Online</div>
+        <div *ngIf="!isOnline" class="onlineBtn red">Offline</div>
         </div>
-        <button (click)="logout()">Logout</button>
+
+        <!-- Sign buttons/infos -->
+        <div id="signContainer">
+
+            <div *ngIf="user"class="userInfos">
+                <img src="{{ user.img }}" alt="">
+                <span>{{ user.name }}</span>
+            </div>
+
+            <button id="menuBtn" [mdMenuTriggerFor]="menu">
+            <fa aria-label="Logout" [name]="'ellipsis-v'" [size]="1"></fa>
+            </button>
+
+            <md-menu #menu="mdMenu" yPosition="below" [overlapTrigger]="false">
+                <button *ngIf="!user" md-menu-item (click)="login()">
+                <fa aria-label="Login" [name]="'sign-in'" [size]="1"></fa>
+                <span>Login</span>
+                </button>
+                <button *ngIf="user" md-menu-item (click)="logout()">
+                <fa aria-label="Logout" [name]="'sign-out'" [size]="1"></fa>
+                <span>Logout</span>
+                </button>
+            </md-menu>
+
+
+            <!-- Login
+            <div *ngIf="!user" class="signBox">
+                <button (click)="login()" class="mat-tab-label mat-ripple">
+                    <fa aria-label="Logout" [name]="'sign-in'" [size]="1"></fa>
+                    Login with google
+                </button>
+            </div>
+        
+            <!-- Logout
+            <div *ngIf="user" class="signBox">
+                <div class="userInfos">
+                    <img src="{{ user.img }}" alt="">
+                    <span>{{ user.name }}</span>
+                </div>
+
+                <button (click)="logout()" class="mat-tab-label mat-ripple">
+                    <fa aria-label="Logout" [name]="'sign-out'" [size]="1"></fa>
+                    Logout
+                </button>
+            </div>
+            -->
+        </div>
+        
     </div>
-    
 </div>

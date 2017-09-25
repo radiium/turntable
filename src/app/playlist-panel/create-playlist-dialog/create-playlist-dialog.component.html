@@ -7,9 +7,10 @@
         </md-form-field>
         </form>
 
+        <label class="labelVisible">Playlist visibility:</label>
         <md-radio-group class="radioBtnGrp" [(ngModel)]="privacyStatus">
-            <md-radio-button class="radioBtn" [checked]="'true'" value="public">Public</md-radio-button>
-            <md-radio-button class="radioBtn" value="private">Private</md-radio-button>
+        <md-radio-button class="radioBtn" [checked]="'true'" value="public">Public</md-radio-button>
+        <md-radio-button class="radioBtn" value="private">Private</md-radio-button>
         </md-radio-group>
     </md-dialog-content>
 

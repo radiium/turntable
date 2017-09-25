@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MdDialog, MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
 import { UUID } from 'angular2-uuid';
-import { FormControl } from '@angular/forms';
+import { FormGroup, FormControl } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/map';
@@ -29,23 +29,36 @@ export class PlaylistPanelComponent implements OnInit {
 
     isEditMode: Boolean = false;
 
+
+// data-enpassid="__1" type="text">
+// type="text">
+
+
     constructor(
         public dialog: MdDialog,
         private _playlistService: PlaylistService) {
-    }
+            this._playlistService.playListsList$.subscribe((pl: any) => {
+                this.playlistsList = pl;
+
+                if (this.playlistsList.length > 1) {
+                    this.searchPlaylist.enable();
+                    this.searchPlaylist.setValue('');
+                } else if (this.playlistsList.length < 2) {
+                    this.searchPlaylist.disable();
+                }
+            });
+            this._playlistService.searchResultPlaylist$.subscribe((pl: any) => {
+                this.searchResultPlaylist = pl;
+            });
+
+            this.searchPlaylist = new FormControl();
+            this.searchPlaylist.disable();
+            this.filteredStates = this.searchPlaylist.valueChanges
+                .startWith(null)
+                .map(title => title ? this.filterPlaylists(title) : this.playlistsList.slice());
+        }
 
     ngOnInit() {
-        this._playlistService.playListsList$.subscribe((pl) => {
-            this.playlistsList = pl;
-        });
-        this._playlistService.searchResultPlaylist$.subscribe((pl) => {
-            this.searchResultPlaylist = pl;
-        });
-
-        this.searchPlaylist = new FormControl();
-        this.filteredStates = this.searchPlaylist.valueChanges
-            .startWith(null)
-            .map(name => name ? this.filterPlaylists(name) : this.playlistsList.slice());
     }
 
     // Create new playlist
@@ -53,6 +66,7 @@ export class PlaylistPanelComponent implements OnInit {
         const dialogRef = this.dialog.open(CreatePlaylistDialogComponent, {});
         dialogRef.afterClosed().subscribe(result => {
             if (result) {
+                console.log(result);
                 const id = UUID.UUID();
                 const title = result.name;
                 const privacyStatus = result.privacyStatus;
@@ -66,7 +80,7 @@ export class PlaylistPanelComponent implements OnInit {
                     null,
                     null,
                     '',
-                    '',
+                    privacyStatus,
                     videoList
                 );
 

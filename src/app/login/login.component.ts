@@ -5,6 +5,7 @@ import { ElectronService } from 'ngx-electron';
 import { AuthService } from '../_core/_services/auth.service';
 import { YoutubeService } from '../_core/_services/youtube.service';
 import { PlaylistService } from '../_core/_services/playlist.service';
+import { OnlineService } from '../_core/_services/online.service';
 
 // Models
 import { User } from '../_shared/models/user.model';
@@ -19,13 +20,20 @@ declare const electronOauth2: any;
 export class LoginComponent implements OnInit {
 
     user: User;
+    isOnline: Boolean = false;
 
     constructor(
         private _authService: AuthService,
         private _youtubeService: YoutubeService,
-        private _playlistService: PlaylistService) {
+        private _playlistService: PlaylistService,
+        private _onlineService: OnlineService) {
 
             console.log(localStorage);
+
+            // Check internet connection
+            this._onlineService.isOnline$.subscribe((isOnline) => {
+                this.isOnline = isOnline;
+            });
 
             // Get user info (and token)
             this._authService.user$

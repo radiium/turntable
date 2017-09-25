@@ -17,6 +17,7 @@ export class AuthService {
     clientSecret = CONSTANT.CLIENT_SECRET;
     authUrl      = CONSTANT.AUTH_API;
     tokenUrl     = CONSTANT.TOKEN_API;
+    logoutUrl    = CONSTANT.LOGOUT_API;
 
     // Electron auth window
     authWindow: any;
@@ -43,11 +44,13 @@ export class AuthService {
 
     // Authenticate user
     login() {
+        console.log('login');
         this.getAccessToken();
     }
 
     // Logout user (revoke token)
     logout() {
+        console.log('logout');
         const logoutUrl =
             CONSTANT.LOGOUT_API +
             '?token=' + localStorage.getItem('access_token');
@@ -145,7 +148,7 @@ export class AuthService {
         const authUrl =
             CONSTANT.AUTH_API +
             '?response_type=code' +
-            '&redirect_uri=http://localhost' +
+            '&redirect_uri=' + this.redirectUri +
             '&client_id=' + that.clientId +
             '&state=' + that.generateRandomString(16) +
             '&scope=' + that.scope;

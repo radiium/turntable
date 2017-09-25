@@ -33,9 +33,10 @@ export class HttpService extends Http {
         }
         return super.request(url, options)
         .catch((res: Response) => {
+            console.log('handle request error');
             // Handle invalid token status code and retry request
             if (res.status === 401 || res.status === 403) {
-                this.authService.getAccessToken();
+                this.authService.refreshToken();
                 return super.request(url, options);
             }
             return Observable.throw(res);

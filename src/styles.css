@@ -33,6 +33,19 @@ app-playlist-panel {
     height: 100%;
 }
 
+#menuBtn .ng-trigger,
+#menuBtn .ng-trigger-fadeInItems,
+#menuBtn .mat-menu-content {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+}
+.mat-tab-header, .mat-tab-nav-bar {
+    /*
+    border-bottom: 1px solid rgba(0,0,0,.12);
+    */
+    border-bottom: none !important;
+}
+
 .fa-2x {
     font-size: 23px !important;
 }
@@ -66,9 +79,27 @@ app-playlist-panel {
  .radioBtnGrp {
     display: flex;
     flex-direction: column;
+    margin-top: 10px;
     margin-bottom: 10px;
 }
-
-.radioBtn {
-    margin: 5px;
+.radioBtn { margin: 5px; }
+.labelVisible {
+    margin-top: 20px !important;
 }
+
+/* input serch filter */
+#inputFilter.mat-input-element {
+    width: auto !important;
+    padding: 2px !important;
+    background: white !important;
+    margin-top: 0 !important;
+    padding-left: 18px !important;
+    padding-right: 18px !important;
+}
+#inputFilter.mat-input-element::placeholder { color: gray !important; }
+#inputFilter:disabled { background-color: lightgray !important; }
+#inputFilter.mat-input-element::-moz-placeholder { color: gray !important; }
+#inputFilter.mat-input-element::placeholder { color: gray !important; }
+#inputFilter.mat-input-element::placeholder { color: gray !important; }
+
+

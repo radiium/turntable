@@ -100,7 +100,7 @@ export class YoutubeService {
             '&id=' + videosId +
             '&key=' + CONSTANT.KEY_API;
 
-        return this.httpService.request(videosByIdUrl, {method: RequestMethod.Get, headers: new Headers()})
+        return this._http.request(videosByIdUrl, {method: RequestMethod.Get, headers: new Headers()})
         .map((res) => res.json());
     }
 }

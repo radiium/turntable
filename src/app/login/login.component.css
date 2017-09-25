@@ -1,14 +1,94 @@
-.userBox {
+.loginContainer {
+    z-index: 6000;
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 32px;
+}
+
+.loginBox {
+    height: 32px;
     display: flex;
     flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: flex-end;
+}
+
+.signBox button fa {
+    margin-right: 5px;
+}
+.signBox button {
+    background-color: transparent;
+    height: 32px;
+    padding-left: 15px;
+    padding-right: 15px;
+    cursor: pointer;
+    border: none;
+    outline: none;
+}
+
+#signContainer {
+    height: 32px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
 }
 
 .userInfos {
     display: flex;
     flex-direction: row;
+    height: 32px;
+    line-height: 32px;
+    margin-left: 10px;
+    margin-right: 10px;
 }
 .userInfos img {
-    width: 30px;
-    height: 30px;
+    margin-top: 5px;
+    margin-right: 5px;
+    width: 22px;
+    height: 22px;
     border-radius: 50%;
+}
+
+#menuBtn  {
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    outline: none;
+    padding: 0;
+    margin: 0;
+    width: 40px !important;
+    height: 32px !important;
+    line-height: 32px !important;
+}
+
+#menuBtn:hover {
+    background-color: darkgray;
+}
+
+
+/* Online status */
+#onlineBox {
+    font-size: 0.7rem;
+    text-align: center;
+    padding: 6px;
+    display: flex;
+    flex-basis: row;
+    z-index: 1000;
+}
+
+.onlineBtn {
+    padding: 2px;
+    border-radius: 10px;
+    width: 40px;
+    height: 16px;
+    line-height: 16px;
+}
+.green {
+    color: white;
+    background-color: green;
+}
+.red {
+    color: white;
+    background-color: red;
 }

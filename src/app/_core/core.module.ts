@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { BaseRequestOptions } from '@angular/http';
 
 import { AuthService } from './_services/auth.service';
 import { YoutubeService } from './_services/youtube.service';

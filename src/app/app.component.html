@@ -1,5 +1,7 @@
 
 <div id="appContainer">
+    <app-login></app-login>
+
     <md-tab-group dynamicHeight="false">
         <md-tab label="Playlist" disableRipple>
         <app-playlist-panel></app-playlist-panel>
@@ -15,11 +17,4 @@
         <app-settings-panel></app-settings-panel>   
         </md-tab>
     </md-tab-group>
-
-    <div id="onlineBox">
-        <div *ngIf="isOnline" class="onlineBtn green">Online</div>
-        <div *ngIf="!isOnline" class="onlineBtn red">Offline</div>
-
-        <app-login></app-login>
-    </div>
 </div>
