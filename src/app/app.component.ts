@@ -1,115 +1,61 @@
-import { Component, Input, Output, EventEmitter, ViewChild } from '@angular/core';
-
-import { Observable, Subscription, Subject } from 'rxjs/Rx';
-
-import { VideoModel } from './_shared/_models/video.model';
-import { VideoStateService } from './_shared/_services/video-state.service';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { DragulaService, dragula } from 'ng2-dragula/ng2-dragula';
+import { OnlineService } from './_core/_services/online.service';
 
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html',
-    styleUrls: ['./app.component.css']
+    styleUrls: ['./app.component.css'],
+    viewProviders:  [DragulaService]
 })
-export class AppComponent {
+export class AppComponent implements OnInit, OnDestroy {
+    isOnline: Boolean = false;
+    dragulaBagName = 'drag-drop-list';
 
-    title = 'TurnTable';
+    constructor(
+        private onlineService: OnlineService,
+        private dragulaService: DragulaService) {
 
-    // Timer
-    timerControl$: Subject<number> = new Subject<number>();
-    timer$;
-    sub: Subscription;
-
-    private playList: VideoModel[] = [];
-
-    videoLeft;
-    @ViewChild('left') playerLeft;
-    volLeft: any;
-    speedLeft: any;
-    currVolLeft: any;
-
-
-    videoRight;
-    @ViewChild('right') playerRight;
-    volRight: any;
-    speedRight: any;
-    currVolRight: any;
-
-
-    constructor(private VideoStateService: VideoStateService) {
-        VideoStateService.playerLeft$.subscribe((vl) => {
-            this.videoLeft = vl;
-        });
-        VideoStateService.playerRight$.subscribe((vr) => {
-            this.videoRight = vr;
-        });
-        VideoStateService.playList$.subscribe((pl) => {
-            this.playList = pl;
+        this.onlineService.isOnline$.subscribe((isOnline) => {
+            this.isOnline = isOnline;
         });
     }
 
-
-    // Manage mix
-    triggerMixLTR(event) {
-        console.log('Trigger mix left to right');
-        this.currVolLeft = event;
-        this.playerRight.playPauseVideo();
-        this.VideoStateService.setActivePlayer('right');
-        this.initTimerLTR(event);
-
+    ngOnInit() {
+        this.initDragula();
     }
-    // Init Timer
-    initTimerLTR(volume) {
-        this.timerControl$ = new Subject<number>();
-        this.timer$ = Observable.timer(15000, 1000);
-        this.sub = this.timer$.subscribe(t => {
-            this.volLeft = this.currVolLeft - 2;
-            this.currVolLeft = this.volLeft;
 
-            console.log(this.playerLeft.getPlayerState());
-            if (this.playerLeft.getPlayerState() === 5
-            ||  this.playerLeft.getPlayerState() === 0
-            ||  this.playerLeft.getPlayerState() === -1) {
-                console.log('stop timer');
-                this.stopTimer();
-            }
-            console.log('LTR => ' + this.currVolLeft);
+    ngOnDestroy() {
+        this.destroyDragula();
+    }
+
+    // Init dragula service options
+    initDragula() {
+        this.dragulaService.setOptions(
+            this.dragulaBagName, {
+            revertOnSpill: true,
+            moves: (el, source, handle, sibling): boolean => {
+                return el.dataset.movable === 'true';
+            },
+            copy: (el, source): boolean => {
+                return source.dataset.acceptDrop === 'false';
+            },
+            accepts: (el, target, source, sibling): boolean => {
+                return target.dataset.acceptDrop === 'true';
+            },
         });
-    }
-
-
-
-    triggerMixRTL(event) {
-        console.log('Trigger mix right to left');
-        this.currVolRight = event;
-        this.playerLeft.playPauseVideo();
-        this.VideoStateService.setActivePlayer('left');
-        this.initTimerRTL(event);
-    }
-    // Init Timer
-    initTimerRTL(volume) {
-        this.timerControl$ = new Subject<number>();
-        this.timer$ = Observable.timer(15000, 1000);
-        this.sub = this.timer$.subscribe(t => {
-            this.volRight = this.currVolRight - 2;
-            this.currVolRight = this.volRight;
-
-            console.log(this.playerRight.getPlayerState());
-            if (this.playerRight.getPlayerState() === 5
-            ||  this.playerRight.getPlayerState() === 0
-            ||  this.playerRight.getPlayerState() === -1) {
-                console.log('stop timer');
-                this.stopTimer();
-            }
-            console.log('RTL => ' + this.currVolRight);
+        /*
+        this.dragulaService.dragend.subscribe((el) => {
         });
+        this.dragulaService.over.subscribe((val) => {
+        });
+        */
     }
 
-    // Stop timer
-    stopTimer() {
-        // console.log('Stop Timer');
-        this.timerControl$.next();
-        if (this.sub) { this.sub.unsubscribe(); }
-        //  this.initTimer();
-        this.timer$ = Observable.empty();
+    // Destroy dragula service
+    destroyDragula() {
+        if (!!this.dragulaService.find(this.dragulaBagName)) {
+            this.dragulaService.destroy(this.dragulaBagName);
+        }
     }
 }

@@ -1,6 +1,7 @@
-# turntable 0.1.0-beta1
+# turntable
 
 > A simple youtube dj app made with Electron (in progress)
+> Current version: 0.1.1-beta
   
 ## Captures:
 ![turntable capture 1](/captures/capture1.png)

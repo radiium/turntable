@@ -8,6 +8,7 @@ import * as url from 'url';
 import { app, BrowserWindow, ipcMain, Menu, shell } from 'electron';
 import { devMenuTemplate } from './menu/dev_menu_template';
 import { fileMenuTemplate } from './menu/file_menu_template';
+import * as storage from 'electron-json-storage';
 
 // Init variable
 let mainWindow: any = null;
@@ -15,34 +16,43 @@ let menus: any[] = [];
 const isDev = process.env.NODE_ENV === 'development' ? true : false;
 
 // Create main window
-function createMainWindow() {
+const createMainWindow = async () => {
 
     // Initialize main window
     mainWindow = new BrowserWindow({
         width: 1080,
         height: 620,
         minWidth: 1080,
-        minHeight: 620
+        minHeight: 620,
+        webPreferences: {
+            nodeIntegration: true
+        }
     });
 
     // Load app entry point
     mainWindow.loadURL(url.format({
         pathname: path.join(__dirname, 'index.html'),
         protocol: 'file:',
-        slashes: true
+        slashes: true,
     }));
 
     // Clear out the main window when the app is closed
-    mainWindow.on('closed', () => { mainWindow = null; });
+    mainWindow.on('closed', () => {
+        mainWindow = null;
+    });
 
     // Create menus
     menus = [fileMenuTemplate];
     if (isDev) { menus.push(devMenuTemplate); }
     Menu.setApplicationMenu(Menu.buildFromTemplate(menus));
-}
+};
 
 // On app is ready
-app.on('ready', createMainWindow);
+app.on('ready', () => {
+    // storage.setDataPath(app.getPath('userData'));
+    console.log(storage.getDataPath());
+    createMainWindow();
+});
 
 // On close app event
 app.on('window-all-closed', () => {
@@ -51,18 +61,52 @@ app.on('window-all-closed', () => {
     }
 });
 
+app.on('before-quit', () => {
+    storage.has('token', function(error, hasKey) {
+        if (error) { throw error; }
+        if (hasKey) {
+            console.log('There is data stored as `token`');
+            storage.remove('token', (err) => {
+                if (err) { throw err; }
+                console.log('Remove token');
+            });
+        }
+    });
+});
+
 // Recreate window when icon is clicked
 app.on('activate', () => {
     if (mainWindow === null) { createMainWindow(); }
 });
 
 // Ipc listening in main process.
+
+ipcMain.on('google-token', (event, arg) => {
+    console.log(arg); // prints "ping"
+    // event.sender.send('asynchronous-reply', 'pong');
+
+    storage.set('token', arg, (error) => {
+    console.log('Set token');
+    if (error) { throw error; }
+    });
+
+    /*
+    storage.get('token', arg, (error, data) => {
+    if (error) { throw error; }
+    console.log('Get token');
+    console.log(data);
+    });
+    */
+});
+
+
+
 ipcMain.on('asynchronous-message', (event, arg) => {
-  console.log(arg);  // prints "ping"
-  event.sender.send('asynchronous-reply', 'async pong');
+  console.log(arg); // prints "ping"
+  event.sender.send('asynchronous-reply', 'pong');
 });
 
 ipcMain.on('synchronous-message', (event, arg) => {
-  console.log(arg);  // prints "ping"
-  event.returnValue = 'sync pong';
+  console.log(arg); // prints "ping"
+  event.returnValue = 'pong';
 });

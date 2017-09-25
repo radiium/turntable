@@ -1,36 +1,25 @@
-<!--div class="megaLoader"><fa [name]="'spinner'" [size]="5"></fa></div-->
 
 <div id="appContainer">
+    <md-tab-group dynamicHeight="false">
+        <md-tab label="Playlist" disableRipple>
+        <app-playlist-panel></app-playlist-panel>
+        </md-tab>
 
-    <div id="firstRow">
-        <app-video-player #left [video]="videoLeft" [sidePlayer]="'left'" (nearEnd)="triggerMixLTR($event)"
-        [volume]="volLeft" [speed]="speedLeft" (volumeChange)="volLeft" (speedChange)="speedLeft"></app-video-player>
-        
-        <div id="controlBox">
-            <!-- Crossfader -->
-            <div id="crossfader-box" class="line-border">
-                <div class="hori-ticks">
-                    <div class="item"></div>
-                    <div class="item"></div>
-                    <div class="item"></div>
-                    <div class="item"></div>
-                    <div class="item"></div>
-                    <div class="item"></div>
-                    <div class="item"></div>
-                    <div class="item"></div>
-                    <div class="item"></div>
-                    <div class="item"></div>
-                </div>
-                <input class="crossfader horizontal" type="range" value="50" min="0" max="100" step="0.1" list="tickmarks-center">
-            </div>
-        </div>
-        
-        <app-video-player #right [video]="videoRight" [sidePlayer]="'right'" (nearEnd)="triggerMixRTL($event)"
-        [volume]="volRight" [speed]="speedRight" (volumeChange)="volRight" (speedChange)="speedRight"></app-video-player>
+        <md-tab label="Mix" disableRipple>
+        <!---->
+        <app-mix-panel></app-mix-panel>
+        <!---->
+        </md-tab>
+
+        <md-tab label="Settings" disableRipple>
+        <app-settings-panel></app-settings-panel>   
+        </md-tab>
+    </md-tab-group>
+
+    <div id="onlineBox">
+        <div *ngIf="isOnline" class="onlineBtn green">Online</div>
+        <div *ngIf="!isOnline" class="onlineBtn red">Offline</div>
+
+        <app-login></app-login>
     </div>
-
-    <div id="appVideoList">
-        <app-videos-list></app-videos-list>
-    </div>
-
 </div>

@@ -1,0 +1,37 @@
+.playlist {
+    height: calc(100% - 50px);
+}
+
+/* Drop infos */
+.dropInfos {
+    border-radius: 15px;
+    font-size: 1.8rem;
+    font-weight: bold;
+    text-align: center;
+    opacity: 0.4;
+    color: black;
+    border: 5px dashed black;
+    padding: 20px;
+    height: 100%;
+}
+
+.videoItem {
+    width: 100%;
+    background-color: #242320;
+    list-style: none;
+    margin-bottom: 2px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.videoControl {
+    width: 150px;
+}
+
+.deleteBtn {
+    text-align: center;
+    margin-right: 20px;
+    top: 25px;
+    float: right;
+}

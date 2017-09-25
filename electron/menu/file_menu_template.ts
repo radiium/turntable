@@ -1,6 +1,5 @@
 // Import dependencies
 import { app, BrowserWindow } from 'electron';
-import { createSettingsWindow} from '../settings/settings';
 
 // Export menu items object
 export const fileMenuTemplate = {
@@ -8,7 +7,7 @@ export const fileMenuTemplate = {
         submenu: [{
             label: 'Settings',
             click: () => {
-            createSettingsWindow();
+            // createSettingsWindow();
             }
         }, {
             label: `About File`,
@@ -34,7 +33,11 @@ export const fileMenuTemplate = {
             label: 'Quit',
             accelerator: 'Command+Q',
             click: () => {
-            app.quit();
+                app.quit();
             }
-        }]
+        },
+        { label: 'Cut', accelerator: 'CmdOrCtrl+X', selector: 'cut:' },
+        { label: 'Copy', accelerator: 'CmdOrCtrl+C', selector: 'copy:' },
+        { label: 'Paste', accelerator: 'CmdOrCtrl+V', selector: 'paste:' }
+        ]
 };

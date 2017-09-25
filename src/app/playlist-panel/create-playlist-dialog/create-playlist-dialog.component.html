@@ -1,0 +1,20 @@
+<div>
+    <h2 md-dialog-title>Create new playlist</h2>
+    <md-dialog-content>
+        <form class="example-form">
+        <md-form-field class="example-full-width">
+        <input mdInput type="text" [(ngModel)]="name" [ngModelOptions]="{standalone: true}" placeholder="Playlist name">
+        </md-form-field>
+        </form>
+
+        <md-radio-group class="radioBtnGrp" [(ngModel)]="privacyStatus">
+            <md-radio-button class="radioBtn" [checked]="'true'" value="public">Public</md-radio-button>
+            <md-radio-button class="radioBtn" value="private">Private</md-radio-button>
+        </md-radio-group>
+    </md-dialog-content>
+
+    <md-dialog-actions>
+        <button md-button (click)="onCancel()">cancel</button>
+        <button md-button (click)="onAccept()">Ok</button>
+    </md-dialog-actions>
+</div>

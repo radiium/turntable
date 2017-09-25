@@ -1,3 +1,5 @@
+@import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
+
 @font-face {
     font-family: 'Open Sans';
     font-weight: 800;
@@ -15,19 +17,58 @@
 }
 html,
 body { 
-  height: calc(100% - 5px);
   margin: 0;
   padding: 0;
   background-color: lightgray;
-}
-
-body { 
-  padding: 5px;
-}
-
-app-videos-list {
   height: 100%;
 }
-input:focus {
-    outline: none;
+
+input:focus { outline: none; }
+
+/* Unglorious hack... */
+
+.mat-tab-body-wrapper,
+md-tab-group,
+app-playlist-panel {
+    height: 100%;
+}
+
+.fa-2x {
+    font-size: 23px !important;
+}
+
+/* Custom material css */
+.mat-tab-label {
+    height: 32px !important;
+    min-width: 100px !important;
+}
+
+.mat-grid-tile .mat-figure {
+    display: block!important;
+}
+
+.decline {
+    background-color: green !important;
+    color: white !important;
+}
+
+.accept {
+    background-color: red !important;
+    color: white !important;
+}
+
+.toolbarBtn .fa-lg {
+    vertical-align: -10% !important;
+    margin-right: 5px !important;
+}
+
+/* */
+ .radioBtnGrp {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+}
+
+.radioBtn {
+    margin: 5px;
 }

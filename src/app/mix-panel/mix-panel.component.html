@@ -1,0 +1,40 @@
+<!--div class="megaLoader"><fa [name]="'spinner'" [size]="5"></fa></div-->
+
+<div id="appContainer">
+
+    <div id="firstRow">
+        <app-video-player #left [video]="videoLeft" [sidePlayer]="'left'" (nearEnd)="triggerMixLTR($event)"
+        [volume]="volLeft" [speed]="speedLeft" (volumeChange)="volLeft" (speedChange)="speedLeft"></app-video-player>
+        
+        <div id="controlBox">
+            <!-- Crossfader -->
+            <div id="crossfader-box" class="line-border">
+                <div class="hori-ticks">
+                    <div class="item"></div>
+                    <div class="item"></div>
+                    <div class="item"></div>
+                    <div class="item"></div>
+                    <div class="item"></div>
+                    <div class="item"></div>
+                    <div class="item"></div>
+                    <div class="item"></div>
+                    <div class="item"></div>
+                    <div class="item"></div>
+                </div>
+                <input class="crossfader horizontal" type="range" value="50" min="0" max="100" step="0.1" list="tickmarks-center">
+            </div>
+        </div>
+        
+        <app-video-player #right [video]="videoRight" [sidePlayer]="'right'" (nearEnd)="triggerMixRTL($event)"
+        [volume]="volRight" [speed]="speedRight" (volumeChange)="volRight" (speedChange)="speedRight"></app-video-player>
+    </div>
+
+    <div id="appVideoList">
+        <app-videos-list></app-videos-list>
+    </div>
+
+</div>
+
+
+<button (click)=send()>Send</button>
+<button (click)=receive()>Receive</button>

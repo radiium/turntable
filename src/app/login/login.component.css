@@ -1,0 +1,14 @@
+.userBox {
+    display: flex;
+    flex-direction: row;
+}
+
+.userInfos {
+    display: flex;
+    flex-direction: row;
+}
+.userInfos img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+}

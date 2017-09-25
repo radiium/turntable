@@ -1,0 +1,14 @@
+<div class="loginBox">
+    <div *ngIf="!user" class="userBox">
+        <button (click)="login()">Login with google</button>
+    </div>
+
+    <div *ngIf="user" class="userBox">
+        <div class="userInfos">
+            <img src="{{ user.img }}" alt="">
+            <span>{{ user.name }}</span>
+        </div>
+        <button (click)="logout()">Logout</button>
+    </div>
+    
+</div>

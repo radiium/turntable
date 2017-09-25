@@ -1,0 +1,19 @@
+
+<div *ngIf="videolist" class="playlist" [dragula]="'drag-drop-list'" [dragulaModel]="videolist" [attr.data-accept-drop]="acceptDrop">
+
+    <!-- Drop hint -->
+    <div *ngIf="videolist.length < 1" id="dropInfos" class="dropInfos" [attr.data-movable]="false">
+    Drag and drop item here &#8595;
+    </div>
+    
+    <li *ngFor="let video of videolist" class="videoItem" [attr.data-id]="video.id" [attr.data-movable]="true" >
+        <app-playlist-item class="videoInfos" [video]="video"></app-playlist-item>
+
+        <div class="videoControl">
+            <!-- Delete video button -->
+            <button mdTooltip="Delete video!" [mdTooltipPosition]="'above'" *ngIf="acceptDrop" md-mini-fab color="warn" (click)="deleteVideo(video.id)" class="deleteBtn">
+                <fa [name]="'trash'" [size]="2"></fa>
+            </button>
+        </div>
+    </li>
+</div>
