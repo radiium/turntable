@@ -37,105 +37,106 @@ export class PlaylistService {
     setSearchResultPlaylist(pl) { this.searchResultPlaylist.next(pl); }
 
 
-    updatePlaylist() {
-                         const playlistList = new Array<Playlist>();
-                    // Get all playlist
-                    this._youtubeService.getAllPlaylists()
-                    .subscribe((playlistsList: any) => {
 
-                        // Get playlist items for each playlist
-                        playlistsList.items.forEach(playlist => {
+    fetchYoutubePlaylist() {
+        const playlistList = new Array<Playlist>();
+        // Get all playlist
+        this._youtubeService.getAllPlaylists()
+        .subscribe((playlistsList: any) => {
 
-                            // console.log('playlist:', playlist);
+            // Get playlist items for each playlist
+            playlistsList.items.forEach(playlist => {
 
-                            // Get playlist info
-                            const title         = playlist.snippet.localized.title;
-                            const description   = playlist.snippet.localized.description;
-                            const thumbH        = playlist.snippet.thumbnails.default.height;
-                            const thumbW        = playlist.snippet.thumbnails.default.width;
-                            const thumbUrl      = playlist.snippet.thumbnails.default.url;
-                            const publishedAt   = playlist.snippet.publishedAt;
-                            const privacyStatus = playlist.status.privacyStatus;
+                // console.log('playlist:', playlist);
 
-                            const playlistId = playlist.id;
-                            const videoIdList: any = [];
+                // Get playlist info
+                const title         = playlist.snippet.localized.title;
+                const description   = playlist.snippet.localized.description;
+                const thumbH        = playlist.snippet.thumbnails.default.height;
+                const thumbW        = playlist.snippet.thumbnails.default.width;
+                const thumbUrl      = playlist.snippet.thumbnails.default.url;
+                const publishedAt   = playlist.snippet.publishedAt;
+                const privacyStatus = playlist.status.privacyStatus;
 
-                            this._youtubeService.getPlaylistItems(playlistId, '')
-                            .expand((data: any) => this._youtubeService.getPlaylistItems(playlistId, data.nextPageToken), 1)
-                            .pluck('items')
-                            .subscribe(
-                                (items: any) => {
-                                    items.forEach(item => {
-                                        videoIdList.push(item.contentDetails.videoId);
-                                    });
-                                },
-                                (error) => { console.log('', error); },
-                                () => {
-                                    // Parse list of video id and group it by 50
-                                    const aVideoId = [];
-                                    let cuttedVideoIdList = [];
-                                    const nbrLoop = parseInt((videoIdList.length / 50).toString(), 10);
-                                    if (nbrLoop > 1) {
-                                        aVideoId.push(videoIdList.slice(0, 50).join(','));
-                                        cuttedVideoIdList = videoIdList.slice(50);
+                const playlistId = playlist.id;
+                const videoIdList: any = [];
 
-                                        for (let i = 0; i < nbrLoop; i++) {
-                                            aVideoId.push(cuttedVideoIdList.slice(0, 50).join(','));
-                                            cuttedVideoIdList = cuttedVideoIdList.slice(50);
-                                        }
-                                        aVideoId.push(cuttedVideoIdList.join(','));
-                                    } else {
-                                        aVideoId.push(videoIdList.join(','));
-                                    }
+                this._youtubeService.getPlaylistItems(playlistId, '')
+                .expand((data: any) => this._youtubeService.getPlaylistItems(playlistId, data.nextPageToken), 1)
+                .pluck('items')
+                .subscribe(
+                    (items: any) => {
+                        items.forEach(item => {
+                            videoIdList.push(item.contentDetails.videoId);
+                        });
+                    },
+                    (error) => { console.log('', error); },
+                    () => {
+                        // Parse list of video id and group it by 50
+                        const aVideoId = [];
+                        let cuttedVideoIdList = [];
+                        const nbrLoop = parseInt((videoIdList.length / 50).toString(), 10);
+                        if (nbrLoop > 1) {
+                            aVideoId.push(videoIdList.slice(0, 50).join(','));
+                            cuttedVideoIdList = videoIdList.slice(50);
 
-                                    // Chain getVideosById request
-                                    const aRequest = [];
-                                    aVideoId.forEach(ids => {
-                                        aRequest.push(this._youtubeService.getVideosById(ids));
-                                    });
+                            for (let i = 0; i < nbrLoop; i++) {
+                                aVideoId.push(cuttedVideoIdList.slice(0, 50).join(','));
+                                cuttedVideoIdList = cuttedVideoIdList.slice(50);
+                            }
+                            aVideoId.push(cuttedVideoIdList.join(','));
+                        } else {
+                            aVideoId.push(videoIdList.join(','));
+                        }
 
-                                    Observable.forkJoin(aRequest)
-                                    .subscribe((result) => {
+                        // Chain getVideosById request
+                        const aRequest = [];
+                        aVideoId.forEach(ids => {
+                            aRequest.push(this._youtubeService.getVideosById(ids));
+                        });
 
-                                        const videolist = [];
+                        Observable.forkJoin(aRequest)
+                        .subscribe((result) => {
 
-                                        result.forEach((el: any) => {
-                                            el.items.forEach(video => {
+                            const videolist = [];
 
-                                                console.log(video);
+                            result.forEach((el: any) => {
+                                el.items.forEach(video => {
 
-                                                const vid = new Video(
-                                                    video.id,
-                                                    video.snippet.localized.title,
-                                                    video.snippet.localized.description,
-                                                    video.snippet.thumbnails.default.url,
-                                                    moment.duration(video.contentDetails.duration).asMilliseconds()
-                                                );
-                                                videolist.push(vid);
-                                            });
-                                        });
+                                    console.log(video);
 
-                                        const pl = new Playlist(
-                                            playlistId,
-                                            title,
-                                            description,
-                                            thumbH,
-                                            thumbW,
-                                            thumbUrl,
-                                            publishedAt,
-                                            privacyStatus,
-                                            videolist,
-                                            false
-                                        );
+                                    const vid = new Video(
+                                        video.id,
+                                        video.snippet.localized.title,
+                                        video.snippet.localized.description,
+                                        video.snippet.thumbnails.default.url,
+                                        moment.duration(video.contentDetails.duration).asMilliseconds()
+                                    );
+                                    videolist.push(vid);
+                                });
+                            });
 
-                                        playlistList.push(pl);
-
-                                    });
-                                }
+                            const pl = new Playlist(
+                                playlistId,
+                                title,
+                                description,
+                                thumbUrl,
+                                thumbH,
+                                thumbW,
+                                publishedAt,
+                                privacyStatus,
+                                videolist,
+                                false
                             );
 
+                            playlistList.push(pl);
+
                         });
-                    });
-                    this.setPlayListsList(playlistList);
+                    }
+                );
+
+            });
+        });
+        this.setPlayListsList(playlistList);
     }
 }

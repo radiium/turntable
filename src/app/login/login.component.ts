@@ -40,7 +40,7 @@ export class LoginComponent implements OnInit {
                 this.user = user;
 
                 if (user !== null) {
-                    this._playlistService.updatePlaylist();
+                    this._playlistService.fetchYoutubePlaylist();
                 }
         });
     }

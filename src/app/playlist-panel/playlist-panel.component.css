@@ -4,8 +4,6 @@ md-grid-tile {
 md-grid-list {
     margin: 15px;
 }
-.plListContainer {
-}
 .doublePlaylistContainer {
     width: 100%;
     height: calc(100% - 75px);
@@ -108,6 +106,18 @@ md-grid-list {
     top: 20px;
     left: calc(1vw + 20%);
     right: calc(1vw + 20%);
+}
+.thumbBg {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    color: white;
+    opacity: 0.4;
+    z-index: 5;
+    text-align: center;
+}
+.thumbBg img {
+    height: 100%;
 }
 
 /* Content text */

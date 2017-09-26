@@ -11,6 +11,10 @@
     <span>
         <input id="inputFilter" mdInput [formControl]="searchPlaylist" [mdAutocomplete]="auto"
             class="inputSearchPlaylist" type="text"  placeholder="Search playlist">
+
+        <button *ngIf="searchPlaylist.value && searchPlaylist.value.length > 0"
+            (click)="searchPlaylist.setValue('')" id="clearInputFilter" md-mini-fab>X</button>
+
         <md-autocomplete #auto="mdAutocomplete" class="autocompleteBox">
             <md-option *ngFor="let pl of playlistsList" [value]="pl.title">
             {{ pl.title }}
@@ -68,7 +72,7 @@
 
                 <div class="plContent">
                     <div *ngIf="pl.thumbUrl === ''" class="iconBg"><fa [name]="'music'" [size]="5"></fa></div>
-                    <div *ngIf="pl.thumbUrl !== ''" class="iconBg">
+                    <div *ngIf="pl.thumbUrl !== ''" class="thumbBg">
                         <img src="{{ pl.thumbUrl }}" alt="">
                     </div>
 

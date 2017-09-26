@@ -35,6 +35,9 @@ export class PlaylistPanelComponent implements OnInit {
             this._playlistService.playListsList$.subscribe((pl: any) => {
                 this.playlistsList = pl;
 
+                console.log('playListsList');
+                console.log(this.playlistsList.length);
+
                 if (this.playlistsList.length > 1) {
                     this.searchPlaylist.enable();
                     this.searchPlaylist.setValue('');
@@ -134,7 +137,7 @@ export class PlaylistPanelComponent implements OnInit {
     }
 
     reloadPlaylist() {
-        this._playlistService.updatePlaylist();
+        this._playlistService.fetchYoutubePlaylist();
     }
 
 }
