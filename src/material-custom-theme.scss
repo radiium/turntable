@@ -8,7 +8,10 @@
 
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker hue.
-$custom-app-primary: mat-palette($mat-green);
+// $custom-app-primary: mat-palette($mat-green);
+// $custom-app-accent:  mat-palette($mat-blue, A200, A100, A400);
+
+$custom-app-primary: mat-palette($mat-grey);
 $custom-app-accent:  mat-palette($mat-blue, A200, A100, A400);
 
 // The warn palette is optional (defaults to red).
@@ -21,3 +24,14 @@ $custom-app-theme: mat-light-theme($custom-app-primary, $custom-app-accent, $cus
 // Alternatively, you can import and @include the theme mixins for each component
 // that you are using.
 @include angular-material-theme($custom-app-theme);
+
+/* 224370 */
+
+/*
+
+$mat-grey
+$mat-blue-grey
+$mat-light-blue
+
+
+*/

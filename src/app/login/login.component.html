@@ -1,59 +1,35 @@
 <div class="loginContainer">
 
     <div class="loginBox">
-
         <!-- Online status -->
         <div id="onlineBox">
         <div *ngIf="isOnline" class="onlineBtn green">Online</div>
         <div *ngIf="!isOnline" class="onlineBtn red">Offline</div>
         </div>
 
-        <!-- Sign buttons/infos -->
         <div id="signContainer">
-
+            <!-- User name and thumbnail -->
             <div *ngIf="user"class="userInfos">
                 <img src="{{ user.img }}" alt="">
                 <span>{{ user.name }}</span>
             </div>
 
-            <button id="menuBtn" [mdMenuTriggerFor]="menu">
+            <!-- Open menu btn -->
+            <button id="menuBtn" (click)="openCloseMenu()">
             <fa aria-label="Logout" [name]="'ellipsis-v'" [size]="1"></fa>
             </button>
-
-            <md-menu #menu="mdMenu" yPosition="below" [overlapTrigger]="false">
-                <button *ngIf="!user" md-menu-item (click)="login()">
-                <fa aria-label="Login" [name]="'sign-in'" [size]="1"></fa>
-                <span>Login</span>
-                </button>
-                <button *ngIf="user" md-menu-item (click)="logout()">
-                <fa aria-label="Logout" [name]="'sign-out'" [size]="1"></fa>
-                <span>Logout</span>
-                </button>
-            </md-menu>
-
-
-            <!-- Login
-            <div *ngIf="!user" class="signBox">
-                <button (click)="login()" class="mat-tab-label mat-ripple">
-                    <fa aria-label="Logout" [name]="'sign-in'" [size]="1"></fa>
-                    Login with google
-                </button>
-            </div>
-        
-            <!-- Logout
-            <div *ngIf="user" class="signBox">
-                <div class="userInfos">
-                    <img src="{{ user.img }}" alt="">
-                    <span>{{ user.name }}</span>
-                </div>
-
-                <button (click)="logout()" class="mat-tab-label mat-ripple">
-                    <fa aria-label="Logout" [name]="'sign-out'" [size]="1"></fa>
-                    Logout
-                </button>
-            </div>
-            -->
         </div>
-        
     </div>
+</div>
+
+<!-- Menu btn -->
+<div *ngIf="isMenuOpen" class="menu" appClickOutside (clickOutside)="openCloseMenu($event)">
+    <button *ngIf="!user" md-button (click)="login()">
+    <fa aria-label="Login" [name]="'sign-in'" [size]="1"></fa>
+    <span>Login</span>
+    </button>
+    <button *ngIf="user" md-button (click)="logout()">
+    <fa aria-label="Logout" [name]="'sign-out'" [size]="1"></fa>
+    <span>Logout</span>
+    </button>
 </div>

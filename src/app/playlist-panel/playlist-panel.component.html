@@ -1,12 +1,13 @@
 <!-- Playlist list mode toolbar -->
 <md-toolbar *ngIf="!isEditMode">
-    <!-- Playlist list mode -->
+
+    <!-- Create playlist button -->
     <button class="toolbarBtn" md-raised-button tabindex="-1" (click)="createPlaylist()">
         <fa aria-label="Create playlist" [name]="'plus'" [size]="1"></fa>
         Create playlist
     </button>
 
-    <!-- Search/filter playlist -->
+    <!-- Search/filter playlist by word -->
     <span>
         <input id="inputFilter" mdInput [formControl]="searchPlaylist" [mdAutocomplete]="auto"
             class="inputSearchPlaylist" type="text"  placeholder="Search playlist">
@@ -17,10 +18,13 @@
         </md-autocomplete>
     </span>
     
+    <!-- Toolbar space -->
     <span class="spacerToolbar"></span>
 
+    <!-- Playlist count -->
     <span style="margin-left :16px; margin-right :16px;">{{ playlistsList.length }} Playlist<span *ngIf="playlistsList.length > 1">s</span></span>
 
+    <!-- Refresh playlist list button -->
     <button class="toolbarBtn" *ngIf="!isEditMode" md-raised-button tabindex="-1" (click)="reloadPlaylist()">
     <fa aria-label="Refresh playlist" [name]="'refresh'" [size]="1"></fa>
     Refresh
@@ -30,6 +34,13 @@
 
 <!-- Edit playlist mode toolbar -->
 <md-toolbar *ngIf="isEditMode">
+
+    <!-- Return button -->
+    <button class="toolbarBtn returnBtn"  md-raised-button tabindex="-1" (click)="return()">
+        <fa aria-label="Return" [name]="'arrow-left'" [size]="1"></fa>
+    </button>
+
+    <!-- Save playlist button -->
     <button class="toolbarBtn"  md-raised-button tabindex="-1" (click)="saveOnEditPlaylist()">
         <fa aria-label="Save playlist" [name]="'floppy-o'" [size]="1"></fa>
         Save playlist
@@ -42,10 +53,11 @@
 <div *ngIf="!isEditMode" class="plListContainer" >
     <md-grid-list  *ngIf="playlistsList" cols="5" rowHeight="160px" gutterSize="10px" >
         
-        <!-- Playlist -->
+        <!-- Playlist list items -->
         <md-grid-tile *ngFor="let pl of playlistsList; let i = index">
             <div class="plBox">
 
+                <!-- Privacy status playlist icons -->
                 <div *ngIf="pl.privacyStatus === 'private'" mdTooltip="Playlist private" class="plStatus private">
                     <fa aria-label="Playlist private" [name]="'lock'" [size]="1"></fa>
                 </div>
@@ -55,7 +67,11 @@
                 </div>
 
                 <div class="plContent">
-                    <div class="iconBg"><fa [name]="'music'" [size]="5"></fa></div>
+                    <div *ngIf="pl.thumbUrl === ''" class="iconBg"><fa [name]="'music'" [size]="5"></fa></div>
+                    <div *ngIf="pl.thumbUrl !== ''" class="iconBg">
+                        <img src="{{ pl.thumbUrl }}" alt="">
+                    </div>
+
                     <div class="plContentInfos">
                         <p class="plName">{{ pl.title }}</p>
                         <p class="plDesc">{{ pl.description }}</p>

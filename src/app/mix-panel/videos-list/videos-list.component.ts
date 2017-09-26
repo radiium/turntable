@@ -6,7 +6,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 
 import { Video } from '../../_shared/models/video.model';
-import { VideoStateService } from '../../_core/_services/video-state.service';
+import { VideoStateService } from '../../_core/services/video-state.service';
 
 
 
@@ -179,7 +179,7 @@ import { Component, OnDestroy } from '@angular/core';
 import { DragulaService } from 'ng2-dragula/ng2-dragula';
 
 import { Video } from '../_shared/models/video.model';
-import { VideoStateService } from '../_shared/_services/video-state.service';
+import { VideoStateService } from '../_shared/services/video-state.service';
 
 @Component({
   selector: 'app-videos-list',

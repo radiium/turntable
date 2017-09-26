@@ -2,7 +2,7 @@ import { Component, Input, Output, EventEmitter, ViewChild } from '@angular/core
 import { Observable, Subscription, Subject } from 'rxjs/Rx';
 
 import { Video } from '../_shared/models/video.model';
-import { VideoStateService } from '../_core/_services/video-state.service';
+import { VideoStateService } from '../_core/services/video-state.service';
 
 import { ElectronService } from 'ngx-electron';
 
@@ -37,16 +37,16 @@ export class MixPanelComponent {
 
 
     constructor(
-        private VideoStateService: VideoStateService,
+        private videoStateService: VideoStateService,
         private _electronService: ElectronService) {
 
-        VideoStateService.playerLeft$.subscribe((vl) => {
+        videoStateService.playerLeft$.subscribe((vl) => {
             this.videoLeft = vl;
         });
-        VideoStateService.playerRight$.subscribe((vr) => {
+        videoStateService.playerRight$.subscribe((vr) => {
             this.videoRight = vr;
         });
-        VideoStateService.currentPlayList$.subscribe((pl) => {
+        videoStateService.currentPlayList$.subscribe((pl) => {
             this.playList = pl;
         });
     }
@@ -57,7 +57,7 @@ export class MixPanelComponent {
         console.log('Trigger mix left to right');
         this.currVolLeft = event;
         this.playerRight.playPauseVideo();
-        this.VideoStateService.setActivePlayer('right');
+        this.videoStateService.setActivePlayer('right');
         this.initTimerLTR(event);
 
     }
@@ -84,7 +84,7 @@ export class MixPanelComponent {
         console.log('Trigger mix right to left');
         this.currVolRight = event;
         this.playerLeft.playPauseVideo();
-        this.VideoStateService.setActivePlayer('left');
+        this.videoStateService.setActivePlayer('left');
         this.initTimerRTL(event);
     }
     // Init Timer

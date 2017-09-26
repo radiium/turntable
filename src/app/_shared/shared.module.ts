@@ -17,7 +17,7 @@ import {
   MdCardModule,
   MdCheckboxModule,
   MdChipsModule,
-  MdCoreModule,
+  // MdCoreModule,
   MdDatepickerModule,
   MdDialogModule,
   MdExpansionModule,
@@ -26,12 +26,12 @@ import {
   MdInputModule,
   MdListModule,
   MdMenuModule,
-  MdNativeDateModule,
+  // MdNativeDateModule,
   MdPaginatorModule,
   MdProgressBarModule,
   MdProgressSpinnerModule,
   MdRadioModule,
-  MdRippleModule,
+  // MdRippleModule,
   MdSelectModule,
   MdSidenavModule,
   MdSliderModule,
@@ -45,10 +45,11 @@ import {
 } from '@angular/material';
 
 // Customs
-import { DurationPipe } from './_pipes/duration.pipe';
+import { DurationPipe } from './pipes/duration.pipe';
 import { CONSTANT } from './constant';
+import { ClickOutsideDirective } from './directives/click-outside.directive';
 
-import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
+import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
 import { CreatePlaylistDialogComponent } from '../playlist-panel/create-playlist-dialog/create-playlist-dialog.component';
 
 @NgModule({
@@ -60,6 +61,7 @@ import { CreatePlaylistDialogComponent } from '../playlist-panel/create-playlist
         DurationPipe,
         ConfirmDialogComponent,
         CreatePlaylistDialogComponent,
+        ClickOutsideDirective
     ],
     imports: [
         CommonModule,
@@ -79,7 +81,7 @@ import { CreatePlaylistDialogComponent } from '../playlist-panel/create-playlist
         MdCardModule,
         MdCheckboxModule,
         MdChipsModule,
-        MdCoreModule,
+        // MdCoreModule,
         MdDatepickerModule,
         MdDialogModule,
         MdExpansionModule,
@@ -88,12 +90,12 @@ import { CreatePlaylistDialogComponent } from '../playlist-panel/create-playlist
         MdInputModule,
         MdListModule,
         MdMenuModule,
-        MdNativeDateModule,
+        // MdNativeDateModule,
         MdPaginatorModule,
         MdProgressBarModule,
         MdProgressSpinnerModule,
         MdRadioModule,
-        MdRippleModule,
+        // MdRippleModule,
         MdSelectModule,
         MdSidenavModule,
         MdSliderModule,
@@ -125,7 +127,7 @@ import { CreatePlaylistDialogComponent } from '../playlist-panel/create-playlist
         MdCardModule,
         MdCheckboxModule,
         MdChipsModule,
-        MdCoreModule,
+        // MdCoreModule,
         MdDatepickerModule,
         MdDialogModule,
         MdExpansionModule,
@@ -134,12 +136,12 @@ import { CreatePlaylistDialogComponent } from '../playlist-panel/create-playlist
         MdInputModule,
         MdListModule,
         MdMenuModule,
-        MdNativeDateModule,
+        // MdNativeDateModule,
         MdPaginatorModule,
         MdProgressBarModule,
         MdProgressSpinnerModule,
         MdRadioModule,
-        MdRippleModule,
+        // MdRippleModule,
         MdSelectModule,
         MdSidenavModule,
         MdSliderModule,
@@ -149,7 +151,8 @@ import { CreatePlaylistDialogComponent } from '../playlist-panel/create-playlist
         MdTableModule,
         MdTabsModule,
         MdToolbarModule,
-        MdTooltipModule
+        MdTooltipModule,
+        ClickOutsideDirective
     ],
     providers: [],
 })

@@ -4,14 +4,14 @@ import { Observable } from 'rxjs/Rx';
 import 'rxjs/Rx';
 import * as moment from 'moment';
 
-import { Video } from '../models/video.model';
-import { VideoStateService } from '../../_core/_services/video-state.service';
-import { YoutubeService } from '../../_core/_services/youtube.service';
+import { Video } from '../../models/video.model';
+import { VideoStateService } from '../../../_core/services/video-state.service';
+import { YoutubeService } from '../../../_core/services/youtube.service';
 
-import { PlaylistService } from '../../_core/_services/playlist.service';
+import { PlaylistService } from '../../../_core/services/playlist.service';
 
-import { Suggests } from '../models/suggests.model';
-import { SuggestService } from '../../_core/_services/suggest.service';
+import { Suggests } from '../../models/suggests.model';
+import { SuggestService } from '../../../_core/services/suggest.service';
 
 @Component({
     selector: 'app-search-bar',
@@ -27,11 +27,11 @@ export class SearchBarComponent implements OnInit {
     arrowkeyLocation = 0;
 
     constructor(
-        public suggestService: SuggestService,
-        public playlistService: PlaylistService,
-        public _youtubeService: YoutubeService) {
+        private _suggestService: SuggestService,
+        private _playlistService: PlaylistService,
+        private _youtubeService: YoutubeService) {
             // Bind suggests results
-            suggestService.suggestsResult$.subscribe((suggestsResult) => {
+            this._suggestService.suggestsResult$.subscribe((suggestsResult) => {
                 this.query = suggestsResult.query;
                 this.suggestsResult = suggestsResult.suggests;
             });
@@ -42,7 +42,7 @@ export class SearchBarComponent implements OnInit {
         .debounceTime(200)
         .switchMap((query) => {
             if (query && query !== this.selectedSugest) {
-                return this.suggestService.searchSuggestsVideo(query);
+                return this._suggestService.searchSuggestsVideo(query);
             } else {
                 return Observable.empty();
             }
@@ -57,15 +57,15 @@ export class SearchBarComponent implements OnInit {
 
             // Clear playlist if no value
             if (this.search.value === '') {
-                this.suggestService.setSuggestsResult({});
+                this._suggestService.setSuggestsResult({});
             } else {
-                this.suggestService.setSuggestsResult(suggests);
+                this._suggestService.setSuggestsResult(suggests);
             }
         });
     }
 
     selectSuggestion(suggest: String) {
-        this.suggestService.setSuggestsResult({});
+        this._suggestService.setSuggestsResult({});
         this.selectedSugest = suggest;
         this.search.setValue(suggest);
         this.searchSuggestion(suggest);
@@ -78,9 +78,9 @@ export class SearchBarComponent implements OnInit {
 
             // Clear playlist if no value
             if (this.search.value === '') {
-                this.playlistService.setSearchResultPlaylist([]);
+                this._playlistService.setSearchResultPlaylist([]);
             } else {
-                this.playlistService.setSearchResultPlaylist(results.items.map(item => {
+                this._playlistService.setSearchResultPlaylist(results.items.map(item => {
                     return new Video(
                         item.id,
                         item.snippet.title,

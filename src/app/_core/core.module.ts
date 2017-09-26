@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 
-import { AuthService } from './_services/auth.service';
-import { YoutubeService } from './_services/youtube.service';
-import { VideoStateService } from './_services/video-state.service';
-import { PlaylistService } from './_services/playlist.service';
-import { SuggestService } from './_services/suggest.service';
+import { AuthService } from './services/auth.service';
+import { YoutubeService } from './services/youtube.service';
+import { VideoStateService } from './services/video-state.service';
+import { PlaylistService } from './services/playlist.service';
+import { SuggestService } from './services/suggest.service';
 
-import { OnlineService } from './_services/online.service';
-import { HttpService } from './_services/http.service';
+import { OnlineService } from './services/online.service';
+import { HttpService } from './services/http.service';
 
 @NgModule({
     imports: [

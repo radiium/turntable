@@ -24,7 +24,8 @@ export class Playlist {
         public thumbW: number,
         public publishedAt: string,
         public privacyStatus: string,
-        public videolist: Array<Video>) {
+        public videolist: Array<Video>,
+        public isLocal: boolean) {
             this.id            = id;
             this.title         = title;
             this.description   = description;
@@ -34,5 +35,6 @@ export class Playlist {
             this.publishedAt   = publishedAt;
             this.privacyStatus = privacyStatus;
             this.videolist     = videolist;
+            this.isLocal       = isLocal;
     }
 }

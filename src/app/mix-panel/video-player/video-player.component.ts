@@ -5,7 +5,7 @@ import { Observable, Subscription, Subject } from 'rxjs/Rx';
 import * as moment from 'moment';
 
 import { Video } from '../../_shared/models/video.model';
-import { VideoStateService } from '../../_core/_services/video-state.service';
+import { VideoStateService } from '../../_core/services/video-state.service';
 
 @Component({
     selector: 'app-video-player',
@@ -36,7 +36,6 @@ export class VideoPlayerComponent implements OnChanges, OnDestroy {
     // Video(s)
     @Input() video: Video;          // Current played video
     private playList: Video[];      // Playlist of video
-    private vss: VideoStateService;      // Video state service instance
 
     // Timer
     private timerControl$: Subject<number>;
@@ -48,11 +47,9 @@ export class VideoPlayerComponent implements OnChanges, OnDestroy {
 
 
 
-    constructor(
-        VideoStateService: VideoStateService) {
+    constructor(private _videoStateService: VideoStateService) {
 
-        this.vss = VideoStateService;
-        this.vss.currentPlayList$.subscribe((pl) => {
+        this._videoStateService.currentPlayList$.subscribe((pl) => {
             this.playList = pl;
         });
 
@@ -102,13 +99,15 @@ export class VideoPlayerComponent implements OnChanges, OnDestroy {
             // - previous video is on playing
             // - is the first played video
             // - no active player found
-            if (this.ytEvent === 1 || this.vss.isFirstPlay || this.vss.getActivePlayer() === null) {
+            if (this.ytEvent === 1
+            ||  this._videoStateService.isFirstPlay
+            ||  this._videoStateService.getActivePlayer() === null) {
                 this.initControl();
                 this.playPauseVideo();
-                this.vss.setActivePlayer(this.sidePlayer);
+                this._videoStateService.setActivePlayer(this.sidePlayer);
             }
             // Set first played video to false
-            this.vss.isFirstPlay = false;
+            this._videoStateService.isFirstPlay = false;
         }
     }
 
@@ -138,14 +137,14 @@ export class VideoPlayerComponent implements OnChanges, OnDestroy {
             if (this.playList && this.playList.length > 0) {
 
                 if (this.sidePlayer === 'left') {
-                    this.vss.setPlayerLeft(this.playList[0]);
+                    this._videoStateService.setPlayerLeft(this.playList[0]);
 
                 } else {
-                    this.vss.setPlayerRight(this.playList[0]);
+                    this._videoStateService.setPlayerRight(this.playList[0]);
                 }
 
                 this.playList.shift();
-                this.vss.setCurrentPlayList(this.playList);
+                this._videoStateService.setCurrentPlayList(this.playList);
             }
         } else {
             this.isPlaying = false;
@@ -163,13 +162,13 @@ export class VideoPlayerComponent implements OnChanges, OnDestroy {
         if (this.player.getPlayerState() === 1) {
             this.player.pauseVideo();
             this.isPlaying = false;
-            this.vss.setActivePlayer(null);
+            this._videoStateService.setActivePlayer(null);
             this.stopTimer();
 
         } else {
             this.player.playVideo();
             this.isPlaying = true;
-            this.vss.setActivePlayer(this.sidePlayer);
+            this._videoStateService.setActivePlayer(this.sidePlayer);
 
             this.stopTimer();
             this.timerControl$.next(this.getRemainingTime());

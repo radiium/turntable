@@ -18,9 +18,9 @@ import { VideoPlayerComponent } from './mix-panel/video-player/video-player.comp
 import { RangeSliderComponent } from './mix-panel/range-slider/range-slider.component';
 
 // Shared components
-import { PlaylistComponent } from './_shared/playlist/playlist.component';
-import { PlaylistItemComponent } from './_shared/playlist-item/playlist-item.component';
-import { SearchBarComponent } from './_shared/search-bar/search-bar.component';
+import { PlaylistComponent } from './_shared/components/playlist/playlist.component';
+import { PlaylistItemComponent } from './_shared/components/playlist-item/playlist-item.component';
+import { SearchBarComponent } from './_shared/components/search-bar/search-bar.component';
 
 
 // Playlist panel

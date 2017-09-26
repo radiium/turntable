@@ -124,7 +124,8 @@ export class PlaylistService {
                                             thumbUrl,
                                             publishedAt,
                                             privacyStatus,
-                                            videolist
+                                            videolist,
+                                            false
                                         );
 
                                         playlistList.push(pl);

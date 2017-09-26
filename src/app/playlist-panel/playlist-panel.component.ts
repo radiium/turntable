@@ -8,9 +8,9 @@ import 'rxjs/add/operator/map';
 
 import { Video } from '../_shared/models/video.model';
 import { Playlist } from '../_shared/models/playlist.model';
-import { PlaylistService } from '../_core/_services/playlist.service';
+import { PlaylistService } from '../_core/services/playlist.service';
 import { CreatePlaylistDialogComponent } from './create-playlist-dialog/create-playlist-dialog.component';
-import { ConfirmDialogComponent } from '../_shared/confirm-dialog/confirm-dialog.component';
+import { ConfirmDialogComponent } from '../_shared/components/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-playlist-panel',
@@ -28,11 +28,6 @@ export class PlaylistPanelComponent implements OnInit {
     filteredStates: Observable<any[]>;
 
     isEditMode: Boolean = false;
-
-
-// data-enpassid="__1" type="text">
-// type="text">
-
 
     constructor(
         public dialog: MdDialog,
@@ -81,7 +76,8 @@ export class PlaylistPanelComponent implements OnInit {
                     null,
                     '',
                     privacyStatus,
-                    videoList
+                    videoList,
+                    true
                 );
 
                 this.playlistsList.push(pl);
@@ -105,6 +101,10 @@ export class PlaylistPanelComponent implements OnInit {
         this._playlistService.setPlayListsList(pll);
         this.onEditPlaylist = null;
         this.searchResultPlaylist = null;
+        this.isEditMode = false;
+    }
+
+    return() {
         this.isEditMode = false;
     }
 
