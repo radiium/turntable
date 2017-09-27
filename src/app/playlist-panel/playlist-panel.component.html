@@ -9,11 +9,11 @@
 
     <!-- Search/filter playlist by word -->
     <span>
-        <input id="inputFilter" mdInput [formControl]="searchPlaylist" [mdAutocomplete]="auto"
+        <input id="inputFilter" mdInput [formControl]="filterPlaylist" [mdAutocomplete]="auto"
             class="inputSearchPlaylist" type="text"  placeholder="Search playlist">
 
-        <button *ngIf="searchPlaylist.value && searchPlaylist.value.length > 0"
-            (click)="searchPlaylist.setValue('')" id="clearInputFilter" md-mini-fab>X</button>
+        <button *ngIf="filterPlaylist.value && filterPlaylist.value.length > 0"
+            (click)="filterPlaylist.setValue('')" id="clearInputFilter" md-mini-fab>X</button>
 
         <md-autocomplete #auto="mdAutocomplete" class="autocompleteBox">
             <md-option *ngFor="let pl of playlistsList" [value]="pl.title">
@@ -58,7 +58,7 @@
     <md-grid-list  *ngIf="playlistsList" cols="5" rowHeight="160px" gutterSize="10px" >
         
         <!-- Playlist list items -->
-        <md-grid-tile *ngFor="let pl of playlistsList; let i = index">
+        <md-grid-tile *ngFor="let pl of playlistsList | filterPlaylist:filterPlaylist.value ; let i = index">
             <div class="plBox">
 
                 <!-- Privacy status playlist icons -->

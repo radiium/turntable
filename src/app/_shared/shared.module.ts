@@ -46,6 +46,7 @@ import {
 
 // Customs
 import { DurationPipe } from './pipes/duration.pipe';
+import { FilterPlaylistPipe } from './pipes/filter-playlist.pipe';
 import { CONSTANT } from './constant';
 import { ClickOutsideDirective } from './directives/click-outside.directive';
 
@@ -59,6 +60,7 @@ import { CreatePlaylistDialogComponent } from '../playlist-panel/create-playlist
     ],
     declarations: [
         DurationPipe,
+        FilterPlaylistPipe,
         ConfirmDialogComponent,
         CreatePlaylistDialogComponent,
         ClickOutsideDirective
@@ -120,6 +122,7 @@ import { CreatePlaylistDialogComponent } from '../playlist-panel/create-playlist
         NgxElectronModule,
 
         DurationPipe,
+        FilterPlaylistPipe,
 
         MdAutocompleteModule,
         MdButtonModule,

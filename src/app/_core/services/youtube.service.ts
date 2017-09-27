@@ -26,7 +26,8 @@ export class YoutubeService {
             '&maxResults=50' +
             '&part=snippet,status';
 
-        return this.httpService.request(allPlaylistsUrl, {method: RequestMethod.Get, headers: new Headers()})
+        return this.httpService
+        .request(allPlaylistsUrl, {method: RequestMethod.Get, headers: new Headers()})
         .map((res: Response) => res.json());
     }
 
@@ -49,7 +50,8 @@ export class YoutubeService {
             playlistItemsUrl += '&pageToken=' + pageToken;
         }
 
-        return this.httpService.request(playlistItemsUrl, {method: RequestMethod.Get, headers: new Headers()})
+        return this.httpService
+        .request(playlistItemsUrl, {method: RequestMethod.Get, headers: new Headers()})
         .map((res) => res.json());
     }
 
@@ -100,7 +102,8 @@ export class YoutubeService {
             '&id=' + videosId +
             '&key=' + CONSTANT.KEY_API;
 
-        return this._http.request(videosByIdUrl, {method: RequestMethod.Get, headers: new Headers()})
+        return this._http
+        .request(videosByIdUrl, {method: RequestMethod.Get, headers: new Headers()})
         .map((res) => res.json());
     }
 }

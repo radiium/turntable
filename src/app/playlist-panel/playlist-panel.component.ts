@@ -24,7 +24,7 @@ export class PlaylistPanelComponent implements OnInit {
     onEditPlaylist: Playlist = null;
     searchResultPlaylist: Playlist = null;
 
-    searchPlaylist: FormControl;
+    filterPlaylist: FormControl;
     filteredStates: Observable<any[]>;
 
     isEditMode: Boolean = false;
@@ -32,29 +32,38 @@ export class PlaylistPanelComponent implements OnInit {
     constructor(
         public dialog: MdDialog,
         private _playlistService: PlaylistService) {
-            this._playlistService.playListsList$.subscribe((pl: any) => {
+
+            // Get playlist list
+            this._playlistService.playListsList$
+            .subscribe((pl: any) => {
+                console.log('subscribe');
                 this.playlistsList = pl;
-
-                console.log('playListsList');
-                console.log(this.playlistsList.length);
-
-                if (this.playlistsList.length > 1) {
-                    this.searchPlaylist.enable();
-                    this.searchPlaylist.setValue('');
-                } else if (this.playlistsList.length < 2) {
-                    this.searchPlaylist.disable();
-                }
+                this.updateFilterInput();
             });
-            this._playlistService.searchResultPlaylist$.subscribe((pl: any) => {
+
+            // Get search result playlist
+            this._playlistService.searchResultPlaylist$
+            .subscribe((pl: any) => {
                 this.searchResultPlaylist = pl;
             });
 
-            this.searchPlaylist = new FormControl();
-            this.searchPlaylist.disable();
-            this.filteredStates = this.searchPlaylist.valueChanges
-                .startWith(null)
-                .map(title => title ? this.filterPlaylists(title) : this.playlistsList.slice());
+            this.filterPlaylist = new FormControl();
+            this.filterPlaylist.disable();
+            this.filteredStates = this.filterPlaylist.valueChanges
+            .startWith(null)
+            .map(title => title ? this.filterPlaylists(title) : this.playlistsList.slice());
+    }
+
+    updateFilterInput() {
+        console.log('updateInput');
+        if (this.playlistsList.length > 1) {
+            this.filterPlaylist.enable();
+            this.filterPlaylist.setValue('');
+        } else if (this.playlistsList.length < 2) {
+            this.filterPlaylist.disable();
         }
+        return false;
+    }
 
     ngOnInit() {
     }
@@ -64,7 +73,6 @@ export class PlaylistPanelComponent implements OnInit {
         const dialogRef = this.dialog.open(CreatePlaylistDialogComponent, {});
         dialogRef.afterClosed().subscribe(result => {
             if (result) {
-                console.log(result);
                 const id = UUID.UUID();
                 const title = result.name;
                 const privacyStatus = result.privacyStatus;
@@ -79,8 +87,8 @@ export class PlaylistPanelComponent implements OnInit {
                     null,
                     '',
                     privacyStatus,
-                    videoList,
-                    true
+                    true,
+                    videoList
                 );
 
                 this.playlistsList.push(pl);
@@ -119,7 +127,7 @@ export class PlaylistPanelComponent implements OnInit {
     // Delete the selected playlist
     deletePlaylist(playlist) {
         const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-            data: { title: 'Delete playlist \'' + playlist.name + '\'?' }
+            data: { title: 'Delete playlist \'' + playlist.title + '\'?' }
         });
         dialogRef.afterClosed().subscribe(isDelete => {
             if (isDelete && playlist) {

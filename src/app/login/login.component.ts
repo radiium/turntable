@@ -38,13 +38,12 @@ export class LoginComponent implements OnInit {
             this._authService.user$
             .subscribe((user) => {
                 this.user = user;
-
+                console.log('user', user);
                 if (user !== null) {
                     this._playlistService.fetchYoutubePlaylist();
                 }
         });
     }
-
 
     ngOnInit() {
     }
