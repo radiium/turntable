@@ -1,57 +1,34 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 // External modules
 import { DragulaModule } from 'ng2-dragula';
-import { YoutubePlayerModule } from 'ng2-youtube-player';
 import { Angular2FontawesomeModule } from 'angular2-fontawesome/angular2-fontawesome';
 import { NgxElectronModule } from 'ngx-electron';
+import { CustomMaterialModule } from './modules/material/custom-material.module';
 
-import {
-  MdAutocompleteModule,
-  MdButtonModule,
-  MdButtonToggleModule,
-  MdCardModule,
-  MdCheckboxModule,
-  MdChipsModule,
-  // MdCoreModule,
-  MdDatepickerModule,
-  MdDialogModule,
-  MdExpansionModule,
-  MdGridListModule,
-  MdIconModule,
-  MdInputModule,
-  MdListModule,
-  MdMenuModule,
-  // MdNativeDateModule,
-  MdPaginatorModule,
-  MdProgressBarModule,
-  MdProgressSpinnerModule,
-  MdRadioModule,
-  // MdRippleModule,
-  MdSelectModule,
-  MdSidenavModule,
-  MdSliderModule,
-  MdSlideToggleModule,
-  MdSnackBarModule,
-  MdSortModule,
-  MdTableModule,
-  MdTabsModule,
-  MdToolbarModule,
-  MdTooltipModule,
-} from '@angular/material';
-
-// Customs
-import { DurationPipe } from './pipes/duration.pipe';
-import { FilterPlaylistPipe } from './pipes/filter-playlist.pipe';
-import { CONSTANT } from './constant';
-import { ClickOutsideDirective } from './directives/click-outside.directive';
-
+// Shared components
 import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
 import { CreatePlaylistDialogComponent } from '../playlist-panel/create-playlist-dialog/create-playlist-dialog.component';
+import { PlaylistComponent } from './components/playlist/playlist.component';
+import { PlaylistItemComponent } from './components/playlist-item/playlist-item.component';
+import { SearchBarComponent } from './components/search-bar/search-bar.component';
+import { VideosListComponent } from './components/videos-list/videos-list.component';
+import { VideosListItemComponent } from './components/videos-list-item/videos-list-item.component';
+import { RangeSliderComponent } from './components/range-slider/range-slider.component';
+import { VideoPlayerComponent } from './components/video-player/video-player.component';
+
+// Directives
+import { ClickOutsideDirective } from './directives/click-outside.directive';
+// pipes
+import { DurationPipe } from './pipes/duration.pipe';
+import { FilterPlaylistPipe } from './pipes/filter-playlist.pipe';
+// Ng2 you tube player
+import { YoutubePlayerModule } from './modules/ng2-youtube-player/ng2-youtube-player';
 
 @NgModule({
     entryComponents: [
@@ -59,103 +36,52 @@ import { CreatePlaylistDialogComponent } from '../playlist-panel/create-playlist
         CreatePlaylistDialogComponent
     ],
     declarations: [
+        ClickOutsideDirective,
         DurationPipe,
         FilterPlaylistPipe,
         ConfirmDialogComponent,
         CreatePlaylistDialogComponent,
-        ClickOutsideDirective
+        PlaylistComponent,
+        PlaylistItemComponent,
+        SearchBarComponent,
+        VideosListComponent,
+        VideosListItemComponent,
+        RangeSliderComponent,
+        VideoPlayerComponent
     ],
     imports: [
         CommonModule,
         BrowserModule,
-        BrowserAnimationsModule,
+        NoopAnimationsModule, // BrowserAnimationsModule,
         FormsModule,
         ReactiveFormsModule,
-
         DragulaModule,
-        YoutubePlayerModule,
         Angular2FontawesomeModule,
         NgxElectronModule,
-
-        MdAutocompleteModule,
-        MdButtonModule,
-        MdButtonToggleModule,
-        MdCardModule,
-        MdCheckboxModule,
-        MdChipsModule,
-        // MdCoreModule,
-        MdDatepickerModule,
-        MdDialogModule,
-        MdExpansionModule,
-        MdGridListModule,
-        MdIconModule,
-        MdInputModule,
-        MdListModule,
-        MdMenuModule,
-        // MdNativeDateModule,
-        MdPaginatorModule,
-        MdProgressBarModule,
-        MdProgressSpinnerModule,
-        MdRadioModule,
-        // MdRippleModule,
-        MdSelectModule,
-        MdSidenavModule,
-        MdSliderModule,
-        MdSlideToggleModule,
-        MdSnackBarModule,
-        MdSortModule,
-        MdTableModule,
-        MdTabsModule,
-        MdToolbarModule,
-        MdTooltipModule
+        YoutubePlayerModule,
+        CustomMaterialModule
     ],
     exports: [
         CommonModule,
         BrowserModule,
-        BrowserAnimationsModule,
+        NoopAnimationsModule, // BrowserAnimationsModule,
         FormsModule,
         ReactiveFormsModule,
-
         DragulaModule,
-        YoutubePlayerModule,
         Angular2FontawesomeModule,
         NgxElectronModule,
-
+        YoutubePlayerModule,
+        ClickOutsideDirective,
         DurationPipe,
         FilterPlaylistPipe,
-
-        MdAutocompleteModule,
-        MdButtonModule,
-        MdButtonToggleModule,
-        MdCardModule,
-        MdCheckboxModule,
-        MdChipsModule,
-        // MdCoreModule,
-        MdDatepickerModule,
-        MdDialogModule,
-        MdExpansionModule,
-        MdGridListModule,
-        MdIconModule,
-        MdInputModule,
-        MdListModule,
-        MdMenuModule,
-        // MdNativeDateModule,
-        MdPaginatorModule,
-        MdProgressBarModule,
-        MdProgressSpinnerModule,
-        MdRadioModule,
-        // MdRippleModule,
-        MdSelectModule,
-        MdSidenavModule,
-        MdSliderModule,
-        MdSlideToggleModule,
-        MdSnackBarModule,
-        MdSortModule,
-        MdTableModule,
-        MdTabsModule,
-        MdToolbarModule,
-        MdTooltipModule,
-        ClickOutsideDirective
+        PlaylistComponent,
+        PlaylistItemComponent,
+        SearchBarComponent,
+        VideosListComponent,
+        VideosListItemComponent,
+        RangeSliderComponent,
+        VideoPlayerComponent,
+        CustomMaterialModule
     ],
     providers: [],
 })

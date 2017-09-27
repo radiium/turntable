@@ -27,6 +27,9 @@ input:focus { outline: none; }
 
 /* Unglorious hack... */
 
+md-progress-bar {
+    z-index: 99999;
+}
 .mat-tab-body-wrapper,
 md-tab-group,
 app-playlist-panel {

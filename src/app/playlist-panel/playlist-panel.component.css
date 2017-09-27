@@ -4,6 +4,14 @@ md-grid-tile {
 md-grid-list {
     margin: 15px;
 }
+.progressBarGray {
+    position: absolute;
+    background-color: rgba(0,0,0,.5);
+    height: calc(100% - 64px);
+    width: 100%;
+    z-index: 99998;
+}
+
 .doublePlaylistContainer {
     width: 100%;
     height: calc(100% - 75px);
@@ -13,6 +21,7 @@ md-grid-list {
     flex-wrap: nowrap;
     justify-content: space-between
 }
+
 
 
 .playlistContainer {

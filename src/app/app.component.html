@@ -1,16 +1,15 @@
-
+<!-- Tabs navigation-->
 <div id="appContainer">
     <app-login></app-login>
 
-    <md-tab-group dynamicHeight="false">
+    <md-tab-group [(selectedIndex)]="selectedTab" dynamicHeight="false">
+        
         <md-tab label="Playlist" disableRipple>
         <app-playlist-panel></app-playlist-panel>
         </md-tab>
 
         <md-tab label="Mix" disableRipple>
-        <!---->
         <app-mix-panel></app-mix-panel>
-        <!---->
         </md-tab>
 
         <md-tab label="Settings" disableRipple>

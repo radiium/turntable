@@ -2,7 +2,9 @@ import { Component, Input, Output, EventEmitter, ViewChild } from '@angular/core
 import { Observable, Subscription, Subject } from 'rxjs/Rx';
 
 import { Video } from '../_shared/models/video.model';
-import { VideoStateService } from '../_core/services/video-state.service';
+import { Playlist } from '../_shared/models/playlist.model';
+import { PlayerService } from '../_core/services/player.service';
+import { PlaylistService } from '../_core/services/playlist.service';
 
 import { ElectronService } from 'ngx-electron';
 
@@ -21,6 +23,8 @@ export class MixPanelComponent {
     sub: Subscription;
 
     private playList: Video[] = [];
+    onPlayPlaylist: Playlist;
+    searchResultPlaylist: Playlist;
 
     videoLeft;
     @ViewChild('left') playerLeft;
@@ -37,17 +41,22 @@ export class MixPanelComponent {
 
 
     constructor(
-        private videoStateService: VideoStateService,
+        private _playerService: PlayerService,
+        private _playlistService: PlaylistService,
         private _electronService: ElectronService) {
 
-        videoStateService.playerLeft$.subscribe((vl) => {
+        this._playerService.playerLeft$.subscribe((vl) => {
             this.videoLeft = vl;
         });
-        videoStateService.playerRight$.subscribe((vr) => {
+        this._playerService.playerRight$.subscribe((vr) => {
             this.videoRight = vr;
         });
-        videoStateService.currentPlayList$.subscribe((pl) => {
-            this.playList = pl;
+
+        this._playlistService.onPlayPlaylist$.subscribe((pl) => {
+            this.onPlayPlaylist = pl;
+        });
+        this._playlistService.searchResultPlaylist$.subscribe((pl) => {
+            this.searchResultPlaylist = pl;
         });
     }
 
@@ -57,7 +66,7 @@ export class MixPanelComponent {
         console.log('Trigger mix left to right');
         this.currVolLeft = event;
         this.playerRight.playPauseVideo();
-        this.videoStateService.setActivePlayer('right');
+        this._playerService.setActivePlayer('right');
         this.initTimerLTR(event);
 
     }
@@ -84,7 +93,7 @@ export class MixPanelComponent {
         console.log('Trigger mix right to left');
         this.currVolRight = event;
         this.playerLeft.playPauseVideo();
-        this.videoStateService.setActivePlayer('left');
+        this._playerService.setActivePlayer('left');
         this.initTimerRTL(event);
     }
     // Init Timer

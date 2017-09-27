@@ -11,6 +11,7 @@ import { Playlist } from '../_shared/models/playlist.model';
 import { PlaylistService } from '../_core/services/playlist.service';
 import { CreatePlaylistDialogComponent } from './create-playlist-dialog/create-playlist-dialog.component';
 import { ConfirmDialogComponent } from '../_shared/components/confirm-dialog/confirm-dialog.component';
+import { TabsService } from '../_core/services/tabs.service';
 
 @Component({
   selector: 'app-playlist-panel',
@@ -29,14 +30,41 @@ export class PlaylistPanelComponent implements OnInit {
 
     isEditMode: Boolean = false;
 
+    progressBarValue: any;
+    isProgressBar: Boolean;
+
+    selectedTab: any;
+
     constructor(
         public dialog: MdDialog,
-        private _playlistService: PlaylistService) {
+        private _playlistService: PlaylistService,
+        private _tabsService: TabsService) {
+
+            this.isProgressBar = false;
+
+            // Get playlist list
+            this._playlistService.progressBarValue$
+            .subscribe((pbv: any) => {
+                this.progressBarValue = pbv;
+                if (!pbv || pbv === 0 || pbv === 100) {
+                    this.isProgressBar = false;
+                } else {
+                    this.isProgressBar = true;
+                }
+                if (pbv === 99) {
+                    this._playlistService.setProgressBarValue(100);
+                }
+            });
+
+            // Get selected tab
+            this._tabsService.selectedTab$
+            .subscribe((st: any) => {
+                this.selectedTab = st;
+            });
 
             // Get playlist list
             this._playlistService.playListsList$
             .subscribe((pl: any) => {
-                console.log('subscribe');
                 this.playlistsList = pl;
                 this.updateFilterInput();
             });
@@ -55,7 +83,6 @@ export class PlaylistPanelComponent implements OnInit {
     }
 
     updateFilterInput() {
-        console.log('updateInput');
         if (this.playlistsList.length > 1) {
             this.filterPlaylist.enable();
             this.filterPlaylist.setValue('');
@@ -121,7 +148,8 @@ export class PlaylistPanelComponent implements OnInit {
 
     // Play the selected playlist
     playPlaylist(playlist) {
-        this._playlistService.setOnPlayPlayList(this.onEditPlaylist);
+        this._tabsService.setSelectedTab(1);
+        this._playlistService.setOnPlayPlayList(playlist);
     }
 
     // Delete the selected playlist

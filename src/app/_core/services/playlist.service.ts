@@ -28,13 +28,20 @@ export class PlaylistService {
     searchResultPlaylist = new Subject<Playlist>();
     searchResultPlaylist$ = this.searchResultPlaylist.asObservable();
 
-    constructor(private _youtubeService: YoutubeService) {}
+
+    // Search result PlayList
+    progressBarValue = new Subject<any>();
+    progressBarValue$ = this.progressBarValue.asObservable();
+
+    constructor(private _youtubeService: YoutubeService) {
+    }
 
     // Setters
     setPlayListsList(pl) { this.playListsList.next(pl); }
     setOnEditPlayList(pl) { this.onEditPlaylist.next(pl); }
     setOnPlayPlayList(pl) { this.onPlayPlaylist.next(pl); }
     setSearchResultPlaylist(pl) { this.searchResultPlaylist.next(pl); }
+    setProgressBarValue(pbv) { this.progressBarValue.next(pbv); }
 
 
     // Fetch and load user playlist(s) and his video(s)
@@ -44,6 +51,8 @@ export class PlaylistService {
         // Get all playlist
         return this._youtubeService.getAllPlaylists()
         .flatMap((plList) => {
+
+            this.setProgressBarValue(30);
 
             // Get all playlist items for each playlist
             const aRequest = [];
@@ -65,7 +74,6 @@ export class PlaylistService {
                 // Get last observable
                 .last()
                 .flatMap((plItemsList) => {
-
                     // Parse videos id
                     const videoIdList = this.parseVideoId(plItemsList);
                     const aReq = [];
@@ -84,6 +92,9 @@ export class PlaylistService {
                                 videoList.push(objVideo);
                             });
                         });
+
+                        this.setProgressBarValue(90);
+
                         // Create playlist object
                         return this.parsePlaylist(playlist, videoList);
                     });
@@ -95,6 +106,7 @@ export class PlaylistService {
             return Observable.forkJoin(aRequest);
         })
         .subscribe((playlistList) => {
+            this.setProgressBarValue(99);
             // Set playlistlist
             this.setPlayListsList(playlistList);
         });

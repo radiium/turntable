@@ -3,61 +3,23 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule, JsonpModule } from '@angular/http';
 
+// Modules
 import { CoreModule } from './_core/core.module';
 import { SharedModule } from './_shared/shared.module';
 
+// Components
 // Root component
 import { AppComponent } from './app.component';
-
 // Mix panel
-
 import { MixPanelComponent } from './mix-panel/mix-panel.component';
-import { VideosListComponent } from './mix-panel/videos-list/videos-list.component';
-import { VideosListItemComponent } from './mix-panel/videos-list-item/videos-list-item.component';
-import { VideoPlayerComponent } from './mix-panel/video-player/video-player.component';
-import { RangeSliderComponent } from './mix-panel/range-slider/range-slider.component';
-
-// Shared components
-import { PlaylistComponent } from './_shared/components/playlist/playlist.component';
-import { PlaylistItemComponent } from './_shared/components/playlist-item/playlist-item.component';
-import { SearchBarComponent } from './_shared/components/search-bar/search-bar.component';
-
-
 // Playlist panel
 import { PlaylistPanelComponent } from './playlist-panel/playlist-panel.component';
-// import { CreatePlaylistDialogComponent } from './playlist-panel/create-playlist-dialog/create-playlist-dialog.component';
-
 // Settings panel
 import { SettingsPanelComponent } from './settings-panel/settings-panel.component';
+// Login component
 import { LoginComponent } from './login/login.component';
 
 @NgModule({
-    declarations: [
-        // Root component
-        AppComponent,
-
-        // Shared components
-        PlaylistComponent,
-        PlaylistItemComponent,
-        SearchBarComponent,
-
-        // Mix panel
-        MixPanelComponent,
-        VideosListComponent,
-        VideosListItemComponent,
-        VideoPlayerComponent,
-        RangeSliderComponent,
-        // Playlist panel
-        PlaylistPanelComponent,
-        // Settings panel
-        SettingsPanelComponent,
-        LoginComponent
-    ],
-    /*
-    entryComponents: [
-        CreatePlaylistDialogComponent
-    ],
-    */
     imports: [
         BrowserModule,
         FormsModule,
@@ -66,6 +28,18 @@ import { LoginComponent } from './login/login.component';
         JsonpModule,
         CoreModule,
         SharedModule
+    ],
+    declarations: [
+        // Root component
+        AppComponent,
+        // Mix panel
+        MixPanelComponent,
+        // Playlist panel
+        PlaylistPanelComponent,
+        // Settings panel
+        SettingsPanelComponent,
+        // Login
+        LoginComponent,
     ],
     exports: [],
     providers: [],

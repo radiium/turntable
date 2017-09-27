@@ -55,6 +55,16 @@
 
 <!-- List of playlist -->
 <div *ngIf="!isEditMode" class="plListContainer" >
+
+    <!-- progress bar -->
+    <div class="progressBarGray" *ngIf="isProgressBar"></div>
+    <md-progress-bar
+        *ngIf="isProgressBar"
+        [color]="primary"
+        [mode]="determinate"
+        [value]="progressBarValue">
+    </md-progress-bar>
+
     <md-grid-list  *ngIf="playlistsList" cols="5" rowHeight="160px" gutterSize="10px" >
         
         <!-- Playlist list items -->
@@ -62,11 +72,11 @@
             <div class="plBox">
 
                 <!-- Privacy status playlist icons -->
-                <div *ngIf="pl.privacyStatus === 'private'" mdTooltip="Playlist private" class="plStatus private">
+                <div *ngIf="pl.privacyStatus === 'private'" mdTooltip="Playlist private" [mdTooltipPosition]="'below'" class="plStatus private">
                     <fa aria-label="Playlist private" [name]="'lock'" [size]="1"></fa>
                 </div>
 
-                <div *ngIf="pl.privacyStatus === 'public'" mdTooltip="Playlist public" class="plStatus public">
+                <div *ngIf="pl.privacyStatus === 'public'" mdTooltip="Playlist public" [mdTooltipPosition]="'below'" class="plStatus public">
                     <fa aria-label="Playlist public" [name]="'globe'" [size]="1"></fa>
                 </div>
 
@@ -112,12 +122,12 @@
     <!-- On edit playlist -->
     <div class="playlistContainer">
         <div class="header title playlistContainerItem">{{ onEditPlaylist.name }}</div>
-        <div class="content playlistContainerItem"><app-playlist [(videolist)]="onEditPlaylist.videolist" [acceptDrop]="true"></app-playlist></div>
+        <div class="content playlistContainerItem"><app-playlist [(videolist)]="onEditPlaylist.videolist" [acceptDrop]="true" [isOnPlay]="false"></app-playlist></div>
     </div>
 
     <!-- Search result playlist -->
     <div class="playlistContainer">
         <div class="header playlistContainerItem"><app-search-bar></app-search-bar></div>
-        <div class="content playlistContainerItem"><app-playlist [(videolist)]="searchResultPlaylist" [acceptDrop]="false"></app-playlist></div>
+        <div class="content playlistContainerItem"><app-playlist [(videolist)]="searchResultPlaylist" [acceptDrop]="false" [isOnPlay]="false"></app-playlist></div>
     </div>
 </div>

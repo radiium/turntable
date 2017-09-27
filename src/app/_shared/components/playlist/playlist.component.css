@@ -28,10 +28,28 @@
 .videoControl {
     width: 150px;
 }
+.mix-videoControl {
+    width: 200px;
+}
 
 .deleteBtn {
     text-align: center;
     margin-right: 20px;
     top: 25px;
     float: right;
+}
+
+.mix-btn {
+    text-align: center;
+    margin-right: 10px;
+    top: 25px;
+    float: right;
+}
+
+.leftBtn {
+    padding-right: 6px;
+}
+
+.rightBtn {
+    padding-left: 6px;
 }

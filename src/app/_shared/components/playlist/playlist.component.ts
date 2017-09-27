@@ -5,7 +5,7 @@ import { Subject } from 'rxjs/Subject';
 import { dragula } from 'ng2-dragula/ng2-dragula';
 
 import { Video } from '../../models/video.model';
-import { VideoStateService } from '../../../_core/services/video-state.service';
+import { PlayerService } from '../../../_core/services/player.service';
 
 import { Playlist } from '../../models/playlist.model';
 import { PlaylistService } from '../../../_core/services/playlist.service';
@@ -23,6 +23,9 @@ export class PlaylistComponent implements OnInit {
     videolistChange = new EventEmitter();
 
     @Input()
+    isOnPlay: Boolean;
+
+    @Input()
     get videolist() {
         return this.videolistValue;
     }
@@ -35,7 +38,9 @@ export class PlaylistComponent implements OnInit {
     @Input()
     acceptDrop: Boolean;
 
-    constructor(private playlistService: PlaylistService) {
+    constructor(
+        private _playlistService: PlaylistService,
+        private _playerService: PlayerService) {
     }
     ngOnInit(): void {
     }
@@ -45,23 +50,32 @@ export class PlaylistComponent implements OnInit {
             this.videolist = this.videolist.filter(function(el) {
                 return el.id !== videoId;
             });
-            this.playlistService.setOnEditPlayList(this.videolist);
+            this._playlistService.setOnPlayPlayList(this.videolist);
+        }
+    }
+
+    playVideo(video, side) {
+        if (side === 'left') {
+            this._playerService.setPlayerLeft(video);
+        }
+        if (side === 'right') {
+            this._playerService.setPlayerRight(video);
         }
     }
 
     /*
-    // Update playlist in VideoStateService
+    // Update playlist in _playerService
     updatePlayList() {
-        this.VideoStateService.setCurrentPlayList(this.playList);
+        this._playerService.setCurrentPlayList(this.playList);
         this.totalDuration = 0;
         this.playList.forEach(el => {
             this.totalDuration += el.duration;
         });
     }
 
-    // Update playlist in VideoStateService
+    // Update playlist in _playerService
     updateHistoric() {
-        this.VideoStateService.setHistoricList(this.historic);
+        this._playerService.setHistoricList(this.historic);
         this.historic.forEach(el => {
             this.totalDuration += el.duration;
         });

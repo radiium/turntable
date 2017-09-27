@@ -9,10 +9,28 @@
     <li *ngFor="let video of videolist" class="videoItem" [attr.data-id]="video.id" [attr.data-movable]="true" >
         <app-playlist-item class="videoInfos" [video]="video"></app-playlist-item>
 
-        <div class="videoControl">
+        <div  *ngIf="!isOnPlay" class="videoControl">
             <!-- Delete video button -->
             <button mdTooltip="Delete video!" [mdTooltipPosition]="'above'" *ngIf="acceptDrop" md-mini-fab color="warn" (click)="deleteVideo(video.id)" class="deleteBtn">
                 <fa [name]="'trash'" [size]="2"></fa>
+            </button>
+        </div>
+
+        <div  *ngIf="isOnPlay" class="mix-videoControl">
+
+            <!-- Play at right button -->
+            <button mdTooltip="Play at right !" [mdTooltipPosition]="'above'" md-mini-fab color="primary" (click)="playVideo(video, 'right')" class="rightBtn mix-btn">
+                <fa [name]="'play'" [size]="2" ></fa>
+            </button>
+ 
+            <!-- Delete video button -->
+            <button mdTooltip="Delete video!" [mdTooltipPosition]="'above'" *ngIf="acceptDrop" md-mini-fab color="warn" (click)="deleteVideo(video.id)" class="mix-btn">
+                <fa [name]="'trash'" [size]="2"></fa>
+            </button>
+
+            <!-- Play at left button -->
+            <button mdTooltip="Play at left !" [mdTooltipPosition]="'above'" md-mini-fab color="primary" (click)="playVideo(video, 'left')" class="leftBtn mix-btn">
+                <fa [name]="'play'" [size]="2"[rotate]="180" ></fa>
             </button>
         </div>
     </li>

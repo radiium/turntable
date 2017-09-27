@@ -29,12 +29,21 @@
         [volume]="volRight" [speed]="speedRight" (volumeChange)="volRight" (speedChange)="speedRight"></app-video-player>
     </div>
 
+    <!-- On play playlist and search playlist -->
     <div id="appVideoList">
-        <app-videos-list></app-videos-list>
+    <div class="doublePlaylistContainer plListContainer">
+        <!-- On edit playlist -->
+        <div class="playlistContainer">
+            <div *ngIf="onPlayPlaylist" class="header title playlistContainerItem">{{ onPlayPlaylist.title }}</div>
+            <div *ngIf="onPlayPlaylist" class="content playlistContainerItem"><app-playlist [(videolist)]="onPlayPlaylist.videolist" [acceptDrop]="true" [isOnPlay]="true"></app-playlist></div>
+        </div>
+
+        <!-- Search result playlist -->
+        <div class="playlistContainer">
+            <div class="header playlistContainerItem"><app-search-bar></app-search-bar></div>
+            <div *ngIf="searchResultPlaylist" class="content playlistContainerItem"><app-playlist [(videolist)]="searchResultPlaylist" [acceptDrop]="false" [isOnPlay]="false"></app-playlist></div>
+        </div>
+    </div>
     </div>
 
 </div>
-
-
-<button (click)=send()>Send</button>
-<button (click)=receive()>Receive</button>

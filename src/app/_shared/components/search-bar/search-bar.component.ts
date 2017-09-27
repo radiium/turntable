@@ -5,7 +5,6 @@ import 'rxjs/Rx';
 import * as moment from 'moment';
 
 import { Video } from '../../models/video.model';
-import { VideoStateService } from '../../../_core/services/video-state.service';
 import { YoutubeService } from '../../../_core/services/youtube.service';
 
 import { PlaylistService } from '../../../_core/services/playlist.service';
@@ -80,7 +79,7 @@ export class SearchBarComponent implements OnInit {
             if (this.search.value === '') {
                 this._playlistService.setSearchResultPlaylist([]);
             } else {
-                this._playlistService.setSearchResultPlaylist(results.items.map(item => {
+                const videoList = results.items.map(item => {
                     return new Video(
                         item.id,
                         item.snippet.title,
@@ -88,7 +87,8 @@ export class SearchBarComponent implements OnInit {
                         item.snippet.thumbnails.default.url,
                         moment.duration(item.contentDetails.duration).asMilliseconds()
                     );
-                }));
+                });
+                this._playlistService.setSearchResultPlaylist(videoList);
             }
         });
     }
