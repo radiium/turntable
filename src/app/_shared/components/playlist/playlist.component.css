@@ -1,6 +1,9 @@
 .playlist {
-    height: calc(100% - 50px);
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
+
 
 /* Drop infos */
 .dropInfos {
@@ -12,17 +15,19 @@
     color: black;
     border: 5px dashed black;
     padding: 20px;
-    height: 100%;
+    height: calc(100% - 50px);
 }
 
 .videoItem {
     width: 100%;
     background-color: #242320;
     list-style: none;
-    margin-bottom: 2px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+}
+.videoItem:not(:last-child) {
+    margin-bottom: 2px;
 }
 
 .videoControl {

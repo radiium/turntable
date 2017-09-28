@@ -43,8 +43,13 @@
 }
 
 .tabsContent {
-    height: calc();
-    /*padding: 5px;*/
+    flex: 1;
+    height: calc(100% - 32px);
+    overflow: hidden;
+}
+.tabContentCpnt {
+    height: calc(100% - 32px);
+    overflow: hidden; 
 }
 
 

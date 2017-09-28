@@ -18,8 +18,8 @@
 
     <!-- Content -->
     <div class="tabsContent">
-        <div [hidden]="selectedTab !== 1"><app-playlist-panel></app-playlist-panel></div>
-        <!--<div [hidden]="selectedTab !== 2"><app-mix-panel></app-mix-panel></div>-->
-        <div [hidden]="selectedTab !== 3"><app-settings-panel></app-settings-panel></div>
+        <app-playlist-panel [hidden]="selectedTab !== 1" class="tabContentCpnt"></app-playlist-panel>
+        <app-mix-panel      [hidden]="selectedTab !== 2" class="tabContentCpnt"></app-mix-panel>
+        <app-settings-panel [hidden]="selectedTab !== 3" class="tabContentCpnt"></app-settings-panel>
     </div>
 </div>

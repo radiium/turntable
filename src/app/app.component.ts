@@ -17,13 +17,13 @@ export class AppComponent implements OnInit, OnDestroy, AfterContentInit {
     dragulaBagName = 'drag-drop-list';
     selectedTab: any;
 
-    isLoading: Boolean = true;
+    isLoading: Boolean = false;
 
     constructor(
         public ytService: YoutubePlayerService,
         private _dragulaService: DragulaService,
         private _tabsService: TabsService) {
-            Observable.timer(5000).subscribe((res) => {
+            Observable.timer(3000).subscribe((res) => {
                 this.isLoading = false;
             });
 
