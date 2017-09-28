@@ -14,22 +14,19 @@
                 <span>{{ user.name }}</span>
             </div>
 
-            <!-- Open menu btn -->
-            <button id="menuBtn" (click)="openCloseMenu()">
-            <fa aria-label="Logout" [name]="'ellipsis-v'" [size]="1"></fa>
+            <!-- Login btn -->
+            <button *ngIf="!user" md-button (click)="login()" class="signBtn">
+            <fa aria-label="Login" [name]="'sign-in'" [size]="1"></fa>
+            <span>Login</span>
             </button>
+            
+            <!-- Logout btn -->
+            <button *ngIf="user" md-button (click)="logout()">
+            <fa aria-label="Logout" [name]="'sign-out'" [size]="1"></fa>
+            <span>Logout</span>
+            </button>
+
+
         </div>
     </div>
-</div>
-
-<!-- Menu btn -->
-<div *ngIf="isMenuOpen" class="menu" appClickOutside (clickOutside)="openCloseMenu($event)">
-    <button *ngIf="!user" md-button (click)="login()">
-    <fa aria-label="Login" [name]="'sign-in'" [size]="1"></fa>
-    <span>Login</span>
-    </button>
-    <button *ngIf="user" md-button (click)="logout()">
-    <fa aria-label="Logout" [name]="'sign-out'" [size]="1"></fa>
-    <span>Logout</span>
-    </button>
 </div>

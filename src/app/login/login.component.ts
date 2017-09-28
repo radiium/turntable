@@ -19,13 +19,12 @@ export class LoginComponent implements OnInit {
 
     user: User;
     isOnline: Boolean = false;
-    isMenuOpen: Boolean = false;
 
     constructor(
         private _authService: AuthService,
-        private _youtubeService: YoutubeService,
         private _playlistService: PlaylistService,
-        private _onlineService: OnlineService) {
+        private _onlineService: OnlineService,
+        private _electron: ElectronService) {
 
             console.log(localStorage);
 
@@ -38,32 +37,23 @@ export class LoginComponent implements OnInit {
             this._authService.user$
             .subscribe((user) => {
                 this.user = user;
-                console.log('user', user);
                 if (user !== null) {
                     this._playlistService.fetchYoutubePlaylist();
                 }
         });
     }
 
-    ngOnInit() {
-    }
+    ngOnInit() {}
 
     login() {
-        this._authService.login();
-        this.isMenuOpen = false;
+        if (this._electron.isElectronApp && this.isOnline) {
+            this._authService.login();
+        }
     }
 
     logout() {
-        this._authService.logout();
-        this.isMenuOpen = false;
-    }
-
-    // Open close login/logout menu
-    openCloseMenu(event?) {
-        if (event) {
-            this.isMenuOpen = false;
-        } else if (!event) {
-            this.isMenuOpen = this.isMenuOpen ? false : true;
+        if (this._electron.isElectronApp && this.isOnline && this.user) {
+            this._authService.logout();
         }
     }
 }

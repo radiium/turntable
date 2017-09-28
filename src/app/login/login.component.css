@@ -80,6 +80,10 @@
     margin-right: 5px;
 }
 
+.signBtn {
+    line-height: 0px;;
+}
+
 
 /* Online status */
 #onlineBox {
