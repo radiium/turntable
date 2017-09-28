@@ -19,6 +19,8 @@ import { SettingsPanelComponent } from './settings-panel/settings-panel.componen
 // Login component
 import { LoginComponent } from './login/login.component';
 
+import { YoutubePlayerService } from './_shared/modules/ng2-youtube-player/services/youtube-player.service';
+
 @NgModule({
     imports: [
         BrowserModule,
@@ -42,7 +44,7 @@ import { LoginComponent } from './login/login.component';
         LoginComponent,
     ],
     exports: [],
-    providers: [],
+    providers: [YoutubePlayerService],
     bootstrap: [AppComponent]
 })
 export class AppModule { }

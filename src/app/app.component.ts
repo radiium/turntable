@@ -2,6 +2,9 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { DragulaService, dragula } from 'ng2-dragula/ng2-dragula';
 import { TabsService } from './_core/services/tabs.service';
 
+import { YoutubePlayerService } from './_shared/modules/ng2-youtube-player/services/youtube-player.service';
+
+
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html',
@@ -14,20 +17,20 @@ export class AppComponent implements OnInit, OnDestroy {
     selectedTab: any;
 
     constructor(
+        public ytService: YoutubePlayerService,
         private _dragulaService: DragulaService,
         private _tabsService: TabsService) {
+
             this._tabsService.selectedTab$
             .subscribe((st) => {
                 this.selectedTab = st;
             });
+            this._tabsService.setSelectedTab(1);
 
     }
     ngOnInit() { this.initDragula(); }
     ngOnDestroy() { this.destroyDragula(); }
 
-    selectedTabChange(event) {
-        console.log('tab change', event);
-    }
     // Init dragula service options
     initDragula() {
         this._dragulaService.setOptions(

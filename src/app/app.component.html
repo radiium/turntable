@@ -1,19 +1,20 @@
-<!-- Tabs navigation-->
 <div id="appContainer">
+
+    <!-- Login buttons and status -->
     <app-login></app-login>
 
-    <md-tab-group [(selectedIndex)]="selectedTab" dynamicHeight="false">
-        
-        <md-tab label="Playlist" disableRipple>
-        <app-playlist-panel></app-playlist-panel>
-        </md-tab>
+    <!-- Navigation buttons -->
+    <div class="tabsNav">
+        <button [class.tabActive]="selectedTab === 1" (click)="_tabsService.setSelectedTab(1)">Playlist</button><!--
+     --><button [class.tabActive]="selectedTab === 2" (click)="_tabsService.setSelectedTab(2)">Mix</button><!--
+     --><button [class.tabActive]="selectedTab === 3" (click)="_tabsService.setSelectedTab(3)">Settings</button>
+    </div>
 
-        <md-tab label="Mix" disableRipple>
-        <app-mix-panel></app-mix-panel>
-        </md-tab>
+    <!-- Content -->
+    <div class="tabsContent">
+        <div [hidden]="selectedTab !== 1"><app-playlist-panel></app-playlist-panel></div>
+        <!--<div [hidden]="selectedTab !== 2"><app-mix-panel></app-mix-panel></div>-->
+        <div [hidden]="selectedTab !== 3"><app-settings-panel></app-settings-panel></div>
+    </div>
 
-        <md-tab label="Settings" disableRipple>
-        <app-settings-panel></app-settings-panel>   
-        </md-tab>
-    </md-tab-group>
 </div>
