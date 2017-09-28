@@ -121,7 +121,7 @@ export class VideoPlayerComponent implements OnChanges, OnDestroy {
     // 3 : en mémoire tampon
     // 5 : en file d'attente
     onStateChange(event) {
-
+        console.log('player change');
         this.ytEvent = event.data;
         this.stopTimer();
 
@@ -149,6 +149,7 @@ export class VideoPlayerComponent implements OnChanges, OnDestroy {
         }
     }
     savePlayer(player) {
+        console.log('player ready');
         this.player = player;
     }
 

@@ -1,5 +1,5 @@
 import {
-    Component, EventEmitter, Input, Output, ChangeDetectionStrategy,
+    Component, EventEmitter, Input, Output, ChangeDetectionStrategy, OnInit,
     AfterContentInit, ElementRef, ViewChild
 } from '@angular/core';
 import { YoutubePlayerService } from '../services/youtube-player.service';
@@ -11,7 +11,7 @@ import { YoutubePlayerService } from '../services/youtube-player.service';
       <div id="yt-player-ng2-component" #ytPlayerContainer></div>
     `,
 })
-export class YoutubePlayerComponent implements AfterContentInit {
+export class YoutubePlayerComponent implements OnInit, AfterContentInit {
     @Input() videoId = '';
     @Input() height: number;
     @Input() width: number;
@@ -33,8 +33,11 @@ export class YoutubePlayerComponent implements AfterContentInit {
 
     constructor(
         public playerService: YoutubePlayerService,
-        private elementRef: ElementRef
-    ) {}
+        private elementRef: ElementRef) {
+    }
+
+    ngOnInit() {
+    }
 
     ngAfterContentInit () {
         const htmlId = this.playerService.generateUniqueId();
@@ -51,9 +54,10 @@ export class YoutubePlayerComponent implements AfterContentInit {
 
     getProtocol() {
         const hasWindow = window && window.location;
-        const protocol = hasWindow
+        let protocol = hasWindow
           ? window.location.protocol.replace(':', '')
           : 'http';
-        return 'http'; // protocol;
+        protocol = protocol === 'file' ? 'http' : protocol;
+        return protocol;
     }
 }

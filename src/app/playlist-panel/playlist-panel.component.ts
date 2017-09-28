@@ -75,6 +75,7 @@ export class PlaylistPanelComponent implements OnInit {
                 this.searchResultPlaylist = pl;
             });
 
+            // Init filter playlist input
             this.filterPlaylist = new FormControl();
             this.filterPlaylist.disable();
             this.filteredStates = this.filterPlaylist.valueChanges
@@ -82,6 +83,7 @@ export class PlaylistPanelComponent implements OnInit {
             .map(title => title ? this.filterPlaylists(title) : this.playlistsList.slice());
     }
 
+    // Update disabled/enabled status of filter playlist
     updateFilterInput() {
         if (this.playlistsList.length > 1) {
             this.filterPlaylist.enable();
@@ -142,14 +144,17 @@ export class PlaylistPanelComponent implements OnInit {
         this.isEditMode = false;
     }
 
+    // Return button
     return() {
         this.isEditMode = false;
     }
 
     // Play the selected playlist
     playPlaylist(playlist) {
-        this._tabsService.setSelectedTab(1);
-        this._playlistService.setOnPlayPlayList(playlist);
+        if (playlist.videolist.length > 0) {
+            this._tabsService.setSelectedTab(2);
+            this._playlistService.setOnPlayPlayList(playlist);
+        }
     }
 
     // Delete the selected playlist
@@ -167,13 +172,14 @@ export class PlaylistPanelComponent implements OnInit {
         });
     }
 
+    // Filter playlist by title
     filterPlaylists(title: string) {
         return this.playlistsList.filter(playlist =>
             playlist.title.toLowerCase().indexOf(title.toLowerCase()) === 0);
     }
 
+    // Reload playlist from youtube
     reloadPlaylist() {
         this._playlistService.fetchYoutubePlaylist();
     }
-
 }

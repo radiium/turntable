@@ -1,6 +1,7 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterContentInit } from '@angular/core';
 import { DragulaService, dragula } from 'ng2-dragula/ng2-dragula';
 import { TabsService } from './_core/services/tabs.service';
+import { Observable } from 'rxjs/Observable';
 
 import { YoutubePlayerService } from './_shared/modules/ng2-youtube-player/services/youtube-player.service';
 
@@ -11,15 +12,20 @@ import { YoutubePlayerService } from './_shared/modules/ng2-youtube-player/servi
     styleUrls: ['./app.component.css'],
     viewProviders:  [DragulaService]
 })
-export class AppComponent implements OnInit, OnDestroy {
+export class AppComponent implements OnInit, OnDestroy, AfterContentInit {
 
     dragulaBagName = 'drag-drop-list';
     selectedTab: any;
+
+    isLoading: Boolean = true;
 
     constructor(
         public ytService: YoutubePlayerService,
         private _dragulaService: DragulaService,
         private _tabsService: TabsService) {
+            Observable.timer(5000).subscribe((res) => {
+                this.isLoading = false;
+            });
 
             this._tabsService.selectedTab$
             .subscribe((st) => {
@@ -30,6 +36,9 @@ export class AppComponent implements OnInit, OnDestroy {
     }
     ngOnInit() { this.initDragula(); }
     ngOnDestroy() { this.destroyDragula(); }
+    ngAfterContentInit() {
+        // this.isLoading = false;
+    }
 
     // Init dragula service options
     initDragula() {

@@ -16,6 +16,7 @@ export class CONSTANT {
     public static AUTH_API      = 'https://accounts.google.com/o/oauth2/auth';
     public static TOKEN_API     = 'https://accounts.google.com/o/oauth2/token';
     public static LOGOUT_API    = 'https://accounts.google.com/o/oauth2/revoke';
+    public static REDIRECT_URI  = 'http://localhost';
 
     public static KEY_API       = 'AIzaSyCUgeZ1Wous0x3Rjw3EZQQPKDQTXJB21Es';
     public static CLIENT_ID     = '164595742192-h6rci5hnhj8gfbbeaijsrrsu660d80r6.apps.googleusercontent.com';

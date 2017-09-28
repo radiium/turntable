@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ElectronService } from 'ngx-electron';
 
 // Services
+import { ElectronService } from 'ngx-electron';
 import { AuthService } from '../_core/services/auth.service';
-import { YoutubeService } from '../_core/services/youtube.service';
 import { PlaylistService } from '../_core/services/playlist.service';
 import { OnlineService } from '../_core/services/online.service';
 

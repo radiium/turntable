@@ -1,5 +1,11 @@
-<div id="appContainer">
+<!-- App loader -->
+<div class="loader" *ngIf="isLoading">
+<md-progress-spinner class="appLoader" [mode]="'indeterminate'"></md-progress-spinner>
+<div class="textLoader">Loading ...</div>
+</div>
+<div class="bgLoader" *ngIf="isLoading"></div>
 
+<div [class.blur]="isLoading" id="appContainer">
     <!-- Login buttons and status -->
     <app-login></app-login>
 
@@ -16,5 +22,4 @@
         <!--<div [hidden]="selectedTab !== 2"><app-mix-panel></app-mix-panel></div>-->
         <div [hidden]="selectedTab !== 3"><app-settings-panel></app-settings-panel></div>
     </div>
-
 </div>

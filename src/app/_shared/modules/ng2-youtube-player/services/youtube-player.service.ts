@@ -34,6 +34,7 @@ export class YoutubePlayerService {
         const playerApiScript = doc.createElement('script');
         playerApiScript.type = 'text/javascript';
         playerApiScript.src = `${options.protocol}://www.youtube.com/iframe_api`;
+        // playerApiScript.src = `https://www.youtube.com/iframe_api`;
         doc.body.appendChild(playerApiScript);
     }
 
@@ -41,7 +42,7 @@ export class YoutubePlayerService {
         elementId: string, outputs: IPlayerOutputs, sizes: IPlayerSize,
         videoId = '', playerVars: YT.PlayerVars) {
             const createPlayer = () => {
-                if (YoutubePlayerService.Player) {
+                if (YoutubePlayerService.win) {
                     this.createPlayer(elementId, outputs, sizes, videoId, playerVars);
                 }
             };
@@ -131,9 +132,12 @@ export class YoutubePlayerService {
     }
 
     private createApi () {
+        console.log('create api');
         this.api = new ReplaySubject(1);
         const onYouTubeIframeAPIReady = () => {
             if (YoutubePlayerService.win) {
+
+                console.log('api created');
                 this.api.next(<any> YoutubePlayerService.YT);
             }
         };
