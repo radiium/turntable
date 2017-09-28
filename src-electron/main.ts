@@ -8,7 +8,6 @@ import * as url from 'url';
 import { app, BrowserWindow, ipcMain, Menu, shell } from 'electron';
 import { devMenuTemplate } from './menu/dev_menu_template';
 import { fileMenuTemplate } from './menu/file_menu_template';
-import * as storage from 'electron-json-storage';
 
 // Init variable
 let mainWindow: any = null;
@@ -49,8 +48,6 @@ const createMainWindow = async () => {
 
 // On app is ready
 app.on('ready', () => {
-    // storage.setDataPath(app.getPath('userData'));
-    console.log(storage.getDataPath());
     createMainWindow();
 });
 
@@ -61,18 +58,6 @@ app.on('window-all-closed', () => {
     }
 });
 
-app.on('before-quit', () => {
-    storage.has('token', function(error, hasKey) {
-        if (error) { throw error; }
-        if (hasKey) {
-            console.log('There is data stored as `token`');
-            storage.remove('token', (err) => {
-                if (err) { throw err; }
-                console.log('Remove token');
-            });
-        }
-    });
-});
 
 // Recreate window when icon is clicked
 app.on('activate', () => {
@@ -84,19 +69,6 @@ app.on('activate', () => {
 ipcMain.on('google-token', (event, arg) => {
     console.log(arg); // prints "ping"
     // event.sender.send('asynchronous-reply', 'pong');
-
-    storage.set('token', arg, (error) => {
-    console.log('Set token');
-    if (error) { throw error; }
-    });
-
-    /*
-    storage.get('token', arg, (error, data) => {
-    if (error) { throw error; }
-    console.log('Get token');
-    console.log(data);
-    });
-    */
 });
 
 
