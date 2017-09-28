@@ -12,7 +12,7 @@ export class AuthService {
 
     // Config parameters
     scope        = CONSTANT.SCOPE;
-    redirectUri  = 'http://localhost';
+    redirectUri  = CONSTANT.REDIRECT_URI;
     clientId     = CONSTANT.CLIENT_ID;
     clientSecret = CONSTANT.CLIENT_SECRET;
     authUrl      = CONSTANT.AUTH_API;
