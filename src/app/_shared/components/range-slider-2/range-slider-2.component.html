@@ -1,0 +1,29 @@
+<div id="slider-{{ side }}" class="sliderContainer">
+    <div class="sliderBox">
+
+        <!--
+        <label for="">{{ name }}</label>
+        -->
+
+        <div class="grpBtn">
+            <div class="btn">
+            <button (click)="down()"><fa [name]="'minus'" [rotate]="90" [border]=false [size]="2"></fa></button>
+            </div>
+
+            <div class="slider slider-input-{{ side }}">
+            <input class="slider-range" type="range" [(ngModel)]="value" (input)="onInputChange($event)" value="{{ value }}" min="{{ min }}" max="{{ max }}" step="{{ step }}"/>
+            </div>
+
+            <div class="btn">
+            <button (click)="up()"><fa [name]="'plus'" [rotate]="90" [border]=false [size]="2"></fa></button>
+            </div>
+        </div>
+
+        <div class="outputBox">
+            <div class="output">
+            <span *ngIf="name === 'Speed'">x</span> {{ value }}
+            </div>
+        </div>
+
+    </div>
+</div>

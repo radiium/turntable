@@ -13,6 +13,50 @@ import { CreatePlaylistDialogComponent } from './create-playlist-dialog/create-p
 import { ConfirmDialogComponent } from '../_shared/components/confirm-dialog/confirm-dialog.component';
 import { TabsService } from '../_core/services/tabs.service';
 
+
+const testPlaylist = {
+    id: 'a55f086e-82e7-8e8b-f0e2-bfef59cf5cf1',
+    title: 'Test playlist',
+    description: '',
+    thumbUrl: '',
+    thumbH: null,
+    thumbW: null,
+    publishedAt: '',
+    privacyStatus: 'public',
+    isLocal: true,
+    videolist: [
+        {
+            id: '-Cvo2fVb1aY',
+            title: 'Midnight Magic - Vicious Love (Offi…',
+            description: 'The official video for Vicious Lov…',
+            thumbUrl: 'https://i.ytimg.com/vi/-Cvo2fVb1aY/…',
+            duration: 268000
+        },
+        {
+            id: 'MceYFMDL108',
+            title: 'Midnight Magic - Drop Me A Line (Of…',
+            description: 'by Pilar Wiley',
+            thumbUrl: 'https://i.ytimg.com/vi/MceYFMDL108/…',
+            duration: 235000
+        },
+        {
+            id: '29uVBx9cyrs',
+            title: 'Midnight Magic - I Gotta Feeling',
+            description: 'Stream / Download:  https: //midnight…',
+            thumbUrl: 'https://i.ytimg.com/vi/29uVBx9cyrs/…',
+            duration: 346000
+        },
+        {
+            id: '8EaYwmv7hcA',
+            title: 'Midnight Magic - Beam Me Up',
+            description: 'Midnight Magics official music vid…',
+            thumbUrl: 'https://i.ytimg.com/vi/8EaYwmv7hcA/…',
+            duration: 235000
+        }
+    ]
+};
+
+
 @Component({
   selector: 'app-playlist-panel',
   templateUrl: './playlist-panel.component.html',
@@ -23,7 +67,7 @@ export class PlaylistPanelComponent implements OnInit {
     playlistsList: Array<Playlist> = [];
 
     onEditPlaylist: Playlist = null;
-    searchResultPlaylist: Playlist = null;
+    // searchResultPlaylist: Playlist = null;
 
     filterPlaylist: FormControl;
     filteredStates: Observable<any[]>;
@@ -62,18 +106,35 @@ export class PlaylistPanelComponent implements OnInit {
                 this.selectedTab = st;
             });
 
+            const arr = [];
+            for (let i = 0; i < 25; i++) {
+                arr.push(testPlaylist);
+            }
+            this.playlistsList = <Playlist[]>arr;
+            /*
             // Get playlist list
             this._playlistService.playListsList$
             .subscribe((pl: any) => {
                 this.playlistsList = pl;
                 this.updateFilterInput();
+                console.log(pl);
+                if (pl.length === 0) {
+                    const arr = [];
+                    for (let i = 0; i < 25; i++) {
+                        arr.push(testPlaylist);
+                    }
+                    this.playlistsList = <Playlist[]>arr;
+                }
             });
+            */
 
+            /*
             // Get search result playlist
             this._playlistService.searchResultPlaylist$
             .subscribe((pl: any) => {
                 this.searchResultPlaylist = pl;
             });
+            */
 
             // Init filter playlist input
             this.filterPlaylist = new FormControl();
@@ -140,7 +201,7 @@ export class PlaylistPanelComponent implements OnInit {
         });
         this._playlistService.setPlayListsList(pll);
         this.onEditPlaylist = null;
-        this.searchResultPlaylist = null;
+        // this.searchResultPlaylist = null;
         this.isEditMode = false;
     }
 

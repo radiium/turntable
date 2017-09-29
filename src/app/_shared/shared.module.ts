@@ -14,12 +14,8 @@ import { CustomMaterialModule } from './modules/material/custom-material.module'
 // Shared components
 import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
 import { CreatePlaylistDialogComponent } from '../playlist-panel/create-playlist-dialog/create-playlist-dialog.component';
-import { PlaylistComponent } from './components/playlist/playlist.component';
-import { PlaylistItemComponent } from './components/playlist-item/playlist-item.component';
-import { SearchBarComponent } from './components/search-bar/search-bar.component';
-import { VideosListComponent } from './components/videos-list/videos-list.component';
-import { VideosListItemComponent } from './components/videos-list-item/videos-list-item.component';
-import { RangeSliderComponent } from './components/range-slider/range-slider.component';
+
+import { RangeSlider2Component } from './components/range-slider-2/range-slider-2.component';
 import { VideoPlayerComponent } from './components/video-player/video-player.component';
 
 // Directives
@@ -30,6 +26,11 @@ import { FilterPlaylistPipe } from './pipes/filter-playlist.pipe';
 // Ng2 you tube player
 import { YoutubePlayerModule } from './modules/ng2-youtube-player/ng2-youtube-player';
 
+/*
+import { PlaylistComponent } from './components/playlist/playlist.component';
+import { PlaylistItemComponent } from './components/playlist-item/playlist-item.component';
+import { SearchBarComponent } from './components/search-bar/search-bar.component';
+*/
 @NgModule({
     entryComponents: [
         ConfirmDialogComponent,
@@ -41,13 +42,8 @@ import { YoutubePlayerModule } from './modules/ng2-youtube-player/ng2-youtube-pl
         FilterPlaylistPipe,
         ConfirmDialogComponent,
         CreatePlaylistDialogComponent,
-        PlaylistComponent,
-        PlaylistItemComponent,
-        SearchBarComponent,
-        VideosListComponent,
-        VideosListItemComponent,
-        RangeSliderComponent,
-        VideoPlayerComponent
+        RangeSlider2Component,
+        VideoPlayerComponent,
     ],
     imports: [
         CommonModule,
@@ -74,12 +70,7 @@ import { YoutubePlayerModule } from './modules/ng2-youtube-player/ng2-youtube-pl
         ClickOutsideDirective,
         DurationPipe,
         FilterPlaylistPipe,
-        PlaylistComponent,
-        PlaylistItemComponent,
-        SearchBarComponent,
-        VideosListComponent,
-        VideosListItemComponent,
-        RangeSliderComponent,
+        RangeSlider2Component,
         VideoPlayerComponent,
         CustomMaterialModule
     ],

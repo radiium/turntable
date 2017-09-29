@@ -1,0 +1,43 @@
+<!-- Edit playlist container -->
+<div class="eplContainer">
+
+    <!-- Left playlist (editable playlist) -->
+    <div class="eplBoxLeft eplBox">
+
+        <!-- Header -->
+        <div class="eplHeader">
+        </div>
+
+        <!-- Playlist -->
+        <div class="eplContent">
+            <app-playlist
+                *ngIf="playlist"
+                [(videolist)]="playlist.videolist"
+                [acceptDrop]="true"
+                [isOnPlay]="false">
+            </app-playlist>
+        </div>
+
+    </div>
+
+    <!-- Right playlist (search result playlist -->
+    <div class="eplBoxRight eplBox">
+
+        <!-- Header -->
+        <div class="eplHeader">
+            <app-search-bar></app-search-bar>
+        </div>
+
+        <!-- Playlist -->
+        <div class="eplContent">
+            <app-playlist
+                *ngIf="searchResultList"
+                [(videolist)]="searchResultList"
+                [acceptDrop]="false"
+                [isOnPlay]="false">
+            </app-playlist>
+        </div>
+
+    </div>
+
+</div>

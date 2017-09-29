@@ -4,11 +4,11 @@ import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { dragula } from 'ng2-dragula/ng2-dragula';
 
-import { Video } from '../../models/video.model';
-import { PlayerService } from '../../../_core/services/player.service';
+import { Video } from '../../../models/video.model';
+import { PlayerService } from '../../../../_core/services/player.service';
 
-import { Playlist } from '../../models/playlist.model';
-import { PlaylistService } from '../../../_core/services/playlist.service';
+import { Playlist } from '../../../models/playlist.model';
+import { PlaylistService } from '../../../../_core/services/playlist.service';
 
 @Component({
     selector: 'app-playlist',

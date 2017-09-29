@@ -21,6 +21,10 @@ body {
   padding: 0;
   background-color: lightgray;
   height: 100%;
+  overflow: hidden;
+  /*
+  width: 100%;
+  */
 }
 
 input:focus { outline: none; }
@@ -29,11 +33,6 @@ input:focus { outline: none; }
 
 md-progress-bar {
     z-index: 99999;
-}
-.mat-tab-body-wrapper,
-md-tab-group,
-app-playlist-panel {
-    height: 100%;
 }
 
 #menuBtn .ng-trigger,

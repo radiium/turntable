@@ -19,6 +19,9 @@ export class AppComponent implements OnInit, OnDestroy, AfterContentInit {
 
     isLoading: Boolean = false;
 
+speed;
+onSpeedChange(e) {
+}
     constructor(
         public ytService: YoutubePlayerService,
         private _dragulaService: DragulaService,

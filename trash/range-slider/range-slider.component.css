@@ -1,0 +1,232 @@
+.sliderBox {
+	/*height:200px;*/
+	width: 34px;
+	display: flex;
+	flex-direction: column;
+	flex-wrap: nowrap;
+	justify-content: space-between;
+	overflow: hidden;
+}
+/* VOLUME BUTTONS */
+
+#slider-left,
+#slider-right,
+#slider-left,
+#slider-right {
+	height: auto;
+	width: 34px;
+}
+
+#slider-left label,
+#slider-right label,
+#slider-left label,
+#slider-right label {
+	margin-top: 5px;
+	color: #25E1DA;
+	font-size: 0.8rem;
+}
+
+input[type="range"] { 
+    margin: auto;
+    -webkit-appearance: none;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    border-radius: 0; /* iOS */
+	height: 34px;
+	width: 107.5px;
+	-webkit-transform: rotate(270deg);
+	transform: rotate(270deg);
+	margin-left: -37px;
+	margin-top: 36.5px;
+	margin-bottom: 36.5px;
+}
+
+::-webkit-slider-runnable-track {
+    background: #242320;;
+}
+
+/*
+ * 1. Set to 0 height and width, and remove border for a slider without a thumb
+ */
+::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 12px; /* 1 */
+    height: 34px; /* 1 */
+    background: #fff;
+    box-shadow: -100vw 0 0 100vw #504F4C;
+}
+
+::-moz-range-track {
+    height: 34px;
+    background: #ddd;
+}
+
+::-moz-range-thumb {
+    background: #fff;
+    height: 34px;
+    width: 12px;
+    border-radius: 0 !important;
+    box-shadow: -100vw 0 0 100vw #504F4C;
+    box-sizing: border-box;
+	border: none;
+}
+
+::-ms-fill-lower { 
+    background: #504F4C;
+}
+
+::-ms-thumb { 
+    background: #fff;
+    height: 34px;
+    width: 12px;
+    box-sizing: border-box;
+}
+
+::-ms-ticks-after { 
+    display: none; 
+}
+
+::-ms-ticks-before { 
+    display: none; 
+}
+
+::-ms-track { 
+    background: #ddd;
+    color: transparent;
+    height: 34px;
+    border: none;
+}
+
+::-ms-tooltip { 
+    display: none;
+}
+
+
+
+
+
+.slider-input-left,
+.slider-input-right,
+.slider-input-left,
+.slider-input-right {
+	position: absolute;
+}
+
+
+/* CROSSFADER */
+
+#crossfader-box {
+	margin-top: 40px;
+	margin-bottom: 20px;
+	padding: 10px;
+}
+
+#tickmarks-center option {
+    font-weight: normal;
+    display: block;
+    white-space: pre;
+    min-height: 1,2em;
+    padding: 0px 2px 1px;
+    padding-top: 0px;
+    padding-right: 2px;
+    padding-bottom: 1px;
+    padding-left: 2px;
+}
+
+#crossfader-box input[type='range'] {
+    -webkit-appearance: none !important;
+    /*background-color:#817E7E;*/
+	border: 1px solid #C9C8C3 ;
+	-webkit-box-shadow: inset 0px 0px 23px 0px rgba(0,0,0,0.67);
+	   -moz-box-shadow: inset 0px 0px 23px 0px rgba(0,0,0,0.67);
+		    box-shadow: inset 0px 0px 23px 0px rgba(0,0,0,0.67);	
+    height: 15px;
+	/*width: 150px;*/
+	border-radius: 5px;
+	margin-top: 10px;
+	margin-bottom: 20px;
+}
+
+#crossfader-box input[type='range']::-webkit-slider-thumb {
+	-webkit-appearance: none !important;
+	background-color:#6C6866 ;
+	border-top: 	8px solid #C9C8C3 ;
+	border-left: 	3px solid #504F4C ;
+	border-right: 	3px solid #504F4C ;
+	border-bottom: 	8px solid #817E7E ;
+	height: 55px;
+	width: 20px;
+	border-radius: 2px;
+	-webkit-box-shadow: 0px 4px 10px 0px rgba(0,0,0,0.67);
+	   -moz-box-shadow: 0px 4px 10px 0px rgba(0,0,0,0.67);
+		    box-shadow: 0px 4px 10px 0px rgba(0,0,0,0.67);
+}
+
+
+/* BUTTONS */
+
+.grpBtn {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 175px;
+}
+
+.btn {
+	width: 34px;
+	margin: 0 auto;
+	padding: 0;
+}
+
+.btn button {
+	/*background-color: #ECECEC;*/
+	color: black;
+	background-color: #817E7E;
+	cursor: pointer;
+	border: none;
+	outline: none;
+	width: 34px;
+	height: 34px;
+	/*
+	text-shadow: 0px 0px 5px rgba(255, 255, 255, 0.5);
+	*/
+}
+
+.fa-2x {
+    line-height: 34px !important;
+}
+
+.btn button:active {
+	color: #25E1DA;
+	text-shadow: 0px 0px 15px #25E1DA;
+}
+
+.btn button:hover {
+	color: #0f5e5b;
+    /*background-color: #e5e5e5;*/
+	/*background-color: #636363;*/
+}
+.btn button:hover:active  {
+	color: #25E1DA;
+}
+
+/* OUTPUT */
+.outputBox {
+	height: 20px;
+	margin-bottom: 5px;
+	padding: 0;
+	background-color: transparent;
+}
+.output {
+	width: 34px;
+	height: 20px;
+	font-size: 0.8rem;
+	text-align: center;
+	color: #25E1DA;
+	background-color: #817E7E;
+	text-shadow: 0px 0px 15px #25E1DA;
+}
+.output span {
+	font-size: 0.6rem;
+}

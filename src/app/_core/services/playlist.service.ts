@@ -25,7 +25,7 @@ export class PlaylistService {
     onPlayPlaylist$ = this.onPlayPlaylist.asObservable();
 
     // Search result PlayList
-    searchResultPlaylist = new Subject<Playlist>();
+    searchResultPlaylist = new Subject<Video[]>();
     searchResultPlaylist$ = this.searchResultPlaylist.asObservable();
 
 

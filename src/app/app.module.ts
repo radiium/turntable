@@ -6,6 +6,7 @@ import { HttpModule, JsonpModule } from '@angular/http';
 // Modules
 import { CoreModule } from './_core/core.module';
 import { SharedModule } from './_shared/shared.module';
+import { EditPlaylistModule } from './_shared/modules/edit-playlist/edit-playlist.module';
 
 // Components
 // Root component
@@ -27,7 +28,8 @@ import { LoginComponent } from './login/login.component';
         HttpModule,
         JsonpModule,
         CoreModule,
-        SharedModule
+        SharedModule,
+        EditPlaylistModule
     ],
     declarations: [
         // Root component

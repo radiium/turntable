@@ -24,7 +24,7 @@ export class MixPanelComponent {
 
     private playList: Video[] = [];
     onPlayPlaylist: Playlist;
-    searchResultPlaylist: Playlist;
+    searchResultPlaylist: Array<Video>;
 
     videoLeft;
     @ViewChild('left') playerLeft;
@@ -32,12 +32,31 @@ export class MixPanelComponent {
     speedLeft: any;
     currVolLeft: any;
 
-
     videoRight;
     @ViewChild('right') playerRight;
     volRight: any;
     speedRight: any;
     currVolRight: any;
+
+    crossFaderValue: any;
+
+    setCrossFaderValue(value) {
+        console.log(value);
+
+/*
+        const valLeft;
+        const valRight;
+        if (value < 50) {
+            value / 100 *
+            valLeft  =
+            valRight =
+
+        } else if (value >= 50) {
+            valLeft  =
+            valRight =
+        }
+        */
+    }
 
 
     constructor(
@@ -58,6 +77,8 @@ export class MixPanelComponent {
         this._playlistService.searchResultPlaylist$.subscribe((pl) => {
             this.searchResultPlaylist = pl;
         });
+
+        this.crossFaderValue = 50;
     }
 
 

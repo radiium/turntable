@@ -1,0 +1,34 @@
+/* General */
+.eplContainer {
+    height: 100%;
+    /*height: 100%;*/
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+}
+
+/* Playlist box */
+.eplBox {
+    width: calc(50%);
+}
+
+.eplBoxLeft {
+    margin-right: 2.5px;
+}
+
+.eplBoxRight {
+    margin-left: 2.5px;
+}
+
+/* Header */
+.eplHeader {
+    height: 34px;
+    min-height: 34px;
+    margin-bottom: 5px;
+}
+
+/* Content playlist */
+.eplContent {
+    height: calc(100% - 39px);
+    background-color: gray;
+}

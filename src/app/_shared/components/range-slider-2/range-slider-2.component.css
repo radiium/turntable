@@ -1,14 +1,18 @@
+.sliderContainer {
+	transform: rotate(270deg);
+}
+
 .sliderBox {
-	/*height:200px;*/
-	width: 34px;
+	height: 34px;
+	width: 200px;
 	display: flex;
-	flex-direction: column;
+	flex-direction: row;
 	flex-wrap: nowrap;
 	justify-content: space-between;
 	overflow: hidden;
 }
-/* VOLUME BUTTONS */
 
+/* VOLUME BUTTONS */
 #slider-left,
 #slider-right,
 #slider-left,
@@ -29,17 +33,24 @@
 input[type="range"] { 
     margin: auto;
     -webkit-appearance: none;
-    position: relative;
     overflow: hidden;
     cursor: pointer;
     border-radius: 0; /* iOS */
 	height: 34px;
-	width: 107.5px;
+	/*width: 107.5px;*/
+	/*
+    position: relative;
 	-webkit-transform: rotate(270deg);
 	transform: rotate(270deg);
 	margin-left: -37px;
 	margin-top: 36.5px;
 	margin-bottom: 36.5px;
+	display: none;
+	*/
+	z-index: 0;
+	margin-top: -1px;
+	margin-left: -2px;
+	width: 107px;
 }
 
 ::-webkit-slider-runnable-track {
@@ -110,7 +121,9 @@ input[type="range"] {
 .slider-input-right,
 .slider-input-left,
 .slider-input-right {
-	position: relative;
+	/*
+	position: absolute;
+	*/
 }
 
 
@@ -167,9 +180,17 @@ input[type="range"] {
 /* BUTTONS */
 
 .grpBtn {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 175px;
+	overflow: hidden;
+	flex: 1;
+
 }
 
 .btn {
+	z-index: 2;
 	width: 34px;
 	margin: 0 auto;
 	padding: 0;
@@ -184,6 +205,7 @@ input[type="range"] {
 	outline: none;
 	width: 34px;
 	height: 34px;
+	margin-left: -1px;
 	/*
 	text-shadow: 0px 0px 5px rgba(255, 255, 255, 0.5);
 	*/
@@ -210,9 +232,15 @@ input[type="range"] {
 /* OUTPUT */
 .outputBox {
 	height: 20px;
+	width: 34px;
 	margin-bottom: 5px;
 	padding: 0;
 	background-color: transparent;
+	-webkit-transform: rotate(90deg);
+	transform: rotate(90deg);
+	margin-top: 7px;
+	margin-right: -6px;
+	margin-left: -3px;
 }
 .output {
 	width: 34px;
@@ -222,7 +250,18 @@ input[type="range"] {
 	color: #25E1DA;
 	background-color: #817E7E;
 	text-shadow: 0px 0px 15px #25E1DA;
+	margin-top: -1px;
+	-webkit-box-shadow: 0px 0px 5px 1px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0px 0px 5px 1px rgba(0,0,0,0.75);
+    box-shadow: 0px 0px 5px 1px rgba(0,0,0,0.75);
 }
 .output span {
 	font-size: 0.6rem;
 }
+
+
+/*
+-webkit-box-shadow: 0px 0px 5px 1px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0px 0px 5px 1px rgba(0,0,0,0.75);
+    box-shadow: 0px 0px 5px 1px rgba(0,0,0,0.75);
+	*/

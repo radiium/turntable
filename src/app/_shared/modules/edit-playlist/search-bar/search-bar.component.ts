@@ -4,13 +4,13 @@ import { Observable } from 'rxjs/Rx';
 import 'rxjs/Rx';
 import * as moment from 'moment';
 
-import { Video } from '../../models/video.model';
-import { YoutubeService } from '../../../_core/services/youtube.service';
+import { Video } from '../../../models/video.model';
+import { YoutubeService } from '../../../../_core/services/youtube.service';
 
-import { PlaylistService } from '../../../_core/services/playlist.service';
+import { PlaylistService } from '../../../../_core/services/playlist.service';
 
-import { Suggests } from '../../models/suggests.model';
-import { SuggestService } from '../../../_core/services/suggest.service';
+import { Suggests } from '../../../models/suggests.model';
+import { SuggestService } from '../../../../_core/services/suggest.service';
 
 @Component({
     selector: 'app-search-bar',
