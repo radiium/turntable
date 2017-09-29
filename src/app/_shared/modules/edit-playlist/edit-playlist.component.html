@@ -14,7 +14,7 @@
                 *ngIf="playlist"
                 [(videolist)]="playlist.videolist"
                 [acceptDrop]="true"
-                [isOnPlay]="false">
+                [addPlayBtn]="addPlayBtn">
             </app-playlist>
         </div>
 
@@ -34,7 +34,7 @@
                 *ngIf="searchResultList"
                 [(videolist)]="searchResultList"
                 [acceptDrop]="false"
-                [isOnPlay]="false">
+                [addPlayBtn]="false">
             </app-playlist>
         </div>
 

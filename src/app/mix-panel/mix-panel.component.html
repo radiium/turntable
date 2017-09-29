@@ -32,22 +32,7 @@
 
     <!-- On play playlist and search playlist -->
     <div id="playlistContainer">
-        <app-edit-playlist [playlist]="onPlayPlaylist"></app-edit-playlist>
-
-        <!-- On edit playlist
-    <div class="doublePlaylistContainer plListContainer">
-        <div class="playlistContainer marginRight">
-            <div *ngIf="onPlayPlaylist" class="header title playlistContainerItem">{{ onPlayPlaylist.title }}</div>
-            <div *ngIf="onPlayPlaylist" class="content playlistContainerItem"><app-playlist [(videolist)]="onPlayPlaylist.videolist" [acceptDrop]="true" [isOnPlay]="true"></app-playlist></div>
-        </div>
-
-         Search result playlist 
-        <div class="playlistContainer marginLeft">
-            <div class="header playlistContainerItem"><app-search-bar></app-search-bar></div>
-            <div *ngIf="searchResultPlaylist" class="content playlistContainerItem"><app-playlist [(videolist)]="searchResultPlaylist" [acceptDrop]="false" [isOnPlay]="false"></app-playlist></div>
-        </div>
-    </div>
-        -->
+        <app-edit-playlist [playlist]="onPlayPlaylist" [addPlayBtn]="true"></app-edit-playlist>
     </div>
 
 </div>

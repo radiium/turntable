@@ -26,23 +26,25 @@ export class MixPanelComponent {
     onPlayPlaylist: Playlist;
     searchResultPlaylist: Array<Video>;
 
+    // Video left controls
     videoLeft;
     @ViewChild('left') playerLeft;
     volLeft: any;
     speedLeft: any;
     currVolLeft: any;
 
+    // Video right controls
     videoRight;
     @ViewChild('right') playerRight;
     volRight: any;
     speedRight: any;
     currVolRight: any;
 
+    // Cross fader controls
     crossFaderValue: any;
 
     setCrossFaderValue(value) {
         console.log(value);
-
 /*
         const valLeft;
         const valRight;
@@ -64,20 +66,21 @@ export class MixPanelComponent {
         private _playlistService: PlaylistService,
         private _electronService: ElectronService) {
 
+        // Get current player left
         this._playerService.playerLeft$.subscribe((vl) => {
             this.videoLeft = vl;
         });
+        // Get current player right
         this._playerService.playerRight$.subscribe((vr) => {
             this.videoRight = vr;
         });
 
+        // Get on lay playlist
         this._playlistService.onPlayPlaylist$.subscribe((pl) => {
             this.onPlayPlaylist = pl;
         });
-        this._playlistService.searchResultPlaylist$.subscribe((pl) => {
-            this.searchResultPlaylist = pl;
-        });
 
+        // Init crossfader value
         this.crossFaderValue = 50;
     }
 
@@ -99,16 +102,17 @@ export class MixPanelComponent {
             this.volLeft = this.currVolLeft - 2;
             this.currVolLeft = this.volLeft;
 
-            console.log(this.playerLeft.getPlayerState());
+            console.log('PlayerLeft state', this.playerLeft.getPlayerState());
             if (this.playerLeft.getPlayerState() === 5
             ||  this.playerLeft.getPlayerState() === 0
             ||  this.playerLeft.getPlayerState() === -1) {
-                console.log('stop timer');
+                console.log('=> Stop timer');
                 this.stopTimer();
             }
             console.log('LTR => ' + this.currVolLeft);
         });
     }
+
 
     triggerMixRTL(event) {
         console.log('Trigger mix right to left');
@@ -129,7 +133,7 @@ export class MixPanelComponent {
             if (this.playerRight.getPlayerState() === 5
             ||  this.playerRight.getPlayerState() === 0
             ||  this.playerRight.getPlayerState() === -1) {
-                console.log('stop timer');
+                console.log('Stop timer');
                 this.stopTimer();
             }
             console.log('RTL => ' + this.currVolRight);

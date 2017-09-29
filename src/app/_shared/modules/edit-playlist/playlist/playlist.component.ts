@@ -23,7 +23,7 @@ export class PlaylistComponent implements OnInit {
     videolistChange = new EventEmitter();
 
     @Input()
-    isOnPlay: Boolean;
+    addPlayBtn: Boolean;
 
     @Input()
     get videolist() {

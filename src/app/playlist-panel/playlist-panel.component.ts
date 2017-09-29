@@ -66,9 +66,7 @@ const testPlaylist = {
 export class PlaylistPanelComponent implements OnInit {
 
     playlistsList: Array<Playlist> = [];
-
     onEditPlaylist: Playlist = null;
-    // searchResultPlaylist: Playlist = null;
 
     filterPlaylist: FormControl;
     filteredStates: Observable<any[]>;
@@ -88,14 +86,16 @@ export class PlaylistPanelComponent implements OnInit {
         private _playlistService: PlaylistService,
         private _tabsService: TabsService) {
 
+            // Check if user is logged in
             this._authService.user$
             .subscribe((user: any) => {
                 this.isLoggedIn = user ? true : false;
             });
 
+            // Init loading playlist progress bar
             this.isProgressBar = false;
 
-            // Get playlist list
+            // Get progress bar value
             this._playlistService.progressBarValue$
             .subscribe((pbv: any) => {
                 this.progressBarValue = pbv;
@@ -115,6 +115,7 @@ export class PlaylistPanelComponent implements OnInit {
                 this.selectedTab = st;
             });
 
+            // Fake data
             const arr = [];
             for (let i = 0; i < 25; i++) {
                 arr.push(testPlaylist);
@@ -127,7 +128,6 @@ export class PlaylistPanelComponent implements OnInit {
             .subscribe((pl: any) => {
                 this.playlistsList = pl;
                 this.updateFilterInput();
-                console.log(pl);
                 if (pl.length === 0) {
                     const arr = [];
                     for (let i = 0; i < 25; i++) {
@@ -135,14 +135,6 @@ export class PlaylistPanelComponent implements OnInit {
                     }
                     this.playlistsList = <Playlist[]>arr;
                 }
-            });
-            */
-
-            /*
-            // Get search result playlist
-            this._playlistService.searchResultPlaylist$
-            .subscribe((pl: any) => {
-                this.searchResultPlaylist = pl;
             });
             */
 

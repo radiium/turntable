@@ -29,7 +29,8 @@ export class SearchBarComponent implements OnInit {
         private _suggestService: SuggestService,
         private _playlistService: PlaylistService,
         private _youtubeService: YoutubeService) {
-            // Bind suggests results
+
+            // Get suggests results
             this._suggestService.suggestsResult$.subscribe((suggestsResult) => {
                 this.query = suggestsResult.query;
                 this.suggestsResult = suggestsResult.suggests;
@@ -37,6 +38,7 @@ export class SearchBarComponent implements OnInit {
     }
 
     ngOnInit() {
+        // Search suggests when user type in search bar
         this.search.valueChanges
         .debounceTime(200)
         .switchMap((query) => {
@@ -63,6 +65,7 @@ export class SearchBarComponent implements OnInit {
         });
     }
 
+    // Select suggest
     selectSuggestion(suggest: String) {
         this._suggestService.setSuggestsResult({});
         this.selectedSugest = suggest;
@@ -70,6 +73,7 @@ export class SearchBarComponent implements OnInit {
         this.searchSuggestion(suggest);
     }
 
+    // Search videos by selected suggest
     searchSuggestion(suggest: String) {
 
         this._youtubeService.searchVideos(suggest)
@@ -93,7 +97,7 @@ export class SearchBarComponent implements OnInit {
         });
     }
 
-
+    // Handle keyboard key
     keyDown(event: KeyboardEvent) {
         if (this.suggestsResult) {
             switch (event.keyCode) {
@@ -113,6 +117,7 @@ export class SearchBarComponent implements OnInit {
         }
     }
 
+    // Handle arrow key in suggest popup
     checkArrowKeyLocation() {
         if (this.arrowkeyLocation < 0) {
             this.arrowkeyLocation = 0;

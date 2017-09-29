@@ -13,6 +13,10 @@ export class EditPlaylistComponent implements OnInit, OnChanges {
 
     @Input()
     playlist: Playlist;
+
+    @Input()
+    addPlayBtn: boolean;
+
     originalPlaylist: Playlist;
     searchResultList: Array<Video>;
 
@@ -30,8 +34,6 @@ export class EditPlaylistComponent implements OnInit, OnChanges {
     }
 
     ngOnChanges(changes: SimpleChanges) {
-        console.log(changes);
-
     }
 
 }
