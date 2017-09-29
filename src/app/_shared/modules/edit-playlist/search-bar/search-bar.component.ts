@@ -1,14 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs/Rx';
-import 'rxjs/Rx';
 import * as moment from 'moment';
+import 'rxjs/Rx';
 
 import { Video } from '../../../models/video.model';
 import { YoutubeService } from '../../../../_core/services/youtube.service';
-
 import { PlaylistService } from '../../../../_core/services/playlist.service';
-
 import { Suggests } from '../../../models/suggests.model';
 import { SuggestService } from '../../../../_core/services/suggest.service';
 

@@ -4,6 +4,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { TranslateModule } from '@ngx-translate/core';
 
 // External modules
 import { DragulaModule } from 'ng2-dragula';
@@ -26,11 +27,6 @@ import { FilterPlaylistPipe } from './pipes/filter-playlist.pipe';
 // Ng2 you tube player
 import { YoutubePlayerModule } from './modules/ng2-youtube-player/ng2-youtube-player';
 
-/*
-import { PlaylistComponent } from './components/playlist/playlist.component';
-import { PlaylistItemComponent } from './components/playlist-item/playlist-item.component';
-import { SearchBarComponent } from './components/search-bar/search-bar.component';
-*/
 @NgModule({
     entryComponents: [
         ConfirmDialogComponent,
@@ -72,7 +68,8 @@ import { SearchBarComponent } from './components/search-bar/search-bar.component
         FilterPlaylistPipe,
         RangeSlider2Component,
         VideoPlayerComponent,
-        CustomMaterialModule
+        CustomMaterialModule,
+        TranslateModule
     ],
     providers: [],
 })

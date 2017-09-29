@@ -12,6 +12,14 @@ export class PlaylistItemComponent {
 
     @Input()
     public video: Video;
+    defaultThumb: String = 'assets/images/mix.png';
 
     constructor() {}
+
+    handleThumUrl(thumbUrl) {
+        if (thumbUrl.indexOf('...') !== -1) {
+            return this.defaultThumb;
+        }
+        return thumbUrl;
+    }
 }

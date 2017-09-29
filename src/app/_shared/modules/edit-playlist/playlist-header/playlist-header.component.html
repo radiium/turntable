@@ -1,0 +1,22 @@
+<div id="listContainer">
+<div class="list listLeft">
+    <div *ngIf="playlist" id="infoBar" class="listHeader">
+        <div class="infoBarItem itemList infoBarBtn"><input type="button" value="{{ playlist.title }}"></div>
+        <!--
+        (click)="getPlaylist()"
+        <div class="infoBarItem itemList infoBarBtn"><input [class.active]="!isPlaylist" type="button" value="Historic" (click)="getHistoric()"></div>
+        -->
+        <div class="infoBarItem itemList">
+        <span class="output">{{ playlist.videolist.length }}</span> video<span *ngIf="playlist.videolist.length > 1">s</span> | Total time: <span class="output">{{ totalDuration | duration:true }}</span>
+        </div>
+    </div>
+
+    <div *ngIf="!playlist" id="infoBar" class="listHeader">
+        <div class="infoBarItem itemList infoBarBtn"><input type="button" value="No playlist"></div>
+        <div class="infoBarItem itemList">
+        <span class="output">0</span> video | Total time: <span class="output">0</span>
+        </div>
+    </div>
+
+</div>
+</div>

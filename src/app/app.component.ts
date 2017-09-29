@@ -55,6 +55,11 @@ export class AppComponent implements OnInit, OnDestroy, AfterContentInit {
                 return target.dataset.acceptDrop === 'true';
             },
         });
+        // Prevent animation on drag
+        this._dragulaService.drag.subscribe((value) => {
+            // value[1].children[0].children[0].children[0].children[1].style.marginLeft = 2;
+            // console.log('value', value[1].children[0].children[0].children[0].children[1].style.marginLeft);
+        });
         /*
         this.dragulaService.dragend.subscribe((el) => {
         });

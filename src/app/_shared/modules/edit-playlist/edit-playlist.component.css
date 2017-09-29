@@ -32,4 +32,45 @@
 .eplContent {
     height: calc(100% - 39px);
     background-color: gray;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
+
+/* Playlist items */
+
+.playlist {
+    height: 100%;
+}
+
+.videoItem {
+    width: 100%;
+    background-color: #242320;
+    list-style: none;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.videoItem:not(:last-child) { margin-bottom: 2px; }
+
+
+/* Playlist items controls */
+.videoControl { width: 150px; }
+
+.mix-videoControl { width: 200px; }
+
+.deleteBtn {
+    text-align: center;
+    margin-right: 20px;
+    top: 25px;
+    float: right;
+}
+
+.mix-btn {
+    text-align: center;
+    margin-right: 10px;
+    top: 25px;
+    float: right;
+}
+.leftBtn { padding-right: 6px; }
+.rightBtn { padding-left: 6px; }

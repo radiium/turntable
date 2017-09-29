@@ -6,7 +6,7 @@ export class DurationPipe implements PipeTransform {
 
     transform(value: any, args?: any): any {
         if (!value) {
-            return
+            return;
         }
         let format = 'mm:ss';
         if (args) {

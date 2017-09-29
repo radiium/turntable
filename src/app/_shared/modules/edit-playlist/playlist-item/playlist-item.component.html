@@ -1,13 +1,13 @@
 <div class="videoListItem">
     <div class="thumb">
-        <div class="pochette"><img [src]="video.thumbUrl"/></div>
-        <div class="vinyl"><img [src]="video.thumbUrl"/></div>
+        <div class="vinyl"><img    [attr.src]="handleThumUrl(video.thumbUrl)" (onError)="this.src=defaultThumb"/></div>
+        <div class="pochette"><img [attr.src]="handleThumUrl(video.thumbUrl)" (onError)="this.src=defaultThumb"/></div>
     </div>
     <div class="description">
         <p>{{video.title}}</p>
         <!--
         <p>{{video.description}}</p>
         -->
-        <p>{{video.duration | duration}}</p>
+        <p>{{video.duration | duration}}  test={{video.thumbUrl }}</p>
     </div>
 </div>

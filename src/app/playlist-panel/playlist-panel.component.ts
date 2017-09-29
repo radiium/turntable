@@ -116,27 +116,21 @@ export class PlaylistPanelComponent implements OnInit {
             });
 
             // Fake data
+            /*
             const arr = [];
             for (let i = 0; i < 25; i++) {
                 arr.push(testPlaylist);
             }
-            this.playlistsList = <Playlist[]>arr;
+            */
 
-            /*
+            this.playlistsList = <Playlist[]>[testPlaylist];
+
             // Get playlist list
             this._playlistService.playListsList$
             .subscribe((pl: any) => {
                 this.playlistsList = pl;
                 this.updateFilterInput();
-                if (pl.length === 0) {
-                    const arr = [];
-                    for (let i = 0; i < 25; i++) {
-                        arr.push(testPlaylist);
-                    }
-                    this.playlistsList = <Playlist[]>arr;
-                }
             });
-            */
 
             // Init filter playlist input
             this.filterPlaylist = new FormControl();
@@ -216,8 +210,8 @@ export class PlaylistPanelComponent implements OnInit {
     // Play the selected playlist
     playPlaylist(playlist) {
         if (playlist.videolist.length > 0) {
-            this._tabsService.setSelectedTab(2);
             this._playlistService.setOnPlayPlayList(playlist);
+            this._tabsService.setSelectedTab(2);
         }
     }
 
