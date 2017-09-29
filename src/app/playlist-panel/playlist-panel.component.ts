@@ -12,6 +12,7 @@ import { PlaylistService } from '../_core/services/playlist.service';
 import { CreatePlaylistDialogComponent } from './create-playlist-dialog/create-playlist-dialog.component';
 import { ConfirmDialogComponent } from '../_shared/components/confirm-dialog/confirm-dialog.component';
 import { TabsService } from '../_core/services/tabs.service';
+import { AuthService } from '../_core/services/auth.service';
 
 
 const testPlaylist = {
@@ -79,10 +80,18 @@ export class PlaylistPanelComponent implements OnInit {
 
     selectedTab: any;
 
+    isLoggedIn: Boolean = false;
+
     constructor(
         public dialog: MdDialog,
+        private _authService: AuthService,
         private _playlistService: PlaylistService,
         private _tabsService: TabsService) {
+
+            this._authService.user$
+            .subscribe((user: any) => {
+                this.isLoggedIn = user ? true : false;
+            });
 
             this.isProgressBar = false;
 
