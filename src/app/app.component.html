@@ -1,11 +1,13 @@
 <!-- App loader -->
 <div class="loader" *ngIf="isLoading">
-<md-progress-spinner class="appLoader" [mode]="'indeterminate'"></md-progress-spinner>
-<div class="textLoader">Loading ...</div>
+    <md-progress-spinner class="appLoader" [mode]="'indeterminate'"></md-progress-spinner>
+    <div class="textLoader">Loading ...</div>
 </div>
 <div class="bgLoader" *ngIf="isLoading"></div>
 
+<!-- App container-->
 <div [class.blur]="isLoading" id="appContainer">
+    
     <!-- Login buttons and status -->
     <app-login></app-login>
 
@@ -16,11 +18,12 @@
      --><button [class.tabActive]="selectedTab === 3" (click)="_tabsService.setSelectedTab(3)">Settings</button>
     </div>
 
-    <!-- Content -->
+    <!-- Content tabs -->
     <div class="tabsContent">
         <app-playlist-panel [hidden]="selectedTab !== 1" class="tabContentCpnt"></app-playlist-panel>
         <app-mix-panel      [hidden]="selectedTab !== 2" class="tabContentCpnt"></app-mix-panel>
         <app-settings-panel [hidden]="selectedTab !== 3" class="tabContentCpnt"></app-settings-panel>
     </div>
+
 </div>
 
