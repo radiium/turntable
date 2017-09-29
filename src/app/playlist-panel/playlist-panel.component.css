@@ -88,6 +88,24 @@ md-grid-list {
     box-shadow: 0 3px 1px -2px rgba(0,0,0,.2),0 2px 2px 0 rgba(0,0,0,.14),0 1px 5px 0 rgba(0,0,0,.12);
 }
 
+.inputFilterbox {
+    position: relative;
+}
+
+#clearInputFilter {
+    cursor: pointer;
+    color: white;
+	position: absolute;
+	margin-left: -35px;
+    top: 5.5px;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: none;
+    outline: none;
+    background-color: gray;
+}
+
 .returnBtn {
     padding-left: 4px !important;
     margin-right: 10px !important;

@@ -9,12 +9,13 @@
         </button>
 
         <!-- Search/filter playlist by word -->
-        <span>
+        <span class="inputFilterbox">
             <input id="inputFilter" mdInput [formControl]="filterPlaylist" [mdAutocomplete]="auto"
                 class="inputSearchPlaylist" type="text"  placeholder="Search playlist">
 
+            
             <button *ngIf="filterPlaylist.value && filterPlaylist.value.length > 0"
-                (click)="filterPlaylist.setValue('')" id="clearInputFilter" md-mini-fab>X</button>
+                (click)="filterPlaylist.setValue('')" id="clearInputFilter" >X</button>
 
             <md-autocomplete #auto="mdAutocomplete" class="autocompleteBox">
                 <md-option *ngFor="let pl of playlistsList" [value]="pl.title">

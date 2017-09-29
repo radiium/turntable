@@ -111,6 +111,7 @@ export class PlaylistPanelComponent implements OnInit {
                 arr.push(testPlaylist);
             }
             this.playlistsList = <Playlist[]>arr;
+
             /*
             // Get playlist list
             this._playlistService.playListsList$
@@ -142,6 +143,7 @@ export class PlaylistPanelComponent implements OnInit {
             this.filteredStates = this.filterPlaylist.valueChanges
             .startWith(null)
             .map(title => title ? this.filterPlaylists(title) : this.playlistsList.slice());
+            this.updateFilterInput();
     }
 
     // Update disabled/enabled status of filter playlist
