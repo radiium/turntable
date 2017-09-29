@@ -1,9 +1,8 @@
 .playlist {
-    height: calc(100% + 3px);
+    height: 100%;
     overflow-y: auto;
     overflow-x: hidden;
 }
-
 
 /* Drop infos */
 .dropInfos {
@@ -26,16 +25,12 @@
     flex-direction: row;
     justify-content: space-between;
 }
-.videoItem:not(:last-child) {
-    margin-bottom: 2px;
-}
 
-.videoControl {
-    width: 150px;
-}
-.mix-videoControl {
-    width: 200px;
-}
+.videoItem:not(:last-child) { margin-bottom: 2px; }
+
+.videoControl { width: 150px; }
+
+.mix-videoControl { width: 200px; }
 
 .deleteBtn {
     text-align: center;
@@ -50,11 +45,5 @@
     top: 25px;
     float: right;
 }
-
-.leftBtn {
-    padding-right: 6px;
-}
-
-.rightBtn {
-    padding-left: 6px;
-}
+.leftBtn { padding-right: 6px; }
+.rightBtn { padding-left: 6px; }

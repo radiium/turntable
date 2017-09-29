@@ -1,10 +1,3 @@
-md-grid-tile {
-    background: #242320;
-}
-
-md-grid-list {
-    margin: 15px;
-}
 
 .progressBarGray {
     position: absolute;
@@ -12,44 +5,6 @@ md-grid-list {
     /*height: calc(100% - 64px);*/
     width: 100%;
     z-index: 99998;
-}
-
-.doublePlaylistContainer {
-    width: 100%;
-    height: calc(100% - 64px);
-    margin: 0;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    justify-content: space-between
-}
-
-.playlistContainer {
-	width: calc(50% - 5px);
-	margin-top: 10px;
-	display: -webkit-box;
-	display: -ms-flexbox;
-	display: flex;
-	-webkit-box-orient: vertical;
-	-webkit-box-direction: normal;
-	-ms-flex-direction: column;
-	flex-direction: column;
-	-ms-flex-wrap: nowrap;
-	flex-wrap: nowrap;
-	box-shadow: 0px 2px 3px 3px rgba(0,0,0,.2),0 2px 2px 0 rgba(0,0,0,.14),0 1px 5px 0 rgba(0,0,0,.12);
-}
-
-.title {
-    text-align: center;
-    height: 24px;
-    padding: 5px;
-    background-color: white;
-}
-
-.content {
-    height: calc(100% - 32px);
-    background-color: darkgray;
-    overflow: hidden;
 }
 
 /*************************
@@ -62,13 +17,14 @@ md-grid-list {
     height: 64px;
     box-shadow: 0 3px 1px -9px rgba(0,0,0,.2),0 2px 2px 0 rgba(0,0,0,.14),0 1px 5px 0 rgba(0,0,0,.12);
 }
-.plPanelContent {
-	margin-top: 69px;
-	overflow: auto;
-    height: calc(100% - 69px);
-}
 
-.plPanelContent md-grid-list { margin: 0 0 0 0 !important; }
+.plPanelContent {
+	margin-top: 64px;
+	overflow: auto;
+    height: calc(100% - 64px);
+}
+.plPanelContent md-grid-list { margin: 0 !important; }
+.plPanelContent md-grid-tile { background: #242320; }
 
 .button-row {
     display: flex;
@@ -76,6 +32,7 @@ md-grid-list {
 }
 
 .spacerToolbar { flex: 1 1 auto; }
+
 .inputSearchPlaylist {
     border: none;
     border-radius: 20px;
@@ -118,6 +75,10 @@ md-grid-list {
 /*************************
     PlaylistList items
 *************************/
+.playlistGrid {
+    margin-top: 5px;
+}
+
 .plBox {
     width: 100%;
     height: 100%;
