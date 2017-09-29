@@ -1,24 +1,26 @@
-#mixPanelContainer {}
+#mixPanelContainer {
+    height: 100%;
+}
 
 #playerContainer {
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
     justify-content: space-between;
-    height: 244px;
+    height: 239px;
 }
 
 #playlistContainer {
-    height: calc(100% - 284px);
+    height: calc(100% - 239px);
 }
 
 #controlBox {
 	background: url("../../assets/images/mix.png") center no-repeat;
 	background-color: #5C5B5B;
 	width: 100%;
+    height: 239px;
 	margin-left: 5px;
 	margin-right: 5px;
-	margin-bottom: 5px;
     display: flex;
     flex-wrap: nowrap;
     flex-direction: column;
