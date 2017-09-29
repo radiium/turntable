@@ -1,6 +1,7 @@
-import { Component, OnInit, Input, OnChanges, AfterViewInit,
-    SimpleChanges, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, Input,
+    ElementRef, ViewChild, OnDestroy } from '@angular/core';
 
+import { DragulaService, dragula } from 'ng2-dragula/ng2-dragula';
 import * as autoScroll from 'dom-autoscroller';
 
 
@@ -12,10 +13,12 @@ import { PlayerService } from '../../../_core/services/player.service';
 @Component({
   selector: 'app-edit-playlist',
   templateUrl: './edit-playlist.component.html',
-  styleUrls: ['./edit-playlist.component.css']
+  styleUrls: ['./edit-playlist.component.css'],
+  viewProviders:  [DragulaService]
 })
-export class EditPlaylistComponent implements OnInit, AfterViewInit, OnChanges {
+export class EditPlaylistComponent implements OnInit, OnDestroy {
 
+    dragulaBagName = 'drag-drop-list';
 
     @ViewChild('autoscrollLeft')  autoscrollLeft: ElementRef;
     @ViewChild('autoscrollRight') autoscrollRight: ElementRef;
@@ -31,14 +34,16 @@ export class EditPlaylistComponent implements OnInit, AfterViewInit, OnChanges {
 
     constructor(
     private _playlistService: PlaylistService,
-    private _playerService: PlayerService) {
+    private _playerService: PlayerService,
+    private _dragulaService: DragulaService) {
 
         // Get search result list
         this._playlistService.searchResultPlaylist$
         .subscribe((searchResultsList) => {
             this.searchResultsList = searchResultsList;
 
-            //
+            // Set autoscroll on drag
+            // at begin or end of playlist container
             const scroll = autoScroll([
                 this.autoscrollLeft.nativeElement,
                 this.autoscrollRight.nativeElement,
@@ -52,14 +57,40 @@ export class EditPlaylistComponent implements OnInit, AfterViewInit, OnChanges {
     }
 
     ngOnInit() {
+        // Init dragula service options
+        this._dragulaService.setOptions(
+            this.dragulaBagName, {
+            revertOnSpill: true,
+            moves: (el, source, handle, sibling): boolean => {
+                return el.dataset.movable === 'true';
+            },
+            copy: (el, source): boolean => {
+                return source.dataset.acceptDrop === 'false';
+            },
+            accepts: (el, target, source, sibling): boolean => {
+                return target.dataset.acceptDrop === 'true';
+            },
+        });
+
+        // Prevent animation on drag
+        this._dragulaService.drag.subscribe((value) => {
+            // value[1].children[0].children[0].children[0].children[1].style.marginLeft = 2;
+            // console.log('value', value[1].children[0].children[0].children[0].children[1].style.marginLeft);
+        });
+        /*
+        this.dragulaService.dragend.subscribe((el) => {
+        });
+        this.dragulaService.over.subscribe((val) => {
+        });
+        */
     }
 
-    ngAfterViewInit() {
+    ngOnDestroy() {
+        // Destroy dragula service
+        if (!!this._dragulaService.find(this.dragulaBagName)) {
+            this._dragulaService.destroy(this.dragulaBagName);
+        }
     }
-
-    ngOnChanges(changes: SimpleChanges) {
-    }
-
 
     //  Delete video
     deleteVideo(videoId) {
