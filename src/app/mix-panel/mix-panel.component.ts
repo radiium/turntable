@@ -149,6 +149,7 @@ export class MixPanelComponent {
         this.timer$ = Observable.empty();
     }
 
+    /*
     public playPingPong() {
         if (this._electronService.isElectronApp) {
             // const pong: string = this._electronService.ipcRenderer.sendSync('ping');
@@ -170,4 +171,5 @@ export class MixPanelComponent {
         console.log(arg); // prints "pong"
         });
     }
+    */
 }
