@@ -14,7 +14,7 @@ export class CreatePlaylistDialogComponent {
         public dialogRef: MdDialogRef<CreatePlaylistDialogComponent>,
         @Inject(MD_DIALOG_DATA) public data: any) {
             this.name = '';
-            this.privacyStatus = '';
+            this.privacyStatus = 'public';
     }
 
     onCancel(): void {
