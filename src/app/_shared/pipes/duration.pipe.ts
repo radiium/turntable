@@ -5,7 +5,7 @@ import * as moment from 'moment';
 export class DurationPipe implements PipeTransform {
 
     transform(value: any, args?: any): any {
-        if (!value) {
+        if (!value && value !== 0) {
             return;
         }
         let format = 'mm:ss';
