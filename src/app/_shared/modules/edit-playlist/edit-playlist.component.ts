@@ -1,14 +1,14 @@
-import { Component, OnInit, Input,
+import { Component, OnInit, Input, OnChanges, SimpleChanges,
     ElementRef, ViewChild, OnDestroy } from '@angular/core';
 
 import { DragulaService, dragula } from 'ng2-dragula/ng2-dragula';
 import * as autoScroll from 'dom-autoscroller';
 
-
 import { Video } from '../../models/video.model';
 import { Playlist } from '../../models/playlist.model';
 import { PlaylistService } from '../../../_core/services/playlist.service';
 import { PlayerService } from '../../../_core/services/player.service';
+import { CopyService } from '../../../_core/services/copy.service';
 
 @Component({
   selector: 'app-edit-playlist',
@@ -16,7 +16,7 @@ import { PlayerService } from '../../../_core/services/player.service';
   styleUrls: ['./edit-playlist.component.css'],
   viewProviders:  [DragulaService]
 })
-export class EditPlaylistComponent implements OnInit, OnDestroy {
+export class EditPlaylistComponent implements OnInit, OnDestroy, OnChanges {
 
     dragulaBagName = 'drag-drop-list';
 
@@ -25,6 +25,7 @@ export class EditPlaylistComponent implements OnInit, OnDestroy {
 
     @Input()
     playlist: Playlist;
+    videolist: Array<Video>;
 
     @Input()
     type: string;
@@ -33,6 +34,7 @@ export class EditPlaylistComponent implements OnInit, OnDestroy {
     searchResultsList: Array<Video>;
 
     constructor(
+    public copy: CopyService,
     private _playlistService: PlaylistService,
     private _playerService: PlayerService,
     private _dragulaService: DragulaService) {
@@ -56,6 +58,14 @@ export class EditPlaylistComponent implements OnInit, OnDestroy {
         });
     }
 
+    ngOnChanges(changes: SimpleChanges) {
+        // Set videolist when 
+        if (changes && changes.playlist && changes.playlist.currentValue) {
+            this.videolist = changes.playlist.currentValue.videolist;
+        }
+
+    }
+
     ngOnInit() {
         // Init dragula service options
         this._dragulaService.setOptions(
@@ -77,6 +87,12 @@ export class EditPlaylistComponent implements OnInit, OnDestroy {
             // value[1].children[0].children[0].children[0].children[1].style.marginLeft = 2;
             // console.log('value', value[1].children[0].children[0].children[0].children[1].style.marginLeft);
         });
+
+        // Update playlist videolist model on drop
+        this._dragulaService.dropModel.subscribe((args: any) => {
+            const pl = this.copy.copyPlaylist(this.playlist, this.videolist);
+            this.setPlaylist(pl);
+        });
         /*
         this.dragulaService.dragend.subscribe((el) => {
         });
@@ -95,14 +111,11 @@ export class EditPlaylistComponent implements OnInit, OnDestroy {
     //  Delete video
     deleteVideo(videoId) {
         if (videoId) {
-            this.playlist.videolist = this.playlist.videolist.filter(function(el) {
+            const pl = this.copy.copyPlaylist(this.playlist);
+            pl.videolist = pl.videolist.filter(function(el) {
                 return el.id !== videoId;
             });
-            if (this.type === 'player') {
-                this._playlistService.setOnPlayPlayList(this.playlist);
-            } else if (this.type === 'edit') {
-                this._playlistService.setOnEditPlayList(this.playlist);
-            }
+            this.setPlaylist(pl);
         }
     }
 
@@ -114,6 +127,16 @@ export class EditPlaylistComponent implements OnInit, OnDestroy {
             }
             if (side === 'right') {
                 this._playerService.setPlayerRight(video);
+            }
+        }
+    }
+
+    setPlaylist(playlist) {
+        if (playlist) {
+            if (this.type === 'player') {
+                this._playlistService.setOnPlayPlayList(playlist);
+            } else if (this.type === 'edit') {
+                this._playlistService.setOnEditPlayList(playlist);
             }
         }
     }

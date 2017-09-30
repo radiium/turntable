@@ -11,14 +11,14 @@
 
         <!-- Playlist -->
         <div class="eplContent" #autoscrollLeft >
-        <div *ngIf="playlist" class="playlist" [dragula]="'drag-drop-list'" [dragulaModel]="playlist.videolist" [attr.data-accept-drop]="true">
+        <div *ngIf="playlist" class="playlist" [dragula]="'drag-drop-list'" [dragulaModel]="videolist" [attr.data-accept-drop]="true">
 
             <!-- Drop hint -->
-            <div *ngIf="playlist.videolist.length < 1" id="dropInfos" class="dropInfos" [attr.data-movable]="false">
+            <div *ngIf="videolist.length < 1" id="dropInfos" class="dropInfos" [attr.data-movable]="false">
             Drag and drop item here &#8595;
             </div>
             
-            <li *ngFor="let video of playlist.videolist" class="videoItem" [attr.data-id]="video.id" [attr.data-movable]="true" >
+            <li *ngFor="let video of videolist" class="videoItem" [attr.data-id]="video.id" [attr.data-movable]="true" >
                 
                 <!-- Playlist item base -->
                 <app-playlist-item class="videoInfos" [video]="video"></app-playlist-item>
