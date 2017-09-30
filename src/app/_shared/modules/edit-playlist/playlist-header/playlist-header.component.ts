@@ -11,7 +11,7 @@ export class PlaylistHeaderComponent implements OnInit, OnChanges {
 
     @Input()
     playlist: Playlist;
-    totalDuration: Number;
+    totalDuration: Number = 0;
 
     constructor() { }
     ngOnInit() {
