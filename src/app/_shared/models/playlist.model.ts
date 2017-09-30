@@ -37,8 +37,4 @@ export class Playlist {
             this.isLocal       = isLocal;
             this.videolist     = videolist;
     }
-
-    setVideoList(videolist: Video[]) {
-        this.videolist = videolist;
-    }
 }
