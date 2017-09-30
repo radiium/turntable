@@ -6,6 +6,7 @@ import { PlayerService } from './services/player.service';
 import { PlaylistService } from './services/playlist.service';
 import { SuggestService } from './services/suggest.service';
 import { TabsService } from './services/tabs.service';
+import { CopyService } from './services/copy.service';
 
 import { OnlineService } from './services/online.service';
 import { HttpService } from './services/http.service';
@@ -24,6 +25,7 @@ import { HttpService } from './services/http.service';
         PlaylistService,
         SuggestService,
         TabsService,
+        CopyService,
         OnlineService,
         HttpService
     ]
