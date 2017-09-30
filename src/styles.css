@@ -27,6 +27,7 @@ body {
   */
 }
 
+button:focus {outline: none;}
 input:focus { outline: none; }
 
 /* Unglorious hack... */
