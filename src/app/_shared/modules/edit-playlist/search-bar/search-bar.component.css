@@ -18,6 +18,7 @@
     height: 24px;
     border: 1px solid transparent;
     z-index: 5;
+    font-size: 1rem;
 }
 #searchBox input[type='text']:focus {
     outline: none !important;

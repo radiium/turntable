@@ -70,7 +70,7 @@
             [value]="progressBarValue">
         </md-progress-bar>
 
-        <md-grid-list  *ngIf="playlistsList" cols="5" rowHeight="160px" gutterSize="10px" >
+        <md-grid-list  *ngIf="playlistsList" cols="4" rowHeight="160px" gutterSize="25px" >
 
             <!-- Playlist list items -->
             <md-grid-tile *ngFor="let pl of playlistsList | filterPlaylist:filterPlaylist.value ; let i = index">

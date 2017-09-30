@@ -27,6 +27,13 @@ body {
   */
 }
 
+/* Custom Scroll bar */
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-thumb { background: #666; }
+::-webkit-scrollbar-track { background: #ddd; }
+::-webkit-scrollbar-button { background: #666; height: 15px; border-radius: 0 }
+
+
 button:focus {outline: none;}
 input:focus { outline: none; }
 

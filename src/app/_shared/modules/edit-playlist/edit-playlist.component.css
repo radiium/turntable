@@ -9,17 +9,9 @@
 }
 
 /* Playlist box */
-.eplBox {
-    width: calc(50%);
-}
-
-.eplBoxLeft {
-    margin-right: 2.5px;
-}
-
-.eplBoxRight {
-    margin-left: 2.5px;
-}
+.eplBox { width: calc(50%); }
+.eplBoxLeft { margin-right: 2.5px; }
+.eplBoxRight { margin-left: 2.5px; }
 
 /* Header */
 .eplHeader {
@@ -35,17 +27,9 @@
     overflow-y: auto;
     overflow-x: hidden;
 }
-/* Scroll bar */
-.eplContent::-webkit-scrollbar { width: 10px; }
-.eplContent::-webkit-scrollbar-thumb { background: #666; }
-.eplContent::-webkit-scrollbar-track { background: #ddd; }
-.eplContent::-webkit-scrollbar-button { background: #666; height: 15px; border-radius: 0 }
 
 /* Playlist items */
-
-.playlist {
-    height: 100%;
-}
+.playlist { height: 100%; }
 
 .videoItem {
     width: 100%;
@@ -55,13 +39,10 @@
     flex-direction: row;
     justify-content: space-between;
 }
-
 .videoItem:not(:last-child) { margin-bottom: 2px; }
-
 
 /* Playlist items controls */
 .videoControl { width: 150px; }
-
 .mix-videoControl { width: 200px; }
 
 .deleteBtn {

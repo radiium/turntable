@@ -119,11 +119,12 @@ export class PlaylistPanelComponent implements OnInit {
 
             // Fake data
             /*
+            */
             const arr = [];
             for (let i = 0; i < 25; i++) {
                 arr.push(testPlaylist);
             }
-            */
+            this.playlistsList = <Playlist[]>arr;
             // this.playlistsList = <Playlist[]>[testPlaylist];
 
 
