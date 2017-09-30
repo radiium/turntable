@@ -9,6 +9,7 @@ import 'rxjs/add/operator/map';
 import { Video } from '../_shared/models/video.model';
 import { Playlist } from '../_shared/models/playlist.model';
 import { PlaylistService } from '../_core/services/playlist.service';
+import { CopyService } from '../_core/services/copy.service';
 import { CreatePlaylistDialogComponent } from './create-playlist-dialog/create-playlist-dialog.component';
 import { ConfirmDialogComponent } from '../_shared/components/confirm-dialog/confirm-dialog.component';
 import { TabsService } from '../_core/services/tabs.service';
@@ -66,7 +67,7 @@ const testPlaylist = {
 export class PlaylistPanelComponent implements OnInit {
 
     playlistsList: Array<Playlist> = [];
-    onEditPlaylist: Playlist = null;
+    onEditPlaylist: Playlist;
 
     filterPlaylist: FormControl;
     filteredStates: Observable<any[]>;
@@ -81,6 +82,7 @@ export class PlaylistPanelComponent implements OnInit {
     isLoggedIn: Boolean = false;
 
     constructor(
+        public copy: CopyService,
         public dialog: MdDialog,
         private _authService: AuthService,
         private _playlistService: PlaylistService,
@@ -122,14 +124,20 @@ export class PlaylistPanelComponent implements OnInit {
                 arr.push(testPlaylist);
             }
             */
+            // this.playlistsList = <Playlist[]>[testPlaylist];
 
-            this.playlistsList = <Playlist[]>[testPlaylist];
 
             // Get playlist list
             this._playlistService.playListsList$
             .subscribe((pl: any) => {
                 this.playlistsList = pl;
                 this.updateFilterInput();
+            });
+
+            // Get on edit playlist
+            this._playlistService.onEditPlaylist$
+            .subscribe((pl: any) => {
+                this.onEditPlaylist = pl;
             });
 
             // Init filter playlist input
@@ -166,15 +174,8 @@ export class PlaylistPanelComponent implements OnInit {
 
                 const videoList = new Array<Video>();
                 const pl = new Playlist(
-                    id,
-                    title,
-                    '',
-                    '',
-                    null,
-                    null,
-                    '',
-                    privacyStatus,
-                    true,
+                    id, title, '', '', 0, 0, '',
+                    privacyStatus, true,
                     videoList
                 );
 
@@ -187,32 +188,46 @@ export class PlaylistPanelComponent implements OnInit {
     // Edit the selected playlist
     editPlaylist(playlist) {
         this.isEditMode = true;
-        this.onEditPlaylist = playlist;
+        const pl = this.copy.copyPlaylist(playlist);
+        this._playlistService.setOnEditPlayList(pl);
     }
 
     // Save the on edit playlist
     saveOnEditPlaylist() {
+        const pl = this.copy.copyPlaylist(this.onEditPlaylist);
         const pll = this.playlistsList;
         pll.forEach((el, i) => {
-            if (el.id === this.onEditPlaylist.id) { pll.splice(i, 1, this.onEditPlaylist); }
+            if (el.id === pl.id) {
+                pll.splice(i, 1, pl);
+            }
         });
-        this._playlistService.setPlayListsList(pll);
-        this.onEditPlaylist = null;
-        // this.searchResultPlaylist = null;
         this.isEditMode = false;
+        this._playlistService.setPlayListsList(pll);
+        this._playlistService.setOnEditPlayList(null);
+        this._playlistService.setSearchResultPlaylist(null);
     }
 
-    // Return button
+    // Return button (cancel modification)
     return() {
-        this.isEditMode = false;
+        const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+            data: { title: 'Cancel modification?' }
+        });
+        dialogRef.afterClosed().subscribe(isDelete => {
+            if (isDelete) {
+                this.isEditMode = false;
+                this._playlistService.setOnEditPlayList(null);
+                this._playlistService.setSearchResultPlaylist(null);
+            }
+        });
     }
 
     // Play the selected playlist
     playPlaylist(playlist) {
-        if (playlist.videolist.length > 0) {
-            this._playlistService.setOnPlayPlayList(playlist);
+        // if (playlist.videolist.length > 0) {
+            const pl = this.copy.copyPlaylist(playlist);
+            this._playlistService.setOnPlayPlayList(pl);
             this._tabsService.setSelectedTab(2);
-        }
+        // }
     }
 
     // Delete the selected playlist

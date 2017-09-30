@@ -74,3 +74,16 @@
 }
 .leftBtn { padding-right: 6px; }
 .rightBtn { padding-left: 6px; }
+
+/* Drop infos */
+.dropInfos {
+    border-radius: 15px;
+    font-size: 1.8rem;
+    font-weight: bold;
+    text-align: center;
+    opacity: 0.4;
+    color: black;
+    border: 5px dashed black;
+    padding: 20px;
+    height: calc(100% - 50px);
+}

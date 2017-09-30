@@ -60,7 +60,8 @@
 <div *ngIf="!isEditMode" class="plPanelContent">
 
     <div class="playlistGrid">
-        <!-- progress bar -->
+
+        <!-- Progress bar -->
         <div class="progressBarGray" *ngIf="isProgressBar"></div>
         <md-progress-bar
             *ngIf="isProgressBar"
@@ -70,18 +71,18 @@
         </md-progress-bar>
 
         <md-grid-list  *ngIf="playlistsList" cols="5" rowHeight="160px" gutterSize="10px" >
-            
+
             <!-- Playlist list items -->
             <md-grid-tile *ngFor="let pl of playlistsList | filterPlaylist:filterPlaylist.value ; let i = index">
                 <div class="plBox">
 
                     <!-- Privacy status playlist icons -->
                     <div *ngIf="pl.privacyStatus === 'private'" mdTooltip="Playlist private" [mdTooltipPosition]="'below'" class="plStatus private">
-                        <fa aria-label="Playlist private" [name]="'lock'" [size]="1"></fa>
+                    <fa aria-label="Playlist private" [name]="'lock'" [size]="1"></fa>
                     </div>
 
                     <div *ngIf="pl.privacyStatus === 'public'" mdTooltip="Playlist public" [mdTooltipPosition]="'below'" class="plStatus public">
-                        <fa aria-label="Playlist public" [name]="'globe'" [size]="1"></fa>
+                    <fa aria-label="Playlist public" [name]="'globe'" [size]="1"></fa>
                     </div>
 
                     <div class="plContent">
