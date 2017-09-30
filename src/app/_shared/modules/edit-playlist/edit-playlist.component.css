@@ -35,6 +35,11 @@
     overflow-y: auto;
     overflow-x: hidden;
 }
+/* Scroll bar */
+.eplContent::-webkit-scrollbar { width: 10px; }
+.eplContent::-webkit-scrollbar-thumb { background: #666; }
+.eplContent::-webkit-scrollbar-track { background: #ddd; }
+.eplContent::-webkit-scrollbar-button { background: #666; height: 15px; border-radius: 0 }
 
 /* Playlist items */
 
@@ -86,4 +91,83 @@
     border: 5px dashed black;
     padding: 20px;
     height: calc(100% - 50px);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Header */
+#headerContainer {
+    width: 100%;
+    height: 100%;
+    color: white;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content:space-between;
+}
+
+#headerList {
+    width: 100%;
+    font-size: 1rem;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: flex-end
+}
+
+.headerItem {
+    line-height: 24px;
+    padding: 5px 5px 5px 10px;
+    background-color: #242320;
+    margin-right: 5px;
+    white-space: nowrap;
+}
+
+.headerItem:last-child { margin-right: 0; }
+#headerPlaylistTitle { flex: 1 1 auto; }
+
+.headerItem input[type='button'] {
+    color: darkgray;
+    padding: 5px;
+    margin: 0;
+    border: none;
+    outline: none;
+    height: 100%;
+    font-size: 1rem;
+    background-color: #101010;
+    cursor: pointer;
+}
+
+.infoBarBtn { padding: 0; }
+.infoBarBtn input{ padding: 5px; }
+.infoBarItem input.active { color: #25E1DA; }
+.infoBarItem input:hover { color: #b2b2b2; }
+.infoBarItem input.active:hover { color: #28fff7; }
+
+
+/* Output box */
+.output {
+	margin-top: 10px;
+	margin-bottom: 10px;
+	margin-left: 5px;
+	margin-right: 5px;
+    padding-left: 3px;
+    padding-right: 3px;
+	border: 2px solid #101010;
+	border-radius: 5px;
+	color: #25E1DA;
+	background-color: #504F4C;
+	text-shadow: 0px 0px 15px #25E1DA;
 }

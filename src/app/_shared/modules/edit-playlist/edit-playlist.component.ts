@@ -33,6 +33,9 @@ export class EditPlaylistComponent implements OnInit, OnDestroy, OnChanges {
     originalPlaylist: Playlist;
     searchResultsList: Array<Video>;
 
+    totalDuration: Number = 0;
+    activePlaylist: String = 'Historic';
+
     constructor(
     public copy: CopyService,
     private _playlistService: PlaylistService,
@@ -56,14 +59,6 @@ export class EditPlaylistComponent implements OnInit, OnDestroy, OnChanges {
                 autoScroll: () => scroll.down
             });
         });
-    }
-
-    ngOnChanges(changes: SimpleChanges) {
-        // Set videolist when 
-        if (changes && changes.playlist && changes.playlist.currentValue) {
-            this.videolist = changes.playlist.currentValue.videolist;
-        }
-
     }
 
     ngOnInit() {
@@ -108,6 +103,20 @@ export class EditPlaylistComponent implements OnInit, OnDestroy, OnChanges {
         }
     }
 
+    ngOnChanges(changes: SimpleChanges) {
+        if (changes && changes.playlist && changes.playlist.currentValue) {
+            // Set videolist from input playlist
+            this.videolist = changes.playlist.currentValue.videolist;
+
+            // Update total duration on change
+            let totalDuration = 0;
+            changes.playlist.currentValue['videolist'].forEach(el => {
+                totalDuration += el.duration;
+            });
+            this.totalDuration = totalDuration;
+        }
+    }
+
     //  Delete video
     deleteVideo(videoId) {
         if (videoId) {
@@ -139,6 +148,10 @@ export class EditPlaylistComponent implements OnInit, OnDestroy, OnChanges {
                 this._playlistService.setOnEditPlayList(playlist);
             }
         }
+    }
+
+    changePlaylist() {
+        this.activePlaylist = this.activePlaylist === 'Historic' ? 'Playlist' : 'Historic';
     }
 
     /*

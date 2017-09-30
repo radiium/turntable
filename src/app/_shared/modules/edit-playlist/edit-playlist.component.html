@@ -6,7 +6,36 @@
 
         <!-- Header -->
         <div class="eplHeader">
-            <app-playlist-header [playlist]="playlist"></app-playlist-header>
+            <div id="headerContainer">
+                <div *ngIf="playlist" id="headerList">
+                
+                    <!-- Playlist titl-->
+                    <div id="headerPlaylistTitle" class="headerItem"><span>{{ playlist.title }}</span></div>
+
+                    <!-- Change playlist / historic - Only on player-->
+                    <div *ngIf="type === 'player'" class="headerItem infoBarBtn">
+                        <input type="button" value="{{ activePlaylist }}" (click)="changePlaylist()">
+                    </div>
+                    
+                    <!-- Nbr of video(s) -->
+                    <div class="headerItem">
+                        <span> Video<span *ngIf="playlist.videolist.length > 1">s</span></span>
+                        <span>: </span>
+                        <span class="output">{{ playlist.videolist.length }}</span>
+                    </div>
+
+                    <!-- Total time playlist-->
+                    <div class="headerItem">
+                        <span>Total time: </span>
+                        <span class="output">{{ totalDuration | duration:true }}</span>
+                    </div>
+                </div>
+
+                <!-- Playlist default -->
+                <div *ngIf="!playlist" id="infoBar" class="listHeader">
+                    <div id="headerPlaylistTitle" class="headerItem plTitle"><span></span></div>
+                </div>
+            </div>
         </div>
 
         <!-- Playlist -->
