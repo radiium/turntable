@@ -91,7 +91,7 @@ export class VideoPlayerComponent implements OnChanges, OnDestroy {
 
         // Only if not the first change
         if (this.player && changes.video && !changes.video.firstChange) {
-            console.log('video change');
+
             // Load video
             this.player.cueVideoById(this.video.id);
 
@@ -121,7 +121,7 @@ export class VideoPlayerComponent implements OnChanges, OnDestroy {
     // 3 : en mémoire tampon
     // 5 : en file d'attente
     onStateChange(event) {
-        console.log('player change');
+
         this.ytEvent = event.data;
         this.stopTimer();
 
@@ -149,7 +149,6 @@ export class VideoPlayerComponent implements OnChanges, OnDestroy {
         }
     }
     savePlayer(player) {
-        console.log('player ready');
         this.player = player;
     }
 
@@ -175,7 +174,6 @@ export class VideoPlayerComponent implements OnChanges, OnDestroy {
 
     // Mute/Unmute
     mute() {
-
         if (!this.player || !this.video) { return; }
 
         if (this.player.isMuted()) {
