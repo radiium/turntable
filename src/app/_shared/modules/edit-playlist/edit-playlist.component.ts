@@ -8,7 +8,7 @@ import { Video } from '../../models/video.model';
 import { Playlist } from '../../models/playlist.model';
 import { PlaylistService } from '../../../_core/services/playlist.service';
 import { PlayerService } from '../../../_core/services/player.service';
-import { CopyService } from '../../../_core/services/copy.service';
+import { UtilsService } from '../../../_core/services/utils.service';
 
 @Component({
   selector: 'app-edit-playlist',
@@ -37,7 +37,7 @@ export class EditPlaylistComponent implements OnInit, OnDestroy, OnChanges {
     activePlaylist: String = 'Historic';
 
     constructor(
-    public copy: CopyService,
+    public utils: UtilsService,
     private _playlistService: PlaylistService,
     private _playerService: PlayerService,
     private _dragulaService: DragulaService) {
@@ -85,7 +85,7 @@ export class EditPlaylistComponent implements OnInit, OnDestroy, OnChanges {
 
         // Update playlist videolist model on drop
         this._dragulaService.dropModel.subscribe((args: any) => {
-            const pl = this.copy.copyPlaylist(this.playlist, this.videolist);
+            const pl = this.utils.copyPlaylist(this.playlist, this.videolist);
             this.setPlaylist(pl);
         });
         /*
@@ -121,7 +121,7 @@ export class EditPlaylistComponent implements OnInit, OnDestroy, OnChanges {
     //  Delete video
     deleteVideo(videoId) {
         if (videoId) {
-            const pl = this.copy.copyPlaylist(this.playlist);
+            const pl = this.utils.copyPlaylist(this.playlist);
             pl.videolist = pl.videolist.filter(function(el) {
                 return el.id !== videoId;
             });

@@ -9,7 +9,7 @@ import 'rxjs/add/operator/map';
 import { Video } from '../_shared/models/video.model';
 import { Playlist } from '../_shared/models/playlist.model';
 import { PlaylistService } from '../_core/services/playlist.service';
-import { CopyService } from '../_core/services/copy.service';
+import { UtilsService } from '../_core/services/utils.service';
 import { CreatePlaylistDialogComponent } from './create-playlist-dialog/create-playlist-dialog.component';
 import { ConfirmDialogComponent } from '../_shared/components/confirm-dialog/confirm-dialog.component';
 import { TabsService } from '../_core/services/tabs.service';
@@ -82,7 +82,7 @@ export class PlaylistPanelComponent implements OnInit {
     isLoggedIn: Boolean = false;
 
     constructor(
-        public copy: CopyService,
+        public utils: UtilsService,
         public dialog: MdDialog,
         private _authService: AuthService,
         private _playlistService: PlaylistService,
@@ -188,14 +188,14 @@ export class PlaylistPanelComponent implements OnInit {
     // Edit the selected playlist
     editPlaylist(playlist) {
         this.isEditMode = true;
-        const pl = this.copy.copyPlaylist(playlist);
+        const pl = this.utils.copyPlaylist(playlist);
         this._playlistService.setOnEditPlayList(pl);
-        this.originalOnEditPlaylist = this.copy.copyPlaylist(pl);
+        this.originalOnEditPlaylist = this.utils.copyPlaylist(pl);
     }
 
     // Save the on edit playlist
     saveOnEditPlaylist() {
-        const pl = this.copy.copyPlaylist(this.onEditPlaylist);
+        const pl = this.utils.copyPlaylist(this.onEditPlaylist);
         const pll = this.playlistsList;
         pll.forEach((el, i) => {
             if (el.id === pl.id) {
@@ -211,9 +211,9 @@ export class PlaylistPanelComponent implements OnInit {
     // Return button (cancel modification)
     return() {
         // Check if onEditPlaylist is modified
-        const isPlaylistModified =
-        this.onEditPlaylist.videolist.length === this.originalOnEditPlaylist.videolist.length
-        ? false : true;
+        const isPlaylistModified = !this.utils.isVideolistEqual(
+            this.onEditPlaylist.videolist,
+            this.originalOnEditPlaylist.videolist);
 
         if (isPlaylistModified) {
             const dialogRef = this.dialog.open(ConfirmDialogComponent, {
@@ -236,7 +236,7 @@ export class PlaylistPanelComponent implements OnInit {
     // Play the selected playlist
     playPlaylist(playlist) {
         // if (playlist.videolist.length > 0) {
-            const pl = this.copy.copyPlaylist(playlist);
+            const pl = this.utils.copyPlaylist(playlist);
             this._playlistService.setOnPlayPlayList(pl);
             this._tabsService.setSelectedTab(2);
         // }

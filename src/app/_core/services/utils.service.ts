@@ -4,7 +4,7 @@ import { Video } from '../../_shared/models/video.model';
 import { Playlist } from '../../_shared/models/playlist.model';
 
 @Injectable()
-export class CopyService {
+export class UtilsService {
 
 
     constructor() {}
@@ -30,5 +30,23 @@ export class CopyService {
             vl
         );
         return pl;
+    }
+
+    isVideolistEqual(videolist1: Array<Video>, videolist2: Array<Video>) {
+        if (!videolist1 || !videolist2) {
+            return false;
+        }
+
+        if (videolist1.length !== videolist2.length) {
+            return false;
+        }
+
+        for (let i = 0; i < videolist1.length; i++) {
+            if (videolist1[i].id !== videolist2[i].id) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }
