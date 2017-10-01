@@ -83,6 +83,12 @@
     height: calc(100% - 50px);
 }
 
+#playlistLoginBtn {
+    font-size: 1.2rem;
+    line-height: 39px;
+    background-color: darkgray
+}
+
 
 
 

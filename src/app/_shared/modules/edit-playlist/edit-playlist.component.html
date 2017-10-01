@@ -4,7 +4,7 @@
     <!-- Left playlist (editable playlist) -->
     <div class="editPlaylistBoxLeft editPlaylistBox">
 
-        <!-- Header -->
+        <!-- Header infos playlist-->
         <div class="editPlaylistHeader">
             <div id="headerContainer">
                 <div *ngIf="playlist" id="headerBox">
@@ -42,18 +42,39 @@
 
         <!-- Playlist -->
         <div class="editPlaylistContent" #autoscrollLeft >
+
+        <div *ngIf="!playlist">
+
+        </div>
+
+
         <div *ngIf="playlist" class="playlist" [dragula]="'drag-drop-list'" [dragulaModel]="videolist" [attr.data-accept-drop]="true">
 
             <!-- Drop hint -->
             <div *ngIf="videolist.length < 1" id="dropInfos" class="dropInfos" [attr.data-movable]="false">
-            Drag and drop item here &#8595;
+                <div>Search videos &#8594;</div>
+                <div>and drag and drop item here &#8595;</div>
+                <!--
+                <div *ngIf="playlist.title === 'Default'">
+                -->
+                <div *ngIf="playlist.title === 'Default' && _electron.isElectronApp">
+                    <br>
+                    <div>
+                        Or
+                        <button id="playlistLoginBtn" class="signBtn" md-button (click)="login()">
+                        <fa aria-label="Login" [name]="'sign-in'" [size]="1"></fa>
+                        <span>Login</span>
+                        </button>
+                    </div>
+                    <div>to load your playlist(s) from youtube</div>
+                    
+                </div>
             </div>
             
             <li *ngFor="let video of videolist" class="videoItem" [attr.data-id]="video.id" [attr.data-movable]="true" >
                 
                 <!-- Playlist item base -->
                 <app-playlist-item class="videoInfos" [video]="video"></app-playlist-item>
-
 
                 <!-- Only delete btn Edit panel -->
                 <div *ngIf="type === 'edit'">
@@ -62,7 +83,6 @@
                         <fa [name]="'trash'" [size]="2"></fa>
                     </button>
                 </div>
-
 
                 <!-- All btn Player control -->
                 <div *ngIf="type === 'player'" class="videoControl">

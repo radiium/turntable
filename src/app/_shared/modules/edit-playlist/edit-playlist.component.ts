@@ -4,11 +4,15 @@ import { Component, OnInit, Input, Output, OnDestroy,
 import { DragulaService, dragula } from 'ng2-dragula/ng2-dragula';
 import * as autoScroll from 'dom-autoscroller';
 
+import { User } from '../../models/user.model';
 import { Video } from '../../models/video.model';
 import { Playlist } from '../../models/playlist.model';
 import { PlaylistService } from '../../../_core/services/playlist.service';
 import { PlayerService } from '../../../_core/services/player.service';
 import { UtilsService } from '../../../_core/services/utils.service';
+import { ElectronService } from 'ngx-electron';
+import { AuthService } from '../../../_core/services/auth.service';
+import { TabsService } from '../../../_core/services/tabs.service';
 
 @Component({
   selector: 'app-edit-playlist',
@@ -36,11 +40,22 @@ export class EditPlaylistComponent implements OnInit, OnDestroy, OnChanges {
     totalDuration: Number = 0;
     activePlaylist: String = 'Historic';
 
+    user: User;
+
     constructor(
     public utils: UtilsService,
+    public tabsService: TabsService,
+    private _electron: ElectronService,
+    private _authService: AuthService,
     private _playlistService: PlaylistService,
     private _playerService: PlayerService,
     private _dragulaService: DragulaService) {
+
+        // Get user
+        this._authService.user$
+        .subscribe((user) => {
+            this.user = user;
+        });
 
         // Get search result list
         this._playlistService.searchResultPlaylist$
@@ -116,6 +131,14 @@ export class EditPlaylistComponent implements OnInit, OnDestroy, OnChanges {
             });
             this.totalDuration = totalDuration;
         }
+
+        if (changes && changes.playlist && !changes.playlist.currentValue) {
+            this.playlist = new Playlist(
+                '', 'Default', '', '', 0, 0, '', '', true,
+                new Array<Video>()
+            );
+            this.videolist = this.playlist.videolist;
+        }
     }
 
     //  Delete video
@@ -153,6 +176,13 @@ export class EditPlaylistComponent implements OnInit, OnDestroy, OnChanges {
 
     changePlaylist() {
         this.activePlaylist = this.activePlaylist === 'Historic' ? 'Playlist' : 'Historic';
+    }
+
+    login() {
+        if (this._electron.isElectronApp) {
+            this._authService.login();
+            this.tabsService.setSelectedTab(1);
+        }
     }
 
     /*

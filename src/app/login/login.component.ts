@@ -23,26 +23,26 @@ export class LoginComponent implements OnInit {
     isOnline: Boolean = false;
 
     constructor(
-        public dialog: MdDialog,
-        private _authService: AuthService,
-        private _playlistService: PlaylistService,
-        private _onlineService: OnlineService,
-        private _electron: ElectronService) {
+    public dialog: MdDialog,
+    private _authService: AuthService,
+    private _playlistService: PlaylistService,
+    private _onlineService: OnlineService,
+    private _electron: ElectronService) {
 
-            console.log(localStorage);
+        console.log(localStorage);
 
-            // Check internet connection
-            this._onlineService.isOnline$.subscribe((isOnline) => {
-                this.isOnline = isOnline;
-            });
+        // Check internet connection
+        this._onlineService.isOnline$.subscribe((isOnline) => {
+            this.isOnline = isOnline;
+        });
 
-            // Get user info (and token)
-            this._authService.user$
-            .subscribe((user) => {
-                this.user = user;
-                if (user !== null) {
-                    this._playlistService.fetchYoutubePlaylist();
-                }
+        // Get user info (and token)
+        this._authService.user$
+        .subscribe((user) => {
+            this.user = user;
+            if (user !== null) {
+                this._playlistService.fetchYoutubePlaylist();
+            }
         });
     }
 

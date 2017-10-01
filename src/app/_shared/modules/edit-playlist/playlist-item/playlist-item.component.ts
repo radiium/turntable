@@ -17,7 +17,6 @@ export class PlaylistItemComponent {
     constructor() {}
 
     handleThumUrl(thumbUrl, type) {
-        console.log(type);
         if (thumbUrl.indexOf('jpg') === -1) {
             return 'assets/images/' + type + '.png';
         }
