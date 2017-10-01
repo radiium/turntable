@@ -8,6 +8,8 @@ import { MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
 })
 export class HelpDialogComponent {
 
+    selectedTab = 1;
+
     constructor(
         public dialogRef: MdDialogRef<HelpDialogComponent>,
         @Inject(MD_DIALOG_DATA) public data: any) {
@@ -18,10 +20,18 @@ export class HelpDialogComponent {
     }
 
     onPreviousTips() {
-
+        if ((this.selectedTab - 1) > -1) {
+            this.selectedTab--;
+        }
     }
 
     onNextTips() {
+        if ((this.selectedTab + 1) < 4) {
+            this.selectedTab++;
+        }
+    }
 
+    openTab(tab) {
+        this.selectedTab = tab;
     }
 }

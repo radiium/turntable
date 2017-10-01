@@ -2,26 +2,37 @@
     <h2 md-dialog-title>Turntable help</h2>
     <md-dialog-content>
 
-        <md-tab-group>
-            <md-tab label="Playlist">
-                Playlist help!
-            </md-tab>
-            
-            <md-tab label="Mix">
-                Mix help!
-            </md-tab>
+        <div class="tabsNavBox">
+            <div class="tabsNavItem" (click)="openTab(1)"></div>
 
-            <md-tab label="Settings">
+            <div class="tabsNavItem" (click)="openTab(2)"></div>
+
+            <div class="tabsNavItem" (click)="openTab(3)"></div>
+        </div>
+
+        <div class="tabsBox">
+            <div [hidden]="selectedTab === 1" class="tabsItem">
+                Playlist help!
+            </div>
+
+
+            <div [hidden]="selectedTab === 2"class="tabsItem">
+                Mix help!
+            </div>
+
+
+            <div [hidden]="selectedTab === 3"class="tabsItem">
                 Settings help!
-            </md-tab>
-        </md-tab-group>
+            </div>
+
+        </div>
 
     </md-dialog-content>
 
     <!-- Controls -->
     <md-dialog-actions>
-        <button md-button (click)="onPreviousTips()">Previous</button>
+        <button md-button (click)="onPreviousTips()" [attr.disabled]="selectedTab === 0">Previous</button>
         <button md-button (click)="onClose()">Close</button>
-        <button md-button (click)="onNextTips()">Next</button>
+        <button md-button (click)="onNextTips()" [attr.disabled]="selectedTab === 3" >Next</button>
     </md-dialog-actions>
 </div>
