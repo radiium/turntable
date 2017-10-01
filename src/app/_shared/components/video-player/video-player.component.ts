@@ -5,6 +5,7 @@ import { Observable, Subscription, Subject } from 'rxjs/Rx';
 import * as moment from 'moment';
 
 import { Video } from '../../models/video.model';
+import { Playlist } from '../../models/playlist.model';
 import { PlayerService } from '../../../_core/services/player.service';
 import { PlaylistService } from '../../../_core/services/playlist.service';
 
@@ -36,7 +37,7 @@ export class VideoPlayerComponent implements OnChanges, OnDestroy {
 
     // Video(s)
     @Input() video: Video;          // Current played video
-    private playList: Video[];      // Playlist of video
+    private playList: Playlist;      // Playlist of video
 
     // Timer
     private timerControl$: Subject<number>;
@@ -50,7 +51,7 @@ export class VideoPlayerComponent implements OnChanges, OnDestroy {
         private _playlistService: PlaylistService) {
 
         this._playlistService.onPlayPlaylist$.subscribe((pl) => {
-            this.playList = pl.videolist;
+            this.playList = pl;
         });
 
         this.isPlaying = false;
@@ -99,9 +100,11 @@ export class VideoPlayerComponent implements OnChanges, OnDestroy {
             // - previous video is on playing
             // - is the first played video
             // - no active player found
+            // - previousValue is undefined (first video on this player)
             if (this.ytEvent === 1
             ||  this._playerService.isFirstPlay
-            ||  this._playerService.getActivePlayer() === null) {
+            ||  this._playerService.getActivePlayer() === null
+            ||  changes.video.previousValue === undefined) {
                 this.initControl();
                 this.playPauseVideo();
                 this._playerService.setActivePlayer(this.sidePlayer);
@@ -110,9 +113,6 @@ export class VideoPlayerComponent implements OnChanges, OnDestroy {
             this._playerService.isFirstPlay = false;
         }
     }
-
-    //  Player event
-    // Player state
 
     // -1 : non démarré
     // 0 : arrêté
@@ -132,17 +132,18 @@ export class VideoPlayerComponent implements OnChanges, OnDestroy {
         } else if (this.ytEvent === 0) {
             this.isPlaying = false;
 
-            if (this.playList && this.playList.length > 0) {
+            if (this.playList.videolist && this.playList.videolist.length > 0) {
 
+                const videoToPlay = this.playList.videolist[0];
                 if (this.sidePlayer === 'left') {
-                    this._playerService.setPlayerLeft(this.playList[0]);
+                    this._playerService.setPlayerLeft(videoToPlay);
 
                 } else {
-                    this._playerService.setPlayerRight(this.playList[0]);
+                    this._playerService.setPlayerRight(videoToPlay);
                 }
 
-                this.playList.shift();
-                this._playlistService.setOnPlayPlayList(this.playList);
+                // this.playList.videolist.shift();
+                // this._playlistService.setOnPlayPlayList(this.playList);
             }
         } else {
             this.isPlaying = false;
@@ -205,10 +206,12 @@ export class VideoPlayerComponent implements OnChanges, OnDestroy {
 
             this.currDuration = moment.utc(Math.round(this.player.getCurrentTime() * 1000)).format('mm:ss').toString();
 
-            // console.log(this.player.getCurrentTime());
+            /*
+            console.log(this.player.getCurrentTime());
             console.log(this.player.getCurrentTime() * 1000);
             console.log(Math.round(this.player.getCurrentTime()));
             console.log(this.currDuration);
+            */
 
             if (this.getRemainingTime() < 12) {
                 console.log('***** ' + this.sidePlayer + ' Video near end ******');

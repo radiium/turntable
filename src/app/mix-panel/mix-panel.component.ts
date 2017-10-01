@@ -89,9 +89,19 @@ export class MixPanelComponent {
     triggerMixLTR(event) {
         console.log('Trigger mix left to right');
         this.currVolLeft = event;
-        this.playerRight.playPauseVideo();
-        this._playerService.setActivePlayer('right');
-        this.initTimerLTR(event);
+        if (this.videoRight) {
+            this.playerRight.playPauseVideo();
+            this._playerService.setActivePlayer('right');
+            this.initTimerLTR(event);
+
+        } else if (this.onPlayPlaylist && this.onPlayPlaylist.videolist.length > 0) {
+            const videoToPlay = this.onPlayPlaylist.videolist[0];
+            this._playerService.setPlayerRight(videoToPlay);
+            this.videoRight = videoToPlay;
+            // this.playerRight.playPauseVideo();
+            this._playerService.setActivePlayer('right');
+            this.initTimerLTR(event);
+        }
 
     }
     // Init Timer
@@ -102,24 +112,40 @@ export class MixPanelComponent {
             this.volLeft = this.currVolLeft - 2;
             this.currVolLeft = this.volLeft;
 
+            console.log('============================');
             console.log('PlayerLeft state', this.playerLeft.getPlayerState());
+            console.log('LTR => ' + this.currVolLeft);
+
             if (this.playerLeft.getPlayerState() === 5
+            ||  this.playerLeft.getPlayerState() === 2
             ||  this.playerLeft.getPlayerState() === 0
+            ||  this.playerLeft.getPlayerState() === 1
             ||  this.playerLeft.getPlayerState() === -1) {
-                console.log('=> Stop timer');
+                console.log('=> Stop timer LTR');
                 this.stopTimer();
             }
-            console.log('LTR => ' + this.currVolLeft);
         });
+        // console.log('RTL => ' + this.currVolLeft);
     }
 
 
     triggerMixRTL(event) {
         console.log('Trigger mix right to left');
         this.currVolRight = event;
-        this.playerLeft.playPauseVideo();
-        this._playerService.setActivePlayer('left');
-        this.initTimerRTL(event);
+
+        if (this.videoLeft) {
+            this.playerLeft.playPauseVideo();
+            this._playerService.setActivePlayer('left');
+            this.initTimerRTL(event);
+
+        } else if (this.onPlayPlaylist && this.onPlayPlaylist.videolist.length > 0) {
+            const videoToPlay = this.onPlayPlaylist.videolist[0];
+            this._playerService.setPlayerLeft(videoToPlay);
+            this.videoLeft = videoToPlay;
+            // this.playerLeft.playPauseVideo();
+            this._playerService.setActivePlayer('left');
+            this.initTimerRTL(event);
+        }
     }
     // Init Timer
     initTimerRTL(volume) {
@@ -129,14 +155,19 @@ export class MixPanelComponent {
             this.volRight = this.currVolRight - 2;
             this.currVolRight = this.volRight;
 
-            console.log(this.playerRight.getPlayerState());
+            console.log('============================');
+            console.log('PlayerLeft state', this.playerRight.getPlayerState());
+            console.log('LTR => ' + this.currVolRight);
+
             if (this.playerRight.getPlayerState() === 5
+            ||  this.playerRight.getPlayerState() === 2
+            ||  this.playerRight.getPlayerState() === 1
             ||  this.playerRight.getPlayerState() === 0
             ||  this.playerRight.getPlayerState() === -1) {
-                console.log('Stop timer');
+                console.log('Stop timer RTL');
                 this.stopTimer();
             }
-            console.log('RTL => ' + this.currVolRight);
+            // console.log('RTL => ' + this.currVolRight);
         });
     }
 
