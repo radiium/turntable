@@ -1,6 +1,6 @@
 {
     "name": "Turntable",
-    "version": "0.1.0-beta1",
+    "version": "0.2.0-beta",
     "license": "MIT",
     "description": "Simple youtube DJ app made with Electron and Angular4",
     "homepage": "https://github.com/radiium/turntable",

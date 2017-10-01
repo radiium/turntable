@@ -12,7 +12,6 @@ export class PlaylistItemComponent {
 
     @Input()
     public video: Video;
-    // defaultThumb: String = 'assets/images/mix.png';
 
     constructor() {}
 
