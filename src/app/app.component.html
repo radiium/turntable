@@ -3,6 +3,11 @@
     <md-progress-spinner class="appLoader" [mode]="'indeterminate'"></md-progress-spinner>
     <div class="textLoader">Loading ...</div>
 </div>
+
+<div class="notOnline" *ngIf="!isOnline">
+    <div class="textLoader"><span class="onlineText">Check your internet connection!</span></div>
+</div>
+<div class="bgLoader" *ngIf="!isOnline"></div>
 <div class="bgLoader" *ngIf="isLoading"></div>
 
 <!-- App container-->

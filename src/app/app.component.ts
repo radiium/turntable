@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { TabsService } from './_core/services/tabs.service';
 import { Observable } from 'rxjs/Observable';
 
+import { OnlineService } from './_core/services/online.service';
 import { YoutubePlayerService } from './_shared/modules/ng2-youtube-player/services/youtube-player.service';
 
 import * as en from './i18n/en.json';
@@ -16,14 +17,21 @@ export class AppComponent implements OnInit {
 
     selectedTab: any;
     isLoading: Boolean = false;
+    isOnline: Boolean = false;
 
     defaultUserSettings = {
         theme: 'light',
     };
 
     constructor(
+    private _onlineService: OnlineService,
     public ytService: YoutubePlayerService,
     private _tabsService: TabsService) {
+
+        // Check internet connection
+        this._onlineService.isOnline$.subscribe((isOnline) => {
+            this.isOnline = isOnline;
+        });
 
         // TODO rework an 'REAL' app loader
         Observable.timer(3000).subscribe((res) => {
