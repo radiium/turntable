@@ -1,0 +1,27 @@
+.tabsNavBox {
+    position: fixed;
+}
+
+.tabsNavBox {
+    background-color: white;
+    width: 100%;
+}
+
+.tabsBox {
+    margin-top: 25px;
+}
+
+.tabsItem img {
+    width: 800px;
+}
+
+.tabsItemList {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+}
+
+ul li {
+    list-style: none;
+}

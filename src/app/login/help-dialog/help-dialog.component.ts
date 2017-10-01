@@ -9,6 +9,11 @@ import { MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
 export class HelpDialogComponent {
 
     selectedTab = 1;
+    tabsList = [
+        {index: 1, label: 'Playlist'},
+        {index: 2, label: 'Mix'},
+        {index: 3, label: 'Settings help'}
+    ];
 
     constructor(
         public dialogRef: MdDialogRef<HelpDialogComponent>,
@@ -19,14 +24,14 @@ export class HelpDialogComponent {
         this.dialogRef.close();
     }
 
-    onPreviousTips() {
-        if ((this.selectedTab - 1) > -1) {
+    onPreviousTab() {
+        if (this.selectedTab > 1) {
             this.selectedTab--;
         }
     }
 
-    onNextTips() {
-        if ((this.selectedTab + 1) < 4) {
+    onNextTab() {
+        if (this.selectedTab < this.tabsList.length) {
             this.selectedTab++;
         }
     }

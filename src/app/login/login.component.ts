@@ -61,7 +61,9 @@ export class LoginComponent implements OnInit {
     }
 
     openHelp() {
-        const dialogRef = this.dialog.open(HelpDialogComponent, {});
+        const dialogRef = this.dialog.open(HelpDialogComponent, {
+            height: '96%'
+        });
         dialogRef.afterClosed().subscribe(result => {
         });
     }
