@@ -30,7 +30,7 @@
         <span style="margin-left :16px; margin-right :16px;">{{ playlistsList.length }} Playlist<span *ngIf="playlistsList.length > 1">s</span></span>
 
         <!-- Refresh playlist list button -->
-        <button disabled="isLoggedIn ? false : true " class="toolbarBtn" *ngIf="!isEditMode" md-raised-button (click)="reloadPlaylist()">
+        <button class="toolbarBtn" *ngIf="!isEditMode && isLoggedIn" md-raised-button (click)="reloadPlaylist()">
         <fa aria-label="Refresh playlist" [name]="'refresh'" [size]="1"></fa>
         Reload from Youtube
         </button>
