@@ -149,12 +149,17 @@
     cursor: pointer;
 }
 
-.infoBarBtn { padding: 0; }
-.infoBarBtn input{ padding: 5px; }
-.infoBarItem input.active { color: #25E1DA; }
-.infoBarItem input:hover { color: #b2b2b2; }
-.infoBarItem input.active:hover { color: #28fff7; }
+#infoBarBtnPlaylist input,
+#infoBarBtnHistoric input {
+    background-color: transparent;
+    padding: 0;
+    color: #b2b2b2;
+}
 
+#infoBarBtnPlaylist input:hover ,
+#infoBarBtnHistoric input:hover  {
+    color: #25E1DA;
+}
 
 /* Output box */
 .output {

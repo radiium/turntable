@@ -2,6 +2,10 @@
     height: 100%;
 }
 
+#appContainer button {
+    border-radius: 0;
+}
+
 .tabsNav {
     z-index: 5000;
     margin: 0;

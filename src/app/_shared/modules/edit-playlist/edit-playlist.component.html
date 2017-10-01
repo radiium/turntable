@@ -14,8 +14,8 @@
                     <div id="headerPlaylistTitle" class="headerItem"><span>{{ playlist.title }}</span></div>
 
                     <!-- Change playlist / historic - Only on player-->
-                    <div *ngIf="type === 'player'" class="headerItem infoBarBtn changePlaylistBtn">
-                        <input type="button" value="Show playlist" (click)="changePlaylist()">
+                    <div *ngIf="type === 'player'" id="infoBarBtnPlaylist" class="headerItem infoBarBtn changePlaylistBtn">
+                        <input type="button" value="Show Historic" (click)="changePlaylist()">
                     </div>
                     
                     <!-- Nbr of video(s) -->
@@ -39,8 +39,8 @@
                     <div id="headerPlaylistTitle" class="headerItem"><span>Historic</span></div>
 
                     <!-- Change playlist / historic - Only on player-->
-                    <div *ngIf="type === 'player'" class="headerItem infoBarBtn changePlaylistBtn">
-                        <input type="button" value="Show historic" (click)="changePlaylist()">
+                    <div *ngIf="type === 'player'" id="infoBarBtnHistoric" class="headerItem infoBarBtn changePlaylistBtn">
+                        <input type="button" value="Show Playlist" (click)="changePlaylist()">
                     </div>
                     
                     <!-- Nbr of video(s) -->

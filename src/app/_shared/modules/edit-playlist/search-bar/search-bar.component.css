@@ -27,10 +27,18 @@
 }
 
 #searchBox input[type='button'] {
+    cursor: pointer;
     padding: 5px;
     width: 100px;
     height: auto;
     border: none;
+    border-radius: 0;
+    font-size: 1rem;
+    color: white;
+    background-color: #242320;
+}
+#searchBox input[type='button']:hover {
+    background-color: #3a3935;
 }
 
 /* Suggests box */
