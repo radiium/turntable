@@ -3,14 +3,15 @@
 
     <fieldset class="settingGeneral">
         <legend>General</legend>
+        Work in progress...
 
-        <md-select placeholder="Langage" [(ngModel)]="selectedLangage" name="food">
+        <md-select placeholder="Langage" [(ngModel)]="selectedLangage" name="food" disabled>
         <md-option *ngFor="let langage of langagesList" [value]="langage.value">
         {{langage.viewValue}}
         </md-option>
         </md-select>
 
-        <md-select placeholder="Theme" [(ngModel)]="selectedTheme" name="food">
+        <md-select placeholder="Theme" [(ngModel)]="selectedTheme" name="food" disabled>
         <md-option *ngFor="let theme of themesList" [value]="theme">
         {{theme}}
         </md-option>
@@ -19,7 +20,8 @@
 
     <fieldset>
         <legend>Export playlists</legend>
-        <button class="toolbarBtn" md-raised-button>
+         Work in progress...
+        <button class="toolbarBtn" md-raised-button disabled>
         <fa aria-label="Export playlists" [name]="'external-link'" [size]="2"></fa>
         Export
         </button>

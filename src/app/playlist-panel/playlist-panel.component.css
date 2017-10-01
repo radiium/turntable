@@ -21,7 +21,7 @@
 .plPanelContent {
 	margin-top: 64px;
 	overflow: auto;
-    height: calc(100% - 64px);
+    height: calc(100% - 69px);
 }
 .plPanelContent md-grid-list { margin: 0 !important; }
 .plPanelContent md-grid-tile { background: #242320; }
@@ -76,7 +76,10 @@
     PlaylistList items
 *************************/
 .playlistGrid {
-    margin-top: 5px;
+    /*margin-top: 5px;*/
+}
+.playlistSpacer {
+    height: 5px;
 }
 
 .plBox {

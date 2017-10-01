@@ -6,6 +6,22 @@
     height: 32px;
 }
 
+#helpBtn {
+    margin: 0;
+    padding: 0;
+    cursor: pointer;
+    border: 0;
+    outline: none;
+    width: 32px;
+    height: 32px;
+    background-color: transparent;
+    border-radius: 0;
+}
+
+#helpBtn:hover {
+    background-color: rgba(0,0,0,.1);
+}
+
 .loginBox {
     height: 32px;
     display: flex;
@@ -17,6 +33,7 @@
 .signBox button fa {
     margin-right: 5px;
 }
+
 .signBox button {
     background-color: transparent;
     height: 32px;

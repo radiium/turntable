@@ -7,11 +7,11 @@
     flex-direction: row;
     flex-wrap: nowrap;
     justify-content: space-between;
-    height: 239px;
+    height: 244px;
 }
 
 #playlistContainer {
-    height: calc(100% - 239px);
+    height: calc(100% - 244px);
 }
 
 #controlBox {

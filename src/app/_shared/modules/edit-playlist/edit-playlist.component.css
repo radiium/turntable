@@ -1,7 +1,6 @@
 /* General */
 .editPlaylistContainer {
-    height: calc(100% - 5px);
-    margin-top: 5px;
+    height: 100%;
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;

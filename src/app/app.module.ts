@@ -19,6 +19,7 @@ import { PlaylistPanelComponent } from './playlist-panel/playlist-panel.componen
 import { SettingsPanelComponent } from './settings-panel/settings-panel.component';
 // Login component
 import { LoginComponent } from './login/login.component';
+import { HelpDialogComponent } from './login/help-dialog/help-dialog.component';
 
 @NgModule({
     imports: [
@@ -42,6 +43,7 @@ import { LoginComponent } from './login/login.component';
         SettingsPanelComponent,
         // Login
         LoginComponent,
+        HelpDialogComponent,
     ],
     exports: [],
     providers: [],

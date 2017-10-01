@@ -1,6 +1,7 @@
 
 .playerContainer {
-    display: flex
+    display: flex;
+    margin-bottom: 5px;
 }
 
 .playerLeft  { flex-direction: row; }
