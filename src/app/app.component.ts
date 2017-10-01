@@ -4,6 +4,9 @@ import { Observable } from 'rxjs/Observable';
 
 import { YoutubePlayerService } from './_shared/modules/ng2-youtube-player/services/youtube-player.service';
 
+import * as en from './i18n/en.json';
+import * as fr from './i18n/fr.json';
+
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html',
@@ -13,6 +16,10 @@ export class AppComponent implements OnInit {
 
     selectedTab: any;
     isLoading: Boolean = false;
+
+    defaultUserSettings = {
+        theme: 'light',
+    };
 
     constructor(
     public ytService: YoutubePlayerService,
@@ -31,4 +38,7 @@ export class AppComponent implements OnInit {
     }
 
     ngOnInit() {}
+
+    initUserSettings() {
+    }
 }

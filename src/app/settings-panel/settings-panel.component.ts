@@ -7,6 +7,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SettingsPanelComponent implements OnInit {
 
+    selectedLangages: String;
+    langagesList = [
+        {value: 'en', viewValue: 'English'},
+        {value: 'fr', viewValue: 'Français'}
+    ];
+
+    selectedTheme: String;
+    themesList = [
+        'dark',
+        'light'
+    ];
+
     constructor() {
     }
 

@@ -1,13 +1,13 @@
 <!-- Edit playlist container -->
-<div class="eplContainer">
+<div class="editPlaylistContainer">
 
     <!-- Left playlist (editable playlist) -->
-    <div class="eplBoxLeft eplBox">
+    <div class="editPlaylistBoxLeft editPlaylistBox">
 
         <!-- Header -->
-        <div class="eplHeader">
+        <div class="editPlaylistHeader">
             <div id="headerContainer">
-                <div *ngIf="playlist" id="headerList">
+                <div *ngIf="playlist" id="headerBox">
                 
                     <!-- Playlist titl-->
                     <div id="headerPlaylistTitle" class="headerItem"><span>{{ playlist.title }}</span></div>
@@ -32,14 +32,16 @@
                 </div>
 
                 <!-- Playlist default -->
-                <div *ngIf="!playlist" id="infoBar" class="listHeader">
-                    <div id="headerPlaylistTitle" class="headerItem plTitle"><span></span></div>
+                <div *ngIf="!playlist" id="headerBox">
+                    <div id="headerPlaylistTitle" class="noPlaylist">
+                        <div class="noPlaylistText">No playlist loaded</div>
+                    </div>
                 </div>
             </div>
         </div>
 
         <!-- Playlist -->
-        <div class="eplContent" #autoscrollLeft >
+        <div class="editPlaylistContent" #autoscrollLeft >
         <div *ngIf="playlist" class="playlist" [dragula]="'drag-drop-list'" [dragulaModel]="videolist" [attr.data-accept-drop]="true">
 
             <!-- Drop hint -->
@@ -54,7 +56,7 @@
 
 
                 <!-- Only delete btn Edit panel -->
-                <div *ngIf="type === 'edit'" class="videoControl">
+                <div *ngIf="type === 'edit'">
                     <!-- Delete video button -->
                     <button mdTooltip="Delete video!" [mdTooltipPosition]="'above'" md-mini-fab color="warn" (click)="deleteVideo(video.id)" class="deleteBtn">
                         <fa [name]="'trash'" [size]="2"></fa>
@@ -63,20 +65,20 @@
 
 
                 <!-- All btn Player control -->
-                <div *ngIf="type === 'player'" class="mix-videoControl">
-                    <!-- Play at right button -->
-                    <button mdTooltip="Play at right !" [mdTooltipPosition]="'above'" md-mini-fab color="primary" (click)="playVideo(video, 'right')" class="rightBtn mix-btn">
-                    <fa [name]="'play'" [size]="2" ></fa>
+                <div *ngIf="type === 'player'" class="videoControl">
+                    <!-- Play at left button -->
+                    <button mdTooltip="Play at left !" [mdTooltipPosition]="'above'" md-mini-fab color="primary" (click)="playVideo(video, 'left')" class="leftBtn mix-btn">
+                    <fa [name]="'play'" [size]="2" [rotate]="180" ></fa>
                     </button>
                     
                     <!-- Delete video button -->
                     <button mdTooltip="Delete video!" [mdTooltipPosition]="'above'"  md-mini-fab color="warn" (click)="deleteVideo(video.id)" class="mix-btn">
                     <fa [name]="'trash'" [size]="2"></fa>
                     </button>
-                    
-                    <!-- Play at left button -->
-                    <button mdTooltip="Play at left !" [mdTooltipPosition]="'above'" md-mini-fab color="primary" (click)="playVideo(video, 'left')" class="leftBtn mix-btn">
-                    <fa [name]="'play'" [size]="2" [rotate]="180" ></fa>
+
+                    <!-- Play at right button -->
+                    <button mdTooltip="Play at right !" [mdTooltipPosition]="'above'" md-mini-fab color="primary" (click)="playVideo(video, 'right')" class="rightBtn mix-btn">
+                    <fa [name]="'play'" [size]="2" ></fa>
                     </button>
                 </div>
             </li>
@@ -86,15 +88,15 @@
     </div>
 
     <!-- Right playlist (search result) -->
-    <div class="eplBoxRight eplBox">
+    <div class="editPlaylistBoxRight editPlaylistBox">
         
         <!-- Header (Search bar) -->
-        <div class="eplHeader">
+        <div class="editPlaylistHeader">
             <app-search-bar></app-search-bar>
         </div>
 
         <!-- Playlist (Search results) -->
-        <div class="eplContent" #autoscrollRight>
+        <div class="editPlaylistContent" #autoscrollRight>
             <div *ngIf="searchResultsList" class="playlist" [dragula]="'drag-drop-list'" [dragulaModel]="searchResultsList" [attr.data-accept-drop]="false">
                 
                 <li *ngFor="let video of searchResultsList" class="videoItem" [attr.data-id]="video.id" [attr.data-movable]="true" >

@@ -1,16 +1,29 @@
 <div class="settingsContainer">
     <form>
-    <fieldset>
-    <legend>General</legend>
 
+    <fieldset class="settingGeneral">
+        <legend>General</legend>
+
+        <md-select placeholder="Langage" [(ngModel)]="selectedLangage" name="food">
+        <md-option *ngFor="let langage of langagesList" [value]="langage.value">
+        {{langage.viewValue}}
+        </md-option>
+        </md-select>
+
+        <md-select placeholder="Theme" [(ngModel)]="selectedTheme" name="food">
+        <md-option *ngFor="let theme of themesList" [value]="theme">
+        {{theme}}
+        </md-option>
+        </md-select>
     </fieldset>
 
     <fieldset>
-    <legend>Export playlists</legend>
-      <button class="toolbarBtn" md-raised-button>
-      <fa aria-label="Export playlists" [name]="'external-link'" [size]="2"></fa>
-      Export
-      </button>
+        <legend>Export playlists</legend>
+        <button class="toolbarBtn" md-raised-button>
+        <fa aria-label="Export playlists" [name]="'external-link'" [size]="2"></fa>
+        Export
+        </button>
     </fieldset>
+
     </form> 
 </div>

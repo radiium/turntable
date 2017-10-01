@@ -4,7 +4,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
 
 // External modules
 import { DragulaModule } from 'ng2-dragula';
@@ -69,7 +68,6 @@ import { YoutubePlayerModule } from './modules/ng2-youtube-player/ng2-youtube-pl
         RangeSlider2Component,
         VideoPlayerComponent,
         CustomMaterialModule,
-        TranslateModule
     ],
     providers: [],
 })

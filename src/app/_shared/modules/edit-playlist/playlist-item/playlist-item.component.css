@@ -65,11 +65,14 @@
     flex-direction: column;
     justify-content: space-between;
     margin-left: 120px;
+    overflow-wrap: break-word;
 }
 
 .description p {
     margin: 0;
     font-size: 0.8rem;
+    /*
     overflow: hidden;
     text-overflow: hidden;
+    */
 }
