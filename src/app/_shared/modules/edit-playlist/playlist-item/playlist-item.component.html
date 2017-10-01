@@ -4,10 +4,10 @@
         <div class="pochette"><img [attr.src]="handleThumUrl(video.thumbUrl)" (onError)="this.src=defaultThumb"/></div>
     </div>
     <div class="description">
-        <p>{{video.title}}</p>
+        <div>{{video.title}}</div>
         <!--
         <p>{{video.description}}</p>
         -->
-        <p>{{video.duration | duration}}  test={{video.thumbUrl }}</p>
+        <div>{{video.duration | duration}}</div>
     </div>
 </div>

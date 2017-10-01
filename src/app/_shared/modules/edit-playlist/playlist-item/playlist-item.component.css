@@ -65,14 +65,20 @@
     flex-direction: column;
     justify-content: space-between;
     margin-left: 120px;
-    overflow-wrap: break-word;
 }
 
-.description p {
+.description div {
     margin: 0;
     font-size: 0.8rem;
-    /*
+    line-height: 24px;
     overflow: hidden;
-    text-overflow: hidden;
-    */
+    text-overflow: ellipsis;
+    overflow-wrap: break-word;
+    -ms-word-break: break-all;
+    word-break: break-all;
+     word-break: break-word;
+    -webkit-hyphens: auto;
+       -moz-hyphens: auto;
+        -ms-hyphens: auto;
+            hyphens: auto;
 }
