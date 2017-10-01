@@ -2,7 +2,10 @@ import { Injectable, Input } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
 
 import { Video } from '../../_shared/models/video.model';
+import { Playlist } from '../../_shared/models/playlist.model';
 import { Suggests } from '../../_shared/models/suggests.model';
+import { PlaylistService } from './playlist.service';
+import { UtilsService } from './utils.service';
 
 @Injectable()
 export class PlayerService {
@@ -48,9 +51,24 @@ export class PlayerService {
     isFirstPlay: Boolean = true;
     // activePlayer$ = this.activePlayer.asObservable();
 
+    onPlayHistoricPlaylist: Playlist;
+    onPlayPlaylist: Playlist;
+
     // --------------------------------------------------------
 
-    constructor() {}
+    constructor(
+    public utilsService: UtilsService,
+    private _playlistService: PlaylistService) {
+        this._playlistService.onPlayHistoricPlaylist$
+        .subscribe((pl) => {
+            this.onPlayHistoricPlaylist = pl;
+        });
+
+        this._playlistService.onPlayPlaylist$
+        .subscribe((pl) => {
+            this.onPlayPlaylist = pl;
+        });
+    }
 
     // --------------------------------------------------------
     // Setters
@@ -62,8 +80,33 @@ export class PlayerService {
     setCurrentPlayList(vl) { this.currentPlayList.next(vl); }
     setHistoricList(hl)    { this.historicList.next(hl); }
 
-    setPlayerLeft(pl)      { this.playerLeft.next(pl); }
-    setPlayerRight(pr)     { this.playerRight.next(pr); }
+    setPlayerLeft(vl) {
+        this.playerLeft.next(vl);
+        this.updatePlaylists(vl);
+    }
+    setPlayerRight(vr) {
+        this.playerRight.next(vr);
+        this.updatePlaylists(vr);
+    }
+
     setActivePlayer(side) { this.activePlayer = side; }
     getActivePlayer()     { return this.activePlayer; }
+
+    // Update on play playlist and on play historic
+    updatePlaylists(video: Video) {
+
+        // Add video to on play historic playlist
+        const hpl = this.utilsService.copyPlaylist(this.onPlayHistoricPlaylist);
+        hpl.videolist.push(video);
+        this._playlistService.setOnPlayHistoricPlayList(hpl);
+
+        // Remove video from on play playlist
+        const ppl = this.utilsService.copyPlaylist(this.onPlayPlaylist);
+        let videolist = ppl.videolist;
+        videolist = videolist.filter(function(el) {
+            return el.id !== video.id;
+        });
+        ppl.videolist = videolist;
+        this._playlistService.setOnPlayPlayList(ppl);
+    }
 }

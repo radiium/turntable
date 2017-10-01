@@ -130,7 +130,10 @@
     margin-right: 5px;
     white-space: nowrap;
 }
-
+.changePlaylistBtn {
+    min-width: 112px;
+    text-align: center;
+}
 .headerItem:last-child { margin-right: 0; }
 #headerPlaylistTitle { flex: 1 1 auto; }
 

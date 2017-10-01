@@ -24,12 +24,16 @@ export class PlaylistService {
     onPlayPlaylist = new Subject<Playlist>();
     onPlayPlaylist$ = this.onPlayPlaylist.asObservable();
 
+    // On play historic PlayList
+    onPlayHistoricPlaylist = new Subject<Playlist>();
+    onPlayHistoricPlaylist$ = this.onPlayHistoricPlaylist.asObservable();
+
     // Search result PlayList
     searchResultPlaylist = new Subject<Video[]>();
     searchResultPlaylist$ = this.searchResultPlaylist.asObservable();
 
 
-    // Search result PlayList
+    // Load playlist progress bar value
     progressBarValue = new Subject<any>();
     progressBarValue$ = this.progressBarValue.asObservable();
 
@@ -40,6 +44,7 @@ export class PlaylistService {
     setPlayListsList(pl) { this.playListsList.next(pl); }
     setOnEditPlayList(pl) { this.onEditPlaylist.next(pl); }
     setOnPlayPlayList(pl) { this.onPlayPlaylist.next(pl); }
+    setOnPlayHistoricPlayList(pl) { this.onPlayHistoricPlaylist.next(pl); }
     setSearchResultPlaylist(pl) { this.searchResultPlaylist.next(pl); }
     setProgressBarValue(pbv) { this.progressBarValue.next(pbv); }
 

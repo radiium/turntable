@@ -4,17 +4,18 @@
     <!-- Left playlist (editable playlist) -->
     <div class="editPlaylistBoxLeft editPlaylistBox">
 
+
         <!-- Header infos playlist-->
         <div class="editPlaylistHeader">
             <div id="headerContainer">
-                <div *ngIf="playlist" id="headerBox">
+                <div *ngIf="playlist && activePlaylist === 'Playlist'" id="headerBox">
                 
                     <!-- Playlist titl-->
                     <div id="headerPlaylistTitle" class="headerItem"><span>{{ playlist.title }}</span></div>
 
                     <!-- Change playlist / historic - Only on player-->
-                    <div *ngIf="type === 'player'" class="headerItem infoBarBtn">
-                        <input type="button" value="{{ activePlaylist }}" (click)="changePlaylist()">
+                    <div *ngIf="type === 'player'" class="headerItem infoBarBtn changePlaylistBtn">
+                        <input type="button" value="Show playlist" (click)="changePlaylist()">
                     </div>
                     
                     <!-- Nbr of video(s) -->
@@ -31,8 +32,35 @@
                     </div>
                 </div>
 
+
+                <div *ngIf="activePlaylist === 'Historic'" id="headerBox">
+                
+                    <!-- Playlist titl-->
+                    <div id="headerPlaylistTitle" class="headerItem"><span>Historic</span></div>
+
+                    <!-- Change playlist / historic - Only on player-->
+                    <div *ngIf="type === 'player'" class="headerItem infoBarBtn changePlaylistBtn">
+                        <input type="button" value="Show historic" (click)="changePlaylist()">
+                    </div>
+                    
+                    <!-- Nbr of video(s) -->
+                    <div class="headerItem">
+                        <span> Video<span *ngIf="playlist.videolist.length > 1">s</span></span>
+                        <span>: </span>
+                        <span *ngIf="historic" class="output">{{ historic.videolist.length }}</span>
+                        <span *ngIf="!historic" class="output">0</span>
+                    </div>
+
+                    <!-- Total time playlist-->
+                    <div class="headerItem">
+                        <span>Total time: </span>
+                        <span class="output">{{ totalDurationHistoric | duration:true }}</span>
+                    </div>
+                </div>
+
+
                 <!-- Playlist default -->
-                <div *ngIf="!playlist" id="headerBox">
+                <div *ngIf="!playlist && activePlaylist === 'Playlist'" id="headerBox">
                     <div id="headerPlaylistTitle" class="noPlaylist">
                         <div class="noPlaylistText">No playlist loaded</div>
                     </div>
@@ -41,37 +69,30 @@
         </div>
 
         <!-- Playlist -->
-        <div class="editPlaylistContent" #autoscrollLeft >
-
-        <div *ngIf="!playlist">
-
-        </div>
-
-
-        <div *ngIf="playlist" class="playlist" [dragula]="'drag-drop-list'" [dragulaModel]="videolist" [attr.data-accept-drop]="true">
+        <div class="editPlaylistContent" #autoscrollLeft>
+        <div *ngIf="playlist && activePlaylist === 'Playlist'" class="playlist" [dragula]="'drag-drop-list'" [dragulaModel]="videolist" [attr.data-accept-drop]="true">
 
             <!-- Drop hint -->
-            <div *ngIf="videolist.length < 1" id="dropInfos" class="dropInfos" [attr.data-movable]="false">
+            <div *ngIf="playlist.videolist.length < 1" id="dropInfos" class="dropInfos" [attr.data-movable]="false">
                 <div>Search videos &#8594;</div>
                 <div>and drag and drop item here &#8595;</div>
                 <!--
                 <div *ngIf="playlist.title === 'Default'">
                 -->
-                <div *ngIf="playlist.title === 'Default' && _electron.isElectronApp">
-                    <br>
-                    <div>
-                        Or
-                        <button id="playlistLoginBtn" class="signBtn" md-button (click)="login()">
-                        <fa aria-label="Login" [name]="'sign-in'" [size]="1"></fa>
-                        <span>Login</span>
-                        </button>
+                <!-- Login button -->
+                <div *ngIf="playlist.title === 'Default' && _electron.isElectronApp"><br>
+                    <div>Or
+                    <button id="playlistLoginBtn" class="signBtn" md-button (click)="login()">
+                    <fa aria-label="Login" [name]="'sign-in'" [size]="1"></fa>
+                    <span>Login</span>
+                    </button>
                     </div>
                     <div>to load your playlist(s) from youtube</div>
                     
                 </div>
             </div>
             
-            <li *ngFor="let video of videolist" class="videoItem" [attr.data-id]="video.id" [attr.data-movable]="true" >
+            <li *ngFor="let video of playlist.videolist" class="videoItem" [attr.data-id]="video.id" [attr.data-movable]="true" >
                 
                 <!-- Playlist item base -->
                 <app-playlist-item class="videoInfos" [video]="video"></app-playlist-item>
@@ -103,8 +124,37 @@
                 </div>
             </li>
         </div>
-        </div>
 
+        <div *ngIf="historic && activePlaylist === 'Historic'" class="onPlayHistoricPlaylist">
+            
+            <li *ngFor="let video of historic.videolist" class="videoItem" [attr.data-id]="video.id" [attr.data-movable]="true" >
+                
+                <!-- Playlist item base -->
+                <app-playlist-item class="videoInfos" [video]="video"></app-playlist-item>
+
+                <!-- Only delete btn Edit panel -->
+                <div *ngIf="type === 'edit'">
+                    <!-- Delete video button -->
+                    <button mdTooltip="Delete video!" [mdTooltipPosition]="'above'" md-mini-fab color="warn" (click)="deleteVideo(video.id)" class="deleteBtn">
+                        <fa [name]="'trash'" [size]="2"></fa>
+                    </button>
+                </div>
+
+                <!-- All btn Player control -->
+                <div *ngIf="type === 'player'" class="videoControl">
+                    <!-- Add to playlist button -->
+                    <button mdTooltip="Replace in playlist!" [mdTooltipPosition]="'above'" md-mini-fab color="primary" (click)="addToPlaylist(video)" class="leftBtn mix-btn">
+                    <fa [name]="'reply'" [size]="2"></fa>
+                    </button>
+                    
+                    <!-- Delete video button -->
+                    <button mdTooltip="Delete video!" [mdTooltipPosition]="'above'"  md-mini-fab color="warn" (click)="deleteVideoHistoric(video.id)" class="mix-btn">
+                    <fa [name]="'trash'" [size]="2"></fa>
+                    </button>
+                </div>
+            </li>
+        </div>
+    </div>
     </div>
 
     <!-- Right playlist (search result) -->

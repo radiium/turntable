@@ -29,6 +29,8 @@ export class EditPlaylistComponent implements OnInit, OnDestroy, OnChanges {
 
     @Input()
     playlist: Playlist;
+    historic: Playlist;
+
     videolist: Array<Video>;
 
     @Input()
@@ -38,7 +40,9 @@ export class EditPlaylistComponent implements OnInit, OnDestroy, OnChanges {
     searchResultsList: Array<Video>;
 
     totalDuration: Number = 0;
-    activePlaylist: String = 'Historic';
+    totalDurationHistoric: Number = 0;
+
+    activePlaylist: String = 'Playlist';
 
     user: User;
 
@@ -55,6 +59,19 @@ export class EditPlaylistComponent implements OnInit, OnDestroy, OnChanges {
         this._authService.user$
         .subscribe((user) => {
             this.user = user;
+        });
+
+        // Get on play Historic playlist
+        this._playlistService.setOnPlayHistoricPlayList(
+            new Playlist(
+                '', 'Historic', '', '', 0, 0, '', '', true,
+                new Array<Video>()
+            )
+        );
+        this._playlistService.onPlayHistoricPlaylist$
+        .subscribe((historicPlaylist) => {
+            this.historic = historicPlaylist;
+            this.totalDurationHistoric = this.computeTotalDuration(this.historic.videolist);
         });
 
         // Get search result list
@@ -78,6 +95,7 @@ export class EditPlaylistComponent implements OnInit, OnDestroy, OnChanges {
 
     ngOnInit() {
         // Init dragula service options
+        const that = this;
         this._dragulaService.setOptions(
             this.dragulaBagName, {
             revertOnSpill: true,
@@ -88,7 +106,14 @@ export class EditPlaylistComponent implements OnInit, OnDestroy, OnChanges {
                 return source.dataset.acceptDrop === 'false';
             },
             accepts: (el, target, source, sibling): boolean => {
-                return target.dataset.acceptDrop === 'true';
+                // Prevent duplicate
+                let accept = true;
+                that.videolist.forEach(video => {
+                    if (el.dataset.id === video.id) {
+                        accept = false;
+                    }
+                });
+                return (accept && target.dataset.acceptDrop === 'true');
             },
         });
 
@@ -125,11 +150,7 @@ export class EditPlaylistComponent implements OnInit, OnDestroy, OnChanges {
             this.videolist = changes.playlist.currentValue.videolist;
 
             // Update total duration on change
-            let totalDuration = 0;
-            changes.playlist.currentValue['videolist'].forEach(el => {
-                totalDuration += el.duration;
-            });
-            this.totalDuration = totalDuration;
+            this.totalDuration = this.computeTotalDuration(this.videolist);
         }
 
         if (changes && changes.playlist && !changes.playlist.currentValue) {
@@ -150,6 +171,23 @@ export class EditPlaylistComponent implements OnInit, OnDestroy, OnChanges {
             });
             this.setPlaylist(pl);
         }
+    }
+
+    //  Delete video
+    deleteVideoHistoric(videoId) {
+        if (videoId) {
+            const pl = this.utils.copyPlaylist(this.historic);
+            pl.videolist = pl.videolist.filter(function(el) {
+                return el.id !== videoId;
+            });
+            this._playlistService.setOnPlayHistoricPlayList(pl);
+        }
+    }
+
+    addToPlaylist(video: Video) {
+        const pl = this.utils.copyPlaylist(this.playlist);
+        pl.videolist.push(video);
+        this._playlistService.setOnPlayPlayList(pl);
     }
 
     // Play video
@@ -185,6 +223,16 @@ export class EditPlaylistComponent implements OnInit, OnDestroy, OnChanges {
         }
     }
 
+    computeTotalDuration(videolist: Array<Video>) {
+        if (videolist) {
+            let totalDuration = 0;
+            videolist.forEach(el => {
+                totalDuration += el.duration;
+            });
+            return totalDuration;
+        }
+        return 0;
+    }
     /*
     // Update playlist in _playerService
     updatePlayList() {
