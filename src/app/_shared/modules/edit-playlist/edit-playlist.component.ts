@@ -1,5 +1,5 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges,
-    ElementRef, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, Output, OnDestroy,
+    OnChanges, SimpleChanges,  ElementRef, ViewChild,  } from '@angular/core';
 
 import { DragulaService, dragula } from 'ng2-dragula/ng2-dragula';
 import * as autoScroll from 'dom-autoscroller';
@@ -97,6 +97,7 @@ export class EditPlaylistComponent implements OnInit, OnDestroy, OnChanges {
     }
 
     ngOnDestroy() {
+        console.log('Yo dstroy');
         // Destroy dragula service
         if (!!this._dragulaService.find(this.dragulaBagName)) {
             this._dragulaService.destroy(this.dragulaBagName);

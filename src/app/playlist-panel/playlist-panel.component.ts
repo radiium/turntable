@@ -58,7 +58,6 @@ const testPlaylist = {
     ]
 };
 
-
 @Component({
   selector: 'app-playlist-panel',
   templateUrl: './playlist-panel.component.html',
@@ -68,6 +67,7 @@ export class PlaylistPanelComponent implements OnInit {
 
     playlistsList: Array<Playlist> = [];
     onEditPlaylist: Playlist;
+    originalOnEditPlaylist: Playlist;
 
     filterPlaylist: FormControl;
     filteredStates: Observable<any[]>;
@@ -126,7 +126,6 @@ export class PlaylistPanelComponent implements OnInit {
             }
             this.playlistsList = <Playlist[]>arr;
             // this.playlistsList = <Playlist[]>[testPlaylist];
-
 
             // Get playlist list
             this._playlistService.playListsList$
@@ -191,6 +190,7 @@ export class PlaylistPanelComponent implements OnInit {
         this.isEditMode = true;
         const pl = this.copy.copyPlaylist(playlist);
         this._playlistService.setOnEditPlayList(pl);
+        this.originalOnEditPlaylist = this.copy.copyPlaylist(pl);
     }
 
     // Save the on edit playlist
@@ -210,16 +210,27 @@ export class PlaylistPanelComponent implements OnInit {
 
     // Return button (cancel modification)
     return() {
-        const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-            data: { title: 'Cancel modification?' }
-        });
-        dialogRef.afterClosed().subscribe(isDelete => {
-            if (isDelete) {
-                this.isEditMode = false;
-                this._playlistService.setOnEditPlayList(null);
-                this._playlistService.setSearchResultPlaylist(null);
-            }
-        });
+        // Check if onEditPlaylist is modified
+        const isPlaylistModified =
+        this.onEditPlaylist.videolist.length === this.originalOnEditPlaylist.videolist.length
+        ? false : true;
+
+        if (isPlaylistModified) {
+            const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+                data: { title: 'Cancel modification?' }
+            });
+            dialogRef.afterClosed().subscribe(isDelete => {
+                if (isDelete) {
+                    this.isEditMode = false;
+                    this._playlistService.setOnEditPlayList(null);
+                    this._playlistService.setSearchResultPlaylist(null);
+                }
+            });
+        } else {
+            this.isEditMode = false;
+            this._playlistService.setOnEditPlayList(null);
+            this._playlistService.setSearchResultPlaylist(null);
+        }
     }
 
     // Play the selected playlist
