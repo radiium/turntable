@@ -4,14 +4,13 @@
     flex-wrap: nowrap;
     justify-content: flex-start;
     width: 100%;
-    height: 100px;
+    height: 96px;
     position: relative;
     color: white;
+    overflow: hidden;
 }
 .videoListItem .thumb .vinyl {
     position: absolute;
-    margin-left: 2px;
-    margin-top: 2px;
     border: 30px solid black;
     border-radius: 50px;
     height: 34px;
@@ -33,8 +32,6 @@
     overflow: hidden;
     height: 96px;
     width: 96px;
-    margin-left: 2px;
-    margin-top: 2px;
     position: absolute;
     transition: all ease-in-out 0.2s;
     opacity: 1;

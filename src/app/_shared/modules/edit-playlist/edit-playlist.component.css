@@ -47,7 +47,10 @@
     flex-wrap: nowrap;
 }
 
-.videoInfos { width: 100%; }
+.videoInfos {
+    width: 100%;
+    margin: 2px;
+}
 
 .deleteBtn {
     text-align: center;
