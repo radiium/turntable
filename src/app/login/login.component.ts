@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MdDialog, MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
 
 // Services
 import { ElectronService } from 'ngx-electron';
@@ -8,6 +9,8 @@ import { OnlineService } from '../_core/services/online.service';
 
 // Models
 import { User } from '../_shared/models/user.model';
+
+import { HelpDialogComponent } from './help-dialog/help-dialog.component';
 
 @Component({
     selector: 'app-login',
@@ -20,6 +23,7 @@ export class LoginComponent implements OnInit {
     isOnline: Boolean = false;
 
     constructor(
+        public dialog: MdDialog,
         private _authService: AuthService,
         private _playlistService: PlaylistService,
         private _onlineService: OnlineService,
@@ -57,6 +61,8 @@ export class LoginComponent implements OnInit {
     }
 
     openHelp() {
-        
+        const dialogRef = this.dialog.open(HelpDialogComponent, {});
+        dialogRef.afterClosed().subscribe(result => {
+        });
     }
 }

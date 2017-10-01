@@ -14,6 +14,7 @@ import { CustomMaterialModule } from './modules/material/custom-material.module'
 // Shared components
 import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
 import { CreatePlaylistDialogComponent } from '../playlist-panel/create-playlist-dialog/create-playlist-dialog.component';
+import { HelpDialogComponent } from '../login/help-dialog/help-dialog.component';
 
 import { RangeSlider2Component } from './components/range-slider-2/range-slider-2.component';
 import { VideoPlayerComponent } from './components/video-player/video-player.component';
@@ -29,7 +30,8 @@ import { YoutubePlayerModule } from './modules/ng2-youtube-player/ng2-youtube-pl
 @NgModule({
     entryComponents: [
         ConfirmDialogComponent,
-        CreatePlaylistDialogComponent
+        CreatePlaylistDialogComponent,
+        HelpDialogComponent
     ],
     declarations: [
         ClickOutsideDirective,
@@ -37,6 +39,7 @@ import { YoutubePlayerModule } from './modules/ng2-youtube-player/ng2-youtube-pl
         FilterPlaylistPipe,
         ConfirmDialogComponent,
         CreatePlaylistDialogComponent,
+        HelpDialogComponent,
         RangeSlider2Component,
         VideoPlayerComponent,
     ],
