@@ -49,4 +49,8 @@ export class AppComponent implements OnInit {
 
     initUserSettings() {
     }
+
+    changeTab(tabIndex) {
+        this._tabsService.setSelectedTab(tabIndex);
+    }
 }

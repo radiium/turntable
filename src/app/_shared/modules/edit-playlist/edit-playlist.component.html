@@ -80,7 +80,7 @@
                 <div *ngIf="playlist.title === 'Default'">
                 -->
                 <!-- Login button -->
-                <div *ngIf="playlist.title === 'Default' && _electron.isElectronApp"><br>
+                <div *ngIf="playlist.title === 'Default' && isElectronApp()"><br>
                     <div>Or
                     <button id="playlistLoginBtn" class="signBtn" md-button (click)="login()">
                     <fa aria-label="Login" [name]="'sign-in'" [size]="1"></fa>

@@ -16,7 +16,7 @@ import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dial
 import { CreatePlaylistDialogComponent } from '../playlist-panel/create-playlist-dialog/create-playlist-dialog.component';
 import { HelpDialogComponent } from '../login/help-dialog/help-dialog.component';
 
-import { RangeSlider2Component } from './components/range-slider-2/range-slider-2.component';
+import { RangeSliderComponent } from './components/range-slider/range-slider.component';
 import { VideoPlayerComponent } from './components/video-player/video-player.component';
 
 // Directives
@@ -40,7 +40,7 @@ import { YoutubePlayerModule } from './modules/ng2-youtube-player/ng2-youtube-pl
         ConfirmDialogComponent,
         CreatePlaylistDialogComponent,
         HelpDialogComponent,
-        RangeSlider2Component,
+        RangeSliderComponent,
         VideoPlayerComponent,
     ],
     imports: [
@@ -68,7 +68,7 @@ import { YoutubePlayerModule } from './modules/ng2-youtube-player/ng2-youtube-pl
         ClickOutsideDirective,
         DurationPipe,
         FilterPlaylistPipe,
-        RangeSlider2Component,
+        RangeSliderComponent,
         VideoPlayerComponent,
         CustomMaterialModule,
     ],

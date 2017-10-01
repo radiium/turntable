@@ -233,6 +233,10 @@ export class EditPlaylistComponent implements OnInit, OnDestroy, OnChanges {
         }
         return 0;
     }
+
+    isElectronApp() {
+        return this._electron.isElectronApp;
+    }
     /*
     // Update playlist in _playerService
     updatePlayList() {

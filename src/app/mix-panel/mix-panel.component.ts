@@ -41,7 +41,7 @@ export class MixPanelComponent {
     currVolRight: any;
 
     // Cross fader controls
-    crossFaderValue: any;
+    crossFaderValue: any = 50;
 
     setCrossFaderValue(value) {
         console.log(value);

@@ -1,7 +1,7 @@
 <div class="videoListItem">
     <div class="thumb">
-        <div class="vinyl"><img    [src]="handleThumUrl(video.thumbUrl, 'vinyl')" (onError)="this.src=handleThumUrl(video.thumbUrl, 'vinyl')"/></div>
-        <div class="pochette"><img [src]="handleThumUrl(video.thumbUrl, 'pochette')" (onError)="this.src=handleThumUrl(video.thumbUrl, 'pochette')"/></div>
+        <div class="vinyl"><img    [attr.src]="handleThumUrl(video.thumbUrl, 'vinyl')" (onError)="this.src=handleThumUrl(video.thumbUrl, 'vinyl')"/></div>
+        <div class="pochette"><img [attr.src]="handleThumUrl(video.thumbUrl, 'pochette')" (onError)="this.src=handleThumUrl(video.thumbUrl, 'pochette')"/></div>
     </div>
     <div class="description">
         <div>{{video.title}}</div>

@@ -18,9 +18,9 @@
 
     <!-- Navigation buttons -->
     <div class="tabsNav">
-        <button [class.tabActive]="selectedTab === 1" (click)="_tabsService.setSelectedTab(1)">Playlist</button><!--
-     --><button [class.tabActive]="selectedTab === 2" (click)="_tabsService.setSelectedTab(2)">Mix</button><!--
-     --><button [class.tabActive]="selectedTab === 3" (click)="_tabsService.setSelectedTab(3)">Settings</button>
+        <button [class.tabActive]="selectedTab === 1" (click)="changeTab(1)">Playlist</button><!--
+     --><button [class.tabActive]="selectedTab === 2" (click)="changeTab(2)">Mix</button><!--
+     --><button [class.tabActive]="selectedTab === 3" (click)="changeTab(3)">Settings</button>
     </div>
 
     <!-- Content tabs -->
