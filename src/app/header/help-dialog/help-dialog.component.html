@@ -1,0 +1,104 @@
+<div>
+    <h2 md-dialog-title>
+        <fa [name]="'question-circle'" [size]="1"></fa>
+        Turntable help
+    </h2>
+    <md-dialog-content>
+
+        <!-- Tabs navigation -->
+        <div class="tabsNavBox">
+            <button md-button *ngFor="let tab of tabsList" (click)="openTab(tab.index)" class="tabsNavItem">{{ tab.label }}</button>
+        </div>
+
+        <!-- Tabs content -->
+        <div class="tabsBox">
+
+            <!-- Playlist help panel -->
+            <div [hidden]="selectedTab !== 1" class="tabsItem">
+                <div class="tabsItemList">
+                    <div class="tabsItemList">
+                        <ul>
+                            <li>1 - Create  a new 'playlist'</li>
+                            <li>2 - Filter playlist by 'title'</li>
+                            <li>3 - Play 'playlist' to the mix tab</li>
+                            <li>4 - Edit 'playlist'</li>
+                        </ul>
+                    </div>
+                    <div class="tabsItemListItem">
+                        <ul>
+                            <li>5 - Remove 'playlist' </li>
+                            <li>6 - Privacy status (public/private)</li>
+                            <li>7 - Load/Reload playlist from your youtube account</li>
+                            <li>8 - Login/Logout to your youtube account</li>
+                        </ul>
+                    </div>
+                </div>
+                <img src="assets/images/help1.png" alt="">
+            </div>
+
+            <!-- Mix help panel -->
+            <div [hidden]="selectedTab !== 2"class="tabsItem">
+                <div class="tabsItemList">
+                    <div class="tabsItemListItem">
+                        <ul>
+                            <li>1 - Return and cancel modification</li>
+                            <li>2 - Save and upload your modification</li>
+                            <li>3 - Drag and drop video</li>
+                        </ul>
+                    </div>
+                    <div class="tabsItemListItem">
+                        <ul>
+                            <li>4 - Delete video</li>
+                            <li>5 - Search video on youtube</li>
+                        </ul>
+                    </div>
+                </div>
+                <img src="assets/images/help2.png" alt="">
+
+            </div>
+
+            <!-- Settings help panel -->
+            <div [hidden]="selectedTab !== 3"class="tabsItem">
+                <div class="tabsItemList">
+                    <div class="tabsItemListItem">
+                        <ul>
+                            <li>1 - Change video speed</li>
+                            <li>2 - Change video volume</li>
+                            <li>3 - Show/Hide playlist/historic</li>
+                        </ul>
+                    </div>
+                    <div class="tabsItemListItem">
+                        <ul>
+                            <li>4 - CrossFader for mix volume</li>
+                            <li>5 - Play video on left player</li>
+                            <li>6 - Play video on right player</li>
+                        </ul>
+                    </div>
+                </div>
+                <ul>
+                    
+                    
+                </ul>
+                <img src="assets/images/help3.png" alt="">
+            </div>
+
+        </div>
+
+    </md-dialog-content>
+
+    <!-- Controls -->
+    <md-dialog-actions>
+        <button md-button (click)="onPreviousTab()" [disabled]="selectedTab === 1">
+            <fa [name]="'arrow-left'" [size]="1"></fa>
+            Previous
+        </button>
+        <button md-button (click)="onClose()">
+            <fa [name]="'close'" [size]="1"></fa>
+            Close
+        </button>
+        <button md-button (click)="onNextTab()" [disabled]="selectedTab === tabsList.length">
+            Next
+            <fa [name]="'arrow-right'" [size]="1"></fa>
+        </button>
+    </md-dialog-actions>
+</div>

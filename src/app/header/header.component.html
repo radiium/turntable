@@ -1,0 +1,41 @@
+<!-- Header -->
+<div id="header">
+  
+    <!-- Navigation buttons -->
+    <div id="navBtnBox">
+        <button [class.active]="selectedTab === 1" (click)="changeTab(1)">Playlist</button><!--
+     --><button [class.active]="selectedTab === 2" (click)="changeTab(2)">Mix</button><!--
+     --><button [class.active]="selectedTab === 3" (click)="changeTab(3)">Settings</button>
+    </div>
+
+    <!-- Spacer -->
+    <div class="headerSpacer"></div>
+
+    <!-- User infos -->
+    <div *ngIf="user" id="userBox">
+        <img src="{{ user.img }}" alt="">
+        <div>{{ user.name }}</div>
+    </div>
+
+    <!-- Signin/Signout buttons -->
+    <div id="signBtnBox">
+        <!-- Signin btn -->
+        <button *ngIf="!user" (click)="signin()">
+        <fa [name]="'sign-in'" [size]="1"></fa>
+        <span>Login</span>
+        </button>
+        
+        <!-- Signout btn -->
+        <button *ngIf="user" (click)="signout()">
+        <fa [name]="'sign-out'" [size]="1"></fa>
+        <span>Logout</span>
+        </button>
+    </div>
+
+    <!-- Help button -->
+    <div id="helpBtnBox">
+        <button id="helpBtn" (click)="openHelp()">
+        <fa aria-label="Help" [name]="'question'" [size]="1"></fa>
+        </button>
+    </div>
+</div>
