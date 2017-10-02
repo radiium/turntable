@@ -5,19 +5,12 @@ import { app, BrowserWindow } from 'electron';
 export const fileMenuTemplate = {
     label: 'File',
         submenu: [{
-            label: 'Settings',
-            click: () => {
-            // createSettingsWindow();
-            }
-        }, {
             label: `About File`,
             selector: 'orderFrontStandardAboutPanel:'
         }, {
             type: 'separator'
         }, {
-            type: 'separator'
-        }, {
-            label: 'Hide Angular 2 Seed Advanced',
+            label: 'Hide Turntable',
             accelerator: 'Command+H',
             selector: 'hide:'
         }, {
@@ -35,9 +28,5 @@ export const fileMenuTemplate = {
             click: () => {
                 app.quit();
             }
-        },
-        { label: 'Cut', accelerator: 'CmdOrCtrl+X', selector: 'cut:' },
-        { label: 'Copy', accelerator: 'CmdOrCtrl+C', selector: 'copy:' },
-        { label: 'Paste', accelerator: 'CmdOrCtrl+V', selector: 'paste:' }
-        ]
+        }]
 };

@@ -1,6 +1,6 @@
 # turntable
 
-> A simple youtube dj app made with Electron (in progress)
+> A simple youtube dj app made with Electron (in progress)  
 > Current version: 0.2.0-beta
   
 ## Captures:
@@ -9,15 +9,14 @@
 ![Mix panel](/captures/mix-panel2.png)
   
 ## Releases:
-Soon...
-<!---
-- ![Mac OS X (x64)]()
-- ![Linux (x64)]()
-- ![Windows (ia32)]()
+  
+- ![Linux (x64)](Turntable-linux-x86_64-0.2.0-beta.rpm)
+- ![Linux (x64)](Turntable-linux-amd64-0.2.0-beta.deb)
+- ![Linux (x64)](Turntable-0.2.0-beta-x86_64.AppImage)
+- ![Mac OS X (x64)](Turntable-mac-0.2.0-beta.dmg)
+- ![Windows](Turntable-win-0.2.0-beta.exe)
 
-![Changelog](/CHANGELOG.md)
-
--->
+![Changelog](/CHANGELOG.md)  
   
 ## Made with
   
