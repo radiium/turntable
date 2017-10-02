@@ -9,7 +9,7 @@ import { app, BrowserWindow, ipcMain, Menu, shell } from 'electron';
 import { devMenuTemplate } from './menu/dev_menu.template';
 import { fileMenuTemplate } from './menu/file_menu.template';
 import { editMenuTemplate } from './menu/edit_menu.template';
-
+import { session } from 'electron';
 // Init variable
 let mainWindow: any = null;
 const menus: any[] = [];
@@ -51,6 +51,11 @@ const createMainWindow = async () => {
 // On app is ready
 app.on('ready', () => {
     createMainWindow();
+
+    // Query all cookies.
+    session.defaultSession.cookies.get({}, (error, cookies) => {
+    console.log(error, cookies);
+    });
 });
 
 // On close app event
@@ -63,6 +68,17 @@ app.on('window-all-closed', () => {
 // Recreate window when icon is clicked
 app.on('activate', () => {
     if (mainWindow === null) { createMainWindow(); }
+});
+
+// Clear cahe and cookie session before quit
+app.on('before-quit', () => {
+    // Query all cookies.
+    session.defaultSession.cookies.get({}, (error, cookies) => {
+    console.log(error, cookies);
+    });
+    console.log("=======================");
+    console.log(mainWindow.webContents.session);
+    mainWindow.webContents.session.clearStorageData();
 });
 
 /*

@@ -30,7 +30,7 @@
     "main": "dist/main.js",
     "scripts": {
         "electrontsc": "    tsc -p electron/",
-        "lint": "           tslint   --project tsconfig.json src/**/*.ts",
+        "lint": "           tslint --type-check --project tsconfig.json 'src/**/*.ts'",
         "start": "          ng serve",
         "test": "           ng test",
         "e2e": "            ng e2e",
@@ -84,6 +84,7 @@
         "@types/node": "^8.0.31",
         "@types/youtube": "0.0.31",
         "codelyzer": "^3.2.0",
+        "del": "^3.0.0",
         "electron": "^1.7.8",
         "electron-builder": "^19.33.0",
         "electron-builder-squirrel-windows": "^19.33.0",
