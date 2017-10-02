@@ -61,7 +61,7 @@ const testPlaylist = {
 @Component({
   selector: 'app-playlist-panel',
   templateUrl: './playlist-panel.component.html',
-  styleUrls: ['./playlist-panel.component.css']
+  styleUrls: ['./playlist-panel.component.scss']
 })
 export class PlaylistPanelComponent implements OnInit {
 

@@ -22,13 +22,13 @@
         <!-- Signin btn -->
         <button *ngIf="!user" (click)="signin()">
         <fa [name]="'sign-in'" [size]="1"></fa>
-        <span>Login</span>
+        Sign in
         </button>
         
         <!-- Signout btn -->
         <button *ngIf="user" (click)="signout()">
         <fa [name]="'sign-out'" [size]="1"></fa>
-        <span>Logout</span>
+        Sign out
         </button>
     </div>
 

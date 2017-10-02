@@ -6,6 +6,7 @@ import { HttpModule, JsonpModule } from '@angular/http';
 // Modules
 import { CoreModule } from './_core/core.module';
 import { SharedModule } from './_shared/shared.module';
+import { HeaderModule } from './header/header.module';
 import { EditPlaylistModule } from './_shared/modules/edit-playlist/edit-playlist.module';
 
 // Components
@@ -17,8 +18,7 @@ import { MixPanelComponent } from './mix-panel/mix-panel.component';
 import { PlaylistPanelComponent } from './playlist-panel/playlist-panel.component';
 // Settings panel
 import { SettingsPanelComponent } from './settings-panel/settings-panel.component';
-// Login component
-import { LoginComponent } from './login/login.component';
+
 
 @NgModule({
     imports: [
@@ -29,6 +29,7 @@ import { LoginComponent } from './login/login.component';
         JsonpModule,
         CoreModule,
         SharedModule,
+        HeaderModule,
         EditPlaylistModule
     ],
     declarations: [
@@ -39,9 +40,7 @@ import { LoginComponent } from './login/login.component';
         // Playlist panel
         PlaylistPanelComponent,
         // Settings panel
-        SettingsPanelComponent,
-        // Login
-        LoginComponent,
+        SettingsPanelComponent
     ],
     exports: [],
     providers: [],

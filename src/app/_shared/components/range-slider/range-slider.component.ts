@@ -3,7 +3,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 @Component({
     selector: 'app-range-slider',
     templateUrl: './range-slider.component.html',
-    styleUrls: ['./range-slider.component.css']
+    styleUrls: ['./range-slider.component.scss']
 })
 export class RangeSliderComponent implements OnInit {
 

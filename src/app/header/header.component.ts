@@ -68,7 +68,9 @@ export class HeaderComponent implements OnInit {
     }
 
     openHelp() {
-        const dialogRef = this.dialog.open(HelpDialogComponent, {});
+        const dialogRef = this.dialog.open(HelpDialogComponent, {
+            width: '80%'
+        });
         dialogRef.afterClosed().subscribe(result => {
         });
     }

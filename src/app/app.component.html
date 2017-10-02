@@ -1,27 +1,6 @@
-<!-- App loader -->
-<div class="loader" *ngIf="isLoading">
-    <md-progress-spinner class="appLoader" [mode]="'indeterminate'"></md-progress-spinner>
-    <div class="textLoader">Loading ...</div>
-</div>
-
-<div class="notOnline" *ngIf="!isOnline">
-    <div class="textLoader"><span class="onlineText">Check your internet connection!</span></div>
-</div>
-<div class="bgLoader" *ngIf="!isOnline"></div>
-<div class="bgLoader" *ngIf="isLoading"></div>
-
-<!-- App container-->
-<div [class.blur]="isLoading" id="appContainer">
-    
-    <!-- Login buttons and status -->
-    <app-login></app-login>
-
-    <!-- Navigation buttons -->
-    <div class="tabsNav">
-        <button [class.tabActive]="selectedTab === 1" (click)="changeTab(1)">Playlist</button><!--
-     --><button [class.tabActive]="selectedTab === 2" (click)="changeTab(2)">Mix</button><!--
-     --><button [class.tabActive]="selectedTab === 3" (click)="changeTab(3)">Settings</button>
-    </div>
+<div id="appContainer">
+    <!-- Header -->
+    <app-header></app-header>
 
     <!-- Content tabs -->
     <div class="tabsContent">
@@ -29,6 +8,4 @@
         <app-mix-panel      [hidden]="selectedTab !== 2" class="tabContentCpnt"></app-mix-panel>
         <app-settings-panel [hidden]="selectedTab !== 3" class="tabContentCpnt"></app-settings-panel>
     </div>
-
 </div>
-

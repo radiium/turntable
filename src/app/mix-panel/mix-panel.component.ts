@@ -11,7 +11,7 @@ import { ElectronService } from 'ngx-electron';
 @Component({
   selector: 'app-mix-panel',
   templateUrl: './mix-panel.component.html',
-  styleUrls: ['./mix-panel.component.css']
+  styleUrls: ['./mix-panel.component.scss']
 })
 export class MixPanelComponent {
 

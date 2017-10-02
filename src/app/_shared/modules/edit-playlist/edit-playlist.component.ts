@@ -17,7 +17,7 @@ import { TabsService } from '../../../_core/services/tabs.service';
 @Component({
   selector: 'app-edit-playlist',
   templateUrl: './edit-playlist.component.html',
-  styleUrls: ['./edit-playlist.component.css'],
+  styleUrls: ['./edit-playlist.component.scss'],
   viewProviders:  [DragulaService]
 })
 export class EditPlaylistComponent implements OnInit, OnDestroy, OnChanges {

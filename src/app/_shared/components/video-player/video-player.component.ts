@@ -12,7 +12,7 @@ import { PlaylistService } from '../../../_core/services/playlist.service';
 @Component({
     selector: 'app-video-player',
     templateUrl: './video-player.component.html',
-    styleUrls: ['./video-player.component.css']
+    styleUrls: ['./video-player.component.scss']
 })
 export class VideoPlayerComponent implements OnChanges, OnDestroy {
 

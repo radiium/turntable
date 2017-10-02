@@ -1,0 +1,42 @@
+{
+    "helpContent": [
+        {
+            "index": 1,
+            "label": "Playlist",
+            "imgUrl": "assets/images/help1.png",
+            "content": [
+                "1 - Create  a new \"playlist\"",
+                "2 - Filter playlist by \"title\"",
+                "3 - Play \"playlist\" to the mix tab",
+                "4 - Edit \"playlist\"",
+                "5 - Remove \"playlist\"",
+                "6 - Privacy status (public/private)",
+                "7 - Load/Reload playlist from your youtube account",
+                "8 - Login/Logout to your youtube account"
+            ]
+        }, {
+            "index": 2,
+            "label": "Mix",
+            "imgUrl": "assets/images/help2.png",
+            "content": [
+                "1 - Return and cancel modification",
+                "2 - Save and upload your modification",
+                "3 - Drag and drop video",
+                "4 - Delete video",
+                "5 - Search video on youtube"
+            ]
+        }, {
+            "index": 3,
+            "label": "Edit",
+            "imgUrl": "assets/images/help3.png",
+            "content": [
+                "1 - Change video speed",
+                "2 - Change video volume",
+                "3 - Show/Hide playlist/historic",
+                "4 - CrossFader for mix volume",
+                "5 - Play video on left player",
+                "6 - Play video on right player"
+            ]
+        }
+    ]
+}

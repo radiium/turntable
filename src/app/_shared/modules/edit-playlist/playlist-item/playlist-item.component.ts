@@ -6,7 +6,7 @@ import { Video } from '../../../models/video.model';
 @Component({
   selector: 'app-playlist-item',
   templateUrl: './playlist-item.component.html',
-  styleUrls: ['./playlist-item.component.css']
+  styleUrls: ['./playlist-item.component.scss']
 })
 export class PlaylistItemComponent {
 
