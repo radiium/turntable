@@ -19,11 +19,17 @@
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "app",
       "styles": [
-        "styles.css",
+        "styles/styles.css",
         "../node_modules/dragula/dist/dragula.css",
-        "../node_modules/font-awesome/css/font-awesome.css",
-        "material-custom-theme.scss"
+        "../node_modules/font-awesome/css/font-awesome.css"
       ],
+      "stylePreprocessorOptions": {
+        "includePaths": [
+          "./styles/colors.scss",
+          "./styles/mixins.scss",
+          "./styles/material-custom-theme.scss"
+        ]
+      },
       "scripts": [
       ],
       "environmentSource": "environments/environment.ts",
