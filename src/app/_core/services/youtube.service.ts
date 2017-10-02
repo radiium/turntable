@@ -79,7 +79,8 @@ export class YoutubeService {
             '?q=' + query +
             '&key=' + CONSTANT.KEY_API +
             '&part=snippet' +
-            '&maxResults=10';
+            '&maxResults=10' +
+            '&videoEmbeddable=true';
 
         return this._http.get(searchVideosUrl)
         .map((res: Response) => res.json())

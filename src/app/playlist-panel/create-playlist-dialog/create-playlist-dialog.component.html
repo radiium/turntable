@@ -1,20 +1,23 @@
 <div>
     <h2 md-dialog-title>Create new playlist</h2>
+
     <md-dialog-content>
 
         <!-- Playlist name -->
         <form class="example-form">
         <md-form-field class="example-full-width">
-        <input mdInput type="text" [(ngModel)]="name" [ngModelOptions]="{standalone: true}" placeholder="Playlist name">
+            <input mdInput type="text" [(ngModel)]="name"
+            [ngModelOptions]="{standalone: true}" placeholder="Playlist name">
         </md-form-field>
         </form>
         
         <!-- Playlist privacy status -->
         <label class="labelVisible">Playlist visibility:</label>
-        <md-radio-group class="radioBtnGrp" [(ngModel)]="privacyStatus">
-        <md-radio-button class="radioBtn" value="public">Public</md-radio-button>
-        <md-radio-button class="radioBtn" value="private">Private</md-radio-button>
+            <md-radio-group class="radioBtnGrp" [(ngModel)]="privacyStatus">
+            <md-radio-button class="radioBtn" value="public">Public</md-radio-button>
+            <md-radio-button class="radioBtn" value="private">Private</md-radio-button>
         </md-radio-group>
+
     </md-dialog-content>
 
     <!-- Controls -->
