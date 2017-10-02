@@ -10,11 +10,11 @@
   
 ## Releases:
   
-- ![Linux (x64)](Turntable-linux-x86_64-0.2.0-beta.rpm)
-- ![Linux (x64)](Turntable-linux-amd64-0.2.0-beta.deb)
-- ![Linux (x64)](Turntable-0.2.0-beta-x86_64.AppImage)
-- ![Mac OS X (x64)](Turntable-mac-0.2.0-beta.dmg)
-- ![Windows](Turntable-win-0.2.0-beta.exe)
+- ![Linux (x64)](/release/Turntable-linux-x86_64-0.2.0-beta.rpm)
+- ![Linux (x64)](/release/Turntable-linux-amd64-0.2.0-beta.deb)
+- ![Linux (x64)](/release/Turntable-0.2.0-beta-x86_64.AppImage)
+- ![Mac OS X (x64)](/release/Turntable-mac-0.2.0-beta.dmg)
+- ![Windows](/release/Turntable-win-0.2.0-beta.exe)
 
 ![Changelog](/CHANGELOG.md)  
   
