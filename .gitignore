@@ -20,11 +20,11 @@
 
 # Release folder
 /release/*
-!/release/*.Appimage
-!/release/*.deb
-!/release/*.dmg
-!/release/*.Appimage
-!/release/*.exe
+# !/release/*.Appimage
+# !/release/*.deb
+# !/release/*.dmg
+# !/release/*.Appimage
+# !/release/*.exe
 
 # IDE - VSCode
 .vscode
