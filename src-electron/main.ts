@@ -77,7 +77,6 @@ app.on('activate', () => {
 
 // Clear cahe and cookie session before quit
 app.on('before-quit', () => {
-    console.log(mainWindow.webContents.session);
     mainWindow.webContents.session.clearStorageData();
 });
 

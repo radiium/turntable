@@ -79,8 +79,8 @@ export class YoutubeService {
             '?q=' + query +
             '&key=' + CONSTANT.KEY_API +
             '&part=snippet' +
-            '&maxResults=10' +
-            '&videoEmbeddable=true';
+            '&maxResults=50'; // +
+            // '&videoEmbeddable=true';
 
         return this._http.get(searchVideosUrl)
         .map((res: Response) => res.json())
@@ -99,7 +99,7 @@ export class YoutubeService {
 
         const videosByIdUrl =
             CONSTANT.VIDEO_API +
-            '?part=snippet,contentDetails' +
+            '?part=snippet,contentDetails,status,player' +
             '&id=' + videosId +
             '&key=' + CONSTANT.KEY_API;
 

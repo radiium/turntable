@@ -28,6 +28,13 @@ const testPlaylist = {
     isLocal: true,
     videolist: [
         {
+            id: 'gAfqguL88tA',
+            title: 'Bad maners',
+            description: '',
+            thumbUrl: '',
+            duration: 268000
+        },
+        {
             id: '-Cvo2fVb1aY',
             title: 'Midnight Magic - Vicious Love (Offi…',
             description: 'The official video for Vicious Lov…',
