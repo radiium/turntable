@@ -41,7 +41,7 @@ const createMainWindow = async () => {
         mainWindow = null;
     });
 
-    // Create menus
+    // Build menus
     menus.push(fileMenuTemplate);
     menus.push(editMenuTemplate);
     if (isDev) { menus.push(devMenuTemplate); }
@@ -52,9 +52,14 @@ const createMainWindow = async () => {
 app.on('ready', () => {
     createMainWindow();
 
-    // Query all cookies.
-    session.defaultSession.cookies.get({}, (error, cookies) => {
-    console.log(error, cookies);
+    // Add youtube url as referer url for play video with restricted domain
+    const filters = [
+        'https://*.youtube.com/*',
+        'http://*.youtube.com/*'
+    ];
+    session.defaultSession.webRequest.onBeforeSendHeaders({urls: filters}, (details, callback) => {
+        details.requestHeaders['Referer'] = 'https://www.youtube.com';
+        callback({cancel: false, requestHeaders: details.requestHeaders});
     });
 });
 
@@ -72,11 +77,6 @@ app.on('activate', () => {
 
 // Clear cahe and cookie session before quit
 app.on('before-quit', () => {
-    // Query all cookies.
-    session.defaultSession.cookies.get({}, (error, cookies) => {
-    console.log(error, cookies);
-    });
-    console.log("=======================");
     console.log(mainWindow.webContents.session);
     mainWindow.webContents.session.clearStorageData();
 });
