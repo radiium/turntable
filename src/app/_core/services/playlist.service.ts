@@ -93,8 +93,10 @@ export class PlaylistService {
                         const videoList = [];
                         res.forEach((el: any, index) => {
                             el.items.forEach(video => {
-                                const objVideo = this.parseVideo(video);
-                                videoList.push(objVideo);
+                                if (video.status.embeddable) {
+                                    const objVideo = this.parseVideo(video);
+                                    videoList.push(objVideo);
+                                }
                             });
                         });
 
