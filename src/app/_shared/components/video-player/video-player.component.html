@@ -3,7 +3,10 @@
     <div class="playerBox">
         <div class="player">
             <div class="playerLoader" *ngIf="!video"></div>
-            <app-youtube-player [width]="300" [height]="200" [videoId]="id" (ready)="savePlayer($event)" (change)="onStateChange($event)"></app-youtube-player>
+            
+            <app-youtube-player [width]="300" [height]="200" [videoId]="id"
+            (ready)="savePlayer($event)" (change)="onStateChange($event)"></app-youtube-player>
+        
         </div>
         <div class="activVideo">
             <div *ngIf="!video" class="noVideo">No Video Loaded</div>
@@ -14,8 +17,6 @@
         </div>
    </div>
  
-        
-       
     <div class="volume control">
         <app-range-slider [name]="'Speed'" [side]="sidePlayer" [default]="1"
                           [value]="speed" (valueChange)="onSpeedChange($event)"

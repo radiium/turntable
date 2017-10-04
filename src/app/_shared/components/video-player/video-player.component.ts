@@ -27,7 +27,7 @@ export class VideoPlayerComponent implements OnChanges, OnDestroy {
     // Player
     player: any;                 // Player object api
     private ytEvent: any;                // Player state
-    id: String;                  // Video id
+    id: String = 'gAfqguL88tA';                  // Video id
     private isPlayerLoaded: boolean;     // state of player
     @Input() sidePlayer: String;         // Side of player (left or right)
 
@@ -89,6 +89,9 @@ export class VideoPlayerComponent implements OnChanges, OnDestroy {
 
     // Trigger when input change
     ngOnChanges(changes: SimpleChanges) {
+        if (this.video) {
+            this.id = this.video.id ;
+        }
 
         // Only if not the first change
         if (this.player && changes.video && !changes.video.firstChange) {
@@ -121,6 +124,7 @@ export class VideoPlayerComponent implements OnChanges, OnDestroy {
     // 3 : en mémoire tampon
     // 5 : en file d'attente
     onStateChange(event) {
+        console.log('onStateChange', event);
 
         this.ytEvent = event.data;
         this.stopTimer();
@@ -150,6 +154,7 @@ export class VideoPlayerComponent implements OnChanges, OnDestroy {
         }
     }
     savePlayer(player) {
+        console.log('playerReady', player);
         this.player = player;
     }
 

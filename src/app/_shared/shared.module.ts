@@ -5,33 +5,31 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-// External modules
+// modules
 import { DragulaModule } from 'ng2-dragula';
 import { Angular2FontawesomeModule } from 'angular2-fontawesome/angular2-fontawesome';
 import { NgxElectronModule } from 'ngx-electron';
 import { CustomMaterialModule } from './modules/material/custom-material.module';
+import { YoutubePlayerModule } from './modules/youtube-player/youtube-player.module';
 
-// Shared components
+// Components
 import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
 import { CreatePlaylistDialogComponent } from '../playlist-panel/create-playlist-dialog/create-playlist-dialog.component';
-import { HelpDialogComponent } from '../login/help-dialog/help-dialog.component';
 
 import { RangeSliderComponent } from './components/range-slider/range-slider.component';
 import { VideoPlayerComponent } from './components/video-player/video-player.component';
 
 // Directives
 import { ClickOutsideDirective } from './directives/click-outside.directive';
+
 // pipes
 import { DurationPipe } from './pipes/duration.pipe';
 import { FilterPlaylistPipe } from './pipes/filter-playlist.pipe';
-// Ng2 you tube player
-import { YoutubePlayerModule } from './modules/ng2-youtube-player/ng2-youtube-player';
 
 @NgModule({
     entryComponents: [
         ConfirmDialogComponent,
         CreatePlaylistDialogComponent,
-        HelpDialogComponent
     ],
     declarations: [
         ClickOutsideDirective,
@@ -39,7 +37,6 @@ import { YoutubePlayerModule } from './modules/ng2-youtube-player/ng2-youtube-pl
         FilterPlaylistPipe,
         ConfirmDialogComponent,
         CreatePlaylistDialogComponent,
-        HelpDialogComponent,
         RangeSliderComponent,
         VideoPlayerComponent,
     ],
