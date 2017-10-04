@@ -10,7 +10,7 @@
   
 ## Releases:
   
-![Here)](https://github.com/radiium/turntable/releases/tag/v0.2.0-beta)  
+![Download latest release here](https://github.com/radiium/turntable/releases/tag/v0.2.0-beta)  
 ![Changelog](/CHANGELOG.md)  
   
 ## Made with
