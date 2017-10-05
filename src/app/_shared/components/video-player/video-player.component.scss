@@ -6,10 +6,10 @@
     &.playerLeft  {
         flex-direction: row;
 
-        .volume { margin-left: 5px; }
-        .speed { margin-left: 5px; }
+        >.volume { margin-left: 5px; }
+        >.speed { margin-left: 5px; }
 
-        .currVideo  {
+        >.currVideo  {
             flex-direction: row;
             justify-content: space-between;
         }

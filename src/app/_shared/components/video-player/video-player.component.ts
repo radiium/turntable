@@ -85,15 +85,15 @@ export class VideoPlayerComponent implements OnChanges, OnDestroy {
     onVolumeChange(vol) {
         if (!this.player || !this.video) { return; }
 
-        if (vol < 1) {
-            this.player.mute();
-            this.isMuted = this.player.isMuted();
-        } else if (vol > 1 && vol < 100) {
+        if (vol === 0) {
+            this.isMuted = true;
+        } else if (vol > 0 && vol < 100) {
             this.isMuted = false;
-            this.player.unMute();
-            this.isMuted = this.player.isMuted();
         }
+        console.log(vol);
         this.player.setVolume(vol);
+        this.volumeChange.emit(vol);
+        this.volume = vol;
     }
 
     onSpeedChange(speed) {
@@ -107,6 +107,14 @@ export class VideoPlayerComponent implements OnChanges, OnDestroy {
 
     // Trigger when input change
     ngOnChanges(changes: SimpleChanges) {
+
+        if (changes && changes.volume && changes.volume.currentValue) {
+            const vol = changes.volume.currentValue;
+            this.player.setVolume(vol);
+            this.volumeChange.emit(vol);
+            this.volume = vol;
+        }
+
         if (this.video) {
             this.id = this.video.id ;
         }
@@ -135,23 +143,23 @@ export class VideoPlayerComponent implements OnChanges, OnDestroy {
         }
     }
 
-    // -1 : non démarré
-    // 0 : arrêté
-    // 1 : en lecture
-    // 2 : en pause
-    // 3 : en mémoire tampon
-    // 5 : en file d'attente
+    // YT.PlayerState
+    // UNSTARTED = -1 : non démarré
+    // ENDED     =  0 : arrêté
+    // PLAYING   =  1 : en lecture
+    // PAUSED    =  2 : en pause
+    // BUFFERING =  3 : en mémoire tampon
+    // CUED      =  5 : en file d'attente
     onStateChange(event) {
-        console.log('onStateChange', event);
 
         this.ytEvent = event.data;
         this.stopTimer();
 
-        if (this.ytEvent === 1) {
-            this.timerControl$.next(this.getRemainingTime());
+        if (this.ytEvent === YT.PlayerState.PLAYING) {
             this.isPlaying = true;
+            this.timerControl$.next(this.getRemainingTime());
 
-        } else if (this.ytEvent === 0) {
+        } else if (this.ytEvent === YT.PlayerState.ENDED) {
             this.isPlaying = false;
 
             if (this.playList.videolist && this.playList.videolist.length > 0) {
@@ -172,7 +180,6 @@ export class VideoPlayerComponent implements OnChanges, OnDestroy {
         }
     }
     savePlayer(player) {
-        // console.log('playerReady', player);
         this.player = player;
     }
 
@@ -198,7 +205,7 @@ export class VideoPlayerComponent implements OnChanges, OnDestroy {
 
     // Mute/Unmute
     mute() {
-        if (!this.player || !this.video) { return; }
+        if (!this.player || !this.video || this.player.getVolume() === 0) { return; }
 
         if (this.player.isMuted()) {
             this.player.unMute();
@@ -228,8 +235,8 @@ export class VideoPlayerComponent implements OnChanges, OnDestroy {
     initTimer() {
         // console.log('Init Timer');
         this.timerControl$ = new Subject<number>();
-        this.timer$ = this.timerControl$.switchMap(
-            period => period ? Observable.timer(period, 1000) : Observable.empty()
+        this.timer$ = this.timerControl$.switchMap((period) =>
+            period ? Observable.timer(period, 1000) : Observable.empty()
         );
         this.sub = this.timer$.subscribe(t => {
 

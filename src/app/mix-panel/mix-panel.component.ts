@@ -44,20 +44,20 @@ export class MixPanelComponent {
     crossFaderValue: any = 50;
 
     setCrossFaderValue(value) {
-        console.log(value);
-/*
-        const valLeft;
-        const valRight;
+        let valLeft = 0;
+        let valRight = 0;
         if (value < 50) {
-            value / 100 *
-            valLeft  =
-            valRight =
-
-        } else if (value >= 50) {
-            valLeft  =
-            valRight =
+            valLeft = 100;
+            valRight = 100 - ((50 - value) * 2);
+        } else if (value === 50) {
+            valLeft  = 100;
+            valRight = 100;
+        } else if (value > 50) {
+            valLeft  = 100 - ((value - 50) * 2);
+            valRight = 100;
         }
-        */
+        this.volLeft = valLeft;
+        this.volRight = valRight;
     }
 
 

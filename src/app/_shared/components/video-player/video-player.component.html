@@ -17,14 +17,14 @@
         <div class="activVideo">
             <div *ngIf="!video" class="noVideo">No Video Loaded</div>
             <div *ngIf="video"  class="currVideo">
-                <div class="currTitle"><!--{{ video.title }}--> {{ volume }}</div>
+                <div class="currTitle">{{ video.title }}</div>
                 <div class="currTime output">{{ currDuration }}</div>
             </div>
         </div>
     </div>
  
     <!-- Speed controls -->
-    <div class="control">
+    <div class="control speed">
         <app-range-slider
             [isPlayerReady]="player && video"
             [name]="'Speed'"
@@ -44,7 +44,7 @@
     </div>
 
     <!-- Volume controls -->
-    <div class="control">
+    <div class="control volume">
         <app-range-slider
             [isPlayerReady]="player && video"
             [name]="'Vol'"
