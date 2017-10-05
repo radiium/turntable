@@ -77,7 +77,9 @@ app.on('activate', () => {
 
 // Clear cahe and cookie session before quit
 app.on('before-quit', () => {
-    mainWindow.webContents.session.clearStorageData();
+    if (process.env.NODE_ENV !== 'development') {
+        mainWindow.webContents.session.clearStorageData();
+    }
 });
 
 /*
