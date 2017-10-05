@@ -108,7 +108,7 @@
                 <!-- All btn Player control -->
                 <div *ngIf="type === 'player'" class="videoControl">
                     <!-- Play at left button -->
-                    <button mdTooltip="Play at left !" [mdTooltipPosition]="'above'" md-mini-fab color="primary" (click)="playVideo(video, 'left')" class="leftBtn mix-btn">
+                    <button mdTooltip="Play at left !" [mdTooltipPosition]="'above'" md-mini-fab color="primary" (click)="playAtLeft(video)" class="leftBtn mix-btn">
                     <fa [name]="'play'" [size]="2" [rotate]="180" ></fa>
                     </button>
                     
@@ -118,7 +118,7 @@
                     </button>
 
                     <!-- Play at right button -->
-                    <button mdTooltip="Play at right !" [mdTooltipPosition]="'above'" md-mini-fab color="primary" (click)="playVideo(video, 'right')" class="rightBtn mix-btn">
+                    <button mdTooltip="Play at right !" [mdTooltipPosition]="'above'" md-mini-fab color="primary" (click)="playAtRight(video)" class="rightBtn mix-btn">
                     <fa [name]="'play'" [size]="2" ></fa>
                     </button>
                 </div>

@@ -2,144 +2,123 @@
 .playerContainer {
     display: flex;
     margin-bottom: 5px;
-}
+    
+    &.playerLeft  {
+        flex-direction: row;
 
-.playerLeft  { flex-direction: row; }
-.playerRight { flex-direction: row-reverse; }
+        .volume { margin-left: 5px; }
+        .speed { margin-left: 5px; }
 
-/* Player */
+        .currVideo  {
+            flex-direction: row;
+            justify-content: space-between;
+        }
+    }
 
-.playerBox {
-    width: 300px;
-    height: 239px;;
-    display: flex;
-    flex-direction: column;
-    flex-wrap: nowrap;
-    justify-content: space-between;
-}
+    &.playerRight {
+        flex-direction: row-reverse;
 
-.player {
-    width: 300px;
-    height: 200px;
-    margin-bottom: 5px;
-    position: relative;
-}
+        .volume { margin-right: 5px; }
+        .speed { margin-right: 5px; }
 
-.player .playerLoader {
-    width: 300px;
-    height: 200px;
-    margin-bottom: 5px;
-    position: absolute;
-    color: white;
-    background-color: black;
-}
+        .currVideo {
+            flex-direction: row-reverse;
+            justify-content: flex-end;
+        }
+    }
 
-.activVideo {
-    width: 300px;
-    height: 34px;
-    color: lightgray;
-    cursor: default;
-    background-color: #242320;
-}
+    /* Player container */
+    .playerBox {
+        width: 300px;
+        height: 239px;;
+        display: flex;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        justify-content: space-between;
+        
+        .player {
+            width: 300px;
+            height: 200px;
+            margin-bottom: 5px;
+            position: relative;
 
-.activVideo > div {
-    height: 34px;
-    line-height: 24px;
-}
+            .playerLoader {
+                width: 300px;
+                height: 200px;
+                margin-bottom: 5px;
+                position: absolute;
+                color: white;
+                background-color: black;
+            }
+        }
+    }
+    
+    /* Current video infos container */
+    .activVideo {
+        width: 300px;
+        height: 34px;
+        color: lightgray;
+        cursor: default;
+        background-color: #242320;
 
-.activVideo .noVideo {
-    line-height: 34px;
-    text-align: center;
-    opacity: 0.3;
-}
+        .currVideo {
+            display: flex;
+            flex-wrap: nowrap;
 
-.currVideo {
-    display: flex;
-    flex-wrap: nowrap;
-}
+            .currTitle {
+                padding: 5px;
+                height: 24px;
+                max-width: 250px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
 
-.playerLeft .currVideo  {
-    flex-direction: row;
-    justify-content: space-between;
-}
-.playerRight .currVideo {
-    flex-direction: row-reverse;
-    justify-content: flex-end;
-}
+            .currTime {
+                /*width: 46px;*/
+            }
+        }
 
-.currTitle {
-    padding: 5px;
-    height: 24px;
-    max-width: 250px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
+        .noVideo {
+            line-height: 34px;
+            text-align: center;
+            opacity: 0.3;
+        }
+    }
 
-.currTime {
-    /*width: 46px;*/
-}
+    .output {
+        line-height: 24px;
+        margin-top: 3px;
+        margin-bottom: 3px;
+        margin-left: 5px;
+        margin-right: 5px;
+        padding-left: 3px;
+        padding-right: 3px;
+        border: 2px solid #101010;
+        border-radius: 5px;
+        color: #25E1DA;
+        background-color: #504F4C;
+        text-shadow: 0px 0px 15px #25E1DA;
+    }
 
-/* Control */
-.control {
-    display: flex;
-    flex-direction: column;
-    flex-wrap: nowrap;
-}
+    /* Control */
+    .control {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: nowrap;
 
-.control button {
-    border-radius: 0;
-    margin-top: 5px;
-    border: none;
-    outline: none;
-    width: 34px;
-    height: 34px;
-    background-color: #817E7E;
-}
-.btn button:active {
-	color: #25E1DA;
-	text-shadow: 0px 0px 15px #25E1DA;
-}
-
-.control button:hover {
-    color: #0f5e5b;
-}
-.control button:hover:active  {
-	color: #25E1DA;
-}
-
-
-.playerLeft .volume {
-    margin-left: 5px;
-}
-
-.playerRight .volume {
-    margin-right: 5px;
-}
-
-.playerLeft .speed {
-    margin-left: 5px;
-}
-
-.playerRight .speed {
-    margin-right: 5px;
-}
-
-.output {
-    line-height: 24px;
-	margin-top: 3px;
-    margin-bottom: 3px;
-    margin-left: 5px;
-    margin-right: 5px;
-    padding-left: 3px;
-    padding-right: 3px;
-	border: 2px solid #101010;
-	border-radius: 5px;
-	color: #25E1DA;
-	background-color: #504F4C;
-	text-shadow: 0px 0px 15px #25E1DA;
-}
-
-app-range-slider {
-	margin-top: 166px;
+        app-range-slider { margin-top: 166px; }
+        
+        button {
+            border-radius: 0;
+            margin-top: 5px;
+            border: none;
+            outline: none;
+            width: 34px;
+            height: 34px;
+            background-color: #817E7E;
+            &:hover { color: #0f5e5b; }
+            &:hover:active  { color: #25E1DA; }
+        }
+    }
 }

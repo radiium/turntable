@@ -3,8 +3,16 @@
 <div id="mixPanelContainer">
 
     <div id="playerContainer">
-        <app-video-player #left [video]="videoLeft" [sidePlayer]="'left'" (nearEnd)="triggerMixLTR($event)"
-        [volume]="volLeft" [speed]="speedLeft" (volumeChange)="volLeft" (speedChange)="speedLeft"></app-video-player>
+        <app-video-player
+            #playerLeft
+            [sidePlayer]="'left'"
+            [video]="videoLeft"
+            (nearEnd)="triggerMixLTR($event)"
+            [volume]="volLeft"
+            (volumeChange)="volLeft"
+            [speed]="speedLeft"
+            (speedChange)="speedLeft">
+        </app-video-player>
         
         <div id="controlBox">
             <!-- Crossfader -->
@@ -21,13 +29,26 @@
                     <div class="item"></div>
                     <div class="item"></div>
                 </div>
-                <input value="{{ crossFaderValue }}" [(ngModel)]="crossFaderValue" (ngModelChange)="setCrossFaderValue($event)" 
-                class="crossfader horizontal" type="range"  min="0" max="100" step="0.5" list="tickmarks-center">
+                <input
+                    class="crossfader horizontal" type="range" 
+                    min="0" max="100" step="0.5"
+                    list="tickmarks-center"
+                    value="{{ crossFaderValue }}"
+                    [(ngModel)]="crossFaderValue"
+                    (ngModelChange)="setCrossFaderValue($event)">
             </div>
         </div>
         
-        <app-video-player #right [video]="videoRight" [sidePlayer]="'right'" (nearEnd)="triggerMixRTL($event)"
-        [volume]="volRight" [speed]="speedRight" (volumeChange)="volRight" (speedChange)="speedRight"></app-video-player>
+        <app-video-player
+            #playerRight 
+            [sidePlayer]="'right'"
+            [video]="videoRight"
+            (nearEnd)="triggerMixRTL($event)"
+            [volume]="volRight"
+            (volumeChange)="volRight"
+            [speed]="speedRight"
+            (speedChange)="speedRight">
+            </app-video-player>
     </div>
 
     <!-- On play playlist and search playlist -->

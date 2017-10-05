@@ -1,43 +1,65 @@
 <div class="playerContainer" [class.playerLeft]="sidePlayer === 'left'" [class.playerRight]="sidePlayer === 'right'">
-   
     <div class="playerBox">
+
+        <!-- Player -->
         <div class="player">
-            <div class="playerLoader" *ngIf="!video"></div>
-            
-            <app-youtube-player [width]="300" [height]="200" [videoId]="id"
-            (ready)="savePlayer($event)" (change)="onStateChange($event)"></app-youtube-player>
-        
+            <div class="playerLoader" *ngIf="!video || id === 'Pl3YXl_m0uk'"></div>
+            <app-youtube-player
+                [width]="300"
+                [height]="200"
+                [videoId]="id"
+                (ready)="savePlayer($event)"
+                (change)="onStateChange($event)">
+            </app-youtube-player>
         </div>
+
+        <!-- Current video title and time -->
         <div class="activVideo">
             <div *ngIf="!video" class="noVideo">No Video Loaded</div>
             <div *ngIf="video"  class="currVideo">
-                <div class="currTitle">{{ video.title }}</div>
+                <div class="currTitle"><!--{{ video.title }}--> {{ volume }}</div>
                 <div class="currTime output">{{ currDuration }}</div>
             </div>
         </div>
-   </div>
+    </div>
  
-    <div class="volume control">
-        <app-range-slider [name]="'Speed'" [side]="sidePlayer" [default]="1"
-                          [value]="speed" (valueChange)="onSpeedChange($event)"
-                          [step]="0.25" [min]="0.5" [max]="2" [isPlayerReady]="player && video"></app-range-slider>
-                          
+    <!-- Speed controls -->
+    <div class="control">
+        <app-range-slider
+            [isPlayerReady]="player && video"
+            [name]="'Speed'"
+            [side]="sidePlayer"
+            [default]="1"
+            [step]="0.25"
+            [min]="0.5"
+            [max]="2"
+            [value]="speed"
+            (valueChange)="onSpeedChange($event)">
+        </app-range-slider>
+                    
         <button type="button" (click)="playPauseVideo()">
             <fa *ngIf="!isPlaying" [name]="'play'"  [size]="2"></fa>
             <fa *ngIf="isPlaying"  [name]="'pause'" [size]="2"></fa>
         </button>
     </div>
 
-    <div class="speed control">
-        <app-range-slider [name]="'Vol'" [side]="'left'" [default]="100"
-                          [value]="volume" (valueChange)="onVolumeChange($event)"
-                          [step]="1" [min]="0" [max]="100" [isPlayerReady]="player && video"></app-range-slider>
+    <!-- Volume controls -->
+    <div class="control">
+        <app-range-slider
+            [isPlayerReady]="player && video"
+            [name]="'Vol'"
+            [side]="sidePlayer"
+            [default]="100"
+            [step]="1"
+            [min]="0"
+            [max]="100"
+            [value]="volume"
+            (valueChange)="onVolumeChange($event)">
+        </app-range-slider>
 
         <button type="button" (click)="mute()">
             <fa *ngIf="!isMuted" [name]="'volume-up'"  [size]="2"></fa>
             <fa *ngIf="isMuted"  [name]="'volume-off'" [size]="2"></fa>
         </button>
     </div>
-    
 </div>
-

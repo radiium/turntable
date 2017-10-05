@@ -2,6 +2,7 @@ import { Component, Inject } from '@angular/core';
 import { MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
 
 import * as helpContent from './help-content.json';
+
 @Component({
   selector: 'app-help-dialog',
   templateUrl: 'help-dialog.component.html',

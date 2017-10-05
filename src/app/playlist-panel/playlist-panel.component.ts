@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, isDevMode } from '@angular/core';
 import { MdDialog, MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
 import { UUID } from 'angular2-uuid';
 import { FormGroup, FormControl } from '@angular/forms';
@@ -15,55 +15,7 @@ import { ConfirmDialogComponent } from '../_shared/components/confirm-dialog/con
 import { TabsService } from '../_core/services/tabs.service';
 import { AuthService } from '../_core/services/auth.service';
 
-
-const testPlaylist = {
-    id: 'a55f086e-82e7-8e8b-f0e2-bfef59cf5cf1',
-    title: 'Test playlist',
-    description: '',
-    thumbUrl: '',
-    thumbH: null,
-    thumbW: null,
-    publishedAt: '',
-    privacyStatus: 'public',
-    isLocal: true,
-    videolist: [
-        {
-            id: 'gAfqguL88tA',
-            title: 'Bad maners',
-            description: '',
-            thumbUrl: '',
-            duration: 268000
-        },
-        {
-            id: '-Cvo2fVb1aY',
-            title: 'Midnight Magic - Vicious Love (Offi…',
-            description: 'The official video for Vicious Lov…',
-            thumbUrl: 'https://i.ytimg.com/vi/-Cvo2fVb1aY/…',
-            duration: 268000
-        },
-        {
-            id: 'MceYFMDL108',
-            title: 'Midnight Magic - Drop Me A Line (Of…',
-            description: 'by Pilar Wiley',
-            thumbUrl: 'https://i.ytimg.com/vi/MceYFMDL108/…',
-            duration: 235000
-        },
-        {
-            id: '29uVBx9cyrs',
-            title: 'Midnight Magic - I Gotta Feeling',
-            description: 'Stream / Download:  https: //midnight…',
-            thumbUrl: 'https://i.ytimg.com/vi/29uVBx9cyrs/…',
-            duration: 346000
-        },
-        {
-            id: '8EaYwmv7hcA',
-            title: 'Midnight Magic - Beam Me Up',
-            description: 'Midnight Magics official music vid…',
-            thumbUrl: 'https://i.ytimg.com/vi/8EaYwmv7hcA/…',
-            duration: 235000
-        }
-    ]
-};
+import * as testPlaylist from './test-playlist.json';
 
 @Component({
   selector: 'app-playlist-panel',
@@ -125,14 +77,9 @@ export class PlaylistPanelComponent implements OnInit {
             });
 
             // Fake data
-            /*
-            const arr = [];
-            for (let i = 0; i < 25; i++) {
-                arr.push(testPlaylist);
+            if (isDevMode()) {
+                this.insertFakeData();
             }
-            this.playlistsList = <Playlist[]>arr;
-            */
-            // this.playlistsList = <Playlist[]>[testPlaylist];
 
             // Get playlist list
             this._playlistService.playListsList$
@@ -273,5 +220,40 @@ export class PlaylistPanelComponent implements OnInit {
     // Reload playlist from youtube
     reloadPlaylist() {
         this._playlistService.fetchYoutubePlaylist();
+    }
+
+    insertFakeData() {
+        /*
+        const arr = [];
+        for (let i = 0; i < 25; i++) {
+        arr.push(testPlaylist);
+        }
+        this.playlistsList = <Playlist[]>arr;
+        */
+
+        const videoList = new Array<Video>();
+        testPlaylist['testPlaylist']['videolist'].forEach(el => {
+            const video = new Video(
+                el['id'],
+                el['title'],
+                el['description'],
+                el['thumbUrl'],
+                el['duration']
+            );
+            videoList.push(video);
+        });
+        const datas = new Playlist(
+            testPlaylist['testPlaylist']['id'],
+            testPlaylist['testPlaylist']['title'],
+            testPlaylist['testPlaylist']['description'],
+            testPlaylist['testPlaylist']['thumbUrl'],
+            testPlaylist['testPlaylist']['thumbH'],
+            testPlaylist['testPlaylist']['thumbW'],
+            testPlaylist['testPlaylist']['publishedAt'],
+            testPlaylist['testPlaylist']['privacyStatus'],
+            true,
+            videoList
+        );
+        this.playlistsList = <Playlist[]>[datas];
     }
 }

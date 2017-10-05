@@ -8,7 +8,7 @@ import { User } from '../../models/user.model';
 import { Video } from '../../models/video.model';
 import { Playlist } from '../../models/playlist.model';
 import { PlaylistService } from '../../../_core/services/playlist.service';
-import { PlayerService } from '../../../_core/services/player.service';
+import { PlayerStateService } from '../../../_core/services/player-state.service';
 import { UtilsService } from '../../../_core/services/utils.service';
 import { ElectronService } from 'ngx-electron';
 import { AuthService } from '../../../_core/services/auth.service';
@@ -52,7 +52,7 @@ export class EditPlaylistComponent implements OnInit, OnDestroy, OnChanges {
     private _electron: ElectronService,
     private _authService: AuthService,
     private _playlistService: PlaylistService,
-    private _playerService: PlayerService,
+    private _playerStateService: PlayerStateService,
     private _dragulaService: DragulaService) {
 
         // Get user
@@ -191,14 +191,15 @@ export class EditPlaylistComponent implements OnInit, OnDestroy, OnChanges {
     }
 
     // Play video
-    playVideo(video, side) {
+    playAtLeft(video) {
         if (this.type === 'player') {
-            if (side === 'left') {
-                this._playerService.setPlayerLeft(video);
-            }
-            if (side === 'right') {
-                this._playerService.setPlayerRight(video);
-            }
+            this._playerStateService.setPlayerLeft(video);
+        }
+    }
+
+    playAtRight(video) {
+        if (this.type === 'player') {
+            this._playerStateService.setPlayerRight(video);
         }
     }
 

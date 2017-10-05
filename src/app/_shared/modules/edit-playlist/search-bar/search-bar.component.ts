@@ -5,7 +5,7 @@ import * as moment from 'moment';
 import 'rxjs/Rx';
 
 import { Video } from '../../../models/video.model';
-import { YoutubeService } from '../../../../_core/services/youtube.service';
+import { YoutubeDataService } from '../../../../_core/services/youtube-data.service';
 import { PlaylistService } from '../../../../_core/services/playlist.service';
 import { Suggests } from '../../../models/suggests.model';
 import { SuggestService } from '../../../../_core/services/suggest.service';
@@ -26,7 +26,7 @@ export class SearchBarComponent implements OnInit {
     constructor(
         private _suggestService: SuggestService,
         private _playlistService: PlaylistService,
-        private _youtubeService: YoutubeService) {
+        private _youtubeDataService: YoutubeDataService) {
 
             // Get suggests results
             this._suggestService.suggestsResult$.subscribe((suggestsResult) => {
@@ -74,7 +74,7 @@ export class SearchBarComponent implements OnInit {
     // Search videos by selected suggest
     searchSuggestion(suggest: String) {
 
-        this._youtubeService.searchVideos(suggest)
+        this._youtubeDataService.searchVideos(suggest)
         .subscribe((results) => {
 
             // Clear playlist if no value

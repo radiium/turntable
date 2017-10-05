@@ -6,7 +6,7 @@ import * as moment from 'moment';
 
 import { Video } from '../../models/video.model';
 import { Playlist } from '../../models/playlist.model';
-import { PlayerService } from '../../../_core/services/player.service';
+import { PlayerStateService } from '../../../_core/services/player-state.service';
 import { PlaylistService } from '../../../_core/services/playlist.service';
 
 @Component({
@@ -17,6 +17,21 @@ import { PlaylistService } from '../../../_core/services/playlist.service';
 export class VideoPlayerComponent implements OnChanges, OnDestroy {
 
     // I/O volume
+    /*
+    volumeValue = 100;
+    @Output() volumeChange = new EventEmitter();
+    set volume(val) {
+        this.volumeValue = val;
+        this.player.setVolume(this.volumeValue);
+        this.volumeChange.emit(this.volumeValue);
+    }
+    @Input()
+    get volume() {
+        return this.volumeValue;
+    }
+    */
+
+    // I/O volume
     @Output() volumeChange: EventEmitter<number>;
     @Input() volume: number;
 
@@ -25,15 +40,15 @@ export class VideoPlayerComponent implements OnChanges, OnDestroy {
     @Input() speed: number;
 
     // Player
-    player: any;                 // Player object api
-    private ytEvent: any;                // Player state
-    id: String = 'gAfqguL88tA';                  // Video id
-    private isPlayerLoaded: boolean;     // state of player
-    @Input() sidePlayer: String;         // Side of player (left or right)
+    player: any;                        // Player object api
+    private ytEvent: any;               // Player state
+    id: String = 'Pl3YXl_m0uk'; // = 'gAfqguL88tA';         // Video id
+    private isPlayerLoaded: boolean;    // state of player
+    @Input() sidePlayer: String;        // Side of player (left or right)
 
     // Player control
-    isPlaying: boolean;          // Play/Pause button
-    isMuted: boolean;            // Mute/Unmute button
+    isPlaying: boolean;
+    isMuted: boolean;
 
     // Video(s)
     @Input() video: Video;          // Current played video
@@ -47,8 +62,8 @@ export class VideoPlayerComponent implements OnChanges, OnDestroy {
     @Output() nearEnd: EventEmitter<any>;
 
     constructor(
-        private _playerService: PlayerService,
-        private _playlistService: PlaylistService) {
+    private _playerStateService: PlayerStateService,
+    private _playlistService: PlaylistService) {
 
         this._playlistService.onPlayPlaylist$.subscribe((pl) => {
             this.playList = pl;
@@ -71,9 +86,12 @@ export class VideoPlayerComponent implements OnChanges, OnDestroy {
         if (!this.player || !this.video) { return; }
 
         if (vol < 1) {
-            this.isMuted = true;
+            this.player.mute();
+            this.isMuted = this.player.isMuted();
         } else if (vol > 1 && vol < 100) {
             this.isMuted = false;
+            this.player.unMute();
+            this.isMuted = this.player.isMuted();
         }
         this.player.setVolume(vol);
     }
@@ -105,15 +123,15 @@ export class VideoPlayerComponent implements OnChanges, OnDestroy {
             // - no active player found
             // - previousValue is undefined (first video on this player)
             if (this.ytEvent === 1
-            ||  this._playerService.isFirstPlay
-            ||  this._playerService.getActivePlayer() === null
+            ||  this._playerStateService.isFirstPlay
+            ||  this._playerStateService.getActivePlayer() === null
             ||  changes.video.previousValue === undefined) {
                 this.initControl();
                 this.playPauseVideo();
-                this._playerService.setActivePlayer(this.sidePlayer);
+                this._playerStateService.setActivePlayer(this.sidePlayer);
             }
             // Set first played video to false
-            this._playerService.isFirstPlay = false;
+            this._playerStateService.isFirstPlay = false;
         }
     }
 
@@ -140,10 +158,10 @@ export class VideoPlayerComponent implements OnChanges, OnDestroy {
 
                 const videoToPlay = this.playList.videolist[0];
                 if (this.sidePlayer === 'left') {
-                    this._playerService.setPlayerLeft(videoToPlay);
+                    this._playerStateService.setPlayerLeft(videoToPlay);
 
                 } else {
-                    this._playerService.setPlayerRight(videoToPlay);
+                    this._playerStateService.setPlayerRight(videoToPlay);
                 }
 
                 // this.playList.videolist.shift();
@@ -154,7 +172,7 @@ export class VideoPlayerComponent implements OnChanges, OnDestroy {
         }
     }
     savePlayer(player) {
-        console.log('playerReady', player);
+        // console.log('playerReady', player);
         this.player = player;
     }
 
@@ -165,13 +183,13 @@ export class VideoPlayerComponent implements OnChanges, OnDestroy {
         if (this.player.getPlayerState() === 1) {
             this.player.pauseVideo();
             this.isPlaying = false;
-            this._playerService.setActivePlayer(null);
+            this._playerStateService.setActivePlayer(null);
             this.stopTimer();
 
         } else {
             this.player.playVideo();
             this.isPlaying = true;
-            this._playerService.setActivePlayer(this.sidePlayer);
+            this._playerStateService.setActivePlayer(this.sidePlayer);
 
             this.stopTimer();
             this.timerControl$.next(this.getRemainingTime());
@@ -194,11 +212,17 @@ export class VideoPlayerComponent implements OnChanges, OnDestroy {
     // Set video control to default values
     initControl() {
         this.player.setPlaybackRate(1);
-        // this.player.unMute();
+        this.player.setVolume(100);
+        this.player.unMute();
+        this.isMuted = this.player.isMuted();
+
         this.isPlaying = false;
-        this.isMuted   = false;
     }
 
+
+    getPlayerState() {
+        return this.player.getPlayerState();
+    }
 
     // Init Timer
     initTimer() {
@@ -224,9 +248,6 @@ export class VideoPlayerComponent implements OnChanges, OnDestroy {
                 this.nearEnd.emit(this.player.getVolume());
             }
         });
-    }
-    getPlayerState() {
-        return this.player.getPlayerState();
     }
 
     // Stop timer

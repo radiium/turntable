@@ -1,0 +1,46 @@
+{
+    "testPlaylist": {
+        "id": "a55f086e-82e7-8e8b-f0e2-bfef59cf5cf1",
+        "title": "Test playlist",
+        "description": "",
+        "thumbUrl": "",
+        "thumbH": null,
+        "thumbW": null,
+        "publishedAt": "",
+        "privacyStatus": "public",
+        "isLocal": true,
+        "videolist": [
+            {
+                "id": "gAfqguL88tA",
+                "title": "Bad maners",
+                "description": "",
+                "thumbUrl": "",
+                "duration": 268000
+            }, {
+                "id": "-Cvo2fVb1aY",
+                "title": "Midnight Magic - Vicious Love (Offi…",
+                "description": "The official video for Vicious Lov…",
+                "thumbUrl": "",
+                "duration": 268000
+            }, {
+                "id": "MceYFMDL108",
+                "title": "Midnight Magic - Drop Me A Line (Of…",
+                "description": "by Pilar Wiley",
+                "thumbUrl": "",
+                "duration": 235000
+            }, {
+                "id": "29uVBx9cyrs",
+                "title": "Midnight Magic - I Gotta Feeling",
+                "description": "Stream / Download:  https: //midnight…",
+                "thumbUrl": "",
+                "duration": 346000
+            }, {
+                "id": "8EaYwmv7hcA",
+                "title": "Midnight Magic - Beam Me Up",
+                "description": "Midnight Magics official music vid…",
+                "thumbUrl": "",
+                "duration": 235000
+            }
+        ]
+    }
+}
