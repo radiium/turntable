@@ -3,7 +3,7 @@ import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
 import * as moment from 'moment';
 
-import { YoutubeService } from './youtube.service';
+import { YoutubeDataService } from './youtube-data.service';
 
 import { Video } from '../../_shared/models/video.model';
 import { Playlist } from '../../_shared/models/playlist.model';
@@ -37,7 +37,8 @@ export class PlaylistService {
     progressBarValue = new Subject<any>();
     progressBarValue$ = this.progressBarValue.asObservable();
 
-    constructor(private _youtubeService: YoutubeService) {
+    constructor(
+    private _youtubeDataService: YoutubeDataService) {
     }
 
     // Setters
@@ -54,7 +55,7 @@ export class PlaylistService {
     fetchYoutubePlaylist() {
 
         // Get all playlist
-        return this._youtubeService.getAllPlaylists()
+        return this._youtubeDataService.getAllPlaylists()
         .flatMap((plList) => {
 
             this.setProgressBarValue(30);
@@ -62,9 +63,9 @@ export class PlaylistService {
             // Get all playlist items for each playlist
             const aRequest = [];
             plList.items.forEach((playlist, i) => {
-                const req = this._youtubeService.getPlaylistItems(playlist.id, '')
+                const req = this._youtubeDataService.getPlaylistItems(playlist.id, '')
                 // Recursive call for playlist items
-                .expand((data: any) => this._youtubeService.getPlaylistItems(playlist.id, data.nextPageToken), 1)
+                .expand((data: any) => this._youtubeDataService.getPlaylistItems(playlist.id, data.nextPageToken), 1)
                 // Group each response by 'items' field
                 .pluck('items')
                 // Concat each items in array
@@ -84,7 +85,7 @@ export class PlaylistService {
                     const aReq = [];
                     // Get videos metadatas
                     videoIdList.forEach(videoIds => {
-                        const reqVideo = this._youtubeService.getVideosById(videoIds);
+                        const reqVideo = this._youtubeDataService.getVideosById(videoIds);
                         aReq.push(reqVideo);
                     });
                     const fork = Observable.forkJoin(aReq)

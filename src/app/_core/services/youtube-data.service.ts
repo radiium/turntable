@@ -1,16 +1,18 @@
 import { Injectable } from '@angular/core';
-import { Http, Headers, RequestMethod, RequestOptions, Response, Jsonp, URLSearchParams } from '@angular/http';
-import 'rxjs/add/operator/mergeMap';
-import { Observable } from 'rxjs/Observable';
+import { Http, Headers, RequestMethod, RequestOptions,
+    Response, Jsonp, URLSearchParams } from '@angular/http';
 
-import 'rxjs/Rx';
-import { HttpService } from './http.service';
+import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
+import 'rxjs/add/operator/mergeMap';
+import 'rxjs/Rx';
+
+import { HttpService } from './http.service';
 import { Playlist } from '../../_shared/models/playlist.model';
 import { CONSTANT } from '../../_shared/constant';
 
 @Injectable()
-export class YoutubeService {
+export class YoutubeDataService {
 
     constructor(
         private _http: Http,

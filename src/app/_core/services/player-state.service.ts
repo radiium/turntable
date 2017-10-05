@@ -8,7 +8,7 @@ import { PlaylistService } from './playlist.service';
 import { UtilsService } from './utils.service';
 
 @Injectable()
-export class PlayerService {
+export class PlayerStateService {
 
     // --------------------------------------------------------
 
