@@ -21,13 +21,13 @@
       "styles": [
         "styles/styles.css",
         "../node_modules/dragula/dist/dragula.css",
-        "../node_modules/font-awesome/css/font-awesome.css"
+        "../node_modules/font-awesome/css/font-awesome.css",
+          "./styles/material-custom-theme.scss"
       ],
       "stylePreprocessorOptions": {
         "includePaths": [
           "./styles/colors.scss",
-          "./styles/mixins.scss",
-          "./styles/material-custom-theme.scss"
+          "./styles/mixins.scss"
         ]
       },
       "scripts": [
