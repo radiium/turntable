@@ -227,7 +227,7 @@ export class VideoPlayerComponent implements OnInit, OnChanges, OnDestroy {
     // Set video control to default values
     initControl() {
         this.player.setPlaybackRate(1);
-        this.player.setVolume(100);
+        this.player.setVolume(this.volume);
         this.player.unMute();
         this.isMuted = this.player.isMuted();
 
