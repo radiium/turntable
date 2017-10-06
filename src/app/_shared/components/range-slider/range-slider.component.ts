@@ -1,11 +1,13 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, AfterViewInit } from '@angular/core';
+
+import { PlayerStateService } from '../../../_core/services/player-state.service';
 
 @Component({
     selector: 'app-range-slider',
     templateUrl: './range-slider.component.html',
     styleUrls: ['./range-slider.component.scss']
 })
-export class RangeSliderComponent implements OnInit {
+export class RangeSliderComponent implements OnInit, AfterViewInit {
 
     @Input()  isPlayerReady: boolean;
     @Input()  name: string;
@@ -14,49 +16,106 @@ export class RangeSliderComponent implements OnInit {
     @Input()  min: number;
     @Input()  max: number;
     @Input()  default: number;
-    @Input()  value: number;
-    @Output() valueChange: EventEmitter<number>;
 
-    constructor() {
-        this.valueChange = new EventEmitter<number>();
+    value: number;
+    // @Input()  value: number;
+    // @Output() valueChange: EventEmitter<number>;
+
+    constructor(
+    private _playerStateService: PlayerStateService) {
+    }
+
+    ngAfterViewInit() {
     }
 
     ngOnInit() {
         this.value = this.default;
+
+        if (this.name === 'Vol') {
+            if (this.side === 'left') {
+                this._playerStateService.volumeLeft$.subscribe((value) => {
+                    this.value = value;
+                });
+
+            } else if (this.side === 'right') {
+                this._playerStateService.volumeRight$.subscribe((value) => {
+                    this.value = value;
+                });
+            }
+
+        } else if (this.name === 'Speed') {
+            if (this.side === 'left') {
+                this._playerStateService.speedLeft$.subscribe((value) => {
+                    this.value = value;
+                });
+
+            } else if (this.side === 'right') {
+                this._playerStateService.speedRight$.subscribe((value) => {
+                    this.value = value;
+                });
+            }
+        }
     }
+
 
     onInputChange(e) {
         if (!this.isPlayerReady) {
-            this.value = this.default;
-            e.target.value = this.default;
+            this.changeValue(this.default);
             return;
         }
-
-        this.value = e.target.value;
-        this.valueChange.emit(this.value);
+        this.changeValue(e.target.value);
     }
 
     up() {
         if (!this.isPlayerReady) { return; }
 
-        this.value = this.value + this.step;
-        if (this.value >= this.max) {
-            this.value = this.max;
-        } else if (this.value <= this.min) {
-            this.value = this.min;
+        let value = this.value + this.step;
+        if (value >= this.max) {
+            value = this.max;
+        } else if (value <= this.min) {
+            value = this.min;
         }
-        this.valueChange.emit(this.value);
+        this.changeValue(value);
     }
 
     down() {
         if (!this.isPlayerReady) { return; }
 
-        this.value = this.value - this.step;
-        if (this.value >= this.max) {
-            this.value = this.max;
-        } else if (this.value <= this.min) {
-            this.value = this.min;
+        let value = this.value - this.step;
+        if (value >= this.max) {
+            value = this.max;
+        } else if (value <= this.min) {
+            value = this.min;
         }
-        this.valueChange.emit(this.value);
+        this.changeValue(value);
+    }
+
+    changeValue(value) {
+
+        if (this.name === 'Vol') {
+            if (this.side === 'left') {
+                this._playerStateService.setVolumeLeft(value);
+
+            } else if (this.side === 'right') {
+                this._playerStateService.setVolumeRight(value);
+            }
+
+        } else if (this.name === 'Speed') {
+            if (this.side === 'left') {
+                this._playerStateService.setSpeedLeft(value);
+
+            } else if (this.side === 'right') {
+                this._playerStateService.setSpeedRight(value);
+            }
+        }
+
+        /*
+        console.log('===================');
+        console.log('Range player changeValue');
+        console.log('=> Side: ' + this.side);
+        console.log('=> Name: ' + this.name);
+        console.log('=> Value: ' + value);
+        console.log('=> This.Value: ' + this.value);
+        */
     }
 }

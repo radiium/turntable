@@ -1,4 +1,4 @@
-import { Component, Input, Output, OnDestroy, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, Output, OnInit, OnDestroy, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 
 import { Observable, Subscription, Subject } from 'rxjs/Rx';
 
@@ -14,26 +14,9 @@ import { PlaylistService } from '../../../_core/services/playlist.service';
     templateUrl: './video-player.component.html',
     styleUrls: ['./video-player.component.scss']
 })
-export class VideoPlayerComponent implements OnChanges, OnDestroy {
+export class VideoPlayerComponent implements OnInit, OnChanges, OnDestroy {
 
-    // I/O volume
-    /*
-    volumeValue = 100;
-    @Output() volumeChange = new EventEmitter();
-    set volume(val) {
-        this.volumeValue = val;
-        this.player.setVolume(this.volumeValue);
-        this.volumeChange.emit(this.volumeValue);
-    }
-    @Input()
-    get volume() {
-        return this.volumeValue;
-    }
-    */
-
-    // I/O volume
-    @Output() volumeChange: EventEmitter<number>;
-    @Input() volume: number;
+    volume: number;
 
     // I/O speed
     @Output() speedChange: EventEmitter<number>;
@@ -42,7 +25,7 @@ export class VideoPlayerComponent implements OnChanges, OnDestroy {
     // Player
     player: any;                        // Player object api
     private ytEvent: any;               // Player state
-    id: String = 'Pl3YXl_m0uk'; // = 'gAfqguL88tA';         // Video id
+    id: String = 'Pl3YXl_m0uk';         // = 'gAfqguL88tA';
     private isPlayerLoaded: boolean;    // state of player
     @Input() sidePlayer: String;        // Side of player (left or right)
 
@@ -59,7 +42,7 @@ export class VideoPlayerComponent implements OnChanges, OnDestroy {
     private timer$;
     private sub: Subscription;
     public  currDuration: string;
-    @Output() nearEnd: EventEmitter<any>;
+    @Output() nearEnd: EventEmitter<Boolean>;
 
     constructor(
     private _playerStateService: PlayerStateService,
@@ -75,25 +58,44 @@ export class VideoPlayerComponent implements OnChanges, OnDestroy {
         this.isPlayerLoaded = false;
 
         this.speedChange   = new EventEmitter();
-        this.volumeChange  = new EventEmitter();
-        this.nearEnd       = new EventEmitter();
+        this.nearEnd       = new EventEmitter<Boolean>();
 
         this.timerControl$ = new Subject<number>();
         this.currDuration = '00:00';
     }
 
-    onVolumeChange(vol) {
-        if (!this.player || !this.video) { return; }
+    ngOnInit() {
+        this.volume = 100;
+        if (this.sidePlayer === 'left') {
+            this._playerStateService.volumeLeft$.subscribe((volLeft) => {
+                this.volume = volLeft;
+                this.updateVolume(this.volume);
+            });
 
+        } else if (this.sidePlayer === 'right') {
+            this._playerStateService.volumeRight$.subscribe((volRight) => {
+                this.volume = volRight;
+                this.updateVolume(this.volume);
+            });
+        }
+    }
+
+    onVolumeChange(vol) {
+        if (this.sidePlayer === 'left') {
+            this._playerStateService.setVolumeLeft(vol);
+        } else if (this.sidePlayer === 'right') {
+            this._playerStateService.setVolumeRight(vol);
+        }
+        this.updateVolume(vol);
+    }
+
+    updateVolume(vol) {
         if (vol === 0) {
             this.isMuted = true;
         } else if (vol > 0 && vol < 100) {
             this.isMuted = false;
         }
-        console.log(vol);
         this.player.setVolume(vol);
-        this.volumeChange.emit(vol);
-        this.volume = vol;
     }
 
     onSpeedChange(speed) {
@@ -107,13 +109,6 @@ export class VideoPlayerComponent implements OnChanges, OnDestroy {
 
     // Trigger when input change
     ngOnChanges(changes: SimpleChanges) {
-
-        if (changes && changes.volume && changes.volume.currentValue) {
-            const vol = changes.volume.currentValue;
-            this.player.setVolume(vol);
-            this.volumeChange.emit(vol);
-            this.volume = vol;
-        }
 
         if (this.video) {
             this.id = this.video.id ;
@@ -252,7 +247,7 @@ export class VideoPlayerComponent implements OnChanges, OnDestroy {
             if (this.getRemainingTime() < 12) {
                 console.log('***** ' + this.sidePlayer + ' Video near end ******');
                 this.stopTimer();
-                this.nearEnd.emit(this.player.getVolume());
+                this.nearEnd.emit(true);
             }
         });
     }

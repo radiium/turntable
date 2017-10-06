@@ -12,29 +12,10 @@ export class PlayerStateService {
 
     // --------------------------------------------------------
 
-    // Suggest list
-    private suggestsResult = new Subject<Suggests>();
-    suggestsResult$ = this.suggestsResult.asObservable();
-
-    // SearchBar results list
-    private resultsList = new Subject<Video[]>();
-    resultsList$ = this.resultsList.asObservable();
-
-    // --------------------------------------------------------
-
-    // PlayList list
-    playListsList = new Subject<Array<Video[]>>();
-    playListsList$ = this.playListsList.asObservable();
-
-    // Current PlayList
-    currentPlayList = new Subject<Video[]>();
-    currentPlayList$ = this.currentPlayList.asObservable();
-
-    // --------------------------------------------------------
-
-    // HistoricList
-    historicList = new Subject<Video[]>();
-    historicList$ = this.historicList.asObservable();
+    // Active player
+    private activePlayer: String = null; // = new Subject<Video>();
+    isFirstPlay: Boolean = true;
+    // activePlayer$ = this.activePlayer.asObservable();
 
     // --------------------------------------------------------
 
@@ -42,15 +23,27 @@ export class PlayerStateService {
     private playerLeft = new Subject<Video>();
     playerLeft$  = this.playerLeft.asObservable();
 
-    // Player video (right)
+    volumeLeft = new Subject<number>();
+    volumeLeft$ = this.volumeLeft.asObservable();
+
+    speedLeft = new Subject<number>();
+    speedLeft$ = this.speedLeft.asObservable();
+
+    // --------------------------------------------------------
+
+    // Player video right
     private playerRight = new Subject<Video>();
     playerRight$ = this.playerRight.asObservable();
 
-    // Active player (left)
-    private activePlayer: String = null; // = new Subject<Video>();
-    isFirstPlay: Boolean = true;
-    // activePlayer$ = this.activePlayer.asObservable();
+    volumeRight = new Subject<number>();
+    volumeRight$ = this.volumeRight.asObservable();
 
+    speedRight = new Subject<number>();
+    speedRight$ = this.speedRight.asObservable();
+
+    // --------------------------------------------------------
+
+    // Playlist on play
     onPlayHistoricPlaylist: Playlist;
     onPlayPlaylist: Playlist;
 
@@ -73,12 +66,8 @@ export class PlayerStateService {
     // --------------------------------------------------------
     // Setters
 
-    setSuggestsResult(rl)  { this.suggestsResult.next(rl); }
-    setResultsList(vl)     { this.resultsList.next(vl); }
-
-    setPlayListsList(vl)   { this.playListsList.next(vl); }
-    setCurrentPlayList(vl) { this.currentPlayList.next(vl); }
-    setHistoricList(hl)    { this.historicList.next(hl); }
+    setActivePlayer(side) { this.activePlayer = side; }
+    getActivePlayer()     { return this.activePlayer; }
 
     setPlayerLeft(vl) {
         this.playerLeft.next(vl);
@@ -89,8 +78,13 @@ export class PlayerStateService {
         this.updatePlaylists(vr);
     }
 
-    setActivePlayer(side) { this.activePlayer = side; }
-    getActivePlayer()     { return this.activePlayer; }
+    setVolumeLeft(volLeft)   { this.volumeLeft.next(volLeft); }
+    setVolumeRight(volRight) { this.volumeRight.next(volRight); }
+
+    setSpeedLeft(speedLeft)   { this.speedLeft.next(speedLeft); }
+    setSpeedRight(speedRight) { this.speedRight.next(speedRight); }
+
+
 
     // Update on play playlist and on play historic
     updatePlaylists(video: Video) {

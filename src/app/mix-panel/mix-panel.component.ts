@@ -29,21 +29,62 @@ export class MixPanelComponent {
     // Video left controls
     videoLeft;
     @ViewChild('playerLeft') playerLeft;
-    volLeft: any;
+    volLeft: number;
     speedLeft: any;
     currVolLeft: any;
 
     // Video right controls
     videoRight;
     @ViewChild('playerRight') playerRight;
-    volRight: any;
+    volRight: number;
     speedRight: any;
     currVolRight: any;
 
     // Cross fader controls
     crossFaderValue: any = 50;
 
-    setCrossFaderValue(value) {
+    constructor(
+        private _playerStateService: PlayerStateService,
+        private _playlistService: PlaylistService,
+        private _electronService: ElectronService) {
+
+
+        // Init crossfader value
+        this.crossFaderValue = 50;
+        this.volLeft = 100;
+        this.volRight = 100;
+        this._playerStateService.setVolumeLeft(this.volLeft);
+        this._playerStateService.setVolumeRight(this.volRight);
+
+
+        // Get on play playlist
+        this._playlistService.onPlayPlaylist$.subscribe((pl) => {
+            this.onPlayPlaylist = pl;
+        });
+
+
+        // Get current player left
+        this._playerStateService.playerLeft$.subscribe((vl) => {
+            this.videoLeft = vl;
+        });
+        // Get current volume left
+        this._playerStateService.volumeLeft$.subscribe((volLeft) => {
+            this.volLeft = volLeft;
+        });
+
+
+        // Get current player right
+        this._playerStateService.playerRight$.subscribe((vr) => {
+            this.videoRight = vr;
+        });
+        // Get current volume right
+        this._playerStateService.volumeRight$.subscribe((volRight) => {
+            this.volRight = volRight;
+        });
+    }
+
+
+    onChangeCrossFaderValue(value) {
         let valLeft = 0;
         let valRight = 0;
         if (value < 50) {
@@ -56,65 +97,43 @@ export class MixPanelComponent {
             valLeft  = 100 - ((value - 50) * 2);
             valRight = 100;
         }
-        this.volLeft = valLeft;
-        this.volRight = valRight;
-    }
 
-
-    constructor(
-        private _playerStateService: PlayerStateService,
-        private _playlistService: PlaylistService,
-        private _electronService: ElectronService) {
-
-        // Get current player left
-        this._playerStateService.playerLeft$.subscribe((vl) => {
-            this.videoLeft = vl;
-        });
-        // Get current player right
-        this._playerStateService.playerRight$.subscribe((vr) => {
-            this.videoRight = vr;
-        });
-
-        // Get on lay playlist
-        this._playlistService.onPlayPlaylist$.subscribe((pl) => {
-            this.onPlayPlaylist = pl;
-        });
-
-        // Init crossfader value
-        this.crossFaderValue = 50;
+        // console.log('Cross fader value change', 'left=' + valLeft, '/right=' + valRight);
+        this._playerStateService.setVolumeLeft(valLeft);
+        this._playerStateService.setVolumeRight(valRight);
     }
 
 
     // Manage mix
     triggerMixLTR(event) {
-        console.log('Trigger mix left to right');
-        this.currVolLeft = event;
-        if (this.videoRight) {
-            this.playerRight.playPauseVideo();
-            this._playerStateService.setActivePlayer('right');
-            this.initTimerLTR(event);
+        if (event) {
+            console.log('Trigger mix left to right');
+            if (this.videoRight) {
+                this.playerRight.playPauseVideo();
+                this._playerStateService.setActivePlayer('right');
+                this.initTimerLTR();
 
-        } else if (this.onPlayPlaylist && this.onPlayPlaylist.videolist.length > 0) {
-            const videoToPlay = this.onPlayPlaylist.videolist[0];
-            this._playerStateService.setPlayerRight(videoToPlay);
-            this.videoRight = videoToPlay;
-            // this.playerRight.playPauseVideo();
-            this._playerStateService.setActivePlayer('right');
-            this.initTimerLTR(event);
+            } else if (this.onPlayPlaylist && this.onPlayPlaylist.videolist.length > 0) {
+                const videoToPlay = this.onPlayPlaylist.videolist[0];
+                this._playerStateService.setPlayerRight(videoToPlay);
+                this.videoRight = videoToPlay;
+                // this.playerRight.playPauseVideo();
+                this._playerStateService.setActivePlayer('right');
+                this.initTimerLTR();
+            }
         }
-
     }
     // Init Timer
-    initTimerLTR(volume) {
+    initTimerLTR() {
         this.timerControl$ = new Subject<number>();
         this.timer$ = Observable.timer(15000, 1000);
         this.sub = this.timer$.subscribe(t => {
-            this.volLeft = this.currVolLeft - 2;
-            this.currVolLeft = this.volLeft;
+
+            this._playerStateService.setVolumeLeft(this.volLeft - 2);
 
             console.log('============================');
             console.log('PlayerLeft state', this.playerLeft.getPlayerState());
-            console.log('LTR => ' + this.currVolLeft);
+            console.log('LTR => ' + this.volLeft);
 
             if (this.playerLeft.getPlayerState() === 5
             ||  this.playerLeft.getPlayerState() === 2
@@ -130,34 +149,34 @@ export class MixPanelComponent {
 
 
     triggerMixRTL(event) {
-        console.log('Trigger mix right to left');
-        this.currVolRight = event;
+        if (event) {
+            console.log('Trigger mix right to left');
+            if (this.videoLeft) {
+                this.playerLeft.playPauseVideo();
+                this._playerStateService.setActivePlayer('left');
+                this.initTimerRTL();
 
-        if (this.videoLeft) {
-            this.playerLeft.playPauseVideo();
-            this._playerStateService.setActivePlayer('left');
-            this.initTimerRTL(event);
-
-        } else if (this.onPlayPlaylist && this.onPlayPlaylist.videolist.length > 0) {
-            const videoToPlay = this.onPlayPlaylist.videolist[0];
-            this._playerStateService.setPlayerLeft(videoToPlay);
-            this.videoLeft = videoToPlay;
-            // this.playerLeft.playPauseVideo();
-            this._playerStateService.setActivePlayer('left');
-            this.initTimerRTL(event);
+            } else if (this.onPlayPlaylist && this.onPlayPlaylist.videolist.length > 0) {
+                const videoToPlay = this.onPlayPlaylist.videolist[0];
+                this._playerStateService.setPlayerLeft(videoToPlay);
+                this.videoLeft = videoToPlay;
+                // this.playerLeft.playPauseVideo();
+                this._playerStateService.setActivePlayer('left');
+                this.initTimerRTL();
+            }
         }
     }
     // Init Timer
-    initTimerRTL(volume) {
+    initTimerRTL() {
         this.timerControl$ = new Subject<number>();
         this.timer$ = Observable.timer(15000, 1000);
         this.sub = this.timer$.subscribe(t => {
-            this.volRight = this.currVolRight - 2;
-            this.currVolRight = this.volRight;
+
+            this._playerStateService.setVolumeRight(this.volRight - 2);
 
             console.log('============================');
             console.log('PlayerLeft state', this.playerRight.getPlayerState());
-            console.log('LTR => ' + this.currVolRight);
+            console.log('LTR => ' + this.volRight);
 
             if (this.playerRight.getPlayerState() === 5
             ||  this.playerRight.getPlayerState() === 2

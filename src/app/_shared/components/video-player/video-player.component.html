@@ -25,6 +25,7 @@
  
     <!-- Speed controls -->
     <div class="control speed">
+        <!-- 
         <app-range-slider
             [isPlayerReady]="player && video"
             [name]="'Speed'"
@@ -32,10 +33,9 @@
             [default]="1"
             [step]="0.25"
             [min]="0.5"
-            [max]="2"
-            [value]="speed"
-            (valueChange)="onSpeedChange($event)">
+            [max]="2">
         </app-range-slider>
+        -->
                     
         <button type="button" (click)="playPauseVideo()">
             <fa *ngIf="!isPlaying" [name]="'play'"  [size]="2"></fa>
@@ -52,9 +52,7 @@
             [default]="100"
             [step]="1"
             [min]="0"
-            [max]="100"
-            [value]="volume"
-            (valueChange)="onVolumeChange($event)">
+            [max]="100">
         </app-range-slider>
 
         <button type="button" (click)="mute()">

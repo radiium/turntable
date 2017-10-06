@@ -8,8 +8,6 @@
             [sidePlayer]="'left'"
             [video]="videoLeft"
             (nearEnd)="triggerMixLTR($event)"
-            [volume]="volLeft"
-            (volumeChange)="volLeft"
             [speed]="speedLeft"
             (speedChange)="speedLeft">
         </app-video-player>
@@ -21,6 +19,7 @@
             <fa aria-label="Edit playlist" [name]="'random'" [size]="2"></fa>
             </button>
 
+            <span style="color: white; z-index: 9999;">{{ volLeft }} <= {{ crossFaderValue }} => {{ volRight }}</span>
 
             <!-- Crossfader -->
             <div id="crossfader-box" class="line-border">
@@ -42,7 +41,7 @@
                     list="tickmarks-center"
                     value="{{ crossFaderValue }}"
                     [(ngModel)]="crossFaderValue"
-                    (ngModelChange)="setCrossFaderValue($event)">
+                    (ngModelChange)="onChangeCrossFaderValue($event)">
             </div>
         </div>
         
@@ -51,8 +50,6 @@
             [sidePlayer]="'right'"
             [video]="videoRight"
             (nearEnd)="triggerMixRTL($event)"
-            [volume]="volRight"
-            (volumeChange)="volRight"
             [speed]="speedRight"
             (speedChange)="speedRight">
             </app-video-player>

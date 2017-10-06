@@ -27,7 +27,8 @@ export class YoutubePlayerService {
         // Player options
         const options = {
             enablejsapi: 1,
-            origin: 'https://www.youtube.com'
+            origin: 'https://www.youtube.com',
+            rel: 0
         };
 
         const player = new window['YT'].Player(playerConfig.playerId, {
