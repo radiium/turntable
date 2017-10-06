@@ -15,7 +15,10 @@ export class PlayerStateService {
     // Active player
     private activePlayer: String = null; // = new Subject<Video>();
     isFirstPlay: Boolean = true;
-    // activePlayer$ = this.activePlayer.asObservable();
+
+    // Random video
+    isRandom =  new Subject<boolean>();
+    isRandom$ = this.isRandom.asObservable();
 
     // --------------------------------------------------------
 
@@ -67,7 +70,9 @@ export class PlayerStateService {
     // Setters
 
     setActivePlayer(side) { this.activePlayer = side; }
-    getActivePlayer()     { return this.activePlayer; }
+    getActivePlayer() { return this.activePlayer; }
+
+    setIsRandom(isRandom) { this.isRandom.next(isRandom); }
 
     setPlayerLeft(vl) {
         this.playerLeft.next(vl);

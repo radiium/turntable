@@ -13,35 +13,39 @@
         </app-video-player>
         
         <div id="controlBox">
+            <div id="controlBtnBox">
 
-            <!-- Edit playlist button -->
-            <button class="editBtn plBtn" mdTooltip="Edit playlist!" [mdTooltipPosition]="'above'">
-            <fa aria-label="Edit playlist" [name]="'random'" [size]="2"></fa>
-            </button>
+                <!-- Random playlist button -->
+                <button class="randomBtn" [class.activRandom]="isRandom" (click)="setIsRandom()"
+                    mdTooltip="Edit playlist!" [mdTooltipPosition]="'above'">
+                <fa aria-label="Edit playlist" [name]="'random'" [size]="2"></fa>
+                </button>
 
-            <span style="color: white; z-index: 9999;">{{ volLeft }} <= {{ crossFaderValue }} => {{ volRight }}</span>
+                <span> isRandom: {{ isRandom }}</span>
 
-            <!-- Crossfader -->
-            <div id="crossfader-box" class="line-border">
-                <div class="hori-ticks">
-                    <div class="item"></div>
-                    <div class="item"></div>
-                    <div class="item"></div>
-                    <div class="item"></div>
-                    <div class="item"></div>
-                    <div class="item"></div>
-                    <div class="item"></div>
-                    <div class="item"></div>
-                    <div class="item"></div>
-                    <div class="item"></div>
+                <!-- Crossfader -->
+                <div id="crossfaderBox" class="line-border">
+                    <div class="hori-ticks">
+                        <div class="item"></div>
+                        <div class="item"></div>
+                        <div class="item"></div>
+                        <div class="item"></div>
+                        <div class="item"></div>
+                        <div class="item"></div>
+                        <div class="item"></div>
+                        <div class="item"></div>
+                        <div class="item"></div>
+                        <div class="item"></div>
+                    </div>
+                    <input
+                        [disabled]="!videoLeft || !videoLeft"
+                        class="crossfader horizontal" type="range" 
+                        min="0" max="100" step="0.5"
+                        list="tickmarks-center"
+                        value="{{ crossFaderValue }}"
+                        [(ngModel)]="crossFaderValue"
+                        (ngModelChange)="onChangeCrossFaderValue($event)">
                 </div>
-                <input
-                    class="crossfader horizontal" type="range" 
-                    min="0" max="100" step="0.5"
-                    list="tickmarks-center"
-                    value="{{ crossFaderValue }}"
-                    [(ngModel)]="crossFaderValue"
-                    (ngModelChange)="onChangeCrossFaderValue($event)">
             </div>
         </div>
         

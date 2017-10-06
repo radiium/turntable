@@ -25,7 +25,65 @@
     flex-wrap: nowrap;
     flex-direction: column;
     justify-content: space-between;
+
+    #controlBtnBox {
+        padding-top: 70px;
+        width: 100%;
+
+        .randomBtn {
+            cursor: pointer;
+            border: none;
+            outline: transparent;
+            color: gray;
+            background-color: transparent;
+            margin-bottom: 25px;
+
+            &.activRandom {
+                color: #25E1DA;
+                background-color: #504F4C;
+                text-shadow: 0px 0px 15px #25E1DA;
+            }
+        }
+
+        /* CROSSFADER */
+        #crossfaderBox {
+            padding: 10px;
+            text-align: center;
+            margin: auto;
+
+            input[type='range'] {
+                -webkit-appearance: none !important;
+                background-color:#817E7E;
+                border: 1px solid #C9C8C3 ;
+                height: 15px;
+                width: 250px;
+                border-radius: 5px;
+                margin-top: 10px;
+                margin-bottom: 20px;
+                -webkit-box-shadow: inset 0px 0px 23px 0px rgba(0,0,0,0.67);
+                   -moz-box-shadow: inset 0px 0px 23px 0px rgba(0,0,0,0.67);
+                        box-shadow: inset 0px 0px 23px 0px rgba(0,0,0,0.67);	
+            }
+
+            input[type='range']::-webkit-slider-thumb {
+                -webkit-appearance: none !important;
+                background-color:#6C6866 ;
+                border-top: 	8px solid #C9C8C3 ;
+                border-left: 	3px solid #504F4C ;
+                border-right: 	3px solid #504F4C ;
+                border-bottom: 	8px solid #817E7E ;
+                height: 55px;
+                width: 20px;
+                border-radius: 2px;
+                -webkit-box-shadow: 0px 4px 10px 0px rgba(0,0,0,0.67);
+                -moz-box-shadow: 0px 4px 10px 0px rgba(0,0,0,0.67);
+                        box-shadow: 0px 4px 10px 0px rgba(0,0,0,0.67);
+            }
+        }
+    }
 }
+
+
 .controlItem {
     background-color: gray;
     display: flex;
@@ -34,14 +92,7 @@
     justify-content: space-between;
 }
 
-/* CROSSFADER */
-#crossfader-box {
-	margin-top: 150px;
-	margin-bottom: 10px;
-	margin-left: auto;
-	margin-right: auto;
-	padding: 10px;
-}
+
 
 #tickmarks-center option {
     font-weight: normal;
@@ -55,34 +106,7 @@
     padding-left: 2px;
 }
 
-#crossfader-box input[type='range'] {
-    -webkit-appearance: none !important;
-    background-color:#817E7E;
-	border: 1px solid #C9C8C3 ;
-	-webkit-box-shadow: inset 0px 0px 23px 0px rgba(0,0,0,0.67);
-	   -moz-box-shadow: inset 0px 0px 23px 0px rgba(0,0,0,0.67);
-		    box-shadow: inset 0px 0px 23px 0px rgba(0,0,0,0.67);	
-    height: 15px;
-	width: 250px;
-	border-radius: 5px;
-	margin-top: 10px;
-	margin-bottom: 20px;
-}
 
-#crossfader-box input[type='range']::-webkit-slider-thumb {
-	-webkit-appearance: none !important;
-	background-color:#6C6866 ;
-	border-top: 	8px solid #C9C8C3 ;
-	border-left: 	3px solid #504F4C ;
-	border-right: 	3px solid #504F4C ;
-	border-bottom: 	8px solid #817E7E ;
-	height: 55px;
-	width: 20px;
-	border-radius: 2px;
-	-webkit-box-shadow: 0px 4px 10px 0px rgba(0,0,0,0.67);
-	   -moz-box-shadow: 0px 4px 10px 0px rgba(0,0,0,0.67);
-		    box-shadow: 0px 4px 10px 0px rgba(0,0,0,0.67);
-}
 
 .hori-ticks {
 	display: flex;

@@ -42,12 +42,13 @@ export class MixPanelComponent {
 
     // Cross fader controls
     crossFaderValue: any = 50;
+    isRandom: boolean;
+
 
     constructor(
         private _playerStateService: PlayerStateService,
         private _playlistService: PlaylistService,
         private _electronService: ElectronService) {
-
 
         // Init crossfader value
         this.crossFaderValue = 50;
@@ -61,6 +62,16 @@ export class MixPanelComponent {
         this._playlistService.onPlayPlaylist$.subscribe((pl) => {
             this.onPlayPlaylist = pl;
         });
+
+
+
+
+        // Get current volume right
+        this._playerStateService.isRandom$.subscribe((isRandom) => {
+            this.isRandom = isRandom;
+        });
+
+
 
 
         // Get current player left
@@ -109,16 +120,17 @@ export class MixPanelComponent {
         if (event) {
             console.log('Trigger mix left to right');
             if (this.videoRight) {
-                this.playerRight.playPauseVideo();
+                this.stopTimer();
                 this._playerStateService.setActivePlayer('right');
+                this.playerRight.playPauseVideo();
                 this.initTimerLTR();
 
             } else if (this.onPlayPlaylist && this.onPlayPlaylist.videolist.length > 0) {
-                const videoToPlay = this.onPlayPlaylist.videolist[0];
+                this.stopTimer();
+                const videoToPlay = this.getVideoToPlay();
                 this._playerStateService.setPlayerRight(videoToPlay);
-                this.videoRight = videoToPlay;
-                // this.playerRight.playPauseVideo();
                 this._playerStateService.setActivePlayer('right');
+                this.playerRight.playPauseVideo();
                 this.initTimerLTR();
             }
         }
@@ -136,32 +148,33 @@ export class MixPanelComponent {
             console.log('LTR => ' + this.volLeft);
 
             if (this.playerLeft.getPlayerState() === 5
+            ||  this.playerLeft.getPlayerState() === 3
             ||  this.playerLeft.getPlayerState() === 2
             ||  this.playerLeft.getPlayerState() === 0
             ||  this.playerLeft.getPlayerState() === 1
             ||  this.playerLeft.getPlayerState() === -1) {
                 console.log('=> Stop timer LTR');
                 this.stopTimer();
+                this._playerStateService.setVolumeLeft(100);
             }
         });
-        // console.log('RTL => ' + this.currVolLeft);
     }
-
 
     triggerMixRTL(event) {
         if (event) {
             console.log('Trigger mix right to left');
             if (this.videoLeft) {
-                this.playerLeft.playPauseVideo();
+                this.stopTimer();
                 this._playerStateService.setActivePlayer('left');
+                this.playerLeft.playPauseVideo();
                 this.initTimerRTL();
 
             } else if (this.onPlayPlaylist && this.onPlayPlaylist.videolist.length > 0) {
-                const videoToPlay = this.onPlayPlaylist.videolist[0];
+                this.stopTimer();
+                const videoToPlay = this.getVideoToPlay();
                 this._playerStateService.setPlayerLeft(videoToPlay);
-                this.videoLeft = videoToPlay;
-                // this.playerLeft.playPauseVideo();
                 this._playerStateService.setActivePlayer('left');
+                this.playerLeft.playPauseVideo();
                 this.initTimerRTL();
             }
         }
@@ -175,7 +188,7 @@ export class MixPanelComponent {
             this._playerStateService.setVolumeRight(this.volRight - 2);
 
             console.log('============================');
-            console.log('PlayerLeft state', this.playerRight.getPlayerState());
+            console.log('PlayerRight state', this.playerRight.getPlayerState());
             console.log('LTR => ' + this.volRight);
 
             if (this.playerRight.getPlayerState() === 5
@@ -185,18 +198,33 @@ export class MixPanelComponent {
             ||  this.playerRight.getPlayerState() === -1) {
                 console.log('Stop timer RTL');
                 this.stopTimer();
+                this._playerStateService.setVolumeRight(100);
             }
-            // console.log('RTL => ' + this.currVolRight);
         });
     }
 
     // Stop timer
     stopTimer() {
-        // console.log('Stop Timer');
         this.timerControl$.next();
         if (this.sub) { this.sub.unsubscribe(); }
-        //  this.initTimer();
         this.timer$ = Observable.empty();
+    }
+
+    setIsRandom() {
+        this._playerStateService.setIsRandom(this.isRandom ? false : true);
+    }
+
+    getVideoToPlay() {
+        let videoToPlay = null;
+        if (this.isRandom) {
+            const randomIndex = Math.floor(Math.random() * this.onPlayPlaylist.videolist.length);
+            console.log('isRandom true => randomIndex=', randomIndex);
+            videoToPlay = this.onPlayPlaylist.videolist[randomIndex];
+        } else {
+            console.log('isRandom false', );
+            videoToPlay = this.onPlayPlaylist.videolist[0];
+        }
+        return videoToPlay;
     }
 
     /*

@@ -32,10 +32,11 @@ export class VideoPlayerComponent implements OnInit, OnChanges, OnDestroy {
     // Player control
     isPlaying: boolean;
     isMuted: boolean;
+    isRandom: boolean;
 
     // Video(s)
     @Input() video: Video;          // Current played video
-    private playList: Playlist;      // Playlist of video
+    private onPlayPlaylist: Playlist;      // Playlist of video
 
     // Timer
     private timerControl$: Subject<number>;
@@ -48,8 +49,14 @@ export class VideoPlayerComponent implements OnInit, OnChanges, OnDestroy {
     private _playerStateService: PlayerStateService,
     private _playlistService: PlaylistService) {
 
+        // Get playlist isRandom state
+        this._playerStateService.setIsRandom(false);
+        this._playerStateService.isRandom$.subscribe((isRandom) => {
+            this.isRandom = isRandom;
+        });
+
         this._playlistService.onPlayPlaylist$.subscribe((pl) => {
-            this.playList = pl;
+            this.onPlayPlaylist = pl;
         });
 
         this.isPlaying = false;
@@ -163,30 +170,53 @@ export class VideoPlayerComponent implements OnInit, OnChanges, OnDestroy {
         this.ytEvent = event.data;
         this.stopTimer();
 
-        if (this.ytEvent === YT.PlayerState.PLAYING) {
-            this.isPlaying = true;
-            this.timerControl$.next(this.getRemainingTime());
+        // Video not started
+        if (this.ytEvent === YT.PlayerState.UNSTARTED) {
+            this.isPlaying = false;
+            this._playerStateService.setActivePlayer(null);
 
+        // Video ended
         } else if (this.ytEvent === YT.PlayerState.ENDED) {
             this.isPlaying = false;
+            this._playerStateService.setActivePlayer(null);
 
-            if (this.playList.videolist && this.playList.videolist.length > 0) {
+        // Video on play
+        } else if (this.ytEvent === YT.PlayerState.PLAYING) {
+            this.isPlaying = true;
+            this.initTimer();
+            this.timerControl$.next(this.getRemainingTime());
+            this._playerStateService.setActivePlayer(this.sidePlayer);
 
-                const videoToPlay = this.playList.videolist[0];
-                if (this.sidePlayer === 'left') {
-                    this._playerStateService.setPlayerLeft(videoToPlay);
-
-                } else {
-                    this._playerStateService.setPlayerRight(videoToPlay);
-                }
-
-                // this.playList.videolist.shift();
-                // this._playlistService.setOnPlayPlayList(this.playList);
-            }
-        } else {
+        // Video paused
+        } else if (this.ytEvent === YT.PlayerState.PAUSED) {
             this.isPlaying = false;
+            this._playerStateService.setActivePlayer(null);
+
+        // Video buffering
+        } else if (this.ytEvent === YT.PlayerState.BUFFERING) {
+            this.isPlaying = false;
+            this._playerStateService.setActivePlayer(null);
+
+        // Video cued
+        } else if (this.ytEvent === YT.PlayerState.CUED) {
+            this.isPlaying = false;
+            this._playerStateService.setActivePlayer(null);
         }
     }
+
+    getVideoToPlay() {
+        let videoToPlay = null;
+        if (this.isRandom) {
+            const randomIndex = Math.floor(Math.random() * this.onPlayPlaylist.videolist.length);
+            console.log('isRandom true => randomIndex=', randomIndex);
+            videoToPlay = this.onPlayPlaylist.videolist[randomIndex];
+        } else {
+            console.log('isRandom false', );
+            videoToPlay = this.onPlayPlaylist.videolist[0];
+        }
+        return videoToPlay;
+    }
+
     savePlayer(player) {
         this.player = player;
     }
@@ -195,19 +225,16 @@ export class VideoPlayerComponent implements OnInit, OnChanges, OnDestroy {
     playPauseVideo() {
         if (!this.player || !this.video) { return; }
 
-        if (this.player.getPlayerState() === 1) {
+        if (this.ytEvent === YT.PlayerState.PLAYING) {
             this.player.pauseVideo();
-            this.isPlaying = false;
-            this._playerStateService.setActivePlayer(null);
-            this.stopTimer();
+           //  this.isPlaying = false;
+            // this._playerStateService.setActivePlayer(null);
 
-        } else {
+        } else if (this.ytEvent !== YT.PlayerState.PLAYING) {
             this.player.playVideo();
-            this.isPlaying = true;
-            this._playerStateService.setActivePlayer(this.sidePlayer);
-
-            this.stopTimer();
-            this.timerControl$.next(this.getRemainingTime());
+            // this._playerStateService.setActivePlayer(this.sidePlayer);
+            // this.isPlaying = true;
+            // this.timerControl$.next(this.getRemainingTime());
         }
     }
 
@@ -230,7 +257,6 @@ export class VideoPlayerComponent implements OnInit, OnChanges, OnDestroy {
         this.player.setVolume(this.volume);
         this.player.unMute();
         this.isMuted = this.player.isMuted();
-
         this.isPlaying = false;
     }
 
@@ -241,7 +267,6 @@ export class VideoPlayerComponent implements OnInit, OnChanges, OnDestroy {
 
     // Init Timer
     initTimer() {
-        // console.log('Init Timer');
         this.timerControl$ = new Subject<number>();
         this.timer$ = this.timerControl$.switchMap((period) =>
             period ? Observable.timer(period, 1000) : Observable.empty()
@@ -249,13 +274,6 @@ export class VideoPlayerComponent implements OnInit, OnChanges, OnDestroy {
         this.sub = this.timer$.subscribe(t => {
 
             this.currDuration = moment.utc(Math.round(this.player.getCurrentTime() * 1000)).format('mm:ss').toString();
-
-            /*
-            console.log(this.player.getCurrentTime());
-            console.log(this.player.getCurrentTime() * 1000);
-            console.log(Math.round(this.player.getCurrentTime()));
-            console.log(this.currDuration);
-            */
 
             if (this.getRemainingTime() < 12) {
                 console.log('***** ' + this.sidePlayer + ' Video near end ******');
@@ -270,7 +288,7 @@ export class VideoPlayerComponent implements OnInit, OnChanges, OnDestroy {
         // console.log('Stop Timer');
         this.timerControl$.next();
         if (this.sub) { this.sub.unsubscribe(); }
-        this.initTimer();
+        this.timer$ = Observable.empty();
     }
 
     getRemainingTime(): any {
