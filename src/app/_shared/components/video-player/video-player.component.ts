@@ -66,16 +66,29 @@ export class VideoPlayerComponent implements OnInit, OnChanges, OnDestroy {
 
     ngOnInit() {
         this.volume = 100;
+
         if (this.sidePlayer === 'left') {
-            this._playerStateService.volumeLeft$.subscribe((volLeft) => {
-                this.volume = volLeft;
+            // Get current volume left
+            this._playerStateService.volumeLeft$.subscribe((volume) => {
+                this.volume = volume;
                 this.updateVolume(this.volume);
+            });
+            // Get current speed left
+            this._playerStateService.speedLeft$.subscribe((speed) => {
+                this.speed = speed;
+                this.player.setPlaybackRate(speed);
             });
 
         } else if (this.sidePlayer === 'right') {
-            this._playerStateService.volumeRight$.subscribe((volRight) => {
-                this.volume = volRight;
+            // Get current volume right
+            this._playerStateService.volumeRight$.subscribe((volume) => {
+                this.volume = volume;
                 this.updateVolume(this.volume);
+            });
+            // Get current speed right
+            this._playerStateService.speedRight$.subscribe((speed) => {
+                this.speed = speed;
+                this.player.setPlaybackRate(speed);
             });
         }
     }
