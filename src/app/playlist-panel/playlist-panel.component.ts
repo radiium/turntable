@@ -41,66 +41,11 @@ export class PlaylistPanelComponent implements OnInit {
     isLoggedIn: Boolean = false;
 
     constructor(
-        public utils: UtilsService,
-        public dialog: MdDialog,
-        private _authService: AuthService,
-        private _playlistService: PlaylistService,
-        private _tabsService: TabsService) {
-
-            // Check if user is logged in
-            this._authService.user$
-            .subscribe((user: any) => {
-                this.isLoggedIn = user ? true : false;
-            });
-
-            // Init loading playlist progress bar
-            this.isProgressBar = false;
-
-            // Get progress bar value
-            this._playlistService.progressBarValue$
-            .subscribe((pbv: any) => {
-                this.progressBarValue = pbv;
-                if (!pbv || pbv === 0 || pbv === 100) {
-                    this.isProgressBar = false;
-                } else {
-                    this.isProgressBar = true;
-                }
-                if (pbv === 99) {
-                    this._playlistService.setProgressBarValue(100);
-                }
-            });
-
-            // Get selected tab
-            this._tabsService.selectedTab$
-            .subscribe((st: any) => {
-                this.selectedTab = st;
-            });
-
-            // Fake data
-            if (isDevMode()) {
-                this.insertFakeData();
-            }
-
-            // Get playlist list
-            this._playlistService.playListsList$
-            .subscribe((pl: any) => {
-                this.playlistsList = pl;
-                this.updateFilterInput();
-            });
-
-            // Get on edit playlist
-            this._playlistService.onEditPlaylist$
-            .subscribe((pl: any) => {
-                this.onEditPlaylist = pl;
-            });
-
-            // Init filter playlist input
-            this.filterPlaylist = new FormControl();
-            this.filterPlaylist.disable();
-            this.filteredStates = this.filterPlaylist.valueChanges
-            .startWith(null)
-            .map(title => title ? this.filterPlaylists(title) : this.playlistsList.slice());
-            this.updateFilterInput();
+    public utils: UtilsService,
+    public dialog: MdDialog,
+    private _authService: AuthService,
+    private _playlistService: PlaylistService,
+    private _tabsService: TabsService) {
     }
 
     // Update disabled/enabled status of filter playlist
@@ -115,6 +60,60 @@ export class PlaylistPanelComponent implements OnInit {
     }
 
     ngOnInit() {
+        // Check if user is logged in
+        this._authService.user$
+        .subscribe((user: any) => {
+            this.isLoggedIn = user ? true : false;
+        });
+
+        // Init loading playlist progress bar
+        this.isProgressBar = false;
+
+        // Get progress bar value
+        this._playlistService.progressBarValue$
+        .subscribe((pbv: any) => {
+            this.progressBarValue = pbv;
+            if (!pbv || pbv === 0 || pbv === 100) {
+                this.isProgressBar = false;
+            } else {
+                this.isProgressBar = true;
+            }
+            if (pbv === 99) {
+                this._playlistService.setProgressBarValue(100);
+            }
+        });
+
+        // Get selected tab
+        this._tabsService.selectedTab$
+        .subscribe((st: any) => {
+            this.selectedTab = st;
+        });
+
+        // Fake data
+        if (isDevMode()) {
+            this.insertFakeData();
+        }
+
+        // Get playlist list
+        this._playlistService.playListsList$
+        .subscribe((pl: any) => {
+            this.playlistsList = pl;
+            this.updateFilterInput();
+        });
+
+        // Get on edit playlist
+        this._playlistService.onEditPlaylist$
+        .subscribe((pl: any) => {
+            this.onEditPlaylist = pl;
+        });
+
+        // Init filter playlist input
+        this.filterPlaylist = new FormControl();
+        this.filterPlaylist.disable();
+        this.filteredStates = this.filterPlaylist.valueChanges
+        .startWith(null)
+        .map(title => title ? this.filterPlaylists(title) : this.playlistsList.slice());
+        this.updateFilterInput();
     }
 
     // Create new playlist

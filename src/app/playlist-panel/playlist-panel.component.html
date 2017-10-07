@@ -10,7 +10,7 @@
 
         <!-- Search/filter playlist by word -->
         <span class="inputFilterbox">
-            <input id="inputFilter" mdInput [formControl]="filterPlaylist" [mdAutocomplete]="'auto'"
+            <input id="inputFilter" mdInput [formControl]="filterPlaylist" [mdAutocomplete]="auto"
                 class="inputSearchPlaylist" type="text"  placeholder="Filter playlists...">
             
             <button *ngIf="filterPlaylist.value && filterPlaylist.value.length > 0"
