@@ -36,11 +36,8 @@ export class AuthService {
     user$ = this.user.asObservable();
 
     constructor(
-        private _http: Http,
-        private Electron: ElectronService) {
-    }
-
-
+    private _http: Http,
+    private Electron: ElectronService) {}
 
     // Authenticate user
     login() {
@@ -59,7 +56,10 @@ export class AuthService {
         .subscribe((result) => {
             console.log('Logout response');
             console.log(result);
+
+            // Set user
             this.setUser(null);
+            this.Electron.ipcRenderer.send('remove-user');
         });
     }
 
@@ -85,16 +85,18 @@ export class AuthService {
                 // Get user infos
                 this.getUserInfos()
                 .subscribe((result) => {
-                    this.setUser(new User(
+                    const user = new User(
                         result.name,
-                        token.access_token,
-                        token.refresh_token,
+                        token,
                         result.picture,
                         true
-                    ));
+                    );
+
+                    // Set user
+                    this.Electron.ipcRenderer.send('save-user', user);
+                    this.setUser(user);
                 });
 
-                // this._electronService.ipcRenderer.send('google-token', newToken);
             });
         });
     }
@@ -113,11 +115,8 @@ export class AuthService {
         });
     }
 
-    // ------------------------------------------------------------------------
-    // PRIVATE METHODS
-
     // Save token on localStorage
-    private storeToken(token) {
+    storeToken(token) {
         if (token) {
             localStorage.setItem('id_token', token.id_token);
             localStorage.setItem('access_token', token.access_token);
@@ -129,12 +128,24 @@ export class AuthService {
         }
     }
 
+    // ------------------------------------------------------------------------
+    // PRIVATE METHODS
+
     // Retrieve user infos
     private getUserInfos() {
         const userinfosUrl =
             CONSTANT.USER_API +
             '?access_token=' + localStorage.getItem('access_token');
         return this._http.get(userinfosUrl)
+        .map((res: Response) => res.json());
+    }
+
+    // Check auth to google api
+    checkAuth() {
+        const tokenInfoUrl =
+            CONSTANT.TOKEN_INFO_API +
+            '?access_token=' + localStorage.getItem('access_token');
+        return this._http.get(tokenInfoUrl)
         .map((res: Response) => res.json());
     }
 

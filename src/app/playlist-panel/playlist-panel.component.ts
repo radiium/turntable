@@ -48,17 +48,6 @@ export class PlaylistPanelComponent implements OnInit {
     private _tabsService: TabsService) {
     }
 
-    // Update disabled/enabled status of filter playlist
-    updateFilterInput() {
-        if (this.playlistsList.length > 1) {
-            this.filterPlaylist.enable();
-            this.filterPlaylist.setValue('');
-        } else if (this.playlistsList.length < 2) {
-            this.filterPlaylist.disable();
-        }
-        return false;
-    }
-
     ngOnInit() {
         // Check if user is logged in
         this._authService.user$
@@ -114,6 +103,17 @@ export class PlaylistPanelComponent implements OnInit {
         .startWith(null)
         .map(title => title ? this.filterPlaylists(title) : this.playlistsList.slice());
         this.updateFilterInput();
+    }
+
+    // Update disabled/enabled status of filter playlist
+    updateFilterInput() {
+        if (this.playlistsList.length > 1) {
+            this.filterPlaylist.enable();
+            this.filterPlaylist.setValue('');
+        } else if (this.playlistsList.length < 2) {
+            this.filterPlaylist.disable();
+        }
+        return false;
     }
 
     // Create new playlist

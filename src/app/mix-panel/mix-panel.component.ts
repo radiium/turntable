@@ -94,7 +94,6 @@ export class MixPanelComponent {
         });
     }
 
-
     onChangeCrossFaderValue(value) {
         let valLeft = 0;
         let valRight = 0;

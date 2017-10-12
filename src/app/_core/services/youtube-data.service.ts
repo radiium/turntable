@@ -8,6 +8,7 @@ import 'rxjs/add/operator/mergeMap';
 import 'rxjs/Rx';
 
 import { HttpService } from './http.service';
+import { Video } from '../../_shared/models/video.model';
 import { Playlist } from '../../_shared/models/playlist.model';
 import { CONSTANT } from '../../_shared/constant';
 
@@ -15,23 +16,90 @@ import { CONSTANT } from '../../_shared/constant';
 export class YoutubeDataService {
 
     constructor(
-        private _http: Http,
-        private _jsonp: Jsonp,
-        private httpService: HttpService) {}
+    private _http: Http,
+    private _jsonp: Jsonp,
+    private httpService: HttpService) {}
+
+    maxResult: Number = 50;
+
+
+
+    // ------------------------------------------------------------------------
+    //
+    // => PLAYLISTS
+    //
+    // ------------------------------------------------------------------------
 
     // ------------------------------------------------------------------------
     // Get all playlist of user
-    getAllPlaylists() {
+    getPlaylists() {
         const allPlaylistsUrl =
             CONSTANT.PLAYLIST_API +
-            '?mine=true' +
-            '&maxResults=50' +
-            '&part=snippet,status';
+            '?part=snippet,status' +
+            '&maxResults=' + this.maxResult +
+            '&mine=true';
 
         return this.httpService
         .request(allPlaylistsUrl, {method: RequestMethod.Get, headers: new Headers()})
         .map((res: Response) => res.json());
     }
+
+    // ------------------------------------------------------------------------
+    // Insert a playlist
+    insertPlaylist(playlist: Playlist) {
+        const PlaylistsUrl =
+            CONSTANT.PLAYLIST_API +
+            '?part=snippet,status' +
+            '&snippet.title=' + playlist.title +
+            '&snippet.description=' + playlist.description +
+            '&snippet.tags[]=' +
+            '&snippet.defaultLanguage=fr' +
+            '&status.privacyStatus=' + playlist.privacyStatus;
+
+        return this.httpService
+        .request(PlaylistsUrl, {method: RequestMethod.Post, headers: new Headers()})
+        .map((res: Response) => res.json());
+    }
+
+    /* Not implemented
+
+    // ------------------------------------------------------------------------
+    // Update a playlist
+    updatePlaylist(playlist: Playlist) {
+        const PlaylistsUrl =
+            CONSTANT.PLAYLIST_API +
+            '?part=snippet,status' +
+            'id=' + playlist.id +
+            '&snippet.title=' + playlist.title +
+            '&snippet.description=' + playlist.description +
+            '&snippet.tags[]=' +
+            '&snippet.defaultLanguage=fr' +
+            '&status.privacyStatus=' + playlist.privacyStatus;
+
+        return this.httpService
+        .request(PlaylistsUrl, {method: RequestMethod.Put, headers: new Headers()})
+        .map((res: Response) => res.json());
+    }
+    */
+
+    // ------------------------------------------------------------------------
+    // Delete playlist
+    deletePlaylist(playlistId: string) {
+        const PlaylistsUrl =
+            CONSTANT.PLAYLIST_API +
+            '?id=' + playlistId;
+
+        return this.httpService
+        .request(PlaylistsUrl, {method: RequestMethod.Delete, headers: new Headers()})
+        .map((res: Response) => res.json());
+    }
+
+
+    // ------------------------------------------------------------------------
+    //
+    // => PLAYLIST ITEMS
+    //
+    // ------------------------------------------------------------------------
 
     // ------------------------------------------------------------------------
     // Get playlist items
@@ -46,7 +114,7 @@ export class YoutubeDataService {
             CONSTANT.PLAYLIST_ITEMS_API +
             '?playlistId=' + playlistId +
             '&part=snippet,contentDetails' +
-            '&maxResults=50';
+            '&maxResults=' + this.maxResult;
 
         if (pageToken) {
             playlistItemsUrl += '&pageToken=' + pageToken;
@@ -58,19 +126,58 @@ export class YoutubeDataService {
     }
 
     // ------------------------------------------------------------------------
-    //
-    createPlaylist() {
+    // Insert playlist items
+    insertPlaylistItems(playlistId: string, video: Video, position: string) {
+        const playlistItemsUrl =
+            CONSTANT.PLAYLIST_ITEMS_API +
+            '?snippet.playlistId=' + playlistId +
+            '&snippet.resourceId.kind=youtube#video' +
+            '&snippet.resourceId.videoId=' + video.id +
+            '&snippet.position=' + position +
+            '&part=snippet,contentDetails,status';
+
+        return this.httpService
+        .request(playlistItemsUrl, {method: RequestMethod.Post, headers: new Headers()})
+        .map((res) => res.json());
     }
 
     // ------------------------------------------------------------------------
-    //
-    updatePlaylist() {
+    // Update playlist items
+    updatePlaylistItems(playlistId: string, video: Video, position: string) {
+        const playlistItemsUrl =
+            CONSTANT.PLAYLIST_ITEMS_API +
+            '?snippet.playlistId=' + playlistId +
+            '&snippet.resourceId.kind=video' +
+            '&snippet.resourceId.videoId=' + video.id +
+            '&snippet.position=' + position +
+            '&part=snippet,contentDetails,status';
+
+        return this.httpService
+        .request(playlistItemsUrl, {method: RequestMethod.Put, headers: new Headers()})
+        .map((res) => res.json());
     }
 
     // ------------------------------------------------------------------------
-    //
-    deletePlaylist() {
+    // Delete playlist items
+    deletePlaylistItems(playlistItemId: string) {
+
+        // Set url
+        const playlistItemsUrl =
+            CONSTANT.PLAYLIST_ITEMS_API +
+            '?playlistId=' + playlistItemId;
+
+        return this.httpService
+        .request(playlistItemsUrl, {method: RequestMethod.Delete, headers: new Headers()})
+        .map((res) => res.json());
     }
+
+
+
+    // ------------------------------------------------------------------------
+    //
+    // => SEARCH/SUGGEST VIDEOS
+    //
+    // ------------------------------------------------------------------------
 
     // ------------------------------------------------------------------------
     // Search video(s) by query string
@@ -81,7 +188,7 @@ export class YoutubeDataService {
             '?q=' + query +
             '&key=' + CONSTANT.KEY_API +
             '&part=snippet' +
-            '&maxResults=50'; // +
+            '&maxResults=' + this.maxResult; // +
             // '&videoEmbeddable=true';
 
         return this._http.get(searchVideosUrl)

@@ -80,11 +80,11 @@
                 <div *ngIf="playlist.title === 'Default'">
                 -->
                 <!-- Login button -->
-                <div *ngIf="playlist.title === 'Default' && isElectronApp()"><br>
+                <div class="login" *ngIf="playlist.title === 'Default' && !user"><br>
                     <div>Or
                     <button id="playlistLoginBtn" class="signBtn" md-button (click)="login()">
                     <fa aria-label="Login" [name]="'sign-in'" [size]="1"></fa>
-                    <span>Login</span>
+                    <span>Sign in</span>
                     </button>
                     </div>
                     <div>to load your playlist(s) from youtube</div>

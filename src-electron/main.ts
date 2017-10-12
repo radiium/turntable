@@ -10,6 +10,9 @@ import { devMenuTemplate } from './menu/dev_menu.template';
 import { fileMenuTemplate } from './menu/file_menu.template';
 import { editMenuTemplate } from './menu/edit_menu.template';
 import { session } from 'electron';
+
+import * as storage from 'electron-json-storage';
+
 // Init variable
 let mainWindow: any = null;
 const menus: any[] = [];
@@ -80,7 +83,41 @@ app.on('before-quit', () => {
     if (process.env.NODE_ENV !== 'development') {
         mainWindow.webContents.session.clearStorageData();
     }
+
+    storage.remove('user', (error) => {
+        if (error) { throw error; }
+        console.log('user removed');
+    });
 });
+
+
+
+
+// Store user at signin
+ipcMain.on('save-user', (event, user) => {
+    storage.set('user', user, (error) => {
+        if (error) { throw error; }
+        console.log('user saved');
+    });
+
+});
+
+// Remove user from storage at signout
+ipcMain.on('remove-user', (event, user) => {
+    storage.remove('user', (error) => {
+        if (error) { throw error; }
+        console.log('user removed');
+    });
+});
+
+// Get user from storage
+ipcMain.on('send-get-user', (event, arg) => {
+    storage.get('user', (err, data) => {
+        if (err) { throw err; }
+        event.sender.send('get-user', data);
+    });
+});
+
 
 /*
 // Ipc listening in main process.

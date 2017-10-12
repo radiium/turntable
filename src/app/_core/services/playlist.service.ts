@@ -55,7 +55,7 @@ export class PlaylistService {
     fetchYoutubePlaylist() {
 
         // Get all playlist
-        return this._youtubeDataService.getAllPlaylists()
+        return this._youtubeDataService.getPlaylists()
         .flatMap((plList) => {
 
             this.setProgressBarValue(30);
