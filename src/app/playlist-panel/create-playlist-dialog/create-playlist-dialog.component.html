@@ -1,28 +1,28 @@
 <div>
-    <h2 md-dialog-title>Create new playlist</h2>
+    <h2 mat-dialog-title>Create new playlist</h2>
 
-    <md-dialog-content>
+    <mat-dialog-content>
 
         <!-- Playlist name -->
         <form class="example-form">
-        <md-form-field class="example-full-width">
-            <input mdInput type="text" [(ngModel)]="name"
+        <mat-form-field class="example-full-width">
+            <input matInput type="text" [(ngModel)]="name"
             [ngModelOptions]="{standalone: true}" placeholder="Playlist name">
-        </md-form-field>
+        </mat-form-field>
         </form>
         
         <!-- Playlist privacy status -->
         <label class="labelVisible">Playlist visibility:</label>
-            <md-radio-group class="radioBtnGrp" [(ngModel)]="privacyStatus">
-            <md-radio-button class="radioBtn" value="public">Public</md-radio-button>
-            <md-radio-button class="radioBtn" value="private">Private</md-radio-button>
-        </md-radio-group>
+            <mat-radio-group class="radioBtnGrp" [(ngModel)]="privacyStatus">
+            <mat-radio-button class="radioBtn" value="public">Public</mat-radio-button>
+            <mat-radio-button class="radioBtn" value="private">Private</mat-radio-button>
+        </mat-radio-group>
 
-    </md-dialog-content>
+    </mat-dialog-content>
 
     <!-- Controls -->
-    <md-dialog-actions>
-        <button md-button (click)="onCancel()">cancel</button>
-        <button md-button (click)="onAccept()">Ok</button>
-    </md-dialog-actions>
+    <mat-dialog-actions>
+        <button mat-button (click)="onCancel()">cancel</button>
+        <button mat-button (click)="onAccept()">Ok</button>
+    </mat-dialog-actions>
 </div>

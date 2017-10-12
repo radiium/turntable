@@ -1,5 +1,5 @@
 import { Component, OnInit, isDevMode } from '@angular/core';
-import { MdDialog, MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { UUID } from 'angular2-uuid';
 import { FormGroup, FormControl } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
@@ -24,6 +24,9 @@ import * as testPlaylist from './test-playlist.json';
 })
 export class PlaylistPanelComponent implements OnInit {
 
+
+    selectedValue;
+
     playlistsList: Array<Playlist> = [];
     onEditPlaylist: Playlist;
     originalOnEditPlaylist: Playlist;
@@ -42,7 +45,7 @@ export class PlaylistPanelComponent implements OnInit {
 
     constructor(
     public utils: UtilsService,
-    public dialog: MdDialog,
+    public dialog: MatDialog,
     private _authService: AuthService,
     private _playlistService: PlaylistService,
     private _tabsService: TabsService) {

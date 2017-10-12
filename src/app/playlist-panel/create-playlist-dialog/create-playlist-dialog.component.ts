@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 @Component({
   selector: 'app-create-playlist-dialog',
@@ -11,8 +11,8 @@ export class CreatePlaylistDialogComponent {
     privacyStatus: string;
 
     constructor(
-    public dialogRef: MdDialogRef<CreatePlaylistDialogComponent>,
-    @Inject(MD_DIALOG_DATA) public data: any) {
+    public dialogRef: MatDialogRef<CreatePlaylistDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any) {
         this.name = '';
         this.privacyStatus = 'public';
     }

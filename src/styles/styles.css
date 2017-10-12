@@ -39,7 +39,7 @@ input:focus { outline: none; }
 
 /* Unglorious hack... */
 
-md-progress-bar {
+mat-progress-bar {
     z-index: 99999;
 }
 

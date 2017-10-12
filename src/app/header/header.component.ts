@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MdDialog, MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 // Services
 import { ElectronService } from 'ngx-electron';
@@ -25,7 +25,7 @@ export class HeaderComponent implements OnInit {
     selectedTab: Number = 1;
 
     constructor(
-    public dialog: MdDialog,
+    public dialog: MatDialog,
     private _authService: AuthService,
     private _playlistService: PlaylistService,
     private _electron: ElectronService,

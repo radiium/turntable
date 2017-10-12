@@ -23,8 +23,8 @@
 	overflow: auto;
     height: calc(100% - 69px);
 }
-.plPanelContent md-grid-list { margin: 0 !important; }
-.plPanelContent md-grid-tile { background: #242320; }
+.plPanelContent mat-grid-list { margin: 0 !important; }
+.plPanelContent mat-grid-tile { background: #242320; }
 
 .button-row {
     display: flex;
@@ -174,7 +174,7 @@
 .spacerBtn { width: 100px; }
 
 /*
-.plPanelContent md-grid-tile:hover .playBtn { color: #48b735 }
-.plPanelContent md-grid-tile:hover .editBtn { color: #248fd6 }
-.plPanelContent md-grid-tile:hover .deleteBtn { color: #e83e3e }
+.plPanelContent mat-grid-tile:hover .playBtn { color: #48b735 }
+.plPanelContent mat-grid-tile:hover .editBtn { color: #248fd6 }
+.plPanelContent mat-grid-tile:hover .deleteBtn { color: #e83e3e }
 */

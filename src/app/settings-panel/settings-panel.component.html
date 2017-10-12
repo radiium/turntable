@@ -5,23 +5,23 @@
         <legend>General</legend>
         Work in progress...
 
-        <md-select placeholder="Langage" [(ngModel)]="selectedLangage" name="food" disabled>
-        <md-option *ngFor="let langage of langagesList" [value]="langage.value">
+        <mat-select placeholder="Langage" [(ngModel)]="selectedLangage" name="food" disabled>
+        <mat-option *ngFor="let langage of langagesList" [value]="langage.value">
         {{langage.viewValue}}
-        </md-option>
-        </md-select>
+        </mat-option>
+        </mat-select>
 
-        <md-select placeholder="Theme" [(ngModel)]="selectedTheme" name="food" disabled>
-        <md-option *ngFor="let theme of themesList" [value]="theme">
+        <mat-select placeholder="Theme" [(ngModel)]="selectedTheme" name="food" disabled>
+        <mat-option *ngFor="let theme of themesList" [value]="theme">
         {{theme}}
-        </md-option>
-        </md-select>
+        </mat-option>
+        </mat-select>
     </fieldset>
 
     <fieldset>
         <legend>Export playlists</legend>
          Work in progress...
-        <button class="toolbarBtn" md-raised-button disabled>
+        <button class="toolbarBtn" mat-raised-button disabled>
         <fa aria-label="Export playlists" [name]="'external-link'" [size]="2"></fa>
         Export
         </button>

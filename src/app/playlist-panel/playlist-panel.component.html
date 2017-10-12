@@ -1,26 +1,38 @@
 <!-- Playlist list mode toolbar -->
 <div class="toolBar">
-    <md-toolbar *ngIf="!isEditMode">
+    <mat-toolbar *ngIf="!isEditMode">
 
         <!-- Create playlist button -->
-        <button class="toolbarBtn" md-raised-button (click)="createPlaylist()">
+        <button class="toolbarBtn" mat-raised-button (click)="createPlaylist()">
             <fa aria-label="Create playlist" [name]="'plus'" [size]="1"></fa>
             Create playlist
         </button>
 
         <!-- Search/filter playlist by word -->
         <span class="inputFilterbox">
-            <input id="inputFilter" mdInput [formControl]="filterPlaylist" [mdAutocomplete]="auto"
+            <input id="inputFilter" matInput [formControl]="filterPlaylist" [matAutocomplete]="auto"
                 class="inputSearchPlaylist" type="text"  placeholder="Filter playlists...">
             
             <button *ngIf="filterPlaylist.value && filterPlaylist.value.length > 0"
                 (click)="filterPlaylist.setValue('')" id="clearInputFilter" >X</button>
 
-            <md-autocomplete #auto="mdAutocomplete" class="autocompleteBox">
-                <md-option *ngFor="let pl of playlistsList" [value]="pl.title">
+            <mat-autocomplete #auto="matAutocomplete" class="autocompleteBox">
+                <mat-option *ngFor="let pl of playlistsList" [value]="pl.title">
                 {{ pl.title }}
-                </md-option>
-            </md-autocomplete>
+                </mat-option>
+            </mat-autocomplete>
+        </span>
+
+        <span>
+            <mat-radio-group [(ngModel)]="selectedValue">
+            <mat-radio-button value="All">All</mat-radio-button>
+            <mat-radio-button value="Local">Local</mat-radio-button>
+            <mat-radio-button value="Youtube">Youtube</mat-radio-button>
+            </mat-radio-group>
+        </span>
+
+        <span>
+            value= {{ selectedValue }}
         </span>
         
         <!-- Toolbar space -->
@@ -30,35 +42,35 @@
         <span style="margin-left :16px; margin-right :16px;">{{ playlistsList.length }} Playlist<span *ngIf="playlistsList.length > 1">s</span></span>
 
         <!-- Refresh playlist list button -->
-        <button class="toolbarBtn" *ngIf="!isEditMode && isLoggedIn" md-raised-button (click)="reloadPlaylist()">
+        <button class="toolbarBtn" *ngIf="!isEditMode && isLoggedIn" mat-raised-button (click)="reloadPlaylist()">
         <fa aria-label="Refresh playlist" [name]="'refresh'" [size]="1"></fa>
         Reload from Youtube
         </button>
-    </md-toolbar>
+    </mat-toolbar>
 
 
     <!-- Edit playlist mode toolbar -->
-    <md-toolbar *ngIf="isEditMode" class="toolBar">
+    <mat-toolbar *ngIf="isEditMode" class="toolBar">
 
         <!-- Return button -->
-        <button class="toolbarBtn returnBtn"  md-raised-button (click)="return()">
+        <button class="toolbarBtn returnBtn"  mat-raised-button (click)="return()">
             <fa aria-label="Return" [name]="'arrow-left'" [size]="1"></fa>
         </button>
 
         <!-- Save playlist button -->
-        <button class="toolbarBtn"  md-raised-button (click)="saveOnEditPlaylist()">
+        <button class="toolbarBtn"  mat-raised-button (click)="saveOnEditPlaylist()">
             <fa aria-label="Save playlist" [name]="'floppy-o'" [size]="1"></fa>
             Save playlist
         </button>
 
         <!-- Save playlist on youtube button -->
-        <button class="toolbarBtn"  md-raised-button (click)="saveOnEditPlaylist()">
+        <button class="toolbarBtn"  mat-raised-button (click)="saveOnEditPlaylist()">
             <fa aria-label="Save playlist" [name]="'floppy-o'" [size]="1"></fa>
             Save on youtube
         </button>
 
         <span class="spacerToolbar"></span>
-    </md-toolbar>
+    </mat-toolbar>
 </div>
 
 
@@ -71,25 +83,25 @@
 
         <!-- Progress bar -->
         <div class="progressBarGray" *ngIf="isProgressBar"></div>
-        <md-progress-bar
+        <mat-progress-bar
             *ngIf="isProgressBar"
             [color]="'primary'"
             [mode]="'determinate'"
             [value]="progressBarValue">
-        </md-progress-bar>
+        </mat-progress-bar>
 
-        <md-grid-list  *ngIf="playlistsList" cols="4" rowHeight="160px" gutterSize="25px" >
+        <mat-grid-list  *ngIf="playlistsList" cols="4" rowHeight="160px" gutterSize="25px" >
 
             <!-- Playlist list items -->
-            <md-grid-tile *ngFor="let pl of playlistsList | filterPlaylist:filterPlaylist.value ; let i = index">
+            <mat-grid-tile *ngFor="let pl of playlistsList | filterPlaylist:filterPlaylist.value ; let i = index">
                 <div class="plBox">
 
                     <!-- Privacy status playlist icons -->
-                    <div *ngIf="pl.privacyStatus === 'private'" mdTooltip="Playlist private" [mdTooltipPosition]="'below'" class="plStatus private">
+                    <div *ngIf="pl.privacyStatus === 'private'" matTooltip="Playlist private" [matTooltipPosition]="'below'" class="plStatus private">
                     <fa aria-label="Playlist private" [name]="'lock'" [size]="1"></fa>
                     </div>
 
-                    <div *ngIf="pl.privacyStatus === 'public'" mdTooltip="Playlist public" [mdTooltipPosition]="'below'" class="plStatus public">
+                    <div *ngIf="pl.privacyStatus === 'public'" matTooltip="Playlist public" [matTooltipPosition]="'below'" class="plStatus public">
                     <fa aria-label="Playlist public" [name]="'globe'" [size]="1"></fa>
                     </div>
 
@@ -108,26 +120,26 @@
 
                     <div class="plFooter">
                         <!-- Play playlist button -->
-                        <button  class="playBtn plBtn" (click)="playPlaylist(pl)" mdTooltip="Play playlist!" [mdTooltipPosition]="'above'">
+                        <button  class="playBtn plBtn" (click)="playPlaylist(pl)" matTooltip="Play playlist!" [matTooltipPosition]="'above'">
                         <fa aria-label="Edit playlist" [name]="'play'" [size]="2"></fa>
                         </button>
 
                         <div class="spacerBtn"></div>
                         
                         <!-- Edit playlist button -->
-                        <button class="editBtn plBtn" (click)="editPlaylist(pl)" mdTooltip="Edit playlist!" [mdTooltipPosition]="'above'">
+                        <button class="editBtn plBtn" (click)="editPlaylist(pl)" matTooltip="Edit playlist!" [matTooltipPosition]="'above'">
                         <fa aria-label="Edit playlist" [name]="'pencil'" [size]="2"></fa>
                         </button>
 
                         <!-- Remove playlist button -->
-                        <button class="deleteBtn plBtn" (click)="deletePlaylist(pl)" mdTooltip="Delete playlist!" [mdTooltipPosition]="'above'">
+                        <button class="deleteBtn plBtn" (click)="deletePlaylist(pl)" matTooltip="Delete playlist!" [matTooltipPosition]="'above'">
                         <fa aria-label="Delete playlist" [name]="'trash'" [size]="2"></fa>
                         </button>
                     </div>
                 </div>
 
-            </md-grid-tile>
-        </md-grid-list>
+            </mat-grid-tile>
+        </mat-grid-list>
     </div>
 </div>
 

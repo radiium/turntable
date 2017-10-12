@@ -82,7 +82,7 @@
                 <!-- Login button -->
                 <div class="login" *ngIf="playlist.title === 'Default' && !user"><br>
                     <div>Or
-                    <button id="playlistLoginBtn" class="signBtn" md-button (click)="login()">
+                    <button id="playlistLoginBtn" class="signBtn" mat-button (click)="login()">
                     <fa aria-label="Login" [name]="'sign-in'" [size]="1"></fa>
                     <span>Sign in</span>
                     </button>
@@ -100,7 +100,7 @@
                 <!-- Only delete btn Edit panel -->
                 <div *ngIf="type === 'edit'">
                     <!-- Delete video button -->
-                    <button mdTooltip="Delete video!" [mdTooltipPosition]="'above'" md-mini-fab color="warn" (click)="deleteVideo(video.id)" class="deleteBtn">
+                    <button matTooltip="Delete video!" [matTooltipPosition]="'above'" mat-mini-fab color="warn" (click)="deleteVideo(video.id)" class="deleteBtn">
                         <fa [name]="'trash'" [size]="2"></fa>
                     </button>
                 </div>
@@ -108,17 +108,17 @@
                 <!-- All btn Player control -->
                 <div *ngIf="type === 'player'" class="videoControl">
                     <!-- Play at left button -->
-                    <button mdTooltip="Play at left !" [mdTooltipPosition]="'above'" md-mini-fab color="primary" (click)="playAtLeft(video)" class="leftBtn mix-btn">
+                    <button matTooltip="Play at left !" [matTooltipPosition]="'above'" mat-mini-fab color="primary" (click)="playAtLeft(video)" class="leftBtn mix-btn">
                     <fa [name]="'play'" [size]="2" [rotate]="180" ></fa>
                     </button>
                     
                     <!-- Delete video button -->
-                    <button mdTooltip="Delete video!" [mdTooltipPosition]="'above'"  md-mini-fab color="warn" (click)="deleteVideo(video.id)" class="mix-btn">
+                    <button matTooltip="Delete video!" [matTooltipPosition]="'above'"  mat-mini-fab color="warn" (click)="deleteVideo(video.id)" class="mix-btn">
                     <fa [name]="'trash'" [size]="2"></fa>
                     </button>
 
                     <!-- Play at right button -->
-                    <button mdTooltip="Play at right !" [mdTooltipPosition]="'above'" md-mini-fab color="primary" (click)="playAtRight(video)" class="rightBtn mix-btn">
+                    <button matTooltip="Play at right !" [matTooltipPosition]="'above'" mat-mini-fab color="primary" (click)="playAtRight(video)" class="rightBtn mix-btn">
                     <fa [name]="'play'" [size]="2" ></fa>
                     </button>
                 </div>
@@ -135,7 +135,7 @@
                 <!-- Only delete btn Edit panel -->
                 <div *ngIf="type === 'edit'">
                     <!-- Delete video button -->
-                    <button mdTooltip="Delete video!" [mdTooltipPosition]="'above'" md-mini-fab color="warn" (click)="deleteVideo(video.id)" class="deleteBtn">
+                    <button matTooltip="Delete video!" [matTooltipPosition]="'above'" mat-mini-fab color="warn" (click)="deleteVideo(video.id)" class="deleteBtn">
                         <fa [name]="'trash'" [size]="2"></fa>
                     </button>
                 </div>
@@ -143,12 +143,12 @@
                 <!-- All btn Player control -->
                 <div *ngIf="type === 'player'" class="videoControl">
                     <!-- Add to playlist button -->
-                    <button mdTooltip="Replace in playlist!" [mdTooltipPosition]="'above'" md-mini-fab color="primary" (click)="addToPlaylist(video)" class="leftBtn mix-btn">
+                    <button matTooltip="Replace in playlist!" [matTooltipPosition]="'above'" mat-mini-fab color="primary" (click)="addToPlaylist(video)" class="leftBtn mix-btn">
                     <fa [name]="'reply'" [size]="2"></fa>
                     </button>
                     
                     <!-- Delete video button -->
-                    <button mdTooltip="Delete video!" [mdTooltipPosition]="'above'"  md-mini-fab color="warn" (click)="deleteVideoHistoric(video.id)" class="mix-btn">
+                    <button matTooltip="Delete video!" [matTooltipPosition]="'above'"  mat-mini-fab color="warn" (click)="deleteVideoHistoric(video.id)" class="mix-btn">
                     <fa [name]="'trash'" [size]="2"></fa>
                     </button>
                 </div>

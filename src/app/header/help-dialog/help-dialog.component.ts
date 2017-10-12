@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 import * as helpContent from './help-content.json';
 
@@ -14,8 +14,8 @@ export class HelpDialogComponent {
     tabsList;
 
     constructor(
-    public dialogRef: MdDialogRef<HelpDialogComponent>,
-    @Inject(MD_DIALOG_DATA) public data: any) {
+    public dialogRef: MatDialogRef<HelpDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any) {
         console.log(helpContent);
         this.tabsList = helpContent;
     }
