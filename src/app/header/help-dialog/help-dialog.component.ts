@@ -31,7 +31,7 @@ export class HelpDialogComponent {
     }
 
     onNextTab() {
-        if (this.selectedTab < this.tabsList.length) {
+        if (this.selectedTab < this.tabsList.helpContent.length) {
             this.selectedTab++;
         }
     }
