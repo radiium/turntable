@@ -111,3 +111,8 @@ mat-progress-bar {
 #inputFilter.mat-input-element::-moz-placeholder { color: gray !important; }
 #inputFilter.mat-input-element::placeholder { color: gray !important; }
 #inputFilter.mat-input-element::placeholder { color: gray !important; }
+
+
+.filterLocation .mat-radio-button {
+    margin-right: 10px !important;
+}

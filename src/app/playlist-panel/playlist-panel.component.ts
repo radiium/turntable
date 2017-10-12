@@ -24,14 +24,12 @@ import * as testPlaylist from './test-playlist.json';
 })
 export class PlaylistPanelComponent implements OnInit {
 
-
-    selectedValue;
-
     playlistsList: Array<Playlist> = [];
     onEditPlaylist: Playlist;
     originalOnEditPlaylist: Playlist;
 
-    filterPlaylist: FormControl;
+    filterLocation;
+    filterTitle: FormControl;
     filteredStates: Observable<any[]>;
 
     isEditMode: Boolean = false;
@@ -52,6 +50,9 @@ export class PlaylistPanelComponent implements OnInit {
     }
 
     ngOnInit() {
+
+        this.filterLocation = 'all';
+
         // Check if user is logged in
         this._authService.user$
         .subscribe((user: any) => {
@@ -100,9 +101,9 @@ export class PlaylistPanelComponent implements OnInit {
         });
 
         // Init filter playlist input
-        this.filterPlaylist = new FormControl();
-        this.filterPlaylist.disable();
-        this.filteredStates = this.filterPlaylist.valueChanges
+        this.filterTitle = new FormControl();
+        this.filterTitle.disable();
+        this.filteredStates = this.filterTitle.valueChanges
         .startWith(null)
         .map(title => title ? this.filterPlaylists(title) : this.playlistsList.slice());
         this.updateFilterInput();
@@ -111,10 +112,10 @@ export class PlaylistPanelComponent implements OnInit {
     // Update disabled/enabled status of filter playlist
     updateFilterInput() {
         if (this.playlistsList.length > 1) {
-            this.filterPlaylist.enable();
-            this.filterPlaylist.setValue('');
+            this.filterTitle.enable();
+            this.filterTitle.setValue('');
         } else if (this.playlistsList.length < 2) {
-            this.filterPlaylist.disable();
+            this.filterTitle.disable();
         }
         return false;
     }

@@ -26,23 +26,25 @@ export class AppComponent {
             this.selectedTab = st;
         });
 
-        // Retrieve previous user on open and reload app
-        this.Electron.ipcRenderer.send('send-get-user');
-        this.Electron.ipcRenderer.on('get-user', (event, user) => {
+        if (this.Electron.isElectronApp) {
+            // Retrieve previous user on open and reload app
+            this.Electron.ipcRenderer.send('send-get-user');
+            this.Electron.ipcRenderer.on('get-user', (event, user) => {
 
-            if (Object.keys(user).length !== 0) {
+                if (Object.keys(user).length !== 0) {
 
-                // Check if user is authenticated
-                this._authService.checkAuth().subscribe((resp) => {
-                    if (!resp.error) {
+                    // Check if user is authenticated
+                    this._authService.checkAuth().subscribe((resp) => {
+                        if (!resp.error) {
 
-                        // Load data from youtube
-                        this._authService.setUser(user);
-                        this._authService.storeToken(user.token);
-                        this._playlistService.fetchYoutubePlaylist();
-                    }
-                });
-            }
-        });
+                            // Load data from youtube
+                            this._authService.setUser(user);
+                            this._authService.storeToken(user.token);
+                            this._playlistService.fetchYoutubePlaylist();
+                        }
+                    });
+                }
+            });
+        }
     }
 }

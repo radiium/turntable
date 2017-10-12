@@ -24,7 +24,8 @@ import { ClickOutsideDirective } from './directives/click-outside.directive';
 
 // pipes
 import { DurationPipe } from './pipes/duration.pipe';
-import { FilterPlaylistPipe } from './pipes/filter-playlist.pipe';
+import { FilterPlaylistTitlePipe } from './pipes/filter-playlist-title.pipe';
+import { FilterPlaylistLocationPipe } from './pipes/filter-playlist-location.pipe';
 
 @NgModule({
     entryComponents: [
@@ -34,7 +35,8 @@ import { FilterPlaylistPipe } from './pipes/filter-playlist.pipe';
     declarations: [
         ClickOutsideDirective,
         DurationPipe,
-        FilterPlaylistPipe,
+        FilterPlaylistTitlePipe,
+        FilterPlaylistLocationPipe,
         ConfirmDialogComponent,
         CreatePlaylistDialogComponent,
         RangeSliderComponent,
@@ -64,7 +66,8 @@ import { FilterPlaylistPipe } from './pipes/filter-playlist.pipe';
         YoutubePlayerModule,
         ClickOutsideDirective,
         DurationPipe,
-        FilterPlaylistPipe,
+        FilterPlaylistTitlePipe,
+        FilterPlaylistLocationPipe,
         RangeSliderComponent,
         VideoPlayerComponent,
         CustomMaterialModule,

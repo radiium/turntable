@@ -10,11 +10,11 @@
 
         <!-- Search/filter playlist by word -->
         <span class="inputFilterbox">
-            <input id="inputFilter" matInput [formControl]="filterPlaylist" [matAutocomplete]="auto"
+            <input id="inputFilter" matInput [formControl]="filterTitle" [matAutocomplete]="auto"
                 class="inputSearchPlaylist" type="text"  placeholder="Filter playlists...">
             
-            <button *ngIf="filterPlaylist.value && filterPlaylist.value.length > 0"
-                (click)="filterPlaylist.setValue('')" id="clearInputFilter" >X</button>
+            <button *ngIf="filterTitle.value && filterTitle.value.length > 0"
+                (click)="filterTitle.setValue('')" id="clearInputFilter" >X</button>
 
             <mat-autocomplete #auto="matAutocomplete" class="autocompleteBox">
                 <mat-option *ngFor="let pl of playlistsList" [value]="pl.title">
@@ -23,18 +23,14 @@
             </mat-autocomplete>
         </span>
 
-        <span>
-            <mat-radio-group [(ngModel)]="selectedValue">
-            <mat-radio-button value="All">All</mat-radio-button>
-            <mat-radio-button value="Local">Local</mat-radio-button>
-            <mat-radio-button value="Youtube">Youtube</mat-radio-button>
+        <span class="filterLocation">
+            <mat-radio-group [(ngModel)]="filterLocation">
+            <mat-radio-button value="all">All</mat-radio-button>
+            <mat-radio-button value="true">Local</mat-radio-button>
+            <mat-radio-button value="false">Youtube</mat-radio-button>
             </mat-radio-group>
         </span>
 
-        <span>
-            value= {{ selectedValue }}
-        </span>
-        
         <!-- Toolbar space -->
         <span class="spacerToolbar"></span>
 
@@ -93,7 +89,7 @@
         <mat-grid-list  *ngIf="playlistsList" cols="4" rowHeight="160px" gutterSize="25px" >
 
             <!-- Playlist list items -->
-            <mat-grid-tile *ngFor="let pl of playlistsList | filterPlaylist:filterPlaylist.value ; let i = index">
+            <mat-grid-tile *ngFor="let pl of playlistsList | filterPlaylistTitle:filterTitle.value | filterPlaylistLocation:filterLocation ; let i = index">
                 <div class="plBox">
 
                     <!-- Privacy status playlist icons -->
