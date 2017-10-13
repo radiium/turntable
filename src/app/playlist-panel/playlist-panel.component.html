@@ -8,7 +8,7 @@
             Create playlist
         </button>
 
-        <!-- Search/filter playlist by word -->
+        <!-- Search/filter playlist by title -->
         <span class="inputFilterbox">
             <input id="inputFilter" matInput [formControl]="filterTitle" [matAutocomplete]="auto"
                 class="inputSearchPlaylist" type="text"  placeholder="Filter playlists...">
@@ -23,15 +23,16 @@
             </mat-autocomplete>
         </span>
 
+        <!-- Filter playlist by location -->
         <span class="filterLocation">
             <mat-radio-group [(ngModel)]="filterLocation">
-            <mat-radio-button value="all">All</mat-radio-button>
-            <mat-radio-button value="true">Local</mat-radio-button>
-            <mat-radio-button value="false">Youtube</mat-radio-button>
+            <mat-radio-button value="all" [disabled]="allPlaylisLocation === 'youtube' || allPlaylisLocation === 'local'">All</mat-radio-button>
+            <mat-radio-button value="true" [disabled]="allPlaylisLocation === 'youtube'">Local</mat-radio-button>
+            <mat-radio-button value="false"[disabled]="allPlaylisLocation === 'local'">Youtube</mat-radio-button>
             </mat-radio-group>
         </span>
 
-        <!-- Toolbar space -->
+        <!-- Toolbar spacer -->
         <span class="spacerToolbar"></span>
 
         <!-- Playlist count -->

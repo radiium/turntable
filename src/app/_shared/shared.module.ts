@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+// import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
@@ -45,7 +45,8 @@ import { FilterPlaylistLocationPipe } from './pipes/filter-playlist-location.pip
     imports: [
         CommonModule,
         BrowserModule,
-        NoopAnimationsModule, // BrowserAnimationsModule,
+        NoopAnimationsModule,
+        // BrowserAnimationsModule,
         FormsModule,
         ReactiveFormsModule,
         DragulaModule,
@@ -57,7 +58,8 @@ import { FilterPlaylistLocationPipe } from './pipes/filter-playlist-location.pip
     exports: [
         CommonModule,
         BrowserModule,
-        NoopAnimationsModule, // BrowserAnimationsModule,
+        NoopAnimationsModule,
+        // BrowserAnimationsModule,
         FormsModule,
         ReactiveFormsModule,
         DragulaModule,

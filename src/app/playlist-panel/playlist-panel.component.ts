@@ -12,8 +12,8 @@ import { PlaylistService } from '../_core/services/playlist.service';
 import { UtilsService } from '../_core/services/utils.service';
 import { CreatePlaylistDialogComponent } from './create-playlist-dialog/create-playlist-dialog.component';
 import { ConfirmDialogComponent } from '../_shared/components/confirm-dialog/confirm-dialog.component';
-import { TabsService } from '../_core/services/tabs.service';
 import { AuthService } from '../_core/services/auth.service';
+import { TabsService } from '../_core/services/tabs.service';
 
 import * as testPlaylist from './test-playlist.json';
 
@@ -29,17 +29,18 @@ export class PlaylistPanelComponent implements OnInit {
     originalOnEditPlaylist: Playlist;
 
     filterLocation;
+    allPlaylisLocation;
     filterTitle: FormControl;
     filteredStates: Observable<any[]>;
-
-    isEditMode: Boolean = false;
 
     progressBarValue: any;
     isProgressBar: Boolean;
 
-    selectedTab: any;
-
     isLoggedIn: Boolean = false;
+    isEditMode: Boolean = false;
+
+    selectedTab: number;
+
 
     constructor(
     public utils: UtilsService,
@@ -51,15 +52,19 @@ export class PlaylistPanelComponent implements OnInit {
 
     ngOnInit() {
 
-        this.filterLocation = 'all';
-
         // Check if user is logged in
         this._authService.user$
         .subscribe((user: any) => {
             this.isLoggedIn = user ? true : false;
         });
 
-        // Init loading playlist progress bar
+        // Get current selected tab
+        this._tabsService.selectedTab$
+        .subscribe((st) => {
+            this.selectedTab = st;
+        });
+
+        // Hide loading playlist progress bar
         this.isProgressBar = false;
 
         // Get progress bar value
@@ -76,13 +81,8 @@ export class PlaylistPanelComponent implements OnInit {
             }
         });
 
-        // Get selected tab
-        this._tabsService.selectedTab$
-        .subscribe((st: any) => {
-            this.selectedTab = st;
-        });
 
-        // Fake data
+        // Load a local playlist for development
         if (isDevMode()) {
             this.insertFakeData();
         }
@@ -91,6 +91,9 @@ export class PlaylistPanelComponent implements OnInit {
         this._playlistService.playListsList$
         .subscribe((pl: any) => {
             this.playlistsList = pl;
+
+            // Update playlist filter
+            this.initFilterLocation();
             this.updateFilterInput();
         });
 
@@ -100,7 +103,41 @@ export class PlaylistPanelComponent implements OnInit {
             this.onEditPlaylist = pl;
         });
 
-        // Init filter playlist input
+        // Init playlist filter
+        this.initFilterLocation();
+        this.initFilterTitle();
+    }
+
+    // Init playlist filter by location
+    // And disable useless filter
+    initFilterLocation() {
+
+        const plLen = this.playlistsList.length;
+        let plLocal   = 0;
+        let plYoutube = 0;
+
+        this.playlistsList.forEach(playlist => {
+            if (playlist.isLocal) {
+                plLocal++;
+            } else if (!playlist.isLocal) {
+                plYoutube++;
+            }
+        });
+
+        if (plLocal > 0 && plYoutube > 0) {
+            this.filterLocation = 'all';
+            this.allPlaylisLocation = '';
+        } else if (plLocal > 0 && plYoutube === 0) {
+            this.filterLocation = 'true';
+            this.allPlaylisLocation = 'local';
+        } else if (plLocal === 0 && plYoutube > 0) {
+            this.filterLocation = 'false';
+            this.allPlaylisLocation = 'youtube';
+        }
+    }
+
+    // Init playlist filter by title
+    initFilterTitle() {
         this.filterTitle = new FormControl();
         this.filterTitle.disable();
         this.filteredStates = this.filterTitle.valueChanges
@@ -225,6 +262,8 @@ export class PlaylistPanelComponent implements OnInit {
         this._playlistService.fetchYoutubePlaylist();
     }
 
+
+    // Load a local playlist for development
     insertFakeData() {
         /*
         const arr = [];
