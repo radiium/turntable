@@ -175,8 +175,12 @@ export class PlaylistPanelComponent implements OnInit {
 
                 this.playlistsList.push(pl);
                 this._playlistService.setPlayListsList(this.playlistsList);
+
+                // Store local playlist in user data
+                this._playlistService.storeLocalPlaylists();
             }
         });
+
     }
 
     // Edit the selected playlist

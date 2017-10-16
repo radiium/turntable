@@ -27,7 +27,7 @@ export class AppComponent {
         });
 
         if (this.Electron.isElectronApp) {
-            // Retrieve previous user on open and reload app
+            // Retrieve previous user on start up and reload app
             this.Electron.ipcRenderer.send('send-get-user');
             this.Electron.ipcRenderer.on('get-user', (event, user) => {
 
@@ -45,6 +45,10 @@ export class AppComponent {
                     });
                 }
             });
+
+            // Load local playlist on start up app
+            this._playlistService.loadLocalPlaylist();
         }
+
     }
 }

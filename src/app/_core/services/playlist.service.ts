@@ -2,9 +2,9 @@ import { Injectable, Input } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
 import * as moment from 'moment';
+import { ElectronService } from 'ngx-electron';
 
 import { YoutubeDataService } from './youtube-data.service';
-
 import { Video } from '../../_shared/models/video.model';
 import { Playlist } from '../../_shared/models/playlist.model';
 
@@ -38,7 +38,8 @@ export class PlaylistService {
     progressBarValue$ = this.progressBarValue.asObservable();
 
     constructor(
-    private _youtubeDataService: YoutubeDataService) {
+    private _youtubeDataService: YoutubeDataService,
+    private Electron: ElectronService) {
     }
 
     // Setters
@@ -49,13 +50,51 @@ export class PlaylistService {
     setSearchResultPlaylist(pl) { this.searchResultPlaylist.next(pl); }
     setProgressBarValue(pbv) { this.progressBarValue.next(pbv); }
 
+    // Retrieve and store local playlist
+    storeLocalPlaylists() {
+        console.log('storeLocalPlaylists');
+        this.playListsList$.subscribe((pll) => {
+            console.log('current playlistslist', pll);
+            const localPlaylists = new Array<Playlist>();
+            pll.forEach(playlist => {
+                if (playlist.isLocal) {
+                    localPlaylists.push(playlist);
+                }
+            });
+            this.Electron.ipcRenderer.send('save-local-playlists', localPlaylists);
+        });
+    }
+
+    loadLocalPlaylist() {
+        // Load local playlist
+        this.Electron.ipcRenderer.send('send-get-local-playlists');
+        this.Electron.ipcRenderer.on('get-local-playlists', (event, localPlaylist) => {
+
+            if (localPlaylist) {
+                const newPlaylistsList = new Array<Playlist>();
+                this.playListsList$.subscribe((pll) => {
+                    pll.forEach(playlist => {
+                        newPlaylistsList.push(playlist);
+                    });
+
+                    localPlaylist.forEach(playlist => {
+                        newPlaylistsList.push(playlist);
+                    });
+
+
+                    this.setPlayListsList(newPlaylistsList);
+                });
+            }
+
+        });
+    }
 
     // Fetch and load user playlist(s) and his video(s)
     // Into playlistslist Observable
     fetchYoutubePlaylist() {
 
         // Get all playlist
-        return this._youtubeDataService.getPlaylists()
+        this._youtubeDataService.getPlaylists()
         .flatMap((plList) => {
 
             this.setProgressBarValue(30);
@@ -115,11 +154,21 @@ export class PlaylistService {
         })
         .subscribe((playlistList) => {
             this.setProgressBarValue(99);
-            // Set playlistlist
+
             this.setPlayListsList(playlistList);
+            // this.playListsList.push(playlistList); ------------------------------------ <===
+
+            console.log('playlistList from yt', playlistList);
+            // Set playlistlist
+            this.playListsList$.subscribe((pll) => {
+
+                console.log('current pll', pll);
+                pll.forEach((playlist: Playlist) => {
+                    console.log(playlist);
+                    playlistList.push(playlist);
+                });
+            });
         });
-
-
     }
 
     // Get all video id from an array of playlist items

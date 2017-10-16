@@ -87,10 +87,11 @@
             [value]="progressBarValue">
         </mat-progress-bar>
 
+
         <mat-grid-list  *ngIf="playlistsList" cols="4" rowHeight="160px" gutterSize="25px" >
 
             <!-- Playlist list items -->
-            <mat-grid-tile *ngFor="let pl of playlistsList | filterPlaylistTitle:filterTitle.value | filterPlaylistLocation:filterLocation ; let i = index">
+            <mat-grid-tile *ngFor="let pl of playlistsList | filterPlaylists:filterTitle.value:filterLocation ; let i = index">
                 <div class="plBox">
 
                     <!-- Privacy status playlist icons -->

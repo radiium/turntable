@@ -92,6 +92,7 @@ app.on('before-quit', () => {
 
 
 
+// User management
 
 // Store user at signin
 ipcMain.on('save-user', (event, user) => {
@@ -115,6 +116,38 @@ ipcMain.on('send-get-user', (event, arg) => {
     storage.get('user', (err, data) => {
         if (err) { throw err; }
         event.sender.send('get-user', data);
+    });
+});
+
+
+
+// Local playlist management
+
+// Store local playlist
+ipcMain.on('save-local-playlists', (event, localPlaylists) => {
+    console.log('save=', localPlaylists);
+    storage.set('localPlaylists', localPlaylists, (error) => {
+        if (error) { throw error; }
+        console.log('localPlaylists saved');
+    });
+});
+
+/*
+// Remove user from storage at signout
+ipcMain.on('remove-local-playlist', (event, user) => {
+    storage.remove('user', (error) => {
+        if (error) { throw error; }
+        console.log('user removed');
+    });
+});
+*/
+
+// Get local playlist from storage
+ipcMain.on('send-get-local-playlists', (event) => {
+    storage.get('localPlaylists', (err, localPlaylists) => {
+        if (err) { throw err; }
+        console.log('get localPlaylists', localPlaylists);
+        // event.sender.send('get-local-playlists', localPlaylists);
     });
 });
 
