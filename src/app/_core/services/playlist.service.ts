@@ -191,6 +191,11 @@ export class PlaylistService {
         let cuttedVideoIdList = [];
 
         const nbrLoop = parseInt((videosIdList.length / 50).toString(), 10);
+
+        console.log('videosIdList', videosIdList);
+        console.log('nbrLoop', nbrLoop);
+
+
         if (nbrLoop > 1) {
             aVideoId.push(videosIdList.slice(0, 50).join(','));
             cuttedVideoIdList = videosIdList.slice(50);

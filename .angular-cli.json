@@ -24,18 +24,17 @@
         "../node_modules/font-awesome/css/font-awesome.css",
         "./styles/material-custom-theme.scss"
       ],
+      "scripts": [],
+      "environmentSource": "environments/environment.ts",
+      "environments": {
+        "dev": "environments/environment.ts",
+        "prod": "environments/environment.prod.ts"
+      },
       "stylePreprocessorOptions": {
         "includePaths": [
           "./styles/colors.scss",
           "./styles/mixins.scss"
         ]
-      },
-      "scripts": [
-      ],
-      "environmentSource": "environments/environment.ts",
-      "environments": {
-        "dev": "environments/environment.ts",
-        "prod": "environments/environment.prod.ts"
       }
     }
   ],
