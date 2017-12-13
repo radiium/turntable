@@ -19,10 +19,10 @@
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "app",
       "styles": [
-        "styles/styles.css",
+        "styles/styles.scss",
         "../node_modules/dragula/dist/dragula.css",
         "../node_modules/font-awesome/css/font-awesome.css",
-          "./styles/material-custom-theme.scss"
+        "./styles/material-custom-theme.scss"
       ],
       "stylePreprocessorOptions": {
         "includePaths": [
@@ -64,7 +64,7 @@
     }
   },
   "defaults": {
-    "styleExt": "css",
+    "styleExt": "scss",
     "component": {}
   }
 }
