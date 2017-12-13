@@ -186,29 +186,12 @@ export class PlaylistService {
     // Set videos id list to array of string
     // Each string contains a maximum of 50 videos id
     concatVideoIdBy50(videosIdList) {
-
         const aVideoId = [];
-        let cuttedVideoIdList = [];
-
-        const nbrLoop = parseInt((videosIdList.length / 50).toString(), 10);
-
-        console.log('videosIdList', videosIdList);
-        console.log('nbrLoop', nbrLoop);
-
-
-        if (nbrLoop > 1) {
+        do {
             aVideoId.push(videosIdList.slice(0, 50).join(','));
-            cuttedVideoIdList = videosIdList.slice(50);
+            videosIdList = videosIdList.slice(50);
 
-            for (let i = 0; i < nbrLoop - 1; i++) {
-                aVideoId.push(cuttedVideoIdList.slice(0, 50).join(','));
-                cuttedVideoIdList = cuttedVideoIdList.slice(50);
-            }
-            aVideoId.push(cuttedVideoIdList.join(','));
-        } else {
-            aVideoId.push(videosIdList.join(','));
-        }
-
+        } while (videosIdList.length !== 0);
         return aVideoId;
     }
 
