@@ -1,15 +1,13 @@
 <!-- Progress bar -->
-<div class="progressBarGray" ></div>
-<mat-progress-bar
-    [color]="'primary'"
-    [mode]="'determinate'"
-    [value]="progressBarValue">
-</mat-progress-bar>
+<!--
+<div class="progressBarGray" *ngIf="isProgressBar"></div>
+
+-->
 
 <!-- Playlist list mode toolbar -->
 <div class="toolBar">
     <mat-toolbar *ngIf="!isEditMode">
-
+        <button mat-icon-button (click)="snav.toggle()"><mat-icon>menu</mat-icon></button>
         <!-- Create playlist button -->
         <button class="toolbarBtn" mat-raised-button (click)="createPlaylist()">
             <fa aria-label="Create playlist" [name]="'plus'" [size]="1"></fa>
@@ -76,6 +74,13 @@
 
         <span class="spacerToolbar"></span>
     </mat-toolbar>
+
+    <mat-progress-bar
+    *ngIf="isProgressBar"
+    [color]="'primary'"
+    [mode]="'determinate'"
+    [value]="progressBarValue">
+</mat-progress-bar>
 </div>
 
 
@@ -136,6 +141,7 @@
 
             </mat-grid-tile>
         </mat-grid-list>
+
     </div>
 </div>
 

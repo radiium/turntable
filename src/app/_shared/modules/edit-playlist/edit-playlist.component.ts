@@ -6,7 +6,6 @@ import * as autoScroll from 'dom-autoscroller';
 
 import { User, Video, Playlist } from '../../../_core/models';
 
-import { PlaylistService } from '../../../_core/services/playlist.service';
 import { PlayerStateService } from '../../../_core/services/player-state.service';
 import { UtilsService } from '../../../_core/services/utils.service';
 import { ElectronService } from 'ngx-electron';
@@ -53,7 +52,6 @@ export class EditPlaylistComponent implements OnInit, OnDestroy, OnChanges {
     private dataService: DataService,
     private electron: ElectronService,
     private authService: AuthService,
-    private _playlistService: PlaylistService,
     private _playerStateService: PlayerStateService,
     private _dragulaService: DragulaService) {
 
@@ -63,13 +61,13 @@ export class EditPlaylistComponent implements OnInit, OnDestroy, OnChanges {
         });
 
         // Get on play Historic playlist
-        this._playlistService.setOnPlayHistoricPlayList(
+        this.dataService.setOnPlayHistoricPlayList(
             new Playlist(
                 '', 'Historic', '', '', 0, 0, '', '', true,
                 new Array<Video>()
             )
         );
-        this._playlistService.onPlayHistoricPlaylist$
+        this.dataService.onPlayHistoricPlaylist$
         .subscribe((historicPlaylist) => {
             this.historic = historicPlaylist;
             this.totalDurationHistoric = this.computeTotalDuration(this.historic.videolist);
@@ -183,14 +181,14 @@ export class EditPlaylistComponent implements OnInit, OnDestroy, OnChanges {
             pl.videolist = pl.videolist.filter(function(el) {
                 return el.id !== videoId;
             });
-            this._playlistService.setOnPlayHistoricPlayList(pl);
+            this.dataService.setOnPlayHistoricPlayList(pl);
         }
     }
 
     addToPlaylist(video: Video) {
         const pl = this.utils.copyPlaylist(this.playlist);
         pl.videolist.push(video);
-        this._playlistService.setOnPlayPlayList(pl);
+        this.dataService.setOnPlayPlayList(pl);
     }
 
     // Play video
@@ -209,9 +207,9 @@ export class EditPlaylistComponent implements OnInit, OnDestroy, OnChanges {
     setPlaylist(playlist) {
         if (playlist) {
             if (this.type === 'player') {
-                this._playlistService.setOnPlayPlayList(playlist);
+                this.dataService.setOnPlayPlayList(playlist);
             } else if (this.type === 'edit') {
-                this._playlistService.setOnEditPlayList(playlist);
+                this.dataService.setOnEditPlayList(playlist);
             }
         }
     }

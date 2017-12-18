@@ -3,11 +3,11 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 // Services
 import { ElectronService } from 'ngx-electron';
-import { PlaylistService } from '../_core/services/playlist.service';
 import { OnlineService } from '../_core/services/online.service';
 
 import { AuthService } from '../_core/services/youtube';
 import { DataService } from '../_core/services/data.service';
+import { YoutubeService } from '../_core/services/youtube';
 
 // Models
 import { User } from '../_core/models';
@@ -26,16 +26,16 @@ export class LoginComponent implements OnInit {
 
     constructor(
     private dataService: DataService,
+    private YTService: YoutubeService,
     public dialog: MatDialog,
     private authService: AuthService,
-    private _playlistService: PlaylistService,
-    private _electron: ElectronService) {
+    private Electron: ElectronService) {
 
         // Get user infos
         this.dataService.user$.subscribe((user) => {
             this.user = user;
             if (user !== null) {
-                this._playlistService.fetchYoutubePlaylist();
+                this.YTService.fetchYoutubePlaylist();
             }
         });
     }
@@ -44,13 +44,13 @@ export class LoginComponent implements OnInit {
     }
 
     signin() {
-        if (this._electron.isElectronApp) {
+        if (this.Electron.isElectronApp) {
             this.authService.login();
         }
     }
 
     signout() {
-        if (this._electron.isElectronApp && this.user) {
+        if (this.Electron.isElectronApp && this.user) {
             this.authService.logout();
         }
     }

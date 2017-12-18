@@ -1,8 +1,8 @@
 import { Injectable, Input } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
 
-import { PlaylistService } from './playlist.service';
 import { UtilsService } from './utils.service';
+import { DataService } from './data.service';
 
 import { Video, Playlist, Suggests } from '../models';
 
@@ -53,13 +53,14 @@ export class PlayerStateService {
 
     constructor(
     public utilsService: UtilsService,
-    private _playlistService: PlaylistService) {
-        this._playlistService.onPlayHistoricPlaylist$
+    private dataService: DataService
+    ) {
+        this.dataService.onPlayHistoricPlaylist$
         .subscribe((pl) => {
             this.onPlayHistoricPlaylist = pl;
         });
 
-        this._playlistService.onPlayPlaylist$
+        this.dataService.onPlayPlaylist$
         .subscribe((pl) => {
             this.onPlayPlaylist = pl;
         });
@@ -96,7 +97,7 @@ export class PlayerStateService {
         // Add video to on play historic playlist
         const hpl = this.utilsService.copyPlaylist(this.onPlayHistoricPlaylist);
         hpl.videolist.push(video);
-        this._playlistService.setOnPlayHistoricPlayList(hpl);
+        this.dataService.setOnPlayHistoricPlayList(hpl);
 
         // Remove video from on play playlist
         const ppl = this.utilsService.copyPlaylist(this.onPlayPlaylist);
@@ -105,6 +106,6 @@ export class PlayerStateService {
             return el.id !== video.id;
         });
         ppl.videolist = videolist;
-        this._playlistService.setOnPlayPlayList(ppl);
+        this.dataService.setOnPlayPlayList(ppl);
     }
 }

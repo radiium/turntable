@@ -1,4 +1,4 @@
-import { Component, OnInit, isDevMode } from '@angular/core';
+import { Component, OnInit, isDevMode, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { UUID } from 'angular2-uuid';
 import { FormGroup, FormControl } from '@angular/forms';
@@ -7,7 +7,6 @@ import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/map';
 
 import { Video, Playlist } from '../../_core/models';
-import { PlaylistService } from '../../_core/services/playlist.service';
 import { UtilsService } from '../../_core/services/utils.service';
 import { CreatePlaylistDialogComponent } from '../create-playlist-dialog/create-playlist-dialog.component';
 import { ConfirmDialogComponent } from '../../_shared/components/confirm-dialog/confirm-dialog.component';
@@ -16,6 +15,8 @@ import * as testPlaylist from './test-playlist.json';
 
 import { AuthService } from '../../_core/services/youtube';
 import { DataService } from '../../_core/services/data.service';
+import { AppStateService } from '../../_core/services/app-state.service';
+import { YoutubeService } from '../../_core/services/youtube';
 
 
 @Component({
@@ -24,6 +25,9 @@ import { DataService } from '../../_core/services/data.service';
   styleUrls: ['./library.component.scss']
 })
 export class LibraryComponent implements OnInit {
+
+    @ViewChild('snav') snav;
+
 
     playlistsList: Array<Playlist> = [];
     onEditPlaylist: Playlist;
@@ -44,10 +48,12 @@ export class LibraryComponent implements OnInit {
 
 
     constructor(
+    private YTService: YoutubeService,
     private dataService: DataService,
+    private appStateService: AppStateService,
     public utils: UtilsService,
     public dialog: MatDialog,
-    private _playlistService: PlaylistService) {
+    private appState: AppStateService) {
     }
 
     ngOnInit() {
@@ -66,7 +72,7 @@ export class LibraryComponent implements OnInit {
         this.isProgressBar = false;
 
         // Get progress bar value
-        this._playlistService.progressBarValue$.subscribe((pbv: any) => {
+        this.dataService.progressBarValue$.subscribe((pbv: any) => {
             this.progressBarValue = pbv;
             if (!pbv || pbv === 0 || pbv === 100) {
                 this.isProgressBar = false;
@@ -74,7 +80,7 @@ export class LibraryComponent implements OnInit {
                 this.isProgressBar = true;
             }
             if (pbv === 99) {
-                this._playlistService.setProgressBarValue(100);
+                this.dataService.setProgressBarValue(100);
             }
         });
 
@@ -85,7 +91,7 @@ export class LibraryComponent implements OnInit {
         }
 
         // Get playlist list
-        this._playlistService.playListsList$
+        this.dataService.playListsList$
         .subscribe((pl: any) => {
             console.log('===================');
 
@@ -101,7 +107,7 @@ export class LibraryComponent implements OnInit {
         });
 
         // Get on edit playlist
-        this._playlistService.onEditPlaylist$
+        this.dataService.onEditPlaylist$
         .subscribe((pl: any) => {
             this.onEditPlaylist = pl;
         });
@@ -177,10 +183,10 @@ export class LibraryComponent implements OnInit {
                 );
 
                 this.playlistsList.push(pl);
-                this._playlistService.setPlayListsList(this.playlistsList);
+                this.dataService.setPlayListsList(this.playlistsList);
 
                 // Store local playlist in user data
-                this._playlistService.storeLocalPlaylists();
+                this.appState.storeLocalPlaylists();
             }
         });
 
@@ -190,7 +196,7 @@ export class LibraryComponent implements OnInit {
     editPlaylist(playlist) {
         this.isEditMode = true;
         const pl = this.utils.copyPlaylist(playlist);
-        this._playlistService.setOnEditPlayList(pl);
+        this.dataService.setOnEditPlayList(pl);
         this.originalOnEditPlaylist = this.utils.copyPlaylist(pl);
     }
 
@@ -204,9 +210,9 @@ export class LibraryComponent implements OnInit {
             }
         });
         this.isEditMode = false;
-        this._playlistService.setPlayListsList(pll);
-        this._playlistService.setOnEditPlayList(null);
-        this._playlistService.setSearchResultPlaylist(null);
+        this.dataService.setPlayListsList(pll);
+        this.dataService.setOnEditPlayList(null);
+        this.dataService.setSearchResultPlaylist(null);
     }
 
     // Return button (cancel modification)
@@ -223,14 +229,14 @@ export class LibraryComponent implements OnInit {
             dialogRef.afterClosed().subscribe(isDelete => {
                 if (isDelete) {
                     this.isEditMode = false;
-                    this._playlistService.setOnEditPlayList(null);
-                    this._playlistService.setSearchResultPlaylist(null);
+                    this.dataService.setOnEditPlayList(null);
+                    this.dataService.setSearchResultPlaylist(null);
                 }
             });
         } else {
             this.isEditMode = false;
-            this._playlistService.setOnEditPlayList(null);
-            this._playlistService.setSearchResultPlaylist(null);
+            this.dataService.setOnEditPlayList(null);
+            this.dataService.setSearchResultPlaylist(null);
         }
     }
 
@@ -238,7 +244,7 @@ export class LibraryComponent implements OnInit {
     playPlaylist(playlist) {
         // if (playlist.videolist.length > 0) {
             const pl = this.utils.copyPlaylist(playlist);
-            this._playlistService.setOnPlayPlayList(pl);
+            this.dataService.setOnPlayPlayList(pl);
             this.dataService.setSelectedTab(1);
         // }
     }
@@ -253,7 +259,7 @@ export class LibraryComponent implements OnInit {
                 const updatedPlaylistsList = this.playlistsList.filter(function(pl) {
                     return pl.id !== playlist.id;
                 });
-                this._playlistService.setPlayListsList(updatedPlaylistsList);
+                this.dataService.setPlayListsList(updatedPlaylistsList);
             }
         });
     }
@@ -266,7 +272,7 @@ export class LibraryComponent implements OnInit {
 
     // Reload playlist from youtube
     reloadPlaylist() {
-        this._playlistService.fetchYoutubePlaylist();
+        this.YTService.fetchYoutubePlaylist();
     }
 
 

@@ -7,8 +7,7 @@ import { Video, Playlist } from '../../_core/models';
 
 
 import { PlayerStateService } from '../../_core/services/player-state.service';
-import { PlaylistService } from '../../_core/services/playlist.service';
-
+import { DataService } from '../../_core/services/data.service';
 import { ElectronService } from 'ngx-electron';
 
 @Component({
@@ -49,9 +48,9 @@ export class PlayerComponent {
 
 
     constructor(
+        private dataService: DataService,
         private _playerStateService: PlayerStateService,
-        private _playlistService: PlaylistService,
-        private _electronService: ElectronService) {
+        private Electron: ElectronService) {
 
         // Init crossfader value
         this.crossFaderValue = 50;
@@ -61,7 +60,7 @@ export class PlayerComponent {
         this._playerStateService.setVolumeRight(this.volRight);
 
         // Get on play playlist
-        this._playlistService.onPlayPlaylist$.subscribe((pl) => {
+        this.dataService.onPlayPlaylist$.subscribe((pl) => {
             this.onPlayPlaylist = pl;
         });
 
@@ -223,23 +222,23 @@ export class PlayerComponent {
 
     /*
     public playPingPong() {
-        if (this._electronService.isElectronApp) {
-            // const pong: string = this._electronService.ipcRenderer.sendSync('ping');
+        if (this.Electron.isElectronApp) {
+            // const pong: string = this.Electron.ipcRenderer.sendSync('ping');
             // console.log(pong);
 
-            console.log(this._electronService.ipcRenderer.sendSync('synchronous-message', 'ping')); // prints "pong"
+            console.log(this.Electron.ipcRenderer.sendSync('synchronous-message', 'ping')); // prints "pong"
 
-            this._electronService.ipcRenderer.on('asynchronous-reply', (event, arg) => {
+            this.Electron.ipcRenderer.on('asynchronous-reply', (event, arg) => {
                 console.log(arg); // prints "pong"
             });
-            this._electronService.ipcRenderer.send('asynchronous-message', 'ping');
+            this.Electron.ipcRenderer.send('asynchronous-message', 'ping');
         }
     }
     send() {
-        this._electronService.ipcRenderer.send('asynchronous-message', {test: 'test'});
+        this.Electron.ipcRenderer.send('asynchronous-message', {test: 'test'});
     }
     receive() {
-        this._electronService.ipcRenderer.on('asynchronous-reply', (event, arg) => {
+        this.Electron.ipcRenderer.on('asynchronous-reply', (event, arg) => {
         console.log(arg); // prints "pong"
         });
     }

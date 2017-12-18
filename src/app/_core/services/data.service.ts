@@ -27,6 +27,37 @@ export class DataService {
     private searchResultPL  = new Subject<Video[]>();
     public  searchResultPL$ = this.searchResultPL.asObservable();
 
+
+    // PlayList list
+    private playListsList  = new Subject<Array<Playlist>>();
+    public  playListsList$ = this.playListsList.asObservable();
+
+
+    // On edit PlayList
+    private onEditPlaylist  = new Subject<Playlist>();
+    public  onEditPlaylist$ = this.onEditPlaylist.asObservable();
+
+
+    // On play PlayList
+    private onPlayPlaylist  = new Subject<Playlist>();
+    public  onPlayPlaylist$ = this.onPlayPlaylist.asObservable();
+
+
+    // On play historic PlayList
+    private onPlayHistoricPlaylist  = new Subject<Playlist>();
+    public  onPlayHistoricPlaylist$ = this.onPlayHistoricPlaylist.asObservable();
+
+
+    // Search result PlayList
+    private searchResultPlaylist  = new Subject<Video[]>();
+    public  searchResultPlaylist$ = this.searchResultPlaylist.asObservable();
+
+
+    // Load playlist progress bar value
+    private progressBarValue  = new Subject<any>();
+    public  progressBarValue$ = this.progressBarValue.asObservable();
+
+
     constructor() { }
 
 
@@ -46,4 +77,27 @@ export class DataService {
         this.searchResultPL.next(searchResultPL);
     }
 
+    setPlayListsList(pl) {
+        this.playListsList.next(pl);
+    }
+
+    setOnEditPlayList(pl) {
+        this.onEditPlaylist.next(pl);
+    }
+
+    setOnPlayPlayList(pl) {
+        this.onPlayPlaylist.next(pl);
+    }
+
+    setOnPlayHistoricPlayList(pl) {
+        this.onPlayHistoricPlaylist.next(pl);
+    }
+
+    setSearchResultPlaylist(pl) {
+        this.searchResultPlaylist.next(pl);
+    }
+
+    setProgressBarValue(pbv) {
+        this.progressBarValue.next(pbv);
+    }
 }

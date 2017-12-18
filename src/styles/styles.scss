@@ -62,6 +62,9 @@ mat-progress-bar {
 .mat-tab-body-wrapper { padding: 5px; height: 100%; }
 .mat-tab-body { height: 100%; }
 .mat-tab-label { height: 32px !important; min-width: 100px !important; }
+.mat-tab-body-content { //height: auto !important;
+}
+
 
 // Grid tile
 .mat-grid-tile .mat-figure {
@@ -110,4 +113,7 @@ mat-progress-bar {
 .mat-progress-bar {
     position: fixed;
     z-index: 999999;
+}
+.mat-progress-bar-buffer {
+    background-color: transparent !important;
 }

@@ -2,10 +2,10 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
 import { ElectronService } from 'ngx-electron';
 
-import { User } from '../models';
+import { User, Playlist } from '../models';
 import { AuthService } from './youtube/auth.service';
 import { DataService } from './data.service';
-import { PlaylistService } from './playlist.service';
+import { YoutubeService } from './youtube';
 
 @Injectable()
 export class AppStateService {
@@ -15,7 +15,8 @@ export class AppStateService {
     private electron: ElectronService,
     private authService: AuthService,
     private dataService: DataService,
-    private playlistService: PlaylistService
+    private Electron: ElectronService,
+    private YTService: YoutubeService
     ) {
 
     }
@@ -37,14 +38,14 @@ export class AppStateService {
                             // Load data from youtube
                             this.dataService.setUser(user);
                             this.authService.storeToken(user.token);
-                            this.playlistService.fetchYoutubePlaylist();
+                            this.YTService.fetchYoutubePlaylist();
                         }
                     });
                 }
             });
 
             // Load local playlist on start up app
-            this.playlistService.loadLocalPlaylist();
+            this.loadLocalPlaylist();
         }
 
     }
@@ -52,5 +53,43 @@ export class AppStateService {
     saveAppState() {
 
     }
+
+        // Retrieve and store local playlist
+        storeLocalPlaylists() {
+            console.log('storeLocalPlaylists');
+            this.dataService.playListsList$.subscribe((pll) => {
+                console.log('current playlistslist', pll);
+                const localPlaylists = new Array<Playlist>();
+                pll.forEach(playlist => {
+                    if (playlist.isLocal) {
+                        localPlaylists.push(playlist);
+                    }
+                });
+                this.Electron.ipcRenderer.send('save-local-playlists', localPlaylists);
+            });
+        }
+
+        loadLocalPlaylist() {
+            // Load local playlist
+            this.Electron.ipcRenderer.send('send-get-local-playlists');
+            this.Electron.ipcRenderer.on('get-local-playlists', (event, localPlaylist) => {
+
+                if (localPlaylist) {
+                    const newPlaylistsList = new Array<Playlist>();
+                    this.dataService.playListsList$.subscribe((pll) => {
+                        pll.forEach(playlist => {
+                            newPlaylistsList.push(playlist);
+                        });
+
+                        localPlaylist.forEach(playlist => {
+                            newPlaylistsList.push(playlist);
+                        });
+
+
+                        this.dataService.setPlayListsList(newPlaylistsList);
+                    });
+                }
+            });
+        }
 
 }

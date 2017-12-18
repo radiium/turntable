@@ -17,7 +17,6 @@ import { YoutubeService,
 
 // Others service
 import { PlayerStateService } from './services/player-state.service';
-import { PlaylistService } from './services/playlist.service';
 import { UtilsService } from './services/utils.service';
 import { OnlineService } from './services/online.service';
 
@@ -53,7 +52,6 @@ import { DataService } from './services/data.service';
 
         // Others service
         PlayerStateService,
-        PlaylistService,
         UtilsService,
         OnlineService
     ]

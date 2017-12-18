@@ -11,7 +11,7 @@ import * as moment from 'moment';
 import { Video, Playlist } from '../../../_core/models';
 
 import { PlayerStateService } from '../../../_core/services/player-state.service';
-import { PlaylistService } from '../../../_core/services/playlist.service';
+import { DataService } from '../../../_core/services/data.service';
 
 @Component({
     selector: 'app-video-player',
@@ -51,7 +51,7 @@ export class VideoPlayerComponent implements OnInit, OnChanges, OnDestroy {
 
     constructor(
     private _playerStateService: PlayerStateService,
-    private _playlistService: PlaylistService) {
+    private dataService: DataService) {
 
         // Get playlist isRandom state
         this._playerStateService.setIsRandom(false);
@@ -59,7 +59,7 @@ export class VideoPlayerComponent implements OnInit, OnChanges, OnDestroy {
             this.isRandom = isRandom;
         });
 
-        this._playlistService.onPlayPlaylist$.subscribe((pl) => {
+        this.dataService.onPlayPlaylist$.subscribe((pl) => {
             this.onPlayPlaylist = pl;
         });
 
