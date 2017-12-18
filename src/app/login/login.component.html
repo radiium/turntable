@@ -1,15 +1,5 @@
 <!-- Header -->
-<div id="header">
-  
-    <!-- Navigation buttons -->
-    <div id="navBtnBox">
-        <button [class.active]="selectedTab === 1" (click)="changeTab(1)">Playlist</button><!--
-     --><button [class.active]="selectedTab === 2" (click)="changeTab(2)">Mix</button><!--
-     --><button [class.active]="selectedTab === 3" (click)="changeTab(3)">Settings</button>
-    </div>
-
-    <!-- Spacer -->
-    <div class="headerSpacer"></div>
+<div id="login">
 
     <!-- User infos -->
     <div *ngIf="user" id="userBox">
@@ -24,7 +14,7 @@
         <fa [name]="'sign-in'" [size]="1"></fa>
         Sign in
         </button>
-        
+
         <!-- Signout btn -->
         <button *ngIf="user" (click)="signout()">
         <fa [name]="'sign-out'" [size]="1"></fa>

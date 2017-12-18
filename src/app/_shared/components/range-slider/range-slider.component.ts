@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, AfterViewInit } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter } from '@angular/core';
 
 import { PlayerStateService } from '../../../_core/services/player-state.service';
 
@@ -7,7 +7,7 @@ import { PlayerStateService } from '../../../_core/services/player-state.service
     templateUrl: './range-slider.component.html',
     styleUrls: ['./range-slider.component.scss']
 })
-export class RangeSliderComponent implements OnInit, AfterViewInit {
+export class RangeSliderComponent implements OnInit {
 
     @Input()  isPlayerReady: boolean;
     @Input()  name: string;
@@ -18,14 +18,9 @@ export class RangeSliderComponent implements OnInit, AfterViewInit {
     @Input()  default: number;
 
     value: number;
-    // @Input()  value: number;
-    // @Output() valueChange: EventEmitter<number>;
 
     constructor(
     private _playerStateService: PlayerStateService) {
-    }
-
-    ngAfterViewInit() {
     }
 
     ngOnInit() {
@@ -57,7 +52,6 @@ export class RangeSliderComponent implements OnInit, AfterViewInit {
         }
     }
 
-
     onInputChange(e) {
         if (!this.isPlayerReady) {
             this.changeValue(this.default);
@@ -72,6 +66,7 @@ export class RangeSliderComponent implements OnInit, AfterViewInit {
         let value = this.value + this.step;
         if (value >= this.max) {
             value = this.max;
+
         } else if (value <= this.min) {
             value = this.min;
         }
@@ -84,6 +79,7 @@ export class RangeSliderComponent implements OnInit, AfterViewInit {
         let value = this.value - this.step;
         if (value >= this.max) {
             value = this.max;
+
         } else if (value <= this.min) {
             value = this.min;
         }
@@ -91,7 +87,6 @@ export class RangeSliderComponent implements OnInit, AfterViewInit {
     }
 
     changeValue(value) {
-
         if (this.name === 'Vol') {
             if (this.side === 'left') {
                 this._playerStateService.setVolumeLeft(value);
@@ -108,14 +103,5 @@ export class RangeSliderComponent implements OnInit, AfterViewInit {
                 this._playerStateService.setSpeedRight(value);
             }
         }
-
-        /*
-        console.log('===================');
-        console.log('Range player changeValue');
-        console.log('=> Side: ' + this.side);
-        console.log('=> Name: ' + this.name);
-        console.log('=> Value: ' + value);
-        console.log('=> This.Value: ' + this.value);
-        */
     }
 }

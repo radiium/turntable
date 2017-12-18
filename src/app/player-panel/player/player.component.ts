@@ -1,19 +1,22 @@
 import { Component, Input, Output, EventEmitter, ViewChild } from '@angular/core';
-import { Observable, Subscription, Subject } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
+import { Subject } from 'rxjs/Subject';
 
-import { Video } from '../_shared/models/video.model';
-import { Playlist } from '../_shared/models/playlist.model';
-import { PlayerStateService } from '../_core/services/player-state.service';
-import { PlaylistService } from '../_core/services/playlist.service';
+import { Video, Playlist } from '../../_core/models';
+
+
+import { PlayerStateService } from '../../_core/services/player-state.service';
+import { PlaylistService } from '../../_core/services/playlist.service';
 
 import { ElectronService } from 'ngx-electron';
 
 @Component({
-  selector: 'app-mix-panel',
-  templateUrl: './mix-panel.component.html',
-  styleUrls: ['./mix-panel.component.scss']
+  selector: 'app-player-panel',
+  templateUrl: './player.component.html',
+  styleUrls: ['./player.component.scss']
 })
-export class MixPanelComponent {
+export class PlayerComponent {
 
     title = 'TurnTable';
 
@@ -57,22 +60,15 @@ export class MixPanelComponent {
         this._playerStateService.setVolumeLeft(this.volLeft);
         this._playerStateService.setVolumeRight(this.volRight);
 
-
         // Get on play playlist
         this._playlistService.onPlayPlaylist$.subscribe((pl) => {
             this.onPlayPlaylist = pl;
         });
 
-
-
-
         // Get current volume right
         this._playerStateService.isRandom$.subscribe((isRandom) => {
             this.isRandom = isRandom;
         });
-
-
-
 
         // Get current player left
         this._playerStateService.playerLeft$.subscribe((vl) => {
@@ -82,7 +78,6 @@ export class MixPanelComponent {
         this._playerStateService.volumeLeft$.subscribe((volLeft) => {
             this.volLeft = volLeft;
         });
-
 
         // Get current player right
         this._playerStateService.playerRight$.subscribe((vr) => {

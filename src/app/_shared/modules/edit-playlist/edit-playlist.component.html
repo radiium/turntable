@@ -9,7 +9,7 @@
         <div class="editPlaylistHeader">
             <div id="headerContainer">
                 <div *ngIf="playlist && activePlaylist === 'Playlist'" id="headerBox">
-                
+
                     <!-- Playlist titl-->
                     <div id="headerPlaylistTitle" class="headerItem"><span>{{ playlist.title }}</span></div>
 
@@ -17,7 +17,7 @@
                     <div *ngIf="type === 'player'" id="infoBarBtnPlaylist" class="headerItem infoBarBtn changePlaylistBtn">
                         <input type="button" value="Show Historic" (click)="changePlaylist()">
                     </div>
-                    
+
                     <!-- Nbr of video(s) -->
                     <div class="headerItem">
                         <span> Video<span *ngIf="playlist.videolist.length > 1">s</span></span>
@@ -34,15 +34,15 @@
 
 
                 <div *ngIf="activePlaylist === 'Historic'" id="headerBox">
-                
-                    <!-- Playlist titl-->
+
+                    <!-- Playlist title-->
                     <div id="headerPlaylistTitle" class="headerItem"><span>Historic</span></div>
 
                     <!-- Change playlist / historic - Only on player-->
                     <div *ngIf="type === 'player'" id="infoBarBtnHistoric" class="headerItem infoBarBtn changePlaylistBtn">
                         <input type="button" value="Show Playlist" (click)="changePlaylist()">
                     </div>
-                    
+
                     <!-- Nbr of video(s) -->
                     <div class="headerItem">
                         <span> Video<span *ngIf="playlist.videolist.length > 1">s</span></span>
@@ -88,12 +88,12 @@
                     </button>
                     </div>
                     <div>to load your playlist(s) from youtube</div>
-                    
+
                 </div>
             </div>
-            
+
             <li *ngFor="let video of playlist.videolist" class="videoItem" [attr.data-id]="video.id" [attr.data-movable]="true" >
-                
+
                 <!-- Playlist item base -->
                 <app-playlist-item class="videoInfos" [video]="video"></app-playlist-item>
 
@@ -111,7 +111,7 @@
                     <button matTooltip="Play at left !" [matTooltipPosition]="'above'" mat-mini-fab color="primary" (click)="playAtLeft(video)" class="leftBtn mix-btn">
                     <fa [name]="'play'" [size]="2" [rotate]="180" ></fa>
                     </button>
-                    
+
                     <!-- Delete video button -->
                     <button matTooltip="Delete video!" [matTooltipPosition]="'above'"  mat-mini-fab color="warn" (click)="deleteVideo(video.id)" class="mix-btn">
                     <fa [name]="'trash'" [size]="2"></fa>
@@ -126,9 +126,9 @@
         </div>
 
         <div *ngIf="historic && activePlaylist === 'Historic'" class="onPlayHistoricPlaylist">
-            
+
             <li *ngFor="let video of historic.videolist" class="videoItem" [attr.data-id]="video.id" [attr.data-movable]="true" >
-                
+
                 <!-- Playlist item base -->
                 <app-playlist-item class="videoInfos" [video]="video"></app-playlist-item>
 
@@ -146,7 +146,7 @@
                     <button matTooltip="Replace in playlist!" [matTooltipPosition]="'above'" mat-mini-fab color="primary" (click)="addToPlaylist(video)" class="leftBtn mix-btn">
                     <fa [name]="'reply'" [size]="2"></fa>
                     </button>
-                    
+
                     <!-- Delete video button -->
                     <button matTooltip="Delete video!" [matTooltipPosition]="'above'"  mat-mini-fab color="warn" (click)="deleteVideoHistoric(video.id)" class="mix-btn">
                     <fa [name]="'trash'" [size]="2"></fa>
@@ -159,7 +159,7 @@
 
     <!-- Right playlist (search result) -->
     <div class="editPlaylistBoxRight editPlaylistBox">
-        
+
         <!-- Header (Search bar) -->
         <div class="editPlaylistHeader">
             <app-search-bar></app-search-bar>
@@ -168,11 +168,11 @@
         <!-- Playlist (Search results) -->
         <div class="editPlaylistContent" #autoscrollRight>
             <div *ngIf="searchResultsList" class="playlist" [dragula]="'drag-drop-list'" [dragulaModel]="searchResultsList" [attr.data-accept-drop]="false">
-                
+
                 <li *ngFor="let video of searchResultsList" class="videoItem" [attr.data-id]="video.id" [attr.data-movable]="true" >
                 <app-playlist-item class="videoInfos" [video]="video"></app-playlist-item>
                 </li>
-            
+
             </div>
         </div>
 

@@ -1,0 +1,1 @@
+export const PUBLIC_KEY = 'AIzaSyCUgeZ1Wous0x3Rjw3EZQQPKDQTXJB21Es';

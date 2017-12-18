@@ -1,14 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { Observable } from 'rxjs/Rx';
-import * as moment from 'moment';
-import 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 
-import { Video } from '../../../models/video.model';
-import { YoutubeDataService } from '../../../../_core/services/youtube-data.service';
-import { PlaylistService } from '../../../../_core/services/playlist.service';
-import { Suggests } from '../../../models/suggests.model';
-import { SuggestService } from '../../../../_core/services/suggest.service';
+import 'rxjs/add/operator/debounceTime';
+import 'rxjs/add/operator/switchMap';
+
+import * as moment from 'moment';
+
+import { YoutubeService } from '../../../../_core/services/youtube';
+import { DataService } from '../../../../_core/services/data.service';
+import { Suggests } from '../../../../_core/models';
+
 
 @Component({
     selector: 'app-search-bar',
@@ -21,18 +23,18 @@ export class SearchBarComponent implements OnInit {
     query: String;
     suggestsResult: String[];
     selectedSugest: String;
-    arrowkeyLocation = 0;
+    arrowkeyLocation = -1;
 
     constructor(
-        private _suggestService: SuggestService,
-        private _playlistService: PlaylistService,
-        private _youtubeDataService: YoutubeDataService) {
+    private YTService: YoutubeService,
+    private dataService: DataService
+    ) {
 
-            // Get suggests results
-            this._suggestService.suggestsResult$.subscribe((suggestsResult) => {
-                this.query = suggestsResult.query;
-                this.suggestsResult = suggestsResult.suggests;
-            });
+        // Get suggests results
+        this.dataService.suggestsResult$.subscribe((suggestsResult) => {
+            this.query = suggestsResult.query;
+            this.suggestsResult = suggestsResult.suggests;
+        });
     }
 
     ngOnInit() {
@@ -41,13 +43,11 @@ export class SearchBarComponent implements OnInit {
         .debounceTime(200)
         .switchMap((query) => {
             if (query && query !== this.selectedSugest) {
-                return this._suggestService.searchSuggestsVideo(query);
-            } else {
-                return Observable.empty();
+                return this.YTService.searchSuggestsVideo(query);
             }
+            return Observable.empty();
         })
         .subscribe((sr) => {
-
             const acList: String[] = [];
             sr[1].forEach(item => {
                 acList.push(item[0].replace(sr[0], ''));
@@ -56,71 +56,64 @@ export class SearchBarComponent implements OnInit {
 
             // Clear playlist if no value
             if (this.search.value === '') {
-                this._suggestService.setSuggestsResult({});
+                this.dataService.setSuggestsResult({});
+                this.dataService.setSearchResultPL([]);
             } else {
-                this._suggestService.setSuggestsResult(suggests);
+                this.dataService.setSuggestsResult(suggests);
             }
         });
     }
 
     // Select suggest
     selectSuggestion(suggest: String) {
-        this._suggestService.setSuggestsResult({});
+        this.dataService.setSuggestsResult({});
         this.selectedSugest = suggest;
         this.search.setValue(suggest);
-        this.searchSuggestion(suggest);
+        this.searchVideos(suggest);
     }
 
     // Search videos by selected suggest
-    searchSuggestion(suggest: String) {
-
-        this._youtubeDataService.searchVideos(suggest)
-        .subscribe((results) => {
-
-            // Clear playlist if no value
-            if (this.search.value === '') {
-                this._playlistService.setSearchResultPlaylist([]);
-            } else {
-                const videoList = results.items.map(item => {
-                    return new Video(
-                        item.id,
-                        item.snippet.title,
-                        item.snippet.description,
-                        item.snippet.thumbnails.default.url,
-                        moment.duration(item.contentDetails.duration).asMilliseconds()
-                    );
-                });
-                this._playlistService.setSearchResultPlaylist(videoList);
-            }
-        });
+    searchVideos(suggest: String) {
+        this.YTService.searchVideos(suggest);
     }
 
     // Handle keyboard key
-    keyDown(event: KeyboardEvent) {
+    getKey(event: KeyboardEvent) {
         if (this.suggestsResult) {
             switch (event.keyCode) {
-                case 38: // this is the ascii of arrow up
-                    this.arrowkeyLocation--;
-                    this.checkArrowKeyLocation();
-                    break;
-                case 40: // this is the ascii of arrow down
-                    this.arrowkeyLocation++;
-                    this.checkArrowKeyLocation();
-                    break;
-                case 13:
-                    const suggest = this.query.toString() + this.suggestsResult[this.arrowkeyLocation];
-                    this.selectSuggestion(suggest);
-                    break;
+
+            // ascii of arrow up
+            case 38:
+                this.arrowkeyLocation--;
+                this.checkArrowKeyLocation();
+                break;
+
+            // ascii of arrow down
+            case 40:
+                this.arrowkeyLocation++;
+                this.checkArrowKeyLocation();
+                break;
+
+            // ascii of enter
+            case 13:
+                let suggest = '';
+                if (this.arrowkeyLocation > -1 && this.arrowkeyLocation < this.suggestsResult.length) {
+                    suggest = this.query.toString() + this.suggestsResult[this.arrowkeyLocation];
+                } else if (this.arrowkeyLocation === -1) {
+                    suggest = this.search.value;
+                }
+                this.selectSuggestion(suggest);
+                break;
             }
         }
     }
 
     // Handle arrow key in suggest popup
     checkArrowKeyLocation() {
-        if (this.arrowkeyLocation < 0) {
-            this.arrowkeyLocation = 0;
-        } else if (this.arrowkeyLocation > this.suggestsResult.length - 1) {
+        if (this.arrowkeyLocation < -1) {
             this.arrowkeyLocation = this.suggestsResult.length - 1;
+        } else if (this.arrowkeyLocation > this.suggestsResult.length - 1) {
+            this.arrowkeyLocation = -1;
         }
     }
 }

@@ -1,11 +1,10 @@
 import { Injectable, Input } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
 
-import { Video } from '../../_shared/models/video.model';
-import { Playlist } from '../../_shared/models/playlist.model';
-import { Suggests } from '../../_shared/models/suggests.model';
 import { PlaylistService } from './playlist.service';
 import { UtilsService } from './utils.service';
+
+import { Video, Playlist, Suggests } from '../models';
 
 @Injectable()
 export class PlayerStateService {

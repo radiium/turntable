@@ -1,11 +1,15 @@
 import { Component, Input, Output, OnInit, OnDestroy, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 
-import { Observable, Subscription, Subject } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
+import { Subscription,  } from 'rxjs/Subscription';
+import { Subject } from 'rxjs/Subject';
+import 'rxjs/add/observable/empty';
+import 'rxjs/add/observable/timer';
 
 import * as moment from 'moment';
 
-import { Video } from '../../models/video.model';
-import { Playlist } from '../../models/playlist.model';
+import { Video, Playlist } from '../../../_core/models';
+
 import { PlayerStateService } from '../../../_core/services/player-state.service';
 import { PlaylistService } from '../../../_core/services/playlist.service';
 

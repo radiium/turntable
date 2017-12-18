@@ -1,8 +1,7 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { SharedModule } from '../_shared/shared.module';
 
-import { HeaderComponent } from './header.component';
+import { LoginComponent } from './login.component';
 import { HelpDialogComponent } from './help-dialog/help-dialog.component';
 
 @NgModule({
@@ -10,15 +9,14 @@ import { HelpDialogComponent } from './help-dialog/help-dialog.component';
         HelpDialogComponent
     ],
     declarations: [
-        HeaderComponent,
+        LoginComponent,
         HelpDialogComponent
     ],
     imports: [
-        CommonModule,
         SharedModule
     ],
     exports: [
-        HeaderComponent
+        LoginComponent
     ]
 })
-export class HeaderModule { }
+export class LoginModule { }

@@ -1,12 +1,21 @@
 import { Injectable, Input } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/forkJoin';
+import 'rxjs/add/operator/expand';
+import 'rxjs/add/operator/pluck';
+import 'rxjs/add/operator/scan';
+import 'rxjs/add/operator/last';
+
+
 import * as moment from 'moment';
 import { ElectronService } from 'ngx-electron';
 
-import { YoutubeDataService } from './youtube-data.service';
-import { Video } from '../../_shared/models/video.model';
-import { Playlist } from '../../_shared/models/playlist.model';
+import { PlaylistsService } from './youtube/playlists.service';
+import { PlaylistItemsService } from './youtube/playlist-items.service';
+import { VideosService } from './youtube/videos.service';
+
+import { Video, Playlist } from '../models';
 
 
 @Injectable()
@@ -16,7 +25,7 @@ export class PlaylistService {
     playListsList = new Subject<Array<Playlist>>();
     playListsList$ = this.playListsList.asObservable();
 
-    // On play PlayList
+    // On edit PlayList
     onEditPlaylist = new Subject<Playlist>();
     onEditPlaylist$ = this.onEditPlaylist.asObservable();
 
@@ -38,7 +47,9 @@ export class PlaylistService {
     progressBarValue$ = this.progressBarValue.asObservable();
 
     constructor(
-    private _youtubeDataService: YoutubeDataService,
+    private playlistsService: PlaylistsService,
+    private playlistItemsService: PlaylistItemsService,
+    private videosService: VideosService,
     private Electron: ElectronService) {
     }
 
@@ -85,7 +96,6 @@ export class PlaylistService {
                     this.setPlayListsList(newPlaylistsList);
                 });
             }
-
         });
     }
 
@@ -94,17 +104,17 @@ export class PlaylistService {
     fetchYoutubePlaylist() {
 
         // Get all playlist
-        this._youtubeDataService.getPlaylists()
+        this.playlistsService.getPlaylists()
         .flatMap((plList) => {
 
             this.setProgressBarValue(30);
 
             // Get all playlist items for each playlist
             const aRequest = [];
-            plList.items.forEach((playlist, i) => {
-                const req = this._youtubeDataService.getPlaylistItems(playlist.id, '')
+            plList['items'].forEach((playlist, i) => {
+                const req = this.playlistItemsService.getPlaylistItems(playlist.id, '')
                 // Recursive call for playlist items
-                .expand((data: any) => this._youtubeDataService.getPlaylistItems(playlist.id, data.nextPageToken), 1)
+                .expand((data: any) => this.playlistItemsService.getPlaylistItems(playlist.id, data.nextPageToken), 1)
                 // Group each response by 'items' field
                 .pluck('items')
                 // Concat each items in array
@@ -124,7 +134,7 @@ export class PlaylistService {
                     const aReq = [];
                     // Get videos metadatas
                     videoIdList.forEach(videoIds => {
-                        const reqVideo = this._youtubeDataService.getVideosById(videoIds);
+                        const reqVideo = this.videosService.getVideosById(videoIds);
                         aReq.push(reqVideo);
                     });
                     const fork = Observable.forkJoin(aReq)
@@ -158,13 +168,9 @@ export class PlaylistService {
             this.setPlayListsList(playlistList);
             // this.playListsList.push(playlistList); ------------------------------------ <===
 
-            console.log('playlistList from yt', playlistList);
             // Set playlistlist
             this.playListsList$.subscribe((pll) => {
-
-                console.log('current pll', pll);
                 pll.forEach((playlist: Playlist) => {
-                    console.log(playlist);
                     playlistList.push(playlist);
                 });
             });

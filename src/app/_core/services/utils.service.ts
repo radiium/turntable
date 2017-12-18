@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
-import { Video } from '../../_shared/models/video.model';
-import { Playlist } from '../../_shared/models/playlist.model';
+import { Video, Playlist } from '../models';
+
 
 @Injectable()
 export class UtilsService {

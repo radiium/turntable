@@ -4,15 +4,17 @@ import { Component, OnInit, Input, Output, OnDestroy,
 import { DragulaService, dragula } from 'ng2-dragula/ng2-dragula';
 import * as autoScroll from 'dom-autoscroller';
 
-import { User } from '../../models/user.model';
-import { Video } from '../../models/video.model';
-import { Playlist } from '../../models/playlist.model';
+import { User, Video, Playlist } from '../../../_core/models';
+
 import { PlaylistService } from '../../../_core/services/playlist.service';
 import { PlayerStateService } from '../../../_core/services/player-state.service';
 import { UtilsService } from '../../../_core/services/utils.service';
 import { ElectronService } from 'ngx-electron';
-import { AuthService } from '../../../_core/services/auth.service';
-import { TabsService } from '../../../_core/services/tabs.service';
+
+
+import { AuthService } from '../../../_core/services/youtube';
+import { DataService } from '../../../_core/services/data.service';
+
 
 @Component({
   selector: 'app-edit-playlist',
@@ -47,17 +49,16 @@ export class EditPlaylistComponent implements OnInit, OnDestroy, OnChanges {
     user: User;
 
     constructor(
-    public utils: UtilsService,
-    public tabsService: TabsService,
-    private _electron: ElectronService,
-    private _authService: AuthService,
+    public  utils: UtilsService,
+    private dataService: DataService,
+    private electron: ElectronService,
+    private authService: AuthService,
     private _playlistService: PlaylistService,
     private _playerStateService: PlayerStateService,
     private _dragulaService: DragulaService) {
 
         // Get user
-        this._authService.user$
-        .subscribe((user) => {
+        this.dataService.user$.subscribe((user) => {
             this.user = user;
         });
 
@@ -75,9 +76,9 @@ export class EditPlaylistComponent implements OnInit, OnDestroy, OnChanges {
         });
 
         // Get search result list
-        this._playlistService.searchResultPlaylist$
-        .subscribe((searchResultsList) => {
-            this.searchResultsList = searchResultsList;
+        this.dataService.searchResultPL$
+        .subscribe((searchResuPL) => {
+            this.searchResultsList = searchResuPL;
 
             // Set autoscroll on drag
             // at begin or end of playlist container
@@ -108,11 +109,13 @@ export class EditPlaylistComponent implements OnInit, OnDestroy, OnChanges {
             accepts: (el, target, source, sibling): boolean => {
                 // Prevent duplicate
                 let accept = true;
-                that.videolist.forEach(video => {
-                    if (el.dataset.id === video.id) {
-                        accept = false;
-                    }
-                });
+                if (source !== target) {
+                    that.videolist.forEach(video => {
+                        if (el.dataset.id === video.id) {
+                            accept = false;
+                        }
+                    });
+                }
                 return (accept && target.dataset.acceptDrop === 'true');
             },
         });
@@ -218,9 +221,9 @@ export class EditPlaylistComponent implements OnInit, OnDestroy, OnChanges {
     }
 
     login() {
-        if (this._electron.isElectronApp) {
-            this._authService.login();
-            this.tabsService.setSelectedTab(1);
+        if (this.electron.isElectronApp) {
+            this.authService.login();
+            this.dataService.setSelectedTab(0);
         }
     }
 
@@ -236,7 +239,7 @@ export class EditPlaylistComponent implements OnInit, OnDestroy, OnChanges {
     }
 
     isElectronApp() {
-        return this._electron.isElectronApp;
+        return this.electron.isElectronApp;
     }
     /*
     // Update playlist in _playerService

@@ -64,6 +64,8 @@ app.on('ready', () => {
         details.requestHeaders['Referer'] = 'https://www.youtube.com';
         callback({cancel: false, requestHeaders: details.requestHeaders});
     });
+
+    // console.log(storage.getDataPath());
 });
 
 // On close app event

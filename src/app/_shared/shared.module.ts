@@ -1,9 +1,10 @@
 import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+// import { BrowserModule } from '@angular/platform-browser';
+import { CommonModule } from '@angular/common';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 // import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule, HttpClientJsonpModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 // modules
 import { DragulaModule } from 'ng2-dragula';
@@ -12,9 +13,17 @@ import { NgxElectronModule } from 'ngx-electron';
 import { CustomMaterialModule } from './modules/material/custom-material.module';
 import { YoutubePlayerModule } from './modules/youtube-player/youtube-player.module';
 
+// import { EditPlaylistModule } from './modules/edit-playlist/edit-playlist.module';
+
+import { EditPlaylistComponent } from './modules/edit-playlist/edit-playlist.component';
+import { SearchBarComponent } from './modules/edit-playlist/search-bar/search-bar.component';
+import { PlaylistItemComponent } from './modules/edit-playlist/playlist-item/playlist-item.component';
+
+
+
 // Components
 import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
-import { CreatePlaylistDialogComponent } from '../playlist-panel/create-playlist-dialog/create-playlist-dialog.component';
+import { CreatePlaylistDialogComponent } from '../library-panel/create-playlist-dialog/create-playlist-dialog.component';
 
 import { RangeSliderComponent } from './components/range-slider/range-slider.component';
 import { VideoPlayerComponent } from './components/video-player/video-player.component';
@@ -25,6 +34,7 @@ import { ClickOutsideDirective } from './directives/click-outside.directive';
 // pipes
 import { DurationPipe } from './pipes/duration.pipe';
 import { FilterPlaylistsPipe } from './pipes/filter-playlists.pipe';
+
 
 @NgModule({
     entryComponents: [
@@ -39,10 +49,16 @@ import { FilterPlaylistsPipe } from './pipes/filter-playlists.pipe';
         CreatePlaylistDialogComponent,
         RangeSliderComponent,
         VideoPlayerComponent,
+
+        EditPlaylistComponent,
+        PlaylistItemComponent,
+        SearchBarComponent
     ],
     imports: [
         CommonModule,
-        BrowserModule,
+        // BrowserModule,
+        HttpClientModule,
+        HttpClientJsonpModule,
         NoopAnimationsModule,
         // BrowserAnimationsModule,
         FormsModule,
@@ -51,11 +67,12 @@ import { FilterPlaylistsPipe } from './pipes/filter-playlists.pipe';
         Angular2FontawesomeModule,
         NgxElectronModule,
         YoutubePlayerModule,
+        // EditPlaylistModule,
         CustomMaterialModule
     ],
     exports: [
         CommonModule,
-        BrowserModule,
+        // BrowserModule,
         NoopAnimationsModule,
         // BrowserAnimationsModule,
         FormsModule,
@@ -70,6 +87,10 @@ import { FilterPlaylistsPipe } from './pipes/filter-playlists.pipe';
         RangeSliderComponent,
         VideoPlayerComponent,
         CustomMaterialModule,
+        // EditPlaylistModule,
+        EditPlaylistComponent,
+        PlaylistItemComponent,
+        SearchBarComponent
     ],
     providers: [],
 })

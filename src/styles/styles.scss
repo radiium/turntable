@@ -16,15 +16,12 @@
     font-family: 'Open sans'
 }
 html,
-body { 
+body {
   margin: 0;
   padding: 0;
   background-color: lightgray;
   height: 100%;
   overflow: hidden;
-  /*
-  width: 100%;
-  */
 }
 
 /* Custom Scroll bar */
@@ -37,67 +34,64 @@ body {
 button:focus {outline: none;}
 input:focus { outline: none; }
 
-/* Unglorious hack... */
 
-mat-progress-bar {
-    z-index: 99999;
-}
+/****************************
 
-#menuBtn .ng-trigger,
-#menuBtn .ng-trigger-fadeInItems,
-#menuBtn .mat-menu-content {
-    padding-top: 0 !important;
-    padding-bottom: 0 !important;
-}
-.mat-tab-header, .mat-tab-nav-bar {
-    /*
-    border-bottom: 1px solid rgba(0,0,0,.12);
-    */
-    border-bottom: none !important;
-}
+    Unglorious hack...
 
-.fa-2x {
-    font-size: 23px !important;
-}
+****************************/
 
-/* Custom material css */
-.mat-tab-label {
-    height: 32px !important;
-    min-width: 100px !important;
-}
+/* Custom Font Awesome css */
 
-.mat-grid-tile .mat-figure {
-    display: block!important;
-}
-
-.decline {
-    background-color: green !important;
-    color: white !important;
-}
-
-.accept {
-    background-color: red !important;
-    color: white !important;
-}
-
+.fa-2x { font-size: 23px !important; }
 .toolbarBtn .fa-lg {
     vertical-align: -10% !important;
     margin-right: 5px !important;
 }
 
-/* */
- .radioBtnGrp {
+/* Custom material css */
+
+mat-progress-bar {
+    z-index: 99999;
+}
+
+// Tabs nav header
+.mat-tab-group { height: 100%; }
+.mat-tab-header,
+.mat-tab-nav-bar { border-bottom: 10px solid #f5f5f5 !important; }
+.mat-tab-body-wrapper { padding: 5px; height: 100%; }
+.mat-tab-body { height: 100%; }
+.mat-tab-label { height: 32px !important; min-width: 100px !important; }
+
+// Grid tile
+.mat-grid-tile .mat-figure {
+    display: block !important;
+}
+
+// Dialog button
+.decline {
+    background-color: green !important;
+    color: white !important;
+}
+.accept {
+    background-color: red !important;
+    color: white !important;
+}
+
+// Radio buttons
+.radioBtnGrp {
     display: flex;
     flex-direction: column;
     margin-top: 10px;
     margin-bottom: 10px;
 }
 .radioBtn { margin: 5px; }
-.labelVisible {
-    margin-top: 20px !important;
-}
 
-/* input serch filter */
+// Filter playlist location
+.labelVisible { margin-top: 20px !important; }
+.filterLocation .mat-radio-button { margin-right: 10px !important; }
+
+// Input search filter
 #inputFilter.mat-input-element {
     width: auto !important;
     padding: 2px !important;
@@ -112,7 +106,8 @@ mat-progress-bar {
 #inputFilter.mat-input-element::placeholder { color: gray !important; }
 #inputFilter.mat-input-element::placeholder { color: gray !important; }
 
-
-.filterLocation .mat-radio-button {
-    margin-right: 10px !important;
+// Progress bar
+.mat-progress-bar {
+    position: fixed;
+    z-index: 999999;
 }

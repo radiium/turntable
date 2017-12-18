@@ -1,3 +1,11 @@
+<!-- Progress bar -->
+<div class="progressBarGray" ></div>
+<mat-progress-bar
+    [color]="'primary'"
+    [mode]="'determinate'"
+    [value]="progressBarValue">
+</mat-progress-bar>
+
 <!-- Playlist list mode toolbar -->
 <div class="toolBar">
     <mat-toolbar *ngIf="!isEditMode">
@@ -12,7 +20,7 @@
         <span class="inputFilterbox">
             <input id="inputFilter" matInput [formControl]="filterTitle" [matAutocomplete]="auto"
                 class="inputSearchPlaylist" type="text"  placeholder="Filter playlists...">
-            
+
             <button *ngIf="filterTitle.value && filterTitle.value.length > 0"
                 (click)="filterTitle.setValue('')" id="clearInputFilter" >X</button>
 
@@ -75,18 +83,8 @@
 
 <!-- List of playlist -->
 <div *ngIf="!isEditMode" class="plPanelContent">
-    
+
     <div class="playlistGrid">
-
-        <!-- Progress bar -->
-        <div class="progressBarGray" *ngIf="isProgressBar"></div>
-        <mat-progress-bar
-            *ngIf="isProgressBar"
-            [color]="'primary'"
-            [mode]="'determinate'"
-            [value]="progressBarValue">
-        </mat-progress-bar>
-
 
         <mat-grid-list  *ngIf="playlistsList" cols="4" rowHeight="160px" gutterSize="25px" >
 
@@ -123,7 +121,7 @@
                         </button>
 
                         <div class="spacerBtn"></div>
-                        
+
                         <!-- Edit playlist button -->
                         <button class="editBtn plBtn" (click)="editPlaylist(pl)" matTooltip="Edit playlist!" [matTooltipPosition]="'above'">
                         <fa aria-label="Edit playlist" [name]="'pencil'" [size]="2"></fa>

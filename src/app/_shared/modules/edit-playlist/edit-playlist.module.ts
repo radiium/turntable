@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 
 import { SharedModule } from '../../../_shared/shared.module';
 
@@ -9,15 +8,19 @@ import { SearchBarComponent } from './search-bar/search-bar.component';
 
 @NgModule({
     imports: [
-        CommonModule,
-        SharedModule
+        // SharedModule
     ],
     declarations: [
         EditPlaylistComponent,
         PlaylistItemComponent,
         SearchBarComponent
     ], exports: [
-        EditPlaylistComponent
+
+        EditPlaylistComponent,
+        /*
+        PlaylistItemComponent,
+        SearchBarComponent
+        */
     ]
 })
 export class EditPlaylistModule { }

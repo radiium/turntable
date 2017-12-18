@@ -1,6 +1,6 @@
 <!--div class="megaLoader"><fa [name]="'spinner'" [size]="5"></fa></div-->
 
-<div id="mixPanelContainer">
+<div id="playerPanelContainer">
 
     <div id="playerContainer">
         <app-video-player
@@ -11,7 +11,7 @@
             [speed]="speedLeft"
             (speedChange)="speedLeft">
         </app-video-player>
-        
+
         <div id="controlBox">
             <div id="controlBtnBox">
 
@@ -39,7 +39,7 @@
                     </div>
                     <input
                         [disabled]="!videoLeft || !videoLeft"
-                        class="crossfader horizontal" type="range" 
+                        class="crossfader horizontal" type="range"
                         min="0" max="100" step="0.5"
                         list="tickmarks-center"
                         value="{{ crossFaderValue }}"
@@ -48,9 +48,9 @@
                 </div>
             </div>
         </div>
-        
+
         <app-video-player
-            #playerRight 
+            #playerRight
             [sidePlayer]="'right'"
             [video]="videoRight"
             (nearEnd)="triggerMixRTL($event)"

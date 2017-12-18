@@ -6,23 +6,24 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/map';
 
-import { Video } from '../_shared/models/video.model';
-import { Playlist } from '../_shared/models/playlist.model';
-import { PlaylistService } from '../_core/services/playlist.service';
-import { UtilsService } from '../_core/services/utils.service';
-import { CreatePlaylistDialogComponent } from './create-playlist-dialog/create-playlist-dialog.component';
-import { ConfirmDialogComponent } from '../_shared/components/confirm-dialog/confirm-dialog.component';
-import { AuthService } from '../_core/services/auth.service';
-import { TabsService } from '../_core/services/tabs.service';
+import { Video, Playlist } from '../../_core/models';
+import { PlaylistService } from '../../_core/services/playlist.service';
+import { UtilsService } from '../../_core/services/utils.service';
+import { CreatePlaylistDialogComponent } from '../create-playlist-dialog/create-playlist-dialog.component';
+import { ConfirmDialogComponent } from '../../_shared/components/confirm-dialog/confirm-dialog.component';
 
 import * as testPlaylist from './test-playlist.json';
 
+import { AuthService } from '../../_core/services/youtube';
+import { DataService } from '../../_core/services/data.service';
+
+
 @Component({
-  selector: 'app-playlist-panel',
-  templateUrl: './playlist-panel.component.html',
-  styleUrls: ['./playlist-panel.component.scss']
+  selector: 'app-library-panel',
+  templateUrl: './library.component.html',
+  styleUrls: ['./library.component.scss']
 })
-export class PlaylistPanelComponent implements OnInit {
+export class LibraryComponent implements OnInit {
 
     playlistsList: Array<Playlist> = [];
     onEditPlaylist: Playlist;
@@ -43,24 +44,21 @@ export class PlaylistPanelComponent implements OnInit {
 
 
     constructor(
+    private dataService: DataService,
     public utils: UtilsService,
     public dialog: MatDialog,
-    private _authService: AuthService,
-    private _playlistService: PlaylistService,
-    private _tabsService: TabsService) {
+    private _playlistService: PlaylistService) {
     }
 
     ngOnInit() {
 
         // Check if user is logged in
-        this._authService.user$
-        .subscribe((user: any) => {
+        this.dataService.user$.subscribe((user: any) => {
             this.isLoggedIn = user ? true : false;
         });
 
         // Get current selected tab
-        this._tabsService.selectedTab$
-        .subscribe((st) => {
+        this.dataService.selectedTab$.subscribe((st) => {
             this.selectedTab = st;
         });
 
@@ -68,8 +66,7 @@ export class PlaylistPanelComponent implements OnInit {
         this.isProgressBar = false;
 
         // Get progress bar value
-        this._playlistService.progressBarValue$
-        .subscribe((pbv: any) => {
+        this._playlistService.progressBarValue$.subscribe((pbv: any) => {
             this.progressBarValue = pbv;
             if (!pbv || pbv === 0 || pbv === 100) {
                 this.isProgressBar = false;
@@ -84,13 +81,19 @@ export class PlaylistPanelComponent implements OnInit {
 
         // Load a local playlist for development
         if (isDevMode()) {
-            this.insertFakeData();
+            // this.insertFakeData();
         }
 
         // Get playlist list
         this._playlistService.playListsList$
         .subscribe((pl: any) => {
+            console.log('===================');
+
+            console.log('playlistsList', this.playlistsList.length);
+            console.log('pl', pl.length);
             this.playlistsList = pl;
+            console.log('playlistsList2', this.playlistsList.length);
+
 
             // Update playlist filter
             this.initFilterLocation();
@@ -236,7 +239,7 @@ export class PlaylistPanelComponent implements OnInit {
         // if (playlist.videolist.length > 0) {
             const pl = this.utils.copyPlaylist(playlist);
             this._playlistService.setOnPlayPlayList(pl);
-            this._tabsService.setSelectedTab(2);
+            this.dataService.setSelectedTab(1);
         // }
     }
 

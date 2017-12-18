@@ -1,28 +1,32 @@
 import { Injectable } from '@angular/core';
-import { Http, Headers, Response, RequestOptions, URLSearchParams } from '@angular/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { ElectronService } from 'ngx-electron';
 import 'rxjs/add/operator/mergeMap';
 import { Subject } from 'rxjs/Subject';
-import { ElectronService } from 'ngx-electron';
 
-import { User } from '../../_shared/models/user.model';
-import { CONSTANT } from '../../_shared/constant';
+import { UserInfosService } from './user-infos.service';
+import { DataService } from '../data.service';
+import { User } from '../../models';
 
 @Injectable()
 export class AuthService {
 
     // Config parameters
-    scope        = CONSTANT.SCOPE;
-    redirectUri  = CONSTANT.REDIRECT_URI;
-    clientId     = CONSTANT.CLIENT_ID;
-    clientSecret = CONSTANT.CLIENT_SECRET;
-    authUrl      = CONSTANT.AUTH_API;
-    tokenUrl     = CONSTANT.TOKEN_API;
-    logoutUrl    = CONSTANT.LOGOUT_API;
+    clientId     = '164595742192-h6rci5hnhj8gfbbeaijsrrsu660d80r6.apps.googleusercontent.com';
+    clientSecret = 'Q38usximxeb3rJXAUajjVRlY';
+    authUrl      = 'https://accounts.google.com/o/oauth2/auth';
+    tokenUrl     = 'https://accounts.google.com/o/oauth2/token';
+    logoutUrl    = 'https://accounts.google.com/o/oauth2/revoke';
+    tokenInfoUrl = 'https://www.googleapis.com/oauth2/v1/tokeninfo';
+    redirectUri  = 'http://localhost';
+    scope = [
+        'https://www.googleapis.com/auth/youtube',
+        'https://www.googleapis.com/auth/youtube.force-ssl',
+        'https://www.googleapis.com/auth/userinfo.profile'
+    ].join(' ');
 
-    // Electron auth window
+    // Electron auth window and parameters
     authWindow: any;
-
-    // Electron auth window parameters
     windowParams = {
         alwaysOnTop: true,
         autoHideMenuBar: true,
@@ -31,51 +35,48 @@ export class AuthService {
         }
     };
 
-    // User infos object observable
-    private user = new Subject<User>();
-    user$ = this.user.asObservable();
-
     constructor(
-    private _http: Http,
-    private Electron: ElectronService) {}
+    private http: HttpClient,
+    private dataService: DataService,
+    private userInfosService: UserInfosService,
+    private electron: ElectronService) {
+    }
 
     // Authenticate user
     login() {
-        console.log('login');
         this.getAccessToken();
     }
 
     // Logout user (revoke token)
     logout() {
-        console.log('logout');
-        const logoutUrl =
-            CONSTANT.LOGOUT_API +
-            '?token=' + localStorage.getItem('access_token');
-        return this._http.post(logoutUrl, '', this.getHeaders())
-        .map((res) => res.json())
-        .subscribe((result) => {
-            console.log('Logout response');
-            console.log(result);
+        const logoutUrl = this.logoutUrl + '?token=' + localStorage.getItem('access_token');
+        const options = { headers: this.getHeaders() };
 
-            // Set user
-            this.setUser(null);
-            this.Electron.ipcRenderer.send('remove-user');
+        return this.http.post(logoutUrl, null , options)
+        .subscribe((result) => {
+            this.dataService.setUser(null);
+            this.electron.ipcRenderer.send('remove-user');
         });
     }
 
-    // Set user infos
-    setUser(user) {
-        this.user.next(user);
+    // Check auth to google api
+    checkAuth() {
+        const tokenInfoUrl =
+            this.tokenInfoUrl +
+            '?access_token=' + localStorage.getItem('access_token');
+
+        return this.http.get(tokenInfoUrl);
     }
 
     // Get access token
     getAccessToken() {
         return this.getAuthorizationCode()
         .then(authorizationCode => {
-            const params = new URLSearchParams();
-            params.append('code', authorizationCode.toString());
-            params.append('grant_type', 'authorization_code');
-            params.append('redirect_uri', this.redirectUri);
+
+            let params = new HttpParams();
+            params = params.append('code', authorizationCode.toString());
+            params = params.append('grant_type', 'authorization_code');
+            params = params.append('redirect_uri', this.redirectUri);
 
             return this.tokenRequest(params)
             .then((token: any) => {
@@ -83,18 +84,16 @@ export class AuthService {
                 this.storeToken(token);
 
                 // Get user infos
-                this.getUserInfos()
+                this.userInfosService.getUserInfos(token)
                 .subscribe((result) => {
                     const user = new User(
-                        result.name,
-                        token,
-                        result.picture,
-                        true
+                        result['name'], token,
+                        result['picture'], true
                     );
 
                     // Set user
-                    this.Electron.ipcRenderer.send('save-user', user);
-                    this.setUser(user);
+                    this.electron.ipcRenderer.send('save-user', user);
+                    this.dataService.setUser(user);
                 });
 
             });
@@ -104,10 +103,10 @@ export class AuthService {
     // Get refresh token
     refreshToken() {
         const refreshToken = localStorage.getItem('refresh_token');
-        const params = new URLSearchParams();
-        params.append('refresh_token', refreshToken);
-        params.append('grant_type', 'refresh_token');
-        params.append('redirect_uri', this.redirectUri);
+        let params = new HttpParams();
+        params = params.append('refresh_token', refreshToken);
+        params = params.append('grant_type', 'refresh_token');
+        params = params.append('redirect_uri', this.redirectUri);
 
         return this.tokenRequest(params)
         .then((token: any) => {
@@ -131,43 +130,20 @@ export class AuthService {
     // ------------------------------------------------------------------------
     // PRIVATE METHODS
 
-    // Retrieve user infos
-    private getUserInfos() {
-        const userinfosUrl =
-            CONSTANT.USER_API +
-            '?access_token=' + localStorage.getItem('access_token');
-        return this._http.get(userinfosUrl)
-        .map((res: Response) => res.json());
-    }
-
-    // Check auth to google api
-    checkAuth() {
-        const tokenInfoUrl =
-            CONSTANT.TOKEN_INFO_API +
-            '?access_token=' + localStorage.getItem('access_token');
-        return this._http.get(tokenInfoUrl)
-        .map((res: Response) => res.json());
-    }
-
     // Get the authorization code from google OAuth api
     private getAuthorizationCode() {
-        // Create reference of this component
-        // for use it in promise
         const that = this;
-
-        // Build auth url
         const authUrl =
-            CONSTANT.AUTH_API +
+            this.authUrl +
             '?response_type=code' +
             '&redirect_uri=' + this.redirectUri +
             '&client_id=' + that.clientId +
             '&state=' + that.generateRandomString(16) +
             '&scope=' + that.scope;
 
-        // return promise
         return new Promise(function (resolve, reject) {
-            // Create auth window and add handle on redirect callback
-            that.authWindow = new that.Electron.remote.BrowserWindow(that.windowParams);
+            // Create auth window and attach on redirect callback
+            that.authWindow = new that.electron.remote.BrowserWindow(that.windowParams);
             that.authWindow.loadURL(authUrl);
             that.authWindow.show();
             that.authWindow.on('closed', () => {
@@ -185,15 +161,12 @@ export class AuthService {
     // Resquest token
     private tokenRequest(params) {
         // Set request parameters
-        params.append('client_id', this.clientId);
-        params.append('client_secret', this.clientSecret);
-        return this._http.post(CONSTANT.TOKEN_API , params, this.getHeaders())
-        .map(res => res.json())
-        .toPromise()
-        .then(res => {
+        params = params.append('client_id', this.clientId);
+        params = params.append('client_secret', this.clientSecret);
+        const options = { headers: this.getHeaders(), };
 
-            return res;
-        });
+        return this.http.post(this.tokenUrl, params, options)
+        .toPromise().then(res => res);
     }
 
     // Handle callback request
@@ -216,10 +189,11 @@ export class AuthService {
 
     // Return custom headers
     private getHeaders() {
-        const headers = new Headers();
-        headers.append('Accept', 'application/json');
-        headers.append('Content-type', 'application/x-www-form-urlencoded');
-        return {headers: headers};
+        const headers = new HttpHeaders({
+            'Accept': 'application/json',
+            'Content-type': 'application/x-www-form-urlencoded'
+        });
+        return headers; // {headers: headers};
     }
 
     // Generate random string for state

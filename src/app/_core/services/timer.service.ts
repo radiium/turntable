@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Observable, Subscription } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
 import { UUID } from 'angular2-uuid';
 
 interface TimerList {
