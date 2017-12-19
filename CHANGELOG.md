@@ -1,3 +1,9 @@
+## v 0.4.0-beta (2017/12/18)
+
+### Updates
+* Rework services
+* Fix progress bar
+
 ## v 0.2.2-beta (2017/10/01)
 
 ### Updates
