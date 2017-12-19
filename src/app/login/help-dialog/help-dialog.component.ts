@@ -16,7 +16,6 @@ export class HelpDialogComponent {
     constructor(
     public dialogRef: MatDialogRef<HelpDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any) {
-        console.log(helpContent);
         this.tabsList = helpContent;
     }
 

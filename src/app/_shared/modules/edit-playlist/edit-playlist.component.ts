@@ -121,7 +121,6 @@ export class EditPlaylistComponent implements OnInit, OnDestroy, OnChanges {
         // Prevent animation on drag
         this._dragulaService.drag.subscribe((value) => {
             // value[1].children[0].children[0].children[0].children[1].style.marginLeft = 2;
-            // console.log('value', value[1].children[0].children[0].children[0].children[1].style.marginLeft);
         });
 
         // Update playlist videolist model on drop
@@ -138,7 +137,6 @@ export class EditPlaylistComponent implements OnInit, OnDestroy, OnChanges {
     }
 
     ngOnDestroy() {
-        console.log('Yo dstroy');
         // Destroy dragula service
         if (!!this._dragulaService.find(this.dragulaBagName)) {
             this._dragulaService.destroy(this.dragulaBagName);

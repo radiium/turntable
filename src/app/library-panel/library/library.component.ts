@@ -92,14 +92,8 @@ export class LibraryComponent implements OnInit {
 
         // Get playlist list
         this.dataService.playListsList$
-        .subscribe((pl: any) => {
-            console.log('===================');
-
-            console.log('playlistsList', this.playlistsList.length);
-            console.log('pl', pl.length);
+.subscribe((pl: any) => {
             this.playlistsList = pl;
-            console.log('playlistsList2', this.playlistsList.length);
-
 
             // Update playlist filter
             this.initFilterLocation();

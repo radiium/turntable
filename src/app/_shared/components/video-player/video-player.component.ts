@@ -215,7 +215,7 @@ export class VideoPlayerComponent implements OnInit, OnChanges, OnDestroy {
             console.log('isRandom true => randomIndex=', randomIndex);
             videoToPlay = this.onPlayPlaylist.videolist[randomIndex];
         } else {
-            console.log('isRandom false', );
+            console.log('isRandom false');
             videoToPlay = this.onPlayPlaylist.videolist[0];
         }
         return videoToPlay;

@@ -65,7 +65,7 @@ export class AppStateService {
                         localPlaylists.push(playlist);
                     }
                 });
-                console.log('save-local-playlists', localPlaylists)
+                console.log('save-local-playlists', localPlaylists);
                 this.Electron.ipcRenderer.send('save-local-playlists', localPlaylists);
             });
         }

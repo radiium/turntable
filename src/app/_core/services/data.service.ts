@@ -66,7 +66,7 @@ export class DataService {
     }
 
     setSelectedTab(st) {
-        this.selectedTab.next(Object.assign({}, st));
+        this.selectedTab.next(st);
     }
 
     setSuggestsResult(suggestsResult) {

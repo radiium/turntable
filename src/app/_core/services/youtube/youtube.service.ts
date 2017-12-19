@@ -42,7 +42,6 @@ export class YoutubeService {
     private suggestService: SuggestService,
     // private userInfosService: UserInfosService
     ) {
-        console.log('lodash', _);
     }
 
 

@@ -21,8 +21,8 @@ export class PlaylistsService {
             '?part=snippet,status' +
             '&maxResults=' + this.maxResult +
             '&mine=true';
-        console.log('CACACACACACAC', localStorage.getItem('access_token'));
-        return this._http.get<any>(queryUrl, this.getHeaders());
+
+            return this._http.get<any>(queryUrl, this.getHeaders());
     }
 
     // ------------------------------------------------------------------------
