@@ -60,44 +60,44 @@ export class DataService {
 
     constructor() { }
 
-
+    // this.dataStore)
     setUser(user) {
-        this.user.next(user);
+        this.user.next(Object.assign({}, user));
     }
 
     setSelectedTab(st) {
-        this.selectedTab.next(st);
+        this.selectedTab.next(Object.assign({}, st));
     }
 
     setSuggestsResult(suggestsResult) {
-        this.suggestsResult.next(suggestsResult);
+        this.suggestsResult.next(Object.assign({}, suggestsResult));
     }
 
     setSearchResultPL(searchResultPL) {
-        this.searchResultPL.next(searchResultPL);
+        this.searchResultPL.next(searchResultPL.slice());
     }
 
     setPlayListsList(pl) {
-        this.playListsList.next(pl);
+        this.playListsList.next(pl.slice());
     }
 
     setOnEditPlayList(pl) {
-        this.onEditPlaylist.next(pl);
+        this.onEditPlaylist.next(Object.assign({}, pl));
     }
 
     setOnPlayPlayList(pl) {
-        this.onPlayPlaylist.next(pl);
+        this.onPlayPlaylist.next(pl.slice());
     }
 
     setOnPlayHistoricPlayList(pl) {
-        this.onPlayHistoricPlaylist.next(pl);
+        this.onPlayHistoricPlaylist.next(Object.assign({}, pl));
     }
 
     setSearchResultPlaylist(pl) {
-        this.searchResultPlaylist.next(pl);
+        this.searchResultPlaylist.next(Object.assign({}, pl));
     }
 
     setProgressBarValue(pbv) {
-        this.progressBarValue.next(pbv);
+        this.progressBarValue.next(Object.assign({}, pbv));
     }
 }

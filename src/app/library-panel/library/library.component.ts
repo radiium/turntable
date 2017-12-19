@@ -186,7 +186,7 @@ export class LibraryComponent implements OnInit {
                 this.dataService.setPlayListsList(this.playlistsList);
 
                 // Store local playlist in user data
-                this.appState.storeLocalPlaylists();
+                // this.appState.storeLocalPlaylists();
             }
         });
 
