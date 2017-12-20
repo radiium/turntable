@@ -125,10 +125,8 @@ export class AppStateService {
         }
 
         fillVideoList(videoList: Array<Video>) {
-            let newVideoList;
-            if (!videoList || videoList.length === 0) {
-                newVideoList = new Array<Video>();
-            } else {
+            const newVideoList = new Array<Video>();
+            if (videoList || videoList.length > 0) {
                 videoList.forEach(video => {
                     const newVideo = new Video(
                         video.id,
@@ -140,7 +138,6 @@ export class AppStateService {
 
                     newVideoList.push(newVideo);
                 });
-
             }
             return newVideoList;
         }
