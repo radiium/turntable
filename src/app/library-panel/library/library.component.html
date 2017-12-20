@@ -7,7 +7,6 @@
 <!-- Playlist list mode toolbar -->
 <div class="toolBar">
     <mat-toolbar *ngIf="!isEditMode">
-        <button mat-icon-button (click)="snav.toggle()"><mat-icon>menu</mat-icon></button>
         <!-- Create playlist button -->
         <button class="toolbarBtn" mat-raised-button (click)="createPlaylist()">
             <fa aria-label="Create playlist" [name]="'plus'" [size]="1"></fa>

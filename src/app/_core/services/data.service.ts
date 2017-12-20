@@ -92,7 +92,7 @@ export class DataService {
     }
 
     setOnPlayPlayList(pl) {
-        this.onPlayPlaylist.next(pl.slice());
+        this.onPlayPlaylist.next(Object.assign({}, pl));
     }
 
     setOnPlayHistoricPlayList(pl) {
