@@ -251,6 +251,7 @@ export class LibraryComponent implements OnInit {
                 const updatedPlaylistsList = this.playlistsList.filter(function(pl) {
                     return pl.id !== playlist.id;
                 });
+                this.appStateService.storeLocalPlaylists();
                 this.dataService.setPlayListsList(updatedPlaylistsList);
             }
         });
