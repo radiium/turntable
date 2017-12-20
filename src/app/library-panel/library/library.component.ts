@@ -91,8 +91,7 @@ export class LibraryComponent implements OnInit {
         }
 
         // Get playlist list
-        this.dataService.playListsList$
-.subscribe((pl: any) => {
+        this.dataService.playListsList$.subscribe((pl: any) => {
             this.playlistsList = pl;
 
             // Update playlist filter
@@ -101,8 +100,7 @@ export class LibraryComponent implements OnInit {
         });
 
         // Get on edit playlist
-        this.dataService.onEditPlaylist$
-        .subscribe((pl: any) => {
+        this.dataService.onEditPlaylist$.subscribe((pl: any) => {
             this.onEditPlaylist = pl;
         });
 
@@ -180,7 +178,7 @@ export class LibraryComponent implements OnInit {
                 this.dataService.setPlayListsList(this.playlistsList);
 
                 // Store local playlist in user data
-                // this.appState.storeLocalPlaylists();
+                this.appState.storeLocalPlaylists();
             }
         });
 

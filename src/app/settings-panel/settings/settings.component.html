@@ -19,13 +19,26 @@
     </fieldset>
 
     <fieldset>
-        <legend>Export playlists</legend>
-         Work in progress...
-        <button class="toolbarBtn" mat-raised-button disabled>
-        <fa aria-label="Export playlists" [name]="'external-link'" [size]="2"></fa>
-        Export
-        </button>
+        <legend>Playlists</legend>
+
+        <div class="column">
+            <div class="row">
+            <button class="toolbarBtn" mat-raised-button disabled>
+            <fa [name]="'external-link'" [size]="2"></fa>
+            Export all playlist
+            </button>
+            </div>
+
+            <div class="row">
+            <button class="toolbarBtn" mat-raised-button (click)="removeLocalPlaylist()">
+            <fa [name]="'trash'" [size]="2"></fa>
+            Remove local playlist
+            </button>
+            </div>
+
+        </div>
+
     </fieldset>
 
-    </form> 
+    </form>
 </div>

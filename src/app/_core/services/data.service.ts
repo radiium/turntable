@@ -81,6 +81,12 @@ export class DataService {
         this.playListsList.next(pl.slice());
     }
 
+    addPlayListsList(pl) {
+        console.log('pl = ', pl);
+        console.log('playListsList', this.playListsList);
+        // this.playListsList.next(pl.slice());
+    }
+
     setOnEditPlayList(pl) {
         this.onEditPlaylist.next(Object.assign({}, pl));
     }

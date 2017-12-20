@@ -65,7 +65,7 @@ app.on('ready', () => {
         callback({cancel: false, requestHeaders: details.requestHeaders});
     });
 
-    // console.log(storage.getDataPath());
+    console.log('Data path:', storage.getDataPath());
 });
 
 // On close app event
@@ -93,7 +93,7 @@ app.on('before-quit', () => {
 });
 
 
-
+// ----------------------------------------------------------------------------
 // User management
 
 // Store user at signin
@@ -123,14 +123,37 @@ ipcMain.on('send-get-user', (event, arg) => {
 
 
 
+// ----------------------------------------------------------------------------
 // Local playlist management
 
 // Store local playlist
-ipcMain.on('save-local-playlists', (event, localPlaylists) => {
-    console.log('save=', localPlaylists);
+ipcMain.on('send-save-local-playlists', (event, localPlaylists) => {
+    console.log('=> send-save-local-playlists');
+
     storage.set('localPlaylists', localPlaylists, (error) => {
         if (error) { throw error; }
-        console.log('localPlaylists saved');
+        console.log('- localPlaylists saved');
+    });
+});
+
+// Get local playlist from storage
+ipcMain.on('send-get-local-playlists', (event) => {
+    console.log('=> send-get-local-playlists');
+
+    storage.get('localPlaylists', (err, localPlaylists) => {
+        if (err) { throw err; }
+        console.log('- localPlaylists sended');
+        event.sender.send('get-local-playlists', localPlaylists);
+    });
+});
+
+// Remove user from storage at signout
+ipcMain.on('send-remove-local-playlists', (event) => {
+    console.log('=> send-remove-local-playlists');
+
+    storage.remove('localPlaylists', (error) => {
+        if (error) { throw error; }
+        console.log('- localPlaylists removed');
     });
 });
 
@@ -144,14 +167,7 @@ ipcMain.on('remove-local-playlist', (event, user) => {
 });
 */
 
-// Get local playlist from storage
-ipcMain.on('send-get-local-playlists', (event) => {
-    storage.get('localPlaylists', (err, localPlaylists) => {
-        if (err) { throw err; }
-        console.log('get localPlaylists', localPlaylists);
-        // event.sender.send('get-local-playlists', localPlaylists);
-    });
-});
+
 
 
 /*
