@@ -17,6 +17,7 @@
     height: 64px;
     box-shadow: 0 3px 1px -9px rgba(0,0,0,.2),0 2px 2px 0 rgba(0,0,0,.14),0 1px 5px 0 rgba(0,0,0,.12);
 
+    .editField { margin-left: 10px; }
     .filterLocation {
         font-size: 14px;
         margin-left: 18px;
@@ -99,91 +100,92 @@
     flex-wrap: nowrap;
     justify-content: space-between;
     position: relative;
-}
+    box-sizing: border-box;
 
-/* Playlist privacy status */
-.plStatus {
-    z-index: 200;
-    position: absolute;
-    top: 5px;
-    right: 5px;
-    color: darkgray;
-}
+    /* Playlist privacy status */
+    .plStatus {
+        z-index: 200;
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        color: darkgray;
+    }
 
-/* Playlist content */
-.plContent {
-    position: relative;
-    display: flex;
-    align-content: space-around
-}
+    /* Playlist content */
+    .plContent {
+        position: relative;
+        display: flex;
+        align-content: space-around;
 
-/* Background icon */
-.iconBg {
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    color: white;
-    opacity: 0.2;
-    z-index: 5;
-    top: 20px;
-    left: calc(1vw + 20%);
-    right: calc(1vw + 20%);
-}
-.thumbBg {
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    color: white;
-    opacity: 0.4;
-    z-index: 5;
-    text-align: center;
-}
-.thumbBg img {
-    height: 100%;
-}
+        /* Background icon */
+        .iconBg {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            color: white;
+            opacity: 0.2;
+            z-index: 5;
+            top: 20px;
+            left: calc(1vw + 20%);
+            right: calc(1vw + 20%);
+        }
+        .thumbBg {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            color: white;
+            opacity: 0.4;
+            z-index: 5;
+            text-align: center;
 
-/* Content text */
-.plContentInfos {
-    color: white;
-    z-index: 6;
-    margin: 10px 10px 10px 20px;
-    width: calc(100% - 30px);
-    overflow: hidden;
-    text-overflow: ellipsis;
+            img {
+                height: 100%;
+            }
+        }
+
+        /* Content text */
+        .plContentInfos {
+            color: white;
+            z-index: 6;
+            margin: 10px 10px 10px 20px;
+            width: calc(100% - 30px);
+            overflow: hidden;
+            text-overflow: ellipsis;
+
+            .plName { font-size: 1.2rem; font-weight: bold; }
+            .plDesc { font-size: 0.8rem; }
+            .nbrVideo { font-size: 0.8rem; opacity: 0.8;}
+        }
+    }
+
+    /* Playlist footer */
+    .plFooter {
+        width: 100%;
+        position: relative;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: space-between;
+        background-color: rgba(255, 255, 255, 0.1);
+
+        &.localPl { border-top: 2px solid #448aff; }
+        &.notlocalPl { border-top: 2px solid #cc181e; }
+
+        /* playlist control */
+        .plBtn {
+            cursor: pointer;
+            width: 34px !important;
+            height: 34px;
+            border: none;
+            background-color: transparent;
+            color: white;
+        }
+
+        .playBtn:hover { color: #48b735 }
+        .editBtn:hover { color: #248fd6 }
+        .deleteBtn:hover { color: #e83e3e }
+
+        .spacerBtn { width: 100px; }
+    }
+
 }
-.plName { font-size: 1.2rem; font-weight: bold; }
-.plDesc { font-size: 0.8rem; }
-.nbrVideo { font-size: 0.8rem; opacity: 0.8;}
-
-/* Playlist footer */
-.plFooter {
-    width: 100%;
-    position: relative;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    justify-content: space-between;
-    background-color: rgba(255, 255, 255, 0.1);
-}
-
-/* playlist control */
-.plBtn {
-    cursor: pointer;
-    width: 34px !important;
-    height: 34px;
-    border: none;
-    background-color: transparent;
-    color: white;
-}
-
-.playBtn:hover { color: #48b735 }
-.editBtn:hover { color: #248fd6 }
-.deleteBtn:hover { color: #e83e3e }
-
-.spacerBtn { width: 100px; }
-
-/*
-.plPanelContent mat-grid-tile:hover .playBtn { color: #48b735 }
-.plPanelContent mat-grid-tile:hover .editBtn { color: #248fd6 }
-.plPanelContent mat-grid-tile:hover .deleteBtn { color: #e83e3e }
-*/

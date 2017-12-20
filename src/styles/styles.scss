@@ -117,3 +117,18 @@ mat-progress-bar {
 .mat-progress-bar-buffer {
     background-color: transparent !important;
 }
+
+.local:not(.mat-radio-disabled) {
+    color: #448aff !important;
+    .mat-radio-outer-circle { border-color: #448aff !important; }
+}
+.notlocal:not(.mat-radio-disabled) {
+    color: #cc181e !important;
+    .mat-radio-outer-circle { border-color: #cc181e !important; }
+    .mat-radio-inner-circle { background-color: #cc181e !important; }
+    &.mat-radio-checked {
+        color: #cc181e !important;
+        .mat-radio-outer-circle { border-color: #cc181e !important; }
+        .mat-radio-inner-circle { background-color: #cc181e !important; }
+    }
+}

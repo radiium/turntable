@@ -32,8 +32,8 @@
         <span class="filterLocation">
             <mat-radio-group [(ngModel)]="filterLocation">
             <mat-radio-button value="all" [disabled]="allPlaylisLocation === 'youtube' || allPlaylisLocation === 'local'">All</mat-radio-button>
-            <mat-radio-button value="true" [disabled]="allPlaylisLocation === 'youtube'">Local</mat-radio-button>
-            <mat-radio-button value="false"[disabled]="allPlaylisLocation === 'local'">Youtube</mat-radio-button>
+            <mat-radio-button value="true" [disabled]="allPlaylisLocation === 'youtube'" class="local">Local</mat-radio-button>
+            <mat-radio-button value="false"[disabled]="allPlaylisLocation === 'local'" class="notlocal">Youtube</mat-radio-button>
             </mat-radio-group>
         </span>
 
@@ -65,11 +65,27 @@
             Save playlist
         </button>
 
-        <!-- Save playlist on youtube button -->
-        <button class="toolbarBtn"  mat-raised-button (click)="saveOnEditPlaylist()">
-            <fa aria-label="Save playlist" [name]="'floppy-o'" [size]="1"></fa>
-            Save on youtube
-        </button>
+        <!-- Save playlist on youtube button
+            <button class="toolbarBtn" mat-raised-button (click)="saveOnEditPlaylist()">
+                <fa aria-label="Save playlist" [name]="'floppy-o'" [size]="1"></fa>
+                Save on youtube
+            </button>
+        -->
+
+        <!-- Set playlist title -->
+        <mat-form-field [floatLabel]="'never'" class="editField">
+            <input matInput type="text" [(ngModel)]="onEditPlaylist.title"
+            [ngModelOptions]="{standalone: true}" placeholder="Title" required>
+        </mat-form-field>
+
+        <!-- Set playlist privacyStatus -->
+        <mat-form-field class="editField">
+            <mat-select placeholder="{{ placeholderItemType }}"
+            [(ngModel)]="onEditPlaylist.privacyStatus" [ngModelOptions]="{standalone: true}">
+            <mat-option [value]="'public'">Public</mat-option>
+            <mat-option [value]="'private'">Private</mat-option>
+            </mat-select>
+        </mat-form-field>
 
         <span class="spacerToolbar"></span>
     </mat-toolbar>
@@ -97,11 +113,11 @@
                 <div class="plBox">
 
                     <!-- Privacy status playlist icons -->
-                    <div *ngIf="pl.privacyStatus === 'private'" matTooltip="Playlist private" [matTooltipPosition]="'below'" class="plStatus private">
+                    <div *ngIf="pl.privacyStatus === 'private' && !pl.isLocal" matTooltip="Playlist private" [matTooltipPosition]="'below'" class="plStatus private">
                     <fa aria-label="Playlist private" [name]="'lock'" [size]="1"></fa>
                     </div>
 
-                    <div *ngIf="pl.privacyStatus === 'public'" matTooltip="Playlist public" [matTooltipPosition]="'below'" class="plStatus public">
+                    <div *ngIf="pl.privacyStatus === 'public' && !pl.isLocal" matTooltip="Playlist public" [matTooltipPosition]="'below'" class="plStatus public">
                     <fa aria-label="Playlist public" [name]="'globe'" [size]="1"></fa>
                     </div>
 
@@ -118,7 +134,7 @@
                         </div>
                     </div>
 
-                    <div class="plFooter">
+                    <div class="plFooter" [class.localPl]="pl.isLocal" [class.notlocalPl]="!pl.isLocal">
                         <!-- Play playlist button -->
                         <button  class="playBtn plBtn" (click)="playPlaylist(pl)" matTooltip="Play playlist!" [matTooltipPosition]="'above'">
                         <fa aria-label="Edit playlist" [name]="'play'" [size]="2"></fa>

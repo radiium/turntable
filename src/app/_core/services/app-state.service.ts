@@ -23,18 +23,13 @@ export class AppStateService {
     ) {
         this.isElectronApp = this.electron.isElectronApp;
 
-
         this.playListsList = new Array<Playlist>();
-        this.dataService.playListsList$
-        .subscribe((pll) => {
-            console.log('subscribe', pll);
+        this.dataService.playListsList$.subscribe((pll) => {
             this.playListsList = pll;
         });
     }
 
-
     loadAppState() {
-
         if (this.isElectronApp) {
             // Retrieve previous user on start up and reload app
             this.electron.ipcRenderer.send('send-get-user');
@@ -65,81 +60,87 @@ export class AppStateService {
 
     }
 
-        // Retrieve and store local playlist
-        storeLocalPlaylists() {
+    // Retrieve and store local playlist
+    storeLocalPlaylists() {
+        if (this.isElectronApp) {
+            console.log('storeLocalPlaylists');
 
-            if (this.isElectronApp) {
-                console.log('storeLocalPlaylists');
-
-                this.dataService.playListsList$.subscribe((pll) => {
-                    console.log('current playlistslist', pll);
-                    const localPlaylists = new Array<Playlist>();
-                    pll.forEach(playlist => {
-                        if (playlist.isLocal) {
-                            localPlaylists.push(playlist);
-                        }
-                    });
-                    console.log('save-local-playlists', localPlaylists);
-                    this.Electron.ipcRenderer.send('send-save-local-playlists', localPlaylists);
-                });
-            }
-        }
-
-        loadLocalPlaylist() {
-            if (this.isElectronApp) {
-                // Load local playlist
-                this.Electron.ipcRenderer.send('send-get-local-playlists');
-                this.Electron.ipcRenderer.on('get-local-playlists', (event, localPlaylist) => {
-                    if (localPlaylist) {
-                        localPlaylist.forEach(playlist => {
-                            const pl = this.fillPlaylist(playlist);
-                            this.playListsList.push(pl);
-                        });
-                        this.dataService.setPlayListsList(this.playListsList);
+            this.dataService.playListsList$.subscribe((pll) => {
+                console.log('current playlistslist', pll);
+                const localPlaylists = new Array<Playlist>();
+                pll.forEach(playlist => {
+                    if (playlist.isLocal) {
+                        localPlaylists.push(playlist);
                     }
                 });
-            }
+                console.log('save-local-playlists', localPlaylists);
+                this.Electron.ipcRenderer.send('send-save-local-playlists', localPlaylists);
+            });
         }
+    }
 
-        removeLocalPlaylist() {
-            if (this.isElectronApp) {
-            }
-
+    loadLocalPlaylist() {
+        if (this.isElectronApp) {
+            // Load local playlist
+            this.Electron.ipcRenderer.send('send-get-local-playlists');
+            this.Electron.ipcRenderer.on('get-local-playlists', (event, localPlaylist) => {
+                if (localPlaylist) {
+                    localPlaylist.forEach(playlist => {
+                        const pl = this.fillPlaylist(playlist);
+                        this.playListsList.push(pl);
+                    });
+                    this.dataService.setPlayListsList(this.playListsList);
+                }
+            });
         }
+    }
 
-
-        fillPlaylist(pl: Playlist) {
-            const playlist = new Playlist(
-                pl.id,
-                pl.title,
-                pl.description,
-                pl.thumbUrl,
-                pl.thumbH,
-                pl.thumbW,
-                pl.publishedAt,
-                pl.privacyStatus,
-                pl.isLocal,
-                this.fillVideoList(pl.videolist)
-            );
-            return playlist;
+    removeLocalPlaylist() {
+        if (this.isElectronApp) {
+            this.Electron.ipcRenderer.send('send-remove-local-playlists');
+            const pll = new Array<Playlist>();
+            this.playListsList.forEach(playlist => {
+                if (!playlist.isLocal) {
+                    pll.push(playlist);
+                }
+            });
+            this.dataService.setPlayListsList(pll);
         }
+    }
 
-        fillVideoList(videoList: Array<Video>) {
-            const newVideoList = new Array<Video>();
-            if (videoList || videoList.length > 0) {
-                videoList.forEach(video => {
-                    const newVideo = new Video(
-                        video.id,
-                        video.title,
-                        video.description,
-                        video.thumbUrl,
-                        video.duration
-                    );
 
-                    newVideoList.push(newVideo);
-                });
-            }
-            return newVideoList;
+    fillPlaylist(pl: Playlist) {
+        const playlist = new Playlist(
+            pl.id,
+            pl.title,
+            pl.description,
+            pl.thumbUrl,
+            pl.thumbH,
+            pl.thumbW,
+            pl.publishedAt,
+            pl.privacyStatus,
+            pl.isLocal,
+            this.fillVideoList(pl.videolist)
+        );
+        return playlist;
+    }
+
+    fillVideoList(videoList: Array<Video>) {
+        const newVideoList = new Array<Video>();
+        if (videoList || videoList.length > 0) {
+            videoList.forEach(video => {
+                const newVideo = new Video(
+                    video.id,
+                    video.title,
+                    video.description,
+                    video.thumbUrl,
+                    video.duration
+                );
+
+                newVideoList.push(newVideo);
+            });
         }
+        return newVideoList;
+    }
 
 }

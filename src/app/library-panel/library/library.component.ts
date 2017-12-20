@@ -5,6 +5,7 @@ import { FormGroup, FormControl } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/map';
+import * as _ from 'lodash';
 
 import { Video, Playlist } from '../../_core/models';
 import { UtilsService } from '../../_core/services/utils.service';
@@ -187,9 +188,8 @@ export class LibraryComponent implements OnInit {
     // Edit the selected playlist
     editPlaylist(playlist) {
         this.isEditMode = true;
-        const pl = this.utils.copyPlaylist(playlist);
-        this.dataService.setOnEditPlayList(pl);
-        this.originalOnEditPlaylist = this.utils.copyPlaylist(pl);
+        this.dataService.setOnEditPlayList(playlist);
+        this.originalOnEditPlaylist = _.cloneDeep(playlist);
     }
 
     // Save the on edit playlist
@@ -209,17 +209,13 @@ export class LibraryComponent implements OnInit {
 
     // Return button (cancel modification)
     return() {
-        // Check if onEditPlaylist is modified
-        const isPlaylistModified = !this.utils.isVideolistEqual(
-            this.onEditPlaylist.videolist,
-            this.originalOnEditPlaylist.videolist);
-
-        if (isPlaylistModified) {
+        const isEqual = _.isEqual(this.onEditPlaylist, this.originalOnEditPlaylist);
+        if (!isEqual) {
             const dialogRef = this.dialog.open(ConfirmDialogComponent, {
                 data: { title: 'Cancel modification?' }
             });
-            dialogRef.afterClosed().subscribe(isDelete => {
-                if (isDelete) {
+            dialogRef.afterClosed().subscribe(cancel => {
+                if (cancel) {
                     this.isEditMode = false;
                     this.dataService.setOnEditPlayList(null);
                     this.dataService.setSearchResultPlaylist(null);

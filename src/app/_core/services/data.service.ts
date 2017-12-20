@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
 import { ElectronService } from 'ngx-electron';
+import * as _ from 'lodash';
 
 import { User, Playlist, Video, Suggests } from '../models';
 
@@ -62,7 +63,7 @@ export class DataService {
 
     // this.dataStore)
     setUser(user) {
-        this.user.next(Object.assign({}, user));
+        this.user.next(_.cloneDeep(user));
     }
 
     setSelectedTab(st) {
@@ -70,40 +71,34 @@ export class DataService {
     }
 
     setSuggestsResult(suggestsResult) {
-        this.suggestsResult.next(Object.assign({}, suggestsResult));
+        this.suggestsResult.next(_.cloneDeep(suggestsResult));
     }
 
     setSearchResultPL(searchResultPL) {
-        this.searchResultPL.next(searchResultPL.slice());
+        this.searchResultPL.next(_.cloneDeep(searchResultPL));
     }
 
     setPlayListsList(pl) {
-        this.playListsList.next(pl.slice());
-    }
-
-    addPlayListsList(pl) {
-        console.log('pl = ', pl);
-        console.log('playListsList', this.playListsList);
-        // this.playListsList.next(pl.slice());
+        this.playListsList.next(_.cloneDeep(pl));
     }
 
     setOnEditPlayList(pl) {
-        this.onEditPlaylist.next(Object.assign({}, pl));
+        this.onEditPlaylist.next(_.cloneDeep(pl));
     }
 
     setOnPlayPlayList(pl) {
-        this.onPlayPlaylist.next(Object.assign({}, pl));
+        this.onPlayPlaylist.next(_.cloneDeep(pl));
     }
 
     setOnPlayHistoricPlayList(pl) {
-        this.onPlayHistoricPlaylist.next(Object.assign({}, pl));
+        this.onPlayHistoricPlaylist.next(_.cloneDeep(pl));
     }
 
     setSearchResultPlaylist(pl) {
-        this.searchResultPlaylist.next(Object.assign({}, pl));
+        this.searchResultPlaylist.next(_.cloneDeep(pl));
     }
 
     setProgressBarValue(pbv) {
-        this.progressBarValue.next(Object.assign({}, pbv));
+        this.progressBarValue.next(_.cloneDeep(pbv));
     }
 }

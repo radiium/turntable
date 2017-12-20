@@ -4,6 +4,7 @@ import { ElectronService } from 'ngx-electron';
 
 import { ConfirmDialogComponent } from '../../_shared/components/confirm-dialog/confirm-dialog.component';
 import { DataService } from '../../_core/services/data.service';
+import { AppStateService } from '../../_core/services/app-state.service';
 import { Playlist } from '../../_core/models';
 
 @Component({
@@ -30,6 +31,7 @@ export class SettingsComponent implements OnInit {
     constructor(
     private Electron: ElectronService,
     private dataService: DataService,
+    private appStateService: AppStateService,
     public dialog: MatDialog
     ) {
         this.dataService.playListsList$
@@ -47,14 +49,7 @@ export class SettingsComponent implements OnInit {
         });
         dialogRef.afterClosed().subscribe(isDelete => {
             if (isDelete) {
-                this.Electron.ipcRenderer.send('send-remove-local-playlists');
-                const pll = new Array<Playlist>();
-                this.playListsList.forEach(playlist => {
-                    if (!playlist.isLocal) {
-                        pll.push(playlist);
-                    }
-                });
-                this.dataService.setPlayListsList(pll);
+                this.appStateService.removeLocalPlaylist();
             }
         });
     }

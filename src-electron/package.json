@@ -19,5 +19,9 @@
     },
     "keywords": ["electron", "youtube", "youtubeplayer", "dj", "angular", "javascript","typescript" ],
     "private": true,
-    "main": "main.js"
+    "main": "main.js",
+    "dependencies": {
+        "electron-context-menu": "^0.9.1",
+        "electron-json-storage": "^4.0.2"
+    }
 }
