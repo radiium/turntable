@@ -10,13 +10,28 @@ import { devMenuTemplate } from './menu/dev_menu.template';
 import { fileMenuTemplate } from './menu/file_menu.template';
 import { editMenuTemplate } from './menu/edit_menu.template';
 import { session } from 'electron';
-
+import * as contextMenu from 'electron-context-menu';
 import * as storage from 'electron-json-storage';
 
 // Init variable
 let mainWindow: any = null;
 const menus: any[] = [];
 const isDev = process.env.NODE_ENV === 'development' ? true : false;
+
+if (isDev) {
+    // Init context menu
+    contextMenu({
+        prepend: (params, browserWindow) => [
+            /*
+            {
+            label: 'Rainbow',
+            // Only show it when right-clicking images
+            visible: true // params.mediaType === 'image'
+            }
+            */
+    ]
+    });
+}
 
 // Create main window
 const createMainWindow = async () => {
