@@ -33,6 +33,7 @@ import * as _ from 'lodash';
 export class YoutubeService {
 
 
+    playlistList: Array<Playlist> = new Array<Playlist>();
     constructor(
     private playlistsService: PlaylistsService,
     private playlistItemsService: PlaylistItemsService,
@@ -42,6 +43,9 @@ export class YoutubeService {
     private suggestService: SuggestService,
     // private userInfosService: UserInfosService
     ) {
+        this.dataService.playListsList$.subscribe((pll) => {
+            this.playlistList = pll;
+        });
     }
 
 
@@ -142,8 +146,9 @@ export class YoutubeService {
             return Observable.forkJoin(aRequest);
         })
         .subscribe((playlistList) => {
-            this.dataService.setProgressBarValue(99);
+            this.dataService.setProgressBarValue(100);
 
+            /*
             this.dataService.setPlayListsList(playlistList);
             // this.playListsList.push(playlistList); ------------------------------------ <===
 
@@ -153,6 +158,13 @@ export class YoutubeService {
                     playlistList.push(playlist);
                 });
             });
+            */
+
+            playlistList.forEach((playlist: Playlist) => {
+                this.playlistList.push(playlist);
+            });
+            this.dataService.setPlayListsList(this.playlistList);
+
         });
     }
 
