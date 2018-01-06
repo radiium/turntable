@@ -1,9 +1,3 @@
-<!-- Progress bar -->
-<!--
-<div class="progressBarGray" *ngIf="isProgressBar"></div>
-
--->
-
 <!-- Playlist list mode toolbar -->
 <div class="toolBar">
     <mat-toolbar *ngIf="!isEditMode">
@@ -113,11 +107,11 @@
                 <div class="plBox">
 
                     <!-- Privacy status playlist icons -->
-                    <div *ngIf="pl.privacyStatus === 'private' && !pl.isLocal" matTooltip="Playlist private" [matTooltipPosition]="'below'" class="plStatus private">
+                    <div *ngIf="pl.privacyStatus === 'private' && !pl.isLocal" class="plStatus private">
                     <fa aria-label="Playlist private" [name]="'lock'" [size]="1"></fa>
                     </div>
 
-                    <div *ngIf="pl.privacyStatus === 'public' && !pl.isLocal" matTooltip="Playlist public" [matTooltipPosition]="'below'" class="plStatus public">
+                    <div *ngIf="pl.privacyStatus === 'public' && !pl.isLocal" class="plStatus public">
                     <fa aria-label="Playlist public" [name]="'globe'" [size]="1"></fa>
                     </div>
 
@@ -136,19 +130,19 @@
 
                     <div class="plFooter" [class.localPl]="pl.isLocal" [class.notlocalPl]="!pl.isLocal">
                         <!-- Play playlist button -->
-                        <button  class="playBtn plBtn" (click)="playPlaylist(pl)" matTooltip="Play playlist!" [matTooltipPosition]="'above'">
+                        <button  class="playBtn plBtn" (click)="playPlaylist(pl)">
                         <fa aria-label="Edit playlist" [name]="'play'" [size]="2"></fa>
                         </button>
 
                         <div class="spacerBtn"></div>
 
                         <!-- Edit playlist button -->
-                        <button class="editBtn plBtn" (click)="editPlaylist(pl)" matTooltip="Edit playlist!" [matTooltipPosition]="'above'">
+                        <button class="editBtn plBtn" (click)="editPlaylist(pl)">
                         <fa aria-label="Edit playlist" [name]="'pencil'" [size]="2"></fa>
                         </button>
 
                         <!-- Remove playlist button -->
-                        <button class="deleteBtn plBtn" (click)="deletePlaylist(pl)" matTooltip="Delete playlist!" [matTooltipPosition]="'above'">
+                        <button class="deleteBtn plBtn"(click)="deletePlaylist(pl)" >
                         <fa aria-label="Delete playlist" [name]="'trash'" [size]="2"></fa>
                         </button>
                     </div>

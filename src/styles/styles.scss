@@ -59,10 +59,18 @@ mat-progress-bar {
 .mat-tab-group { height: 100%; }
 .mat-tab-header,
 .mat-tab-nav-bar { border-bottom: 10px solid #f5f5f5 !important; }
-.mat-tab-body-wrapper { padding: 5px; height: 100%; }
+.mat-tab-body-wrapper { height: 100%; }
 .mat-tab-body { height: 100%; }
 .mat-tab-label { height: 32px !important; min-width: 100px !important; }
+.mat-tab-body { padding: 5px; }
 .mat-tab-body-content { //height: auto !important;
+}
+.mat-tab-label-active {
+    background-color: #f5f5f5 !important;
+    opacity: 1 !important;
+}
+.mat-ink-bar {
+    background-color: #f5f5f5 !important;
 }
 
 
@@ -122,6 +130,8 @@ mat-progress-bar {
     color: #448aff !important;
     .mat-radio-outer-circle { border-color: #448aff !important; }
 }
+
+// Local / notlocal playlist color radio button filter
 .notlocal:not(.mat-radio-disabled) {
     color: #cc181e !important;
     .mat-radio-outer-circle { border-color: #cc181e !important; }
@@ -132,3 +142,5 @@ mat-progress-bar {
         .mat-radio-inner-circle { background-color: #cc181e !important; }
     }
 }
+
+

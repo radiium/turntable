@@ -100,7 +100,7 @@
                 <!-- Only delete btn Edit panel -->
                 <div *ngIf="type === 'edit'">
                     <!-- Delete video button -->
-                    <button matTooltip="Delete video!" [matTooltipPosition]="'above'" mat-mini-fab color="warn" (click)="deleteVideo(video.id)" class="deleteBtn">
+                    <button mat-mini-fab color="warn" (click)="deleteVideo(video.id)" class="deleteBtn">
                         <fa [name]="'trash'" [size]="2"></fa>
                     </button>
                 </div>
@@ -108,17 +108,17 @@
                 <!-- All btn Player control -->
                 <div *ngIf="type === 'player'" class="videoControl">
                     <!-- Play at left button -->
-                    <button matTooltip="Play at left !" [matTooltipPosition]="'above'" mat-mini-fab color="primary" (click)="playAtLeft(video)" class="leftBtn mix-btn">
+                    <button mat-mini-fab color="primary" (click)="playAtLeft(video)" class="leftBtn mix-btn">
                     <fa [name]="'play'" [size]="2" [rotate]="180" ></fa>
                     </button>
 
                     <!-- Delete video button -->
-                    <button matTooltip="Delete video!" [matTooltipPosition]="'above'"  mat-mini-fab color="warn" (click)="deleteVideo(video.id)" class="mix-btn">
+                    <button mat-mini-fab color="warn" (click)="deleteVideo(video.id)" class="mix-btn">
                     <fa [name]="'trash'" [size]="2"></fa>
                     </button>
 
                     <!-- Play at right button -->
-                    <button matTooltip="Play at right !" [matTooltipPosition]="'above'" mat-mini-fab color="primary" (click)="playAtRight(video)" class="rightBtn mix-btn">
+                    <button mat-mini-fab color="primary" (click)="playAtRight(video)" class="rightBtn mix-btn">
                     <fa [name]="'play'" [size]="2" ></fa>
                     </button>
                 </div>
@@ -135,7 +135,7 @@
                 <!-- Only delete btn Edit panel -->
                 <div *ngIf="type === 'edit'">
                     <!-- Delete video button -->
-                    <button matTooltip="Delete video!" [matTooltipPosition]="'above'" mat-mini-fab color="warn" (click)="deleteVideo(video.id)" class="deleteBtn">
+                    <button mat-mini-fab color="warn" (click)="deleteVideo(video.id)" class="deleteBtn">
                         <fa [name]="'trash'" [size]="2"></fa>
                     </button>
                 </div>
@@ -143,12 +143,12 @@
                 <!-- All btn Player control -->
                 <div *ngIf="type === 'player'" class="videoControl">
                     <!-- Add to playlist button -->
-                    <button matTooltip="Replace in playlist!" [matTooltipPosition]="'above'" mat-mini-fab color="primary" (click)="addToPlaylist(video)" class="leftBtn mix-btn">
+                    <button mat-mini-fab color="primary" (click)="addToPlaylist(video)" class="leftBtn mix-btn">
                     <fa [name]="'reply'" [size]="2"></fa>
                     </button>
 
                     <!-- Delete video button -->
-                    <button matTooltip="Delete video!" [matTooltipPosition]="'above'"  mat-mini-fab color="warn" (click)="deleteVideoHistoric(video.id)" class="mix-btn">
+                    <button mat-mini-fab color="warn" (click)="deleteVideoHistoric(video.id)" class="mix-btn">
                     <fa [name]="'trash'" [size]="2"></fa>
                     </button>
                 </div>
@@ -169,7 +169,7 @@
         <div class="editPlaylistContent" #autoscrollRight>
             <div *ngIf="searchResultsList" class="playlist" [dragula]="'drag-drop-list'" [dragulaModel]="searchResultsList" [attr.data-accept-drop]="false">
 
-                <li *ngFor="let video of searchResultsList" class="videoItem" [attr.data-id]="video.id" [attr.data-movable]="true" >
+                <li *ngFor="let video of searchResultsList" class="videoItem" [attr.data-id]="video.id" [attr.data-movable]="true" (touchstart)="$event.preventDefault()" >
                 <app-playlist-item class="videoInfos" [video]="video"></app-playlist-item>
                 </li>
 

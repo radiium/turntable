@@ -1,6 +1,6 @@
 <div id="appContainer">
 
-        <mat-tab-group [selectedIndex]="selectedTab" (selectedTabChange)="onTabChange($event)">
+        <mat-tab-group [selectedIndex]="selectedTab" (selectedTabChange)="onTabChange($event)" disableRipple>
             <mat-tab label="Library">
             <app-library-panel class="tabContentCpnt"></app-library-panel>
             </mat-tab>

@@ -22,6 +22,7 @@ export class SearchBarComponent implements OnInit {
     search: FormControl = new FormControl();
     query: String;
     suggestsResult: String[];
+    suggestsBox: boolean;
     selectedSugest: String;
     arrowkeyLocation = -1;
 
@@ -34,6 +35,12 @@ export class SearchBarComponent implements OnInit {
         this.dataService.suggestsResult$.subscribe((suggestsResult) => {
             this.query = suggestsResult.query;
             this.suggestsResult = suggestsResult.suggests;
+        });
+
+        // Get suggests results
+        this.dataService.setSuggestsBox(false);
+        this.dataService.suggestsBox$.subscribe((suggestsBox) => {
+            this.suggestsBox = suggestsBox;
         });
     }
 
@@ -58,8 +65,10 @@ export class SearchBarComponent implements OnInit {
             if (this.search.value === '') {
                 this.dataService.setSuggestsResult({});
                 this.dataService.setSearchResultPL([]);
+                this.dataService.setSuggestsBox(false);
             } else {
                 this.dataService.setSuggestsResult(suggests);
+                this.dataService.setSuggestsBox(true);
             }
         });
     }
@@ -70,6 +79,7 @@ export class SearchBarComponent implements OnInit {
         this.selectedSugest = suggest;
         this.search.setValue(suggest);
         this.searchVideos(suggest);
+        this.dataService.setSuggestsBox(false);
     }
 
     // Search videos by selected suggest

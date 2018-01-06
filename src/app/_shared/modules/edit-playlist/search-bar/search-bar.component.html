@@ -1,10 +1,11 @@
 <div id="searchBar" (keydown)="getKey($event)">
     <div id="searchBox">
         <input [formControl]="search" type="text" name="searchBar" placeholder="Search videos...">
+        {{ query }}
         <input type="button" name="searchBtn" value="search">
     </div>
 
-    <div id="suggestsBox" *ngIf="query && query !== selectedSugest">
+    <div id="suggestsBox" *ngIf="suggestsBox" appClickOutside>
         <div *ngFor="let suggest of suggestsResult; let i = index"
             [class.active]="i == arrowkeyLocation" class="suggestItem"
             (click)="selectSuggestion(query + suggest)">
@@ -13,7 +14,7 @@
         </div>
     </div>
 
-    <div *ngIf="suggestsResult?.length < 1 && query">
+    <div *ngIf="suggestsBox && suggestsResult?.length < 1">
         <hr>
         <p>No results found :(</p>
     </div>

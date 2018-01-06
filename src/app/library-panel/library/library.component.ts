@@ -205,6 +205,7 @@ export class LibraryComponent implements OnInit {
         this.dataService.setPlayListsList(pll);
         this.dataService.setOnEditPlayList(null);
         this.dataService.setSearchResultPlaylist(null);
+        this.appStateService.storeLocalPlaylists();
     }
 
     // Return button (cancel modification)
@@ -212,10 +213,12 @@ export class LibraryComponent implements OnInit {
         const isEqual = _.isEqual(this.onEditPlaylist, this.originalOnEditPlaylist);
         if (!isEqual) {
             const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-                data: { title: 'Cancel modification?' }
+                data: { title: 'Save modification?' }
             });
-            dialogRef.afterClosed().subscribe(cancel => {
-                if (cancel) {
+            dialogRef.afterClosed().subscribe(save => {
+                if (save) {
+                    this.saveOnEditPlaylist();
+                } else {
                     this.isEditMode = false;
                     this.dataService.setOnEditPlayList(null);
                     this.dataService.setSearchResultPlaylist(null);

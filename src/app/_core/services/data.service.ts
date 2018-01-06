@@ -24,6 +24,11 @@ export class DataService {
     public  suggestsResult$ = this.suggestsResult.asObservable();
 
 
+    // Suggest box state
+    private suggestsBox  = new Subject<boolean>();
+    public  suggestsBox$ = this.suggestsBox.asObservable();
+
+
     // Search result PlayList
     private searchResultPL  = new Subject<Video[]>();
     public  searchResultPL$ = this.searchResultPL.asObservable();
@@ -61,7 +66,7 @@ export class DataService {
 
     constructor() { }
 
-    // this.dataStore)
+
     setUser(user) {
         this.user.next(_.cloneDeep(user));
     }
@@ -72,6 +77,10 @@ export class DataService {
 
     setSuggestsResult(suggestsResult) {
         this.suggestsResult.next(_.cloneDeep(suggestsResult));
+    }
+
+    setSuggestsBox(suggestsBox) {
+        this.suggestsBox.next(suggestsBox);
     }
 
     setSearchResultPL(searchResultPL) {

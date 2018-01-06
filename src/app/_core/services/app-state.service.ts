@@ -31,17 +31,14 @@ export class AppStateService {
 
     loadAppState() {
         if (this.isElectronApp) {
+            console.log('===== loadAppState');
             // Retrieve previous user on start up and reload app
             this.electron.ipcRenderer.send('send-get-user');
             this.electron.ipcRenderer.on('get-user', (event, user) => {
-
                 if (Object.keys(user).length !== 0) {
-
                     // Check if user is authenticated
                     this.authService.checkAuth().subscribe((resp) => {
                         if (!resp['error']) {
-
-                            // Load data from youtube
                             this.dataService.setUser(user);
                             this.authService.storeToken(user.token);
                             this.YTService.fetchYoutubePlaylist();
@@ -53,7 +50,6 @@ export class AppStateService {
             // Load local playlist on start up app
             this.loadLocalPlaylist();
         }
-
     }
 
     saveAppState() {
@@ -63,25 +59,20 @@ export class AppStateService {
     // Retrieve and store local playlist
     storeLocalPlaylists() {
         if (this.isElectronApp) {
-            console.log('storeLocalPlaylists');
-
-            this.dataService.playListsList$.subscribe((pll) => {
-                console.log('current playlistslist', pll);
-                const localPlaylists = new Array<Playlist>();
-                pll.forEach(playlist => {
-                    if (playlist.isLocal) {
-                        localPlaylists.push(playlist);
-                    }
-                });
-                console.log('save-local-playlists', localPlaylists);
-                this.Electron.ipcRenderer.send('send-save-local-playlists', localPlaylists);
+            console.log('===== storeLocalPlaylists');
+            const localPlaylists = new Array<Playlist>();
+            this.playListsList.forEach(playlist => {
+                if (playlist.isLocal) {
+                    localPlaylists.push(playlist);
+                }
             });
+            this.Electron.ipcRenderer.send('send-save-local-playlists', localPlaylists);
         }
     }
 
     loadLocalPlaylist() {
         if (this.isElectronApp) {
-            // Load local playlist
+            console.log('===== loadLocalPlaylist');
             this.Electron.ipcRenderer.send('send-get-local-playlists');
             this.Electron.ipcRenderer.on('get-local-playlists', (event, localPlaylist) => {
                 if (localPlaylist) {
@@ -97,6 +88,7 @@ export class AppStateService {
 
     removeLocalPlaylist() {
         if (this.isElectronApp) {
+            console.log('===== removeLocalPlaylist');
             this.Electron.ipcRenderer.send('send-remove-local-playlists');
             const pll = new Array<Playlist>();
             this.playListsList.forEach(playlist => {

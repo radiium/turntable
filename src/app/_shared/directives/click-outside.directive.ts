@@ -13,6 +13,8 @@ export class ClickOutsideDirective {
 
     @HostListener('document:click', ['$event', '$event.target'])
     public onClick(event: MouseEvent, targetElement: HTMLElement): void {
+        console.log('event', event);
+        console.log('targetElement', targetElement);
         if (!targetElement || targetElement.id === 'menuBtn') {
             return;
         }
