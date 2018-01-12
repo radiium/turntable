@@ -1,96 +1,279 @@
 
-.progressBarGray {
-    position: absolute;
-    background-color: rgba(0,0,0,.5);
-    /*height: calc(100% - 64px);*/
-    width: 100%;
-    z-index: 99998;
-}
+#libraryContainer {
+    height: calc(100% - 10px);
 
-/*************************
-         Toolbar
-*************************/
-.toolBar {
-    z-index: 1000;
-    width: calc(100% - 10px);
-    position: fixed;
-    height: 64px;
-    box-shadow: 0 3px 1px -9px rgba(0,0,0,.2),0 2px 2px 0 rgba(0,0,0,.14),0 1px 5px 0 rgba(0,0,0,.12);
+    .libContainer {
 
-    .editField { margin-left: 10px; }
-    .filterLocation {
-        font-size: 14px;
-        margin-left: 18px;
+    }
 
-        >.mat-radio-button {
-            margin-right: 10px !important;
+    // Miscelanous
+    .spacerToolbar { flex: 1 1 auto; }
+    .progressBarGray {
+        position: absolute;
+        background-color: rgba(0,0,0,.5);
+        /*height: calc(100% - 64px);*/
+        width: 100%;
+        z-index: 99998;
+    }
+
+
+
+    // *****************************
+    // Playlist panel
+    #playlistPanel {
+        overflow: auto;
+        height: calc(100%);
+        background-color: transparent;
+
+        .mat-grid-list { margin: 0 !important; }
+        .mat-grid-tile { background: #242320; }
+        .mat-sidenav {
+            background-color: whitesmoke;
+        }
+
+        .sidenavContainerPL {
+            height: calc(100% - 40px);
+            background-color: transparent;
+        }
+
+        // ***********************
+        // Toolbar PL
+        .toolbarPl {
+            height: 40px;
+            padding: 0 10px 0 0 ;
+
+            // Toolbar ico
+            .toolbarPLIco {
+                color: gray;
+                width: 40px;
+                height: 40px;
+                text-align: center;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .toggleSidenav {
+                cursor: pointer;
+                &:hover { background-color: #EAEBEA; }
+            }
+
+            // Search box
+            .searchPL {
+                display: flex;
+                flex-direction: row;
+                width: 198px;
+
+                .searchIco {
+                    // position: absolute;
+                }
+                .searchPLBox {
+                    position: relative;
+                    width: 100%;
+
+                    .searchPLInput {
+                        width: 156px;
+                        border: none;
+                        padding-left: 16px;
+                        padding-right: 18px;
+                        line-height: 34px;
+                        font-size: 14px;
+                        font-weight: 500;
+                        &::placeholder { font-size: 1rem; }
+                    }
+
+                    #clearInputFilter {
+                        cursor: pointer;
+                        color: white;
+                        position: absolute;
+                        right: 13px;
+                        top: 3px;
+                        width: 28px;
+                        height: 28px;
+                        border-radius: 50%;
+                        border: none;
+                        outline: none;
+                        background-color: gray;
+                    }
+                }
+            }
+        }
+
+        // Sidenav PL
+        #sidenavPL {
+            // width: 250px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+
+            // Sidenav buttons
+            .sidenavItem {
+                width: 100%;
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                box-sizing: border-box;
+                outline: 0;
+                &:hover { background-color: #EAEBEA; }
+            }
+            .sidenavItemBtn {
+                cursor: pointer;
+            }
+            .sidenavItemIco {
+                color: gray;
+                width: 40px;
+                height: 40px;
+                text-align: center;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+            .sidenavItemLabel {
+                margin-right: 10px;
+                font-size: 1rem;
+            }
+
+
+            // Location buttons
+            .locationIco {
+                align-self: flex-start;
+            }
+            .locationBtn {
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-start;
+                /*
+                font-size: 1rem;
+                margin-left: 18px;
+
+                >.mat-radio-button {
+                    margin-right: 10px !important;
+                }
+                */
+                >.mat-radio-button {
+                    line-height: 36px;
+                }
+            }
+
+            // Sidenav spacer
+            .sidenavSpacer {
+                margin: 0;
+                padding: 0;
+                border: 0;
+                width: 100%;
+                height: 1px;
+                background-color: rgb(209, 209, 209);
+            }
+
+            // Display type button
+            .displayBtn {
+                height: 40px;
+                .mat-button-toggle-group {
+                    box-shadow: none;
+                    border-radius: 0;
+                    height: 100%;
+
+                    .mat-button-toggle {
+                        &:hover {
+                            background-color: #B4B8B8;
+                        }
+
+                    }
+                }
+
+            }
+        }
+
+
+
+        // Content PL
+        #contentPL {
+            width: auto;
+            background-color: transparent;
+            overflow: hidden;
+            &.paddingPl { padding-left: 5px; }
+
+            #contentItemBox {
+                width: 100%;
+                height: calc(100% - 5px);
+                margin-top: 5px;
+                overflow: auto;
+            }
+        }
+    }
+
+
+
+
+    // *****************************
+    // Edit panel
+    #editPanel {
+        height: calc(100% - 5px);
+
+        #editPanelToolBar {
+            z-index: 1000;
+            width: calc(100% - 10px);
+            position: fixed;
+            height: 64px;
+            box-shadow: 0 3px 1px -9px rgba(0,0,0,.2),0 2px 2px 0 rgba(0,0,0,.14),0 1px 5px 0 rgba(0,0,0,.12);
+
+            .sideBarBtn { margin-left: 10px; }
+            .editField { margin-left: 10px; }
+
+            .returnBtn {
+                padding-left: 4px !important;
+                margin-right: 10px !important;
+                padding-right: 0 !important;
+                width: 40px !important;
+                min-width: 20px !important;
+                text-align: center;
+            }
+        }
+
+        .playlistSpacer { height: 5px; }
+
+        .plPanelContent {
+            height: calc(100% - 64px);
+            margin-top: 64px;
         }
     }
 }
 
-.plPanelContent {
-	margin-top: 64px;
-	overflow: auto;
-    height: calc(100% - 69px);
-}
-.plPanelContent mat-grid-list { margin: 0 !important; }
-.plPanelContent mat-grid-tile { background: #242320; }
 
-.button-row {
-    display: flex;
-    flex-direction: row;
-}
 
-.spacerToolbar { flex: 1 1 auto; }
 
-.inputSearchPlaylist {
-    border: none;
-    border-radius: 20px;
-    padding-left: 18px;
-    padding-right: 18px;
-    margin-left :16px;
-    line-height: 36px;
-    font-size: 14px;
-    font-weight: 500;
-    box-shadow: 0 3px 1px -2px rgba(0,0,0,.2),0 2px 2px 0 rgba(0,0,0,.14),0 1px 5px 0 rgba(0,0,0,.12);
-}
 
-.inputFilterbox {
-    position: relative;
-}
 
-#clearInputFilter {
-    cursor: pointer;
-    color: white;
-	position: absolute;
-	margin-left: -35px;
-    top: 5.5px;
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    border: none;
-    outline: none;
-    background-color: gray;
-}
 
-.returnBtn {
-    padding-left: 4px !important;
-    margin-right: 10px !important;
-    padding-right: 0 !important;
-    width: 40px !important;
-    min-width: 20px !important;
-    text-align: center;
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /*************************
     PlaylistList items
 *************************/
 .playlistGrid {
     /*margin-top: 5px;*/
+    height: calc(100%);
 }
-.playlistSpacer {
-    height: 5px;
-}
+
 
 .plBox {
     width: 100%;
@@ -138,9 +321,7 @@
             z-index: 5;
             text-align: center;
 
-            img {
-                height: 100%;
-            }
+            img { height: 100%; }
         }
 
         /* Content text */
@@ -184,8 +365,71 @@
         .playBtn:hover { color: #48b735 }
         .editBtn:hover { color: #248fd6 }
         .deleteBtn:hover { color: #e83e3e }
-
         .spacerBtn { width: 100px; }
     }
+}
 
+
+
+
+
+
+.row {
+    margin-bottom: 5px;
+    color: black;
+    // background-color: #3A3937;
+    background-color: whitesmoke;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+
+    .rowBorder {
+        width: 10px;
+        height: 100%;
+        &.local { background-color: #448aff; }
+        &.notlocal { background-color: #cc181e; }
+    }
+
+    button {
+        border: none;
+        background-color: transparent;
+        color: white;
+        cursor: pointer;
+
+        &.playBtn:hover { color: #48b735 }
+        &.editBtn:hover { color: #248fd6 }
+        &.deleteBtn:hover { color: #e83e3e }
+    }
+}
+
+.listItemRow {
+    height: 90px !important;
+    .thumbBox {
+        height: 100%;
+        width: 120px;
+        img {
+            height: 90px;
+            width: 120px;
+        }
+    }
+
+    .contentBox {
+        display: flex;
+        flex-direction: row;
+        height: 100%;
+        width: 100%;
+        box-sizing: border-box;
+
+        .infosBox {
+            padding: 5px;
+            margin-left: 5px;
+            display: flex;
+            flex-direction: column;
+            .infosBoxTitle { font-size: 1.5rem !important; }
+        }
+
+        .ctrlBox {
+            padding: 5px;
+        }
+    }
 }

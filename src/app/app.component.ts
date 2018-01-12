@@ -28,7 +28,6 @@ export class AppComponent implements OnInit {
         });
 
         this.appState.loadAppState();
-
     }
 
     ngOnInit() {

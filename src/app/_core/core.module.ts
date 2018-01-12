@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
-import { HttpClientModule, HttpClientJsonpModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpClientModule,
+         HttpClientJsonpModule,
+         HTTP_INTERCEPTORS } from '@angular/common/http';
 
 // Http service
 import { HttpInterceptorService } from './services/http/http-interceptor.service';

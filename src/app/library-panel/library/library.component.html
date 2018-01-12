@@ -1,160 +1,266 @@
-<!-- Playlist list mode toolbar -->
-<div class="toolBar">
-    <mat-toolbar *ngIf="!isEditMode">
-        <!-- Create playlist button -->
-        <button class="toolbarBtn" mat-raised-button (click)="createPlaylist()">
-            <fa aria-label="Create playlist" [name]="'plus'" [size]="1"></fa>
-            Create playlist
-        </button>
-
-        <!-- Search/filter playlist by title -->
-        <span class="inputFilterbox">
-            <input id="inputFilter" matInput [formControl]="filterTitle" [matAutocomplete]="auto"
-                class="inputSearchPlaylist" type="text"  placeholder="Filter playlists...">
-
-            <button *ngIf="filterTitle.value && filterTitle.value.length > 0"
-                (click)="filterTitle.setValue('')" id="clearInputFilter" >X</button>
-
-            <mat-autocomplete #auto="matAutocomplete" class="autocompleteBox">
-                <mat-option *ngFor="let pl of playlistsList" [value]="pl.title">
-                {{ pl.title }}
-                </mat-option>
-            </mat-autocomplete>
-        </span>
-
-        <!-- Filter playlist by location -->
-        <span class="filterLocation">
-            <mat-radio-group [(ngModel)]="filterLocation">
-            <mat-radio-button value="all" [disabled]="allPlaylisLocation === 'youtube' || allPlaylisLocation === 'local'">All</mat-radio-button>
-            <mat-radio-button value="true" [disabled]="allPlaylisLocation === 'youtube'" class="local">Local</mat-radio-button>
-            <mat-radio-button value="false"[disabled]="allPlaylisLocation === 'local'" class="notlocal">Youtube</mat-radio-button>
-            </mat-radio-group>
-        </span>
-
-        <!-- Toolbar spacer -->
-        <span class="spacerToolbar"></span>
-
-        <!-- Playlist count -->
-        <span style="margin-left :16px; margin-right :16px;">{{ playlistsList.length }} Playlist<span *ngIf="playlistsList.length > 1">s</span></span>
-
-        <!-- Refresh playlist list button -->
-        <button class="toolbarBtn" *ngIf="!isEditMode && isLoggedIn" mat-raised-button (click)="reloadPlaylist()">
-        <fa aria-label="Refresh playlist" [name]="'refresh'" [size]="1"></fa>
-        Reload from Youtube
-        </button>
-    </mat-toolbar>
+<div id="libraryContainer">
 
 
-    <!-- Edit playlist mode toolbar -->
-    <mat-toolbar *ngIf="isEditMode" class="toolBar">
+    <!-- Edit panel -->
+    <div *ngIf="isEditMode" id="editPanel" class="libContainer">
 
-        <!-- Return button -->
-        <button class="toolbarBtn returnBtn"  mat-raised-button (click)="return()">
-            <fa aria-label="Return" [name]="'arrow-left'" [size]="1"></fa>
-        </button>
-
-        <!-- Save playlist button -->
-        <button class="toolbarBtn"  mat-raised-button (click)="saveOnEditPlaylist()">
-            <fa aria-label="Save playlist" [name]="'floppy-o'" [size]="1"></fa>
-            Save playlist
-        </button>
-
-        <!-- Save playlist on youtube button
-            <button class="toolbarBtn" mat-raised-button (click)="saveOnEditPlaylist()">
-                <fa aria-label="Save playlist" [name]="'floppy-o'" [size]="1"></fa>
-                Save on youtube
+        <mat-toolbar id="editPanelToolBar">
+            <!-- Return button -->
+            <button class="toolbarBtn returnBtn"  mat-raised-button (click)="return()">
+                <fa aria-label="Return" [name]="'arrow-left'" [size]="1"></fa>
             </button>
-        -->
 
-        <!-- Set playlist title -->
-        <mat-form-field [floatLabel]="'never'" class="editField">
-            <input matInput type="text" [(ngModel)]="onEditPlaylist.title"
-            [ngModelOptions]="{standalone: true}" placeholder="Title" required>
-        </mat-form-field>
+            <!-- Save playlist button -->
+            <button class="toolbarBtn"  mat-raised-button (click)="saveOnEditPlaylist()">
+                <fa aria-label="Save playlist" [name]="'floppy-o'" [size]="1"></fa>
+                Save playlist
+            </button>
 
-        <!-- Set playlist privacyStatus -->
-        <mat-form-field class="editField">
-            <mat-select placeholder="{{ placeholderItemType }}"
-            [(ngModel)]="onEditPlaylist.privacyStatus" [ngModelOptions]="{standalone: true}">
-            <mat-option [value]="'public'">Public</mat-option>
-            <mat-option [value]="'private'">Private</mat-option>
-            </mat-select>
-        </mat-form-field>
+                <!-- Save playlist button -->
+            <button class="toolbarBtn"  mat-raised-button (click)="saveOnEditPlaylist()">
+                <fa aria-label="Save playlist" [name]="'upload'" [size]="1"></fa>
+                Upload on Youtube
+            </button>
 
-        <span class="spacerToolbar"></span>
-    </mat-toolbar>
+            <!-- Set playlist title -->
+            <mat-form-field [floatLabel]="'never'" class="editField">
+                <input matInput type="text" [(ngModel)]="onEditPlaylist.title"
+                [ngModelOptions]="{standalone: true}" placeholder="Title" required>
+            </mat-form-field>
 
-    <mat-progress-bar
-    *ngIf="isProgressBar"
-    [color]="'primary'"
-    [mode]="'determinate'"
-    [value]="progressBarValue">
-</mat-progress-bar>
-</div>
+            <!-- Set playlist privacyStatus -->
+            <mat-form-field class="editField">
+                <mat-select placeholder="{{ placeholderItemType }}"
+                [(ngModel)]="onEditPlaylist.privacyStatus" [ngModelOptions]="{standalone: true}">
+                <mat-option [value]="'public'">Public</mat-option>
+                <mat-option [value]="'private'">Private</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <span class="spacerToolbar"></span>
+        </mat-toolbar>
 
+        <div class="playlistSpacer"></div>
 
-<div class="playlistSpacer"></div>
-
-<!-- List of playlist -->
-<div *ngIf="!isEditMode" class="plPanelContent">
-
-    <div class="playlistGrid">
-
-        <mat-grid-list  *ngIf="playlistsList" cols="4" rowHeight="160px" gutterSize="25px" >
-
-            <!-- Playlist list items -->
-            <mat-grid-tile *ngFor="let pl of playlistsList | filterPlaylists:filterTitle.value:filterLocation ; let i = index">
-                <div class="plBox">
-
-                    <!-- Privacy status playlist icons -->
-                    <div *ngIf="pl.privacyStatus === 'private' && !pl.isLocal" class="plStatus private">
-                    <fa aria-label="Playlist private" [name]="'lock'" [size]="1"></fa>
-                    </div>
-
-                    <div *ngIf="pl.privacyStatus === 'public' && !pl.isLocal" class="plStatus public">
-                    <fa aria-label="Playlist public" [name]="'globe'" [size]="1"></fa>
-                    </div>
-
-                    <div class="plContent">
-                        <div *ngIf="pl.thumbUrl === ''" class="iconBg"><fa [name]="'music'" [size]="5"></fa></div>
-                        <div *ngIf="pl.thumbUrl !== ''" class="thumbBg">
-                            <img src="{{ pl.thumbUrl }}" alt="">
-                        </div>
-
-                        <div class="plContentInfos">
-                            <p class="plName">{{ pl.title }}</p>
-                            <p class="plDesc">{{ pl.description }}</p>
-                            <p class="nbrVideo">{{ pl.videolist.length }} video<span *ngIf="pl.videolist.length > 1">s</span></p>
-                        </div>
-                    </div>
-
-                    <div class="plFooter" [class.localPl]="pl.isLocal" [class.notlocalPl]="!pl.isLocal">
-                        <!-- Play playlist button -->
-                        <button  class="playBtn plBtn" (click)="playPlaylist(pl)">
-                        <fa aria-label="Edit playlist" [name]="'play'" [size]="2"></fa>
-                        </button>
-
-                        <div class="spacerBtn"></div>
-
-                        <!-- Edit playlist button -->
-                        <button class="editBtn plBtn" (click)="editPlaylist(pl)">
-                        <fa aria-label="Edit playlist" [name]="'pencil'" [size]="2"></fa>
-                        </button>
-
-                        <!-- Remove playlist button -->
-                        <button class="deleteBtn plBtn"(click)="deletePlaylist(pl)" >
-                        <fa aria-label="Delete playlist" [name]="'trash'" [size]="2"></fa>
-                        </button>
-                    </div>
-                </div>
-
-            </mat-grid-tile>
-        </mat-grid-list>
-
+        <!-- Edit playlist -->
+        <div class="plPanelContent" >
+            <app-edit-playlist [playlist]="onEditPlaylist" [type]="'edit'"></app-edit-playlist>
+        </div>
     </div>
+
+
+
+    <div *ngIf="!isEditMode" id="playlistPanel" class="libContainer">
+        <mat-toolbar class="toolbarPl">
+
+            <div (click)="toggleSidenav()" class="toolbarPLIco toggleSidenav">
+                <fa [name]="toggleIcon" [size]="2"></fa>
+            </div>
+            <!--
+            <div *ngIf=" showSidenav" (click)="showSidenav = !showSidenav" class="toolbarPLIco toggleSidenav"><fa [name]="'close'" [size]="2"></fa></div>
+            -->
+
+            <!-- Search/filter playlist by title -->
+            <span class="searchPL itemBox">
+                <!--
+                <div class="toolbarPLIco searchIco"><fa [name]="'search'" [size]="2"></fa></div>
+                -->
+                <span class="searchPLBox">
+                    <input id="inputFilter" class="searchPLInput"
+                        type="text" placeholder="Search my playlists..."
+                        matInput [formControl]="filterTitle" [matAutocomplete]="auto">
+                    <button id="clearInputFilter" (click)="filterTitle.setValue('')"
+                        *ngIf="filterTitle.value && filterTitle.value.length > 0">X</button>
+                    <mat-autocomplete class="autocompleteBox" #auto="matAutocomplete">
+                        <mat-option *ngFor="let pl of playlistsList" [value]="pl.title">
+                            {{ pl.title }}
+                        </mat-option>
+                    </mat-autocomplete>
+                </span>
+            </span>
+            <span class="spacerToolbar"></span>
+
+            <!-- Playlist count -->
+            <span class="itemBox infosPl">
+                {{ playlistsList.length }} Playlist<span *ngIf="playlistsList.length > 1">s</span>
+            </span>
+        </mat-toolbar>
+
+
+        <!-- laylist list panel -->
+        <mat-sidenav-container autosize class="sidenavContainerPL">
+
+            <!-- Sidebar -->
+            <mat-sidenav opened mode="side">
+            <div id="sidenavPL">
+
+                <hr class="sidenavSpacer">
+
+                <!-- Create plalist -->
+                <span class="sidenavItem sidenavItemBtn" (click)="createPlaylist()">
+                    <div class="sidenavItemIco"><fa [name]="'plus'" [size]="2"></fa></div>
+                    <div *ngIf="showSidenav" class="sidenavItemLabel">Create playlist</div>
+                </span>
+
+
+                <!-- Refresh playlist list button *ngIf="!isEditMode && isLoggedIn" -->
+                <span class="sidenavItem sidenavItemBtn"  (click)="reloadPlaylist()">
+                    <div class="sidenavItemIco"><fa [name]="'refresh'" [size]="2"></fa></div>
+                    <div *ngIf="showSidenav" class="sidenavItemLabel">Reload Youtube playlists</div>
+                </span>
+
+                <hr class="sidenavSpacer">
+
+                <!-- Playlist display type -->
+                <span class="sidenavItem">
+                    <div (click)="toggleSidenav(true)" class="sidenavItemIco"><fa [name]="'eye'" [size]="2"></fa></div>
+                    <div *ngIf="showSidenav" class="displayBtn">
+                    <mat-button-toggle-group
+                        [ngModel]="displayType"
+                        (change)="changeDisplayType($event)"
+                        #group="matButtonToggleGroup">
+                        <mat-button-toggle value="grid"  checked="display.value === 'grid'">
+                            <fa [name]="'th'" [size]="1"></fa>
+                        </mat-button-toggle>
+                        <mat-button-toggle value="list" checked="display.value === 'list'">
+                            <fa [name]="'th-list'" [size]="1"></fa>
+                        </mat-button-toggle>
+                    </mat-button-toggle-group>
+                    <!--
+                    <div class="example-selected-value">Selected value: {{group.value}}</div>
+                    -->
+                    </div>
+                </span>
+
+
+                <!-- Filter playlist by location -->
+                <span class="sidenavItem">
+                    <div (click)="toggleSidenav(true)" class="locationIco sidenavItemIco"><fa [name]="'compass'" [size]="2"></fa></div>
+                    <mat-radio-group *ngIf="showSidenav" class="locationBtn" [(ngModel)]="filterLocation">
+                        <mat-radio-button value="all"  [disabled]="allPlaylisLocation === 'youtube' || allPlaylisLocation === 'local'" class="">All</mat-radio-button>
+                        <mat-radio-button value="true" [disabled]="allPlaylisLocation === 'youtube'" class="local">Local</mat-radio-button>
+                        <mat-radio-button value="false"[disabled]="allPlaylisLocation === 'local'" class="notlocal">Youtube</mat-radio-button>
+                    </mat-radio-group>
+                </span>
+
+            </div>
+            </mat-sidenav>
+
+
+            <!-- Content -->
+            <mat-sidenav-content id="contentPL" class="paddingPl">
+                <div id="contentItemBox">
+
+                    <!-- Display grid -->
+                    <mat-grid-list  *ngIf="playlistsList && displayType === 'grid'" cols="4" rowHeight="160px" gutterSize="5px" >
+
+                        <!-- Playlist list items -->
+                        <mat-grid-tile *ngFor="let pl of playlistsList | filterPlaylists:filterTitle.value:filterLocation ; let i = index">
+                            <div class="plBox">
+
+                                <!-- Privacy status playlist icons -->
+                                <div *ngIf="pl.privacyStatus === 'private' && !pl.isLocal" class="plStatus private">
+                                <fa aria-label="Playlist private" [name]="'lock'" [size]="1"></fa>
+                                </div>
+
+                                <div *ngIf="pl.privacyStatus === 'public' && !pl.isLocal" class="plStatus public">
+                                <fa aria-label="Playlist public" [name]="'globe'" [size]="1"></fa>
+                                </div>
+
+                                <div class="plContent">
+                                    <div *ngIf="pl.thumbUrl === ''" class="iconBg"><fa [name]="'music'" [size]="5"></fa></div>
+                                    <div *ngIf="pl.thumbUrl !== ''" class="thumbBg">
+                                        <img src="{{ pl.thumbUrl }}" alt="">
+                                    </div>
+
+                                    <div class="plContentInfos">
+                                        <p class="plName">{{ pl.title }}</p>
+                                        <p class="plDesc">{{ pl.description }}</p>
+                                        <p class="nbrVideo">{{ pl.videolist.length }} video<span *ngIf="pl.videolist.length > 1">s</span></p>
+                                    </div>
+                                </div>
+
+                                <div class="plFooter" [class.localPl]="pl.isLocal" [class.notlocalPl]="!pl.isLocal">
+                                    <!-- Play playlist button -->
+                                    <button  class="playBtn plBtn" (click)="playPlaylist(pl)">
+                                    <fa aria-label="Edit playlist" [name]="'play'" [size]="2"></fa>
+                                    </button>
+
+                                    <div class="spacerBtn"></div>
+
+                                    <!-- Edit playlist button -->
+                                    <button class="editBtn plBtn" (click)="editPlaylist(pl)">
+                                    <fa aria-label="Edit playlist" [name]="'pencil'" [size]="2"></fa>
+                                    </button>
+
+                                    <!-- Remove playlist button -->
+                                    <button class="deleteBtn plBtn"(click)="deletePlaylist(pl)" >
+                                    <fa aria-label="Delete playlist" [name]="'trash'" [size]="2"></fa>
+                                    </button>
+                                </div>
+                            </div>
+
+                        </mat-grid-tile>
+                    </mat-grid-list>
+
+
+                    <!-- Display list -->
+                    <mat-list *ngIf="playlistsList && displayType === 'list'" role="list">
+                    <mat-list-item class="listItemRow row"role="listitem"*ngFor="let pl of playlistsList | filterPlaylists:filterTitle.value:filterLocation ; let i = index">
+                        <div class="rowBorder" [class.local]="pl.isLocal" [class.notlocal]="!pl.isLocal"></div>
+                        <div class="thumbBox">
+                            <div *ngIf="pl.thumbUrl === ''" class=""><img src="assets/images/pochette.png" alt=""></div>
+                            <div *ngIf="pl.thumbUrl !== ''" class=""><img src="{{ pl.thumbUrl }}" alt=""></div>
+                        </div>
+
+                        <div class="contentBox">
+                            <div class="infosBox">
+                                <div class="infosBoxTitle">{{ pl.title }}</div>
+                                <div class="" *ngIf="pl.description">{{ pl.description }}</div>
+                                <div class="">{{ pl.videolist.length }} video<span *ngIf="pl.videolist.length > 1">s</span></div>
+                            </div>
+
+                            <span class="spacerToolbar"></span>
+
+                            <div class="ctrlBox">
+                                <!-- Play playlist button -->
+                                <button  class="playBtn" (click)="playPlaylist(pl)">
+                                <fa aria-label="Edit playlist" [name]="'play'" [size]="2"></fa>
+                                </button>
+
+                                <!-- Edit playlist button -->
+                                <button class="editBtn" (click)="editPlaylist(pl)">
+                                <fa aria-label="Edit playlist" [name]="'pencil'" [size]="2"></fa>
+                                </button>
+
+                                <!-- Remove playlist button -->
+                                <button class="deleteBtn"(click)="deletePlaylist(pl)" >
+                                <fa aria-label="Delete playlist" [name]="'trash'" [size]="2"></fa>
+                                </button>
+                            </div>
+                        </div>
+                    </mat-list-item>
+                    </mat-list>
+                </div>
+            </mat-sidenav-content>
+        </mat-sidenav-container>
+    </div>
+
 </div>
 
-<!-- Edit playlist -->
-<div *ngIf="isEditMode" class="plPanelContent" >
-    <app-edit-playlist [playlist]="onEditPlaylist" [type]="'edit'"></app-edit-playlist>
-</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<mat-progress-bar *ngIf="isProgressBar" [color]="'primary'"
+    [mode]="'determinate'" [value]="progressBarValue">
+</mat-progress-bar>
+

@@ -19,6 +19,11 @@ export class DataService {
     public  selectedTab$ = this.selectedTab.asObservable();
 
 
+    // Display Type (grid, thumb or list)
+    private displayType  = new Subject<any>();
+    public  displayType$ = this.displayType.asObservable();
+
+
     // Suggest list
     private suggestsResult  = new Subject<Suggests>();
     public  suggestsResult$ = this.suggestsResult.asObservable();
@@ -67,47 +72,51 @@ export class DataService {
     constructor() { }
 
 
-    setUser(user) {
-        this.user.next(_.cloneDeep(user));
+    setUser(data) {
+        this.user.next(_.cloneDeep(data));
     }
 
-    setSelectedTab(st) {
-        this.selectedTab.next(st);
+    setSelectedTab(data) {
+        this.selectedTab.next(data);
     }
 
-    setSuggestsResult(suggestsResult) {
-        this.suggestsResult.next(_.cloneDeep(suggestsResult));
+    setDisplayType(data) {
+        this.displayType.next(data);
     }
 
-    setSuggestsBox(suggestsBox) {
-        this.suggestsBox.next(suggestsBox);
+    setSuggestsResult(data) {
+        this.suggestsResult.next(_.cloneDeep(data));
     }
 
-    setSearchResultPL(searchResultPL) {
-        this.searchResultPL.next(_.cloneDeep(searchResultPL));
+    setSuggestsBox(data) {
+        this.suggestsBox.next(data);
     }
 
-    setPlayListsList(pl) {
-        this.playListsList.next(_.cloneDeep(pl));
+    setSearchResultPL(data) {
+        this.searchResultPL.next(_.cloneDeep(data));
     }
 
-    setOnEditPlayList(pl) {
-        this.onEditPlaylist.next(_.cloneDeep(pl));
+    setPlayListsList(data) {
+        this.playListsList.next(_.cloneDeep(data));
     }
 
-    setOnPlayPlayList(pl) {
-        this.onPlayPlaylist.next(_.cloneDeep(pl));
+    setOnEditPlayList(data) {
+        this.onEditPlaylist.next(_.cloneDeep(data));
     }
 
-    setOnPlayHistoricPlayList(pl) {
-        this.onPlayHistoricPlaylist.next(_.cloneDeep(pl));
+    setOnPlayPlayList(data) {
+        this.onPlayPlaylist.next(_.cloneDeep(data));
     }
 
-    setSearchResultPlaylist(pl) {
-        this.searchResultPlaylist.next(_.cloneDeep(pl));
+    setOnPlayHistoricPlayList(data) {
+        this.onPlayHistoricPlaylist.next(_.cloneDeep(data));
     }
 
-    setProgressBarValue(pbv) {
-        this.progressBarValue.next(_.cloneDeep(pbv));
+    setSearchResultPlaylist(data) {
+        this.searchResultPlaylist.next(_.cloneDeep(data));
+    }
+
+    setProgressBarValue(data) {
+        this.progressBarValue.next(_.cloneDeep(data));
     }
 }

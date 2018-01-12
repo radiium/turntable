@@ -1,5 +1,7 @@
 import { Component, OnInit, isDevMode, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatSidenav } from '@angular/material/sidenav';
+
 import { UUID } from 'angular2-uuid';
 import { FormGroup, FormControl } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
@@ -27,8 +29,7 @@ import { YoutubeService } from '../../_core/services/youtube';
 })
 export class LibraryComponent implements OnInit {
 
-    @ViewChild('snav') snav;
-
+    @ViewChild('sidenav') sidenav: MatSidenav;
 
     playlistsList: Array<Playlist> = [];
     onEditPlaylist: Playlist;
@@ -46,6 +47,10 @@ export class LibraryComponent implements OnInit {
     isEditMode: Boolean = false;
 
     selectedTab: number;
+    displayType: any;
+
+    showSidenav = false;
+    toggleIcon = 'bars';
 
 
     constructor(
@@ -65,8 +70,14 @@ export class LibraryComponent implements OnInit {
         });
 
         // Get current selected tab
-        this.dataService.selectedTab$.subscribe((st) => {
-            this.selectedTab = st;
+        this.dataService.selectedTab$.subscribe((data) => {
+            this.selectedTab = data;
+        });
+
+        // Get current display type
+        this.displayType = 'grid';
+        this.dataService.displayType$.subscribe((data) => {
+            this.displayType = data;
         });
 
         // Hide loading playlist progress bar
@@ -161,6 +172,7 @@ export class LibraryComponent implements OnInit {
 
     // Create new playlist
     createPlaylist() {
+
         const dialogRef = this.dialog.open(CreatePlaylistDialogComponent, {});
         dialogRef.afterClosed().subscribe(result => {
             if (result) {
@@ -182,7 +194,6 @@ export class LibraryComponent implements OnInit {
                 this.appState.storeLocalPlaylists();
             }
         });
-
     }
 
     // Edit the selected playlist
@@ -302,5 +313,18 @@ export class LibraryComponent implements OnInit {
             videoList
         );
         this.playlistsList = <Playlist[]>[datas];
+    }
+
+    toggleSidenav(toggle?) {
+        if (toggle) {
+            this.showSidenav = toggle;
+        } else {
+            this.showSidenav = !this.showSidenav;
+        }
+        this.toggleIcon = this.showSidenav ? 'close' : 'bars';
+    }
+
+    changeDisplayType(evt) {
+        this.dataService.setDisplayType(evt.value);
     }
 }
