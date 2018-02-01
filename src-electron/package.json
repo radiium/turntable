@@ -1,8 +1,8 @@
 {
     "name": "Turntable",
-    "version": "0.4.0-beta",
+    "version": "1.0.0-beta",
     "license": "MIT",
-    "description": "Multiplatform Youtube DJ app made with Electron and Angular4",
+    "description": "Multiplatform Youtube DJ app made with Electron and Angular 5",
     "homepage": "https://github.com/radiium/turntable",
     "repository": {
         "type": "git",
@@ -17,7 +17,15 @@
         "email": "remip.dev@gmail.com",
         "url": "https://github.com/radiium"
     },
-    "keywords": ["electron", "youtube", "youtubeplayer", "dj", "angular", "javascript","typescript" ],
+    "keywords": [
+        "electron",
+        "youtube",
+        "youtubeplayer",
+        "dj",
+        "angular5",
+        "javascript",
+        "typescript"
+    ],
     "private": true,
     "main": "main.js",
     "dependencies": {
