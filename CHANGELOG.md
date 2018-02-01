@@ -1,3 +1,14 @@
+## v 1.0.0-beta (2017/12/18)
+
+### Updates
+* Connect to your youtube account and fetch your playlists.
+* Create and manage your playlists.  (Work in progress...)
+* Search videos from anywhere in the app and it by drag and drop.
+* Play playlist with 2 players like a dj :). (Work in progress...)
+* Change theme: dark or light.
+* Change language: french or english. (Work in progress...)
+* ...and many more!!
+
 ## v 0.4.0-beta (2017/12/18)
 
 ### Updates
