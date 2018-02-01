@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { ElectronService } from 'ngx-electron';
 import * as _ from 'lodash';
 
-import { User, Playlist, Video, Suggests } from '../models';
+import { User, Playlist, Video, Suggests, SearchResults } from 'core/models';
 
 @Injectable()
 export class DataService {
@@ -14,14 +15,24 @@ export class DataService {
     public  user$ = this.user.asObservable();
 
 
-    // Tabs
-    private selectedTab  = new Subject<any>();
-    public  selectedTab$ = this.selectedTab.asObservable();
+    // Langage (en or fr)
+    private langage  = new BehaviorSubject<any>('en');
+    public  langage$ = this.langage.asObservable();
 
 
-    // Display Type (grid, thumb or list)
-    private displayType  = new Subject<any>();
+    // Theme (light or dark)
+    private theme  = new BehaviorSubject<any>('dark');
+    public  theme$ = this.theme.asObservable();
+
+
+    // Display Type (grid or list)
+    private displayType  = new BehaviorSubject<any>('grid');
     public  displayType$ = this.displayType.asObservable();
+
+
+    // Selected tabs
+    private selectedTab  = new BehaviorSubject<any>(1);
+    public  selectedTab$ = this.selectedTab.asObservable();
 
 
     // Suggest list
@@ -35,19 +46,22 @@ export class DataService {
 
 
     // Search result PlayList
-    private searchResultPL  = new Subject<Video[]>();
-    public  searchResultPL$ = this.searchResultPL.asObservable();
+    private searchResults  = new Subject<SearchResults>();
+    public  searchResults$ = this.searchResults.asObservable();
 
 
     // PlayList list
-    private playListsList  = new Subject<Array<Playlist>>();
-    public  playListsList$ = this.playListsList.asObservable();
+    private playlistsList  = new Subject<Array<Playlist>>();
+    public  playlistsList$ = this.playlistsList.asObservable();
 
 
     // On edit PlayList
     private onEditPlaylist  = new Subject<Playlist>();
     public  onEditPlaylist$ = this.onEditPlaylist.asObservable();
 
+    // Selected playlist
+    private onSelectPL  = new Subject<Playlist>();
+    public  onSelectPL$ = this.onSelectPL.asObservable();
 
     // On play PlayList
     private onPlayPlaylist  = new Subject<Playlist>();
@@ -64,10 +78,13 @@ export class DataService {
     public  searchResultPlaylist$ = this.searchResultPlaylist.asObservable();
 
 
-    // Load playlist progress bar value
-    private progressBarValue  = new Subject<any>();
-    public  progressBarValue$ = this.progressBarValue.asObservable();
+    // Loading spinner
+    private loading  = new Subject<any>();
+    public  loading$ = this.loading.asObservable();
 
+    // On drag event
+    private isOnDrag  = new BehaviorSubject<boolean>(false);
+    public  isOnDrag$ = this.isOnDrag.asObservable();
 
     constructor() { }
 
@@ -76,12 +93,20 @@ export class DataService {
         this.user.next(_.cloneDeep(data));
     }
 
-    setSelectedTab(data) {
-        this.selectedTab.next(data);
+    setLangage(data) {
+        this.langage.next(data);
+    }
+
+    setTheme(data) {
+        this.theme.next(data);
     }
 
     setDisplayType(data) {
         this.displayType.next(data);
+    }
+
+    setSelectedTab(data) {
+        this.selectedTab.next(data);
     }
 
     setSuggestsResult(data) {
@@ -92,16 +117,20 @@ export class DataService {
         this.suggestsBox.next(data);
     }
 
-    setSearchResultPL(data) {
-        this.searchResultPL.next(_.cloneDeep(data));
+    setSearchResults(data) {
+        this.searchResults.next(_.cloneDeep(data));
     }
 
-    setPlayListsList(data) {
-        this.playListsList.next(_.cloneDeep(data));
+    setPlaylistsList(data) {
+        this.playlistsList.next(_.cloneDeep(data));
     }
 
     setOnEditPlayList(data) {
         this.onEditPlaylist.next(_.cloneDeep(data));
+    }
+
+    setOnSelectPL(data) {
+        this.onSelectPL.next(_.cloneDeep(data));
     }
 
     setOnPlayPlayList(data) {
@@ -116,7 +145,11 @@ export class DataService {
         this.searchResultPlaylist.next(_.cloneDeep(data));
     }
 
-    setProgressBarValue(data) {
-        this.progressBarValue.next(_.cloneDeep(data));
+    setLoading(data) {
+        this.loading.next(data);
+    }
+
+    setIsOnDrag(data) {
+        this.isOnDrag.next(data);
     }
 }

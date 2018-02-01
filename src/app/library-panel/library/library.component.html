@@ -1,5 +1,128 @@
-<div id="libraryContainer">
+<div id="libraryContainer" class="contentPanel">
 
+
+
+        <div id="contentItemBox">
+
+                <!-- Display grid -->
+                <mat-grid-list  *ngIf="playlistsList && displayType === 'grid'" cols="4" rowHeight="160px" gutterSize="5px" >
+
+                    <!-- Playlist list items -->
+                    <mat-grid-tile *ngFor="let pl of playlistsList | filterPlaylists:filterTitle.value:filterLocation ; let i = index">
+                        <div class="plBox">
+
+                            <!-- Privacy status playlist icons -->
+                            <div *ngIf="pl.privacyStatus === 'private' && !pl.isLocal" class="plStatus private">
+                            <fa aria-label="Playlist private" [name]="'lock'" [size]="1"></fa>
+                            </div>
+
+                            <div *ngIf="pl.privacyStatus === 'public' && !pl.isLocal" class="plStatus public">
+                            <fa aria-label="Playlist public" [name]="'globe'" [size]="1"></fa>
+                            </div>
+
+                            <div class="plContent">
+                                <div *ngIf="pl.thumbUrl === ''" class="iconBg"><fa [name]="'music'" [size]="5"></fa></div>
+                                <div *ngIf="pl.thumbUrl !== ''" class="thumbBg">
+                                    <img src="{{ pl.thumbUrl }}" alt="">
+                                </div>
+
+                                <div class="plContentInfos">
+                                    <p class="plName">{{ pl.title }}</p>
+                                    <p class="plDesc">{{ pl.description }}</p>
+                                    <p class="nbrVideo">{{ pl.videolist.length }} video<span *ngIf="pl.videolist.length > 1">s</span></p>
+                                </div>
+                            </div>
+
+                            <div class="plFooter" [class.localPl]="pl.isLocal" [class.notlocalPl]="!pl.isLocal">
+                                <!-- Play playlist button -->
+                                <button  class="playBtn plBtn" (click)="playPlaylist(pl)">
+                                <fa aria-label="Edit playlist" [name]="'play'" [size]="2"></fa>
+                                </button>
+
+                                <div class="spacerBtn"></div>
+
+                                <!-- Edit playlist button -->
+                                <button class="editBtn plBtn" (click)="editPlaylist(pl)">
+                                <fa aria-label="Edit playlist" [name]="'pencil'" [size]="2"></fa>
+                                </button>
+
+                                <!-- Remove playlist button -->
+                                <button class="deleteBtn plBtn"(click)="deletePlaylist(pl)" >
+                                <fa aria-label="Delete playlist" [name]="'trash'" [size]="2"></fa>
+                                </button>
+                            </div>
+                        </div>
+
+                    </mat-grid-tile>
+                </mat-grid-list>
+
+
+                <!-- Display list -->
+                <mat-list *ngIf="playlistsList && displayType === 'list'" role="list">
+                <mat-list-item class="listItemRow row"role="listitem"*ngFor="let pl of playlistsList | filterPlaylists:filterTitle.value:filterLocation ; let i = index">
+                    <div class="rowBorder" [class.local]="pl.isLocal" [class.notlocal]="!pl.isLocal"></div>
+                    <div class="thumbBox">
+                        <div *ngIf="pl.thumbUrl === ''" class=""><img src="assets/images/pochette.png" alt=""></div>
+                        <div *ngIf="pl.thumbUrl !== ''" class=""><img src="{{ pl.thumbUrl }}" alt=""></div>
+                    </div>
+
+                    <div class="contentBox">
+                        <div class="infosBox">
+                            <div class="infosBoxTitle">{{ pl.title }}</div>
+                            <div class="" *ngIf="pl.description">{{ pl.description }}</div>
+                            <div class="">{{ pl.videolist.length }} video<span *ngIf="pl.videolist.length > 1">s</span></div>
+                        </div>
+
+                        <span class="spacerToolbar"></span>
+
+                        <div class="ctrlBox">
+                            <!-- Play playlist button -->
+                            <button  class="playBtn" (click)="playPlaylist(pl)">
+                            <fa aria-label="Edit playlist" [name]="'play'" [size]="2"></fa>
+                            </button>
+
+                            <!-- Edit playlist button -->
+                            <button class="editBtn" (click)="editPlaylist(pl)">
+                            <fa aria-label="Edit playlist" [name]="'pencil'" [size]="2"></fa>
+                            </button>
+
+                            <!-- Remove playlist button -->
+                            <button class="deleteBtn"(click)="deletePlaylist(pl)" >
+                            <fa aria-label="Delete playlist" [name]="'trash'" [size]="2"></fa>
+                            </button>
+                        </div>
+                    </div>
+                </mat-list-item>
+                </mat-list>
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div *ngIf="false">
+
+
+<mat-progress-bar *ngIf="isProgressBar" [color]="'primary'"
+    [mode]="'determinate'" [value]="progressBarValue">
+</mat-progress-bar>
 
     <!-- Edit panel -->
     <div *ngIf="isEditMode" id="editPanel" class="libContainer">
@@ -86,7 +209,19 @@
         </mat-toolbar>
 
 
-        <!-- laylist list panel -->
+
+
+
+
+
+
+
+
+
+
+
+
+        <!-- playlist list panel -->
         <mat-sidenav-container autosize class="sidenavContainerPL">
 
             <!-- Sidebar -->
@@ -130,7 +265,6 @@
                     -->
                     </div>
                 </span>
-
 
                 <!-- Filter playlist by location -->
                 <span class="sidenavItem">
@@ -244,6 +378,8 @@
             </mat-sidenav-content>
         </mat-sidenav-container>
     </div>
+</div>
+
 
 </div>
 
@@ -260,7 +396,5 @@
 
 
 
-<mat-progress-bar *ngIf="isProgressBar" [color]="'primary'"
-    [mode]="'determinate'" [value]="progressBarValue">
-</mat-progress-bar>
+
 

@@ -1,5 +1,11 @@
 @import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
+@import 'themes';
 
+/****************************
+
+    Fonts
+
+****************************/
 @font-face {
     font-family: 'Open Sans';
     font-weight: 800;
@@ -12,27 +18,189 @@
     url('../assets/fonts/OpenSans-Regular/OpenSans-Regular.svg#OpenSansOpenSans-Regular') format('svg');
 }
 
-* {
-    font-family: 'Open sans'
+
+/****************************
+
+    Reset & co
+
+****************************/
+*:not(.mat-dialog-container) {
+    font-family: 'Open sans';
+    box-sizing: border-box;
+    outline: none;
+    &:not(input) { user-select: none; }
+    @include themify($themes) {
+        color: themed('primaryFont') !important;
+    }
 }
+
 html,
 body {
-  margin: 0;
-  padding: 0;
-  background-color: lightgray;
-  height: 100%;
-  overflow: hidden;
+    cursor: default;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden;
 }
 
-/* Custom Scroll bar */
-::-webkit-scrollbar { width: 10px; }
-::-webkit-scrollbar-thumb { background: #666; }
-::-webkit-scrollbar-track { background: #ddd; }
-::-webkit-scrollbar-button { background: #666; height: 15px; border-radius: 0 }
+input,
+select {
+  vertical-align: middle;
+}
 
-/* Remove outline */
-button:focus {outline: none;}
-input:focus { outline: none; }
+input,
+select,
+textarea {
+    border: 0;
+    margin: 0;
+}
+
+button,
+input[type='button'],
+input[type='submit'] {
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    margin: 0;
+    background: transparent;
+    cursor: pointer;
+    &:focus { outline: none;}
+}
+
+
+/****************************
+
+    Custom global
+
+****************************/
+// Custom Scroll bar
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-thumb {
+    @include themify($themes) {
+        background: themed('scrollBtn');
+    }
+}
+::-webkit-scrollbar-track {
+    @include themify($themes) {
+        background: themed('scrollTrack');
+    }
+}
+::-webkit-scrollbar-button {
+    height: 15px;
+    border-radius: 0;
+    @include themify($themes) {
+        background: themed('scrollBtn');
+    }
+}
+
+
+// Tab content
+.contentPanel {
+    width: 100%;
+    height: 100%;
+    .scrollContainer {
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+    }
+}
+
+// App list
+.appList {
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+
+    .appListItem {
+        height: 100px;
+        display: flex;
+        flex-direction: row;
+        // cursor: default !important;
+    }
+    .appListItem:not(:last-child) {
+        margin-bottom: 16px;
+    }
+
+    .duration {
+        @include themify($themes) {
+            border: 1px solid themed('primaryFont');
+            // background-color: themed('darkestBg') !important;
+        }
+    }
+    .loadLine {
+        margin-bottom: 16px;
+        @include themify($themes) {
+            background-color: themed('primary') !important;
+        }
+    }
+}
+
+
+// Flex box spacer
+.flexSpacer {
+    flex: 1 1 auto;
+}
+
+// Custom button
+.btnHover:hover {
+    @include themify($themes) {
+        background-color: themed('btnHover');
+    }
+}
+.activ {
+    @include themify($themes) {
+        background-color: themed('btnActiv');
+    }
+}
+.disabled {
+    color: green !important;
+    &:hover {
+        background-color: transparent !important;
+    }
+
+}
+
+.returnBtn {
+    &.disabled {
+        cursor: default;
+        i.fa.fa-angle-left.fa-5x {
+            @include themify($themes) {
+                color: themed('primaryFontDisabled') !important;
+            }
+        }
+    }
+    i.fa.fa-angle-left.fa-5x {
+        height: 44px !important;
+        margin-top: -7px!important;
+    }
+}
+
+.mat-menu-content {
+    display: flex;
+    flex-direction: column;
+
+    .menuItem {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        padding: 5px 10px 5px 0;
+
+        .menuItemIco {
+            margin-left: 10px;
+            margin-right: 10px;
+            min-width: 40px;
+            align-self: center;
+        }
+        .menuItemLabel {
+            font-size: 1.2rem;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            align-self: center;
+        }
+    }
+}
+
 
 
 /****************************
@@ -40,111 +208,89 @@ input:focus { outline: none; }
     Unglorious hack...
 
 ****************************/
+/*
 
-/* Custom Font Awesome css */
 
-.fa-2x { font-size: 23px !important; }
-.toolbarBtn .fa-lg {
-    vertical-align: -10% !important;
-    margin-right: 5px !important;
+.cdk-overlay-container {
+
+    .appContainer {
+        // Panel list
+        .mat-expansion-panel {
+            box-shadow: none;
+            @include themify($themes) {
+                background-color: themed('primary');
+            }
+            .mat-expansion-panel-header {
+                height: 40px !important;
+                font-size: 0.8rem !important;
+            }
+        }
+    }
+
+
+    .mat-menu-panel {
+        @include themify($themes) {
+            background-color: themed('secondary') !important;
+        }
+    }
+
+    .theme-dark *.mat-dialog-container {
+        background-color: map-get(map-get($themes, 'dark'), 'primary');
+        color: map-get(map-get($themes, 'dark'), 'primaryFont');
+        .mat-dialog-content {
+            display: unset !important;
+        }
+    }
+
+    .theme-light *.mat-dialog-container {
+        background-color: map-get(map-get($themes, 'light'), 'primary');
+        color: map-get(map-get($themes, 'light'), 'primaryFont');
+        .mat-dialog-content {
+            display: unset !important;
+        }
+    }
+
+    .mat-select-content {
+        @include themify($themes) {
+            background-color: themed('secondary') !important;
+        }
+    }
+
+    .theme-dark *.mat-select-content {
+        background-color:  map-get(map-get($themes, 'dark'), 'secondary') !important;
+        background:  map-get(map-get($themes, 'dark'), 'secondary') !important;
+    }
+    .theme-light *.mat-select-content {
+        background-color:  map-get(map-get($themes, 'light'), 'secondary') !important;
+        background:  map-get(map-get($themes, 'light'), 'secondary') !important;
+    }
 }
 
-/* Custom material css */
-
-mat-progress-bar {
-    z-index: 99999;
+.mat-button-toggle-group {
+    box-shadow: none !important;
+    .mat-button-toggle:hover {
+        @include themify($themes) {
+            background-color: themed('btnHover') !important;
+        }
+    }
+    .mat-button-toggle-checked {
+        @include themify($themes) {
+            background-color: themed('btnActiv') !important;
+        }
+    }
 }
 
-// Tabs nav header
-.mat-tab-group { height: 100%; }
-.mat-tab-header,
-.mat-tab-nav-bar { border-bottom: 10px solid #f5f5f5 !important; }
-.mat-tab-body-wrapper { height: 100%; }
-.mat-tab-body { height: 100%; }
-.mat-tab-label { height: 32px !important; min-width: 100px !important; }
-.mat-tab-body { padding: 5px; }
-.mat-tab-body-content { //height: auto !important;
+.mat-progress-spinner circle, .mat-spinner circle {
+    @include themify($themes) {
+        stroke: themed('accent') !important;
+    }
 }
-.mat-tab-label-active {
-    background-color: #f5f5f5 !important;
-    opacity: 1 !important;
-}
-.mat-ink-bar {
-    background-color: #f5f5f5 !important;
+
+.mat-form-field-underline {
+    @include themify($themes) {
+        background: themed('grayLight') !important;
+    }
 }
 
 
-// Grid tile
-.mat-grid-tile .mat-figure {
-    display: block !important;
-}
-
-// Dialog button
-.decline {
-    background-color: green !important;
-    color: white !important;
-}
-.accept {
-    background-color: red !important;
-    color: white !important;
-}
-
-// Radio buttons
-.radioBtnGrp {
-    display: flex;
-    flex-direction: column;
-    margin-top: 10px;
-    margin-bottom: 10px;
-}
-.radioBtn { margin: 5px; }
-
-// Filter playlist location
-.labelVisible { margin-top: 20px !important; }
-.filterLocation .mat-radio-button { margin-right: 10px !important; }
-
-// Input search filter
-#inputFilter.mat-input-element {
-    padding: 2px !important;
-    background: white !important;
-    margin-top: 0 !important;
-    // padding-left: 18px !important;
-    padding-right: 18px !important;
-    // background-color: lightgray !important;
-    border: 1px solid lightgray;
-    box-shadow: none;
-}
-#inputFilter.mat-input-element::placeholder { color: gray !important; }
-#inputFilter.mat-input-element::-moz-placeholder { color: gray !important; }
-#inputFilter.mat-input-element::placeholder { color: gray !important; }
-#inputFilter.mat-input-element::placeholder { color: gray !important; }
-#inputFilter:disabled {
-    background-color: transparent !important;
-    &:hover { cursor: not-allowed; }
-}
-
-// Progress bar
-.mat-progress-bar {
-    position: fixed;
-    z-index: 999999;
-}
-.mat-progress-bar-buffer {
-    background-color: transparent !important;
-}
-
-.local:not(.mat-radio-disabled):hover .mat-radio-label .mat-radio-label-content {
-    color: #448aff;
-}
-.notlocal:not(.mat-radio-disabled):hover .mat-radio-label .mat-radio-label-content {
-    color: #cc181e;
-}
-
-.mat-list {
-    padding-top: 0 !important;
-    display: block;
-}
-
-.mat-list-item-content { padding: 0 !important; }
-
-
-.mat-tab-label { font-size: 1rem !important; }
-
+*/

@@ -9,7 +9,7 @@ export class DurationPipe implements PipeTransform {
             return;
         }
         let format = 'mm:ss';
-        if (args) {
+        if (args || value >= 3600000) {
             format = 'HH:mm:ss';
         }
         return moment.utc(value).format(format);

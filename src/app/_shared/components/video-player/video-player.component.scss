@@ -2,7 +2,7 @@
 .playerContainer {
     display: flex;
     margin-bottom: 5px;
-    
+
     &.playerLeft  {
         flex-direction: row;
 
@@ -35,7 +35,7 @@
         flex-direction: column;
         flex-wrap: nowrap;
         justify-content: space-between;
-        
+
         .player {
             width: 300px;
             height: 200px;
@@ -52,7 +52,7 @@
             }
         }
     }
-    
+
     /* Current video infos container */
     .activVideo {
         width: 300px;
@@ -109,7 +109,7 @@
         flex-wrap: nowrap;
 
         app-range-slider { margin-top: 166px; }
-        
+
         button {
             border-radius: 0;
             margin-top: 5px;

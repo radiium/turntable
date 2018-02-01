@@ -1,0 +1,72 @@
+<div id="searchResultsContainer" class="contentPanel">
+
+    <div class="scrollContainer">
+        <!-- Video list -->
+        <div *ngIf="videoList" class="appList">
+
+            <!-- Video list item
+            (onDragStart)="onDragStart($event)" (onDragEnd)="onDragEnd($event)"
+            -->
+            <div *ngFor="let video of videoList; let i = index" class="appListItem"
+                dnd-draggable [dragData]="video" [dragEnabled]="true" [dropZones]="['zone1']">
+
+                <div class="handle">CACA</div>
+
+                <app-video-list-item [video]="video" [index]="i + 1"></app-video-list-item>
+
+                <div class="flexSpacer"></div>
+                <div class="srBtn itemBox">
+                    <button class=" btn btnHover" [matMenuTriggerFor]="menu" xPosition="'before'" yPosition="'above'">
+                        <fa [name]="'bars'" [size]="2"></fa>
+                    </button>
+                    <mat-menu #menu="matMenu">
+                        <button mat-menu-item>Add to current playlist</button>
+                        <button mat-menu-item>Add to playlist</button>
+                        <button mat-menu-item>Play</button>
+                    </mat-menu>
+
+
+                    <button class=" btn btnHover" (click)="addToPlaylist(video)" [disabled]="!playlistList" [class.disabled]="!playlistList">
+                        <fa [name]="'bars'" [size]="2"></fa>
+                    </button>
+
+                    <!--
+                    <button class=" btn btnHover" [matMenuTriggerFor]="menuPl" xPosition="'before'" yPosition="'above'">
+                    <fa [name]="'bars'" [size]="2"></fa>
+                    </button>
+
+                    <mat-menu #menuPl="matMenu">
+                        --
+                        <button mat-menu-item *ngFor="let pl of playlistList">{{ pl.title }}</button>
+                        --
+                        <mat-selection-list #shoes>
+                        <mat-list-option *ngFor="let pl of playlistList">
+                        {{ pl.title }}
+                        </mat-list-option>
+                        </mat-selection-list>
+                    </mat-menu>
+
+                -->
+                </div>
+            </div>
+
+            <!-- Load more button -->
+            <div *ngIf="hasNextPage"class="loadLine btnHover"  >
+                <div mat-line *ngIf="loadNextPage" class="loadLineItem">
+                    <mat-spinner [diameter]="40" class="spinner"></mat-spinner>
+                </div>
+                <div mat-line *ngIf="!loadNextPage" class="loadLineItem" (click)="loadMore()">
+                    <span><fa class="loadLineItemIco" [name]="'ellipsis-h'" [size]="1"></fa></span>
+                    <span class="loadLineItemLabel">Load more</span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    <div *ngIf="!videoList">
+        No result...
+    </div>
+
+</div>

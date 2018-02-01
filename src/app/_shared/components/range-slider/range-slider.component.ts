@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, EventEmitter } from '@angular/core';
 
-import { PlayerStateService } from '../../../_core/services/player-state.service';
+import { PlayerStateService } from 'core/services/player-state.service';
 
 @Component({
     selector: 'app-range-slider',

@@ -7,9 +7,9 @@ import 'rxjs/add/operator/switchMap';
 
 import * as moment from 'moment';
 
-import { YoutubeService } from '../../../../_core/services/youtube';
-import { DataService } from '../../../../_core/services/data.service';
-import { Suggests } from '../../../../_core/models';
+import { YoutubeService } from 'core/services/youtube.service';
+import { DataService } from 'core/services/data.service';
+import { Suggests } from 'core/models';
 
 
 @Component({
@@ -64,7 +64,7 @@ export class SearchBarComponent implements OnInit {
             // Clear playlist if no value
             if (this.search.value === '') {
                 this.dataService.setSuggestsResult({});
-                this.dataService.setSearchResultPL([]);
+                this.dataService.setSearchResults([]);
                 this.dataService.setSuggestsBox(false);
             } else {
                 this.dataService.setSuggestsResult(suggests);
@@ -74,7 +74,7 @@ export class SearchBarComponent implements OnInit {
     }
 
     // Select suggest
-    selectSuggestion(suggest: String) {
+    selectSuggestion(suggest: string) {
         this.dataService.setSuggestsResult({});
         this.selectedSugest = suggest;
         this.search.setValue(suggest);
@@ -83,7 +83,7 @@ export class SearchBarComponent implements OnInit {
     }
 
     // Search videos by selected suggest
-    searchVideos(suggest: String) {
+    searchVideos(suggest: string) {
         this.YTService.searchVideos(suggest);
     }
 

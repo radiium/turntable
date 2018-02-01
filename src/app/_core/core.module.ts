@@ -4,26 +4,27 @@ import { HttpClientModule,
          HTTP_INTERCEPTORS } from '@angular/common/http';
 
 // Http service
-import { HttpInterceptorService } from './services/http/http-interceptor.service';
-import { HttpClientService } from './services/http/http-client.service';
+import { HttpInterceptorService } from 'core/services/http/http-interceptor.service';
+import { HttpClientService } from 'core/services/http/http-client.service';
 
 // Youtube api service
-import { YoutubeService,
-         AuthService,
-         PlaylistItemsService,
-         PlaylistsService,
-         VideosService,
-         SearchService,
-         SuggestService,
-         UserInfosService } from './services/youtube';
+import { YoutubeService } from 'core/services/youtube.service';
+import { AuthService } from 'core/services/auth.service';
+import { PlaylistItemsApiService,
+         PlaylistsApiService,
+         VideosApiService,
+         SearchApiService,
+         SuggestApiService,
+         UserInfosApiService } from 'core/services/api';
 
 // Others service
-import { PlayerStateService } from './services/player-state.service';
-import { UtilsService } from './services/utils.service';
-import { OnlineService } from './services/online.service';
+import { PlayerStateService } from 'core/services/player-state.service';
+import { UtilsService } from 'core/services/utils.service';
+import { OnlineService } from 'core/services/online.service';
 
-import { AppStateService } from './services/app-state.service';
-import { DataService } from './services/data.service';
+import { AppStateService } from 'core/services/app-state.service';
+import { DataService } from 'core/services/data.service';
+import { DndService } from 'core/services/dnd.service';
 
 @NgModule({
     imports: [],
@@ -41,16 +42,17 @@ import { DataService } from './services/data.service';
 
         DataService,
         AppStateService,
+        DndService,
 
         // Youtube api service
         YoutubeService,
         AuthService,
-        PlaylistItemsService,
-        PlaylistsService,
-        VideosService,
-        SearchService,
-        SuggestService,
-        UserInfosService,
+        PlaylistItemsApiService,
+        PlaylistsApiService,
+        VideosApiService,
+        SearchApiService,
+        SuggestApiService,
+        UserInfosApiService,
 
         // Others service
         PlayerStateService,

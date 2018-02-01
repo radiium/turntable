@@ -1,0 +1,11 @@
+.spacer {
+    height: 20px;
+}
+
+.notExpanded {
+    height: calc(100% - 48px - 20px);
+}
+
+.expanded {
+    height: calc(100% - 191px - 20px) !important;
+}

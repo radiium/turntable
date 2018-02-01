@@ -1,0 +1,96 @@
+
+
+/*
+$primary: #363D44;
+$secondary: #3D444C;
+$accent: #6398ed;
+
+// $primaryBtn: #363D44;
+$grayLight: #75797E;
+$grayDark: #474D54;
+
+$primaryFont: #BEC0C3;
+$secondaryFont: #363636;
+
+$btnHover: #454d57;
+$btnActiv: #3e454e;
+
+$scrollBtn: #454d57;
+$scrollTrack: transparent;
+
+$darkBg: rgba(0, 0, 0, 0.4);
+*/
+
+
+
+
+$themes: (
+    dark: (
+        primary: #363D44,
+        secondary: #3D444C,
+        accent: #6398ed,
+
+        grayLight: #75797E,
+        grayDark: #474D54,
+
+        primaryFont: #BEC0C3,
+        secondaryFont: #363636,
+        primaryFontDisabled: #7c7d80,
+
+        btnHover: #454d57,
+        btnActiv: #3e454e,
+
+        scrollBtn: #454d57,
+        scrollTrack: transparent,
+
+        darkBg: rgba(0, 0, 0, 0.4),
+        darkestBg: rgba(0, 0, 0, 0.7),
+    ),
+    light: (
+        primary: #ebebeb,
+        secondary: #ffffff,
+        accent: #9cbef5,
+
+        grayLight: #75797E,
+        grayDark: #474D54,
+
+        primaryFont: #3b3b3b,
+        secondaryFont: #cfcfcf,
+        primaryFontDisabled: #adadad,
+
+        btnHover: #d3d3d3,
+        btnActiv: #dbdbdb,
+
+        scrollBtn: #6f7b8a,
+        scrollTrack: transparent,
+
+        darkBg: rgba(0, 0, 0, 0.4),
+        darkestBg: rgba(0, 0, 0, 0.7),
+
+    ),
+);
+
+
+@mixin themify($themes) {
+    @each $theme, $map in $themes {
+        .theme-#{$theme} & {
+            $theme-map: () !global;
+            @each $key, $submap in $map {
+                $value: map-get(map-get($themes, $theme), '#{$key}');
+                $theme-map: map-merge($theme-map, ($key: $value)) !global;
+            }
+            @content;
+            $theme-map: null !global;
+        }
+    }
+}
+
+
+@function themed($key) {
+    @return map-get($theme-map, $key);
+}
+
+
+@function getValue($theme, $key) {
+    @return map-get(map-get($themes, $theme), $key);
+}

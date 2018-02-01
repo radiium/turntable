@@ -9,21 +9,19 @@ import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/map';
 import * as _ from 'lodash';
 
-import { Video, Playlist } from '../../_core/models';
-import { UtilsService } from '../../_core/services/utils.service';
-import { CreatePlaylistDialogComponent } from '../create-playlist-dialog/create-playlist-dialog.component';
-import { ConfirmDialogComponent } from '../../_shared/components/confirm-dialog/confirm-dialog.component';
+import { Video, Playlist } from 'core/models';
+import { UtilsService } from 'core/services/utils.service';
+import { CreatePlaylistDialogComponent } from 'shared/dialogs/create-playlist-dialog/create-playlist-dialog.component';
+import { ConfirmDialogComponent } from 'shared/dialogs/confirm-dialog/confirm-dialog.component';
 
-import * as testPlaylist from './test-playlist.json';
-
-import { AuthService } from '../../_core/services/youtube';
-import { DataService } from '../../_core/services/data.service';
-import { AppStateService } from '../../_core/services/app-state.service';
-import { YoutubeService } from '../../_core/services/youtube';
+import { AuthService } from 'core/services/auth.service';
+import { YoutubeService } from 'core/services/youtube.service';
+import { DataService } from 'core/services/data.service';
+import { AppStateService } from 'core/services/app-state.service';
 
 
 @Component({
-  selector: 'app-library-panel',
+  selector: 'app-library',
   templateUrl: './library.component.html',
   styleUrls: ['./library.component.scss']
 })
@@ -83,27 +81,11 @@ export class LibraryComponent implements OnInit {
         // Hide loading playlist progress bar
         this.isProgressBar = false;
 
-        // Get progress bar value
-        this.dataService.progressBarValue$.subscribe((pbv: any) => {
-            this.progressBarValue = pbv;
-            if (!pbv || pbv === 0 || pbv === 100) {
-                this.isProgressBar = false;
-            } else {
-                this.isProgressBar = true;
-            }
-            if (pbv === 99) {
-                this.dataService.setProgressBarValue(100);
-            }
-        });
 
 
-        // Load a local playlist for development
-        if (isDevMode()) {
-            // this.insertFakeData();
-        }
 
         // Get playlist list
-        this.dataService.playListsList$.subscribe((pl: any) => {
+        this.dataService.playlistsList$.subscribe((pl: any) => {
             this.playlistsList = pl;
 
             // Update playlist filter
@@ -188,7 +170,7 @@ export class LibraryComponent implements OnInit {
                 );
 
                 this.playlistsList.push(pl);
-                this.dataService.setPlayListsList(this.playlistsList);
+                this.dataService.setPlaylistsList(this.playlistsList);
 
                 // Store local playlist in user data
                 this.appState.storeLocalPlaylists();
@@ -213,7 +195,7 @@ export class LibraryComponent implements OnInit {
             }
         });
         this.isEditMode = false;
-        this.dataService.setPlayListsList(pll);
+        this.dataService.setPlaylistsList(pll);
         this.dataService.setOnEditPlayList(null);
         this.dataService.setSearchResultPlaylist(null);
         this.appStateService.storeLocalPlaylists();
@@ -247,7 +229,7 @@ export class LibraryComponent implements OnInit {
         // if (playlist.videolist.length > 0) {
             const pl = this.utils.copyPlaylist(playlist);
             this.dataService.setOnPlayPlayList(pl);
-            this.dataService.setSelectedTab(1);
+            this.dataService.setSelectedTab(4);
         // }
     }
 
@@ -262,7 +244,7 @@ export class LibraryComponent implements OnInit {
                     return pl.id !== playlist.id;
                 });
                 this.appStateService.storeLocalPlaylists();
-                this.dataService.setPlayListsList(updatedPlaylistsList);
+                this.dataService.setPlaylistsList(updatedPlaylistsList);
             }
         });
     }
@@ -276,43 +258,6 @@ export class LibraryComponent implements OnInit {
     // Reload playlist from youtube
     reloadPlaylist() {
         this.YTService.fetchYoutubePlaylist();
-    }
-
-
-    // Load a local playlist for development
-    insertFakeData() {
-        /*
-        const arr = [];
-        for (let i = 0; i < 25; i++) {
-        arr.push(testPlaylist);
-        }
-        this.playlistsList = <Playlist[]>arr;
-        */
-
-        const videoList = new Array<Video>();
-        testPlaylist['testPlaylist']['videolist'].forEach(el => {
-            const video = new Video(
-                el['id'],
-                el['title'],
-                el['description'],
-                el['thumbUrl'],
-                el['duration']
-            );
-            videoList.push(video);
-        });
-        const datas = new Playlist(
-            testPlaylist['testPlaylist']['id'],
-            testPlaylist['testPlaylist']['title'],
-            testPlaylist['testPlaylist']['description'],
-            testPlaylist['testPlaylist']['thumbUrl'],
-            testPlaylist['testPlaylist']['thumbH'],
-            testPlaylist['testPlaylist']['thumbW'],
-            testPlaylist['testPlaylist']['publishedAt'],
-            testPlaylist['testPlaylist']['privacyStatus'],
-            true,
-            videoList
-        );
-        this.playlistsList = <Playlist[]>[datas];
     }
 
     toggleSidenav(toggle?) {

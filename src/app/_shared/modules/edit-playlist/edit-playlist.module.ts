@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 
-import { SharedModule } from '../../../_shared/shared.module';
+import { SharedModule } from 'shared/shared.module';
 
 import { EditPlaylistComponent } from './edit-playlist.component';
 import { PlaylistItemComponent } from './playlist-item/playlist-item.component';

@@ -4,15 +4,15 @@ import { Component, OnInit, Input, Output, OnDestroy,
 import { DragulaService, dragula } from 'ng2-dragula/ng2-dragula';
 import * as autoScroll from 'dom-autoscroller';
 
-import { User, Video, Playlist } from '../../../_core/models';
+import { User, Video, Playlist, SearchResults } from 'core/models';
 
-import { PlayerStateService } from '../../../_core/services/player-state.service';
-import { UtilsService } from '../../../_core/services/utils.service';
+import { PlayerStateService } from 'core/services/player-state.service';
+import { UtilsService } from 'core/services/utils.service';
 import { ElectronService } from 'ngx-electron';
 
 
-import { AuthService } from '../../../_core/services/youtube';
-import { DataService } from '../../../_core/services/data.service';
+import { AuthService } from 'core/services/auth.service';
+import { DataService } from 'core/services/data.service';
 
 
 @Component({
@@ -38,7 +38,7 @@ export class EditPlaylistComponent implements OnInit, OnDestroy, OnChanges {
     type: string;
 
     originalPlaylist: Playlist;
-    searchResultsList: Array<Video>;
+    searchResults: SearchResults;
 
     totalDuration: Number = 0;
     totalDurationHistoric: Number = 0;
@@ -67,16 +67,14 @@ export class EditPlaylistComponent implements OnInit, OnDestroy, OnChanges {
                 new Array<Video>()
             )
         );
-        this.dataService.onPlayHistoricPlaylist$
-        .subscribe((historicPlaylist) => {
+        this.dataService.onPlayHistoricPlaylist$.subscribe((historicPlaylist) => {
             this.historic = historicPlaylist;
             this.totalDurationHistoric = this.computeTotalDuration(this.historic.videolist);
         });
 
         // Get search result list
-        this.dataService.searchResultPL$
-        .subscribe((searchResuPL) => {
-            this.searchResultsList = searchResuPL;
+        this.dataService.searchResults$.subscribe((data) => {
+            this.searchResults = data;
 
             // Set autoscroll on drag
             // at begin or end of playlist container
@@ -219,7 +217,7 @@ export class EditPlaylistComponent implements OnInit, OnDestroy, OnChanges {
     login() {
         if (this.electron.isElectronApp) {
             this.authService.login();
-            this.dataService.setSelectedTab(0);
+            this.dataService.setSelectedTab(1);
         }
     }
 

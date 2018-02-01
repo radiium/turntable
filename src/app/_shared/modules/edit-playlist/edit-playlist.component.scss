@@ -31,6 +31,7 @@
 .playlist { height: 100%; }
 
 .videoItem {
+    cursor: all-scroll;
     width: 100%;
     background-color: #242320;
     list-style: none;
@@ -146,7 +147,7 @@
     height: 100%;
     font-size: 1rem;
     background-color: #101010;
-    cursor: pointer;
+    // cursor: pointer !important;
 }
 
 #infoBarBtnPlaylist input,

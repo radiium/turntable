@@ -1,27 +1,30 @@
 import { Directive, ElementRef, Output, EventEmitter, HostListener } from '@angular/core';
 
+import { DataService } from 'core/services/data.service';
+
 @Directive({
     selector: '[appClickOutside]',
 })
 export class ClickOutsideDirective {
 
+    suggestsBox: any;
+
     constructor(
-        private _elementRef: ElementRef) {}
+    private _elementRef: ElementRef,
+    private dataService: DataService) {
+    }
 
     @Output()
     public clickOutside = new EventEmitter<MouseEvent>();
 
     @HostListener('document:click', ['$event', '$event.target'])
     public onClick(event: MouseEvent, targetElement: HTMLElement): void {
-        console.log('event', event);
-        console.log('targetElement', targetElement);
         if (!targetElement || targetElement.id === 'menuBtn') {
             return;
         }
-
         const clickedInside = this._elementRef.nativeElement.contains(targetElement);
         if (!clickedInside) {
-            this.clickOutside.emit(event);
+            this.dataService.setSuggestsBox(false);
         }
     }
 }

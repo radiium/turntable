@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { Video, Playlist } from '../models';
+import { Video, Playlist } from 'core/models';
 
 
 @Injectable()

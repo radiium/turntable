@@ -2,17 +2,23 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
 import { ElectronService } from 'ngx-electron';
 
-import { User, Playlist, Video } from '../models';
-import { AuthService } from './youtube/auth.service';
-import { DataService } from './data.service';
-import { YoutubeService } from './youtube';
+import { User, Playlist, Video, AppState } from '../models';
+import { AuthService } from 'core/services/auth.service';
+import { DataService } from 'core/services/data.service';
+import { YoutubeService } from 'core/services/youtube.service';
 
 @Injectable()
 export class AppStateService {
 
-
-    playListsList;
     isElectronApp: boolean;
+    isFirstLoad: boolean;
+
+    playlistsList;
+
+    langage = '';
+    theme = '';
+    displayType = '';
+    selectedTab = null;
 
     constructor(
     private electron: ElectronService,
@@ -22,16 +28,44 @@ export class AppStateService {
     private YTService: YoutubeService
     ) {
         this.isElectronApp = this.electron.isElectronApp;
+        this.isFirstLoad = true;
 
-        this.playListsList = new Array<Playlist>();
-        this.dataService.playListsList$.subscribe((pll) => {
-            this.playListsList = pll;
+        this.playlistsList = new Array<Playlist>();
+        this.dataService.playlistsList$.subscribe((pll) => {
+            this.playlistsList = pll;
+            this.saveAppState();
         });
+
+        this.dataService.langage$.subscribe((data) => {
+            this.langage = data;
+            this.saveAppState();
+        });
+
+        this.dataService.theme$.subscribe((data) => {
+            this.theme = data;
+            this.saveAppState();
+        });
+
+        this.dataService.displayType$.subscribe((data) => {
+            this.displayType = data;
+            this.saveAppState();
+        });
+
+        this.dataService.selectedTab$.subscribe((data) => {
+            this.selectedTab = data;
+            this.saveAppState();
+        });
+
+        const defaultAppState = new AppState(
+            null, null, null, null,
+        );
     }
 
     loadAppState() {
         if (this.isElectronApp) {
             console.log('===== loadAppState');
+            this.isFirstLoad = false;
+
             // Retrieve previous user on start up and reload app
             this.electron.ipcRenderer.send('send-get-user');
             this.electron.ipcRenderer.on('get-user', (event, user) => {
@@ -47,13 +81,40 @@ export class AppStateService {
                 }
             });
 
+            // Get app state
+            this.electron.ipcRenderer.send('send-get-app-state');
+            this.electron.ipcRenderer.on('get-app-state', (event, data) => {
+                console.log('get-app-state', data);
+                if (data && Object.keys(data).length > 0) {
+                    const appState = new AppState(
+                        data.langage,
+                        data.theme,
+                        data.displayType,
+                        data.selectedTab
+                    );
+                    this.dataService.setLangage(appState.langage);
+                    this.dataService.setTheme(appState.theme);
+                    this.dataService.setDisplayType(appState.displayType);
+                    this.dataService.setSelectedTab(appState.selectedTab);
+                }
+            });
+
             // Load local playlist on start up app
             this.loadLocalPlaylist();
         }
     }
 
     saveAppState() {
-
+        if (this.isElectronApp && !this.isFirstLoad) {
+            const appState = new AppState(
+                this.langage,
+                this.theme,
+                this.displayType,
+                this.selectedTab
+            );
+            console.log('===== saveAppState', appState);
+            this.electron.ipcRenderer.send('send-save-app-state', appState);
+        }
     }
 
     // Retrieve and store local playlist
@@ -61,7 +122,7 @@ export class AppStateService {
         if (this.isElectronApp) {
             console.log('===== storeLocalPlaylists');
             const localPlaylists = new Array<Playlist>();
-            this.playListsList.forEach(playlist => {
+            this.playlistsList.forEach(playlist => {
                 if (playlist.isLocal) {
                     localPlaylists.push(playlist);
                 }
@@ -78,9 +139,9 @@ export class AppStateService {
                 if (localPlaylist) {
                     localPlaylist.forEach(playlist => {
                         const pl = this.fillPlaylist(playlist);
-                        this.playListsList.push(pl);
+                        this.playlistsList.push(pl);
                     });
-                    this.dataService.setPlayListsList(this.playListsList);
+                    this.dataService.setPlaylistsList(this.playlistsList);
                 }
             });
         }
@@ -91,12 +152,12 @@ export class AppStateService {
             console.log('===== removeLocalPlaylist');
             this.Electron.ipcRenderer.send('send-remove-local-playlists');
             const pll = new Array<Playlist>();
-            this.playListsList.forEach(playlist => {
+            this.playlistsList.forEach(playlist => {
                 if (!playlist.isLocal) {
                     pll.push(playlist);
                 }
             });
-            this.dataService.setPlayListsList(pll);
+            this.dataService.setPlaylistsList(pll);
         }
     }
 
@@ -126,7 +187,9 @@ export class AppStateService {
                     video.title,
                     video.description,
                     video.thumbUrl,
-                    video.duration
+                    video.duration,
+                    video.channelTitle,
+                    video.publishedAt,
                 );
 
                 newVideoList.push(newVideo);

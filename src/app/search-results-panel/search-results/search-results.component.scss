@@ -1,0 +1,27 @@
+#searchResultsContainer {
+
+    .srBtn {
+        text-align: right;
+        min-width: 80px;
+
+        .btn {
+            width: 40px;
+            height: 40px;
+        }
+    }
+
+    .loadLine {
+        cursor: pointer;
+        height: 60px;
+        width: 100%;
+        padding: 10px;
+
+        .spinner { margin: 0 auto; }
+        .loadLineItem {
+            text-align: center;
+            line-height: 40px;
+            width: 100%;
+            align-self: center;
+        }
+    }
+}

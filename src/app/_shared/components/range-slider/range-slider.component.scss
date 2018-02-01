@@ -35,11 +35,11 @@
 	font-size: 0.8rem;
 }
 
-input[type="range"] { 
+input[type="range"] {
     margin: auto;
     -webkit-appearance: none;
     overflow: hidden;
-    cursor: pointer;
+    cursor: pointer !important;
     border-radius: 0; /* iOS */
 	height: 34px;
 	/*width: 107.5px;*/
@@ -51,7 +51,7 @@ input[type="range"] {
 	margin-top: 36.5px;
 	margin-bottom: 36.5px;
 	display: none;
-	
+
 	margin-top: -1px;
 	*/
 	z-index: 0;
@@ -89,33 +89,33 @@ input[type="range"] {
 	border: none;
 }
 
-::-ms-fill-lower { 
+::-ms-fill-lower {
     background: #504F4C;
 }
 
-::-ms-thumb { 
+::-ms-thumb {
     background: #fff;
     height: 34px;
     width: 12px;
     box-sizing: border-box;
 }
 
-::-ms-ticks-after { 
-    display: none; 
+::-ms-ticks-after {
+    display: none;
 }
 
-::-ms-ticks-before { 
-    display: none; 
+::-ms-ticks-before {
+    display: none;
 }
 
-::-ms-track { 
+::-ms-track {
     background: #ddd;
     color: transparent;
     height: 34px;
     border: none;
 }
 
-::-ms-tooltip { 
+::-ms-tooltip {
     display: none;
 }
 
@@ -159,7 +159,7 @@ input[type="range"] {
 	border: 1px solid #C9C8C3 ;
 	-webkit-box-shadow: inset 0px 0px 23px 0px rgba(0,0,0,0.67);
 	   -moz-box-shadow: inset 0px 0px 23px 0px rgba(0,0,0,0.67);
-		    box-shadow: inset 0px 0px 23px 0px rgba(0,0,0,0.67);	
+		    box-shadow: inset 0px 0px 23px 0px rgba(0,0,0,0.67);
     height: 15px;
 	/*width: 150px;*/
 	border-radius: 5px;
@@ -202,7 +202,7 @@ input[type="range"] {
 	/*background-color: #ECECEC;*/
 	color: black;
 	background-color: #817E7E;
-	cursor: pointer;
+	cursor: pointer !important;
 	border: none;
 	outline: none;
 	width: 34px;

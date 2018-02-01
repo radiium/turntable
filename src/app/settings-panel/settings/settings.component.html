@@ -1,5 +1,67 @@
-<div class="settingsContainer">
-    <form>
+<div id="settingsContainer" class="tabContentCpnt">
+
+    <div class="tabNav">
+        <button class="tabBtn" (click)="selTabSetting = 1" [class.activ]="selTabSetting === 1">General</button>
+        <button class="tabBtn" (click)="selTabSetting = 2" [class.activ]="selTabSetting === 2">Back up</button>
+    </div>
+
+
+    <div class="tabContainer">
+
+        <div *ngIf="selTabSetting === 1" class="tabContent">
+
+            <div class="tabItem">
+                <mat-form-field>
+                    <mat-select [panelClass]="'theme-' + theme" placeholder="Langage" [(ngModel)]="langage" (change)="onLangageChange($event)">
+                    <mat-option *ngFor="let langage of langagesList" [value]="langage.value">
+                    {{langage.viewValue}}
+                    </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <span class="flagIcon" *ngIf="langage">
+                    <img [src]="'assets/icons/' + langage + '-flag.png'" alt="">
+                </span>
+            </div>
+
+            <div class="tabItem">
+                <mat-form-field>
+                    <mat-select [panelClass]="'theme-' + theme" placeholder="Theme" [(ngModel)]="theme" (change)="onThemeChange($event)">
+                    <mat-option *ngFor="let theme of themesList" [value]="theme">
+                    {{theme}}
+                    </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <span class="flagIcon" *ngIf="theme">
+                    <fa *ngIf="theme === 'light'" [name]="'sun-o'"  [size]="2"></fa>
+                    <fa *ngIf="theme === 'dark'"  [name]="'moon-o'" [size]="2"></fa>
+                </span>
+            </div>
+
+        </div>
+
+        <div *ngIf="selTabSetting === 2" class="tabContent">
+
+            <div class="tabItem tabRow">
+            <button class="tabContentBtn" mat-raised-button disabled>
+            <fa [name]="'external-link'" [size]="2"></fa>
+            Export all playlist
+            </button>
+            </div>
+
+            <div class="tabItem tabRow">
+            <button class="tabContentBtn" mat-raised-button (click)="removeLocalPlaylist()" disabled>
+            <fa [name]="'trash'" [size]="1"></fa>
+            Remove local playlist
+            </button>
+            </div>
+
+
+        </div>
+
+    </div>
+
+<!--
+<form>
 
     <fieldset class="settingGeneral">
         <legend>General</legend>
@@ -21,24 +83,10 @@
     <fieldset>
         <legend>Playlists</legend>
 
-        <div class="column">
-            <div class="row">
-            <button class="toolbarBtn" mat-raised-button disabled>
-            <fa [name]="'external-link'" [size]="2"></fa>
-            Export all playlist
-            </button>
-            </div>
 
-            <div class="row">
-            <button class="toolbarBtn" mat-raised-button (click)="removeLocalPlaylist()">
-            <fa [name]="'trash'" [size]="2"></fa>
-            Remove local playlist
-            </button>
-            </div>
-
-        </div>
 
     </fieldset>
 
     </form>
+-->
 </div>

@@ -1,37 +1,283 @@
 @import '~@angular/material/theming';
-// Plus imports for other components in your app.
-
-// Include the common styles for Angular Material. We include this here so that you only
-// have to load a single css file for Angular Material in your app.
-// Be sure that you only ever include this mixin once!
+@import 'themes';
 @include mat-core();
 
-// Define the palettes for your theme using the Material Design palettes available in palette.scss
-// (imported above). For each palette, you can optionally specify a default, lighter, and darker hue.
-// $custom-app-primary: mat-palette($mat-green);
-// $custom-app-accent:  mat-palette($mat-blue, A200, A100, A400);
+$primary-dark: (
+    50 : #e8eaf6,
+    100 : #c5cbe9,
+    200 : #9fa8da,
+    300 : #7985cb,
+    400 : #5c6bc0,
+    500 : #3f51b5,
+    600 : #394aae,
+    700 : #3140a5,
+    800 : #29379d,
+    900 : #1b278d,
+    A100 : #c6cbff,
+    A200 : #939dff,
+    A400 : #606eff,
+    A700 : #4757ff,
+    contrast: (
+        50 : #000000,
+        100 : #000000,
+        200 : #000000,
+        300 : #000000,
+        400 : #ffffff,
+        500 : #ffffff,
+        600 : #ffffff,
+        700 : #ffffff,
+        800 : #ffffff,
+        900 : #ffffff,
+        A100 : #000000,
+        A200 : #000000,
+        A400 : #ffffff,
+        A700 : #ffffff,
+    )
+);
 
-$custom-app-primary: mat-palette($mat-grey);
-$custom-app-accent:  mat-palette($mat-blue, A200, A100, A400);
+$secondary-dark: (
+    50 : #e8e9ea,
+    100 : #c5c7c9,
+    200 : #9ea2a6,
+    300 : #777c82,
+    400 : #5a6067,
+    500 : #3d444c,
+    600 : #373e45,
+    700 : #2f353c,
+    800 : #272d33,
+    900 : #1a1f24,
+    A100 : #6bb5ff,
+    A200 : #389cff,
+    A400 : #0582ff,
+    A700 : #0075eb,
+    contrast: (
+        50 : #000000,
+        100 : #000000,
+        200 : #000000,
+        300 : #ffffff,
+        400 : #ffffff,
+        500 : #ffffff,
+        600 : #ffffff,
+        700 : #ffffff,
+        800 : #ffffff,
+        900 : #ffffff,
+        A100 : #000000,
+        A200 : #000000,
+        A400 : #ffffff,
+        A700 : #ffffff,
+    )
+);
 
-// The warn palette is optional (defaults to red).
-$custom-app-warn:    mat-palette($mat-red);
+$warn-dark: (
+    50 : #ecf3fd,
+    100 : #d0e0fa,
+    200 : #b1ccf6,
+    300 : #92b7f2,
+    400 : #7aa7f0,
+    500 : #6398ed,
+    600 : #5b90eb,
+    700 : #5185e8,
+    800 : #477be5,
+    900 : #356ae0,
+    A100 : #ffffff,
+    A200 : #f5f8ff,
+    A400 : #c2d3ff,
+    A700 : #a8c1ff,
+    contrast: (
+        50 : #000000,
+        100 : #000000,
+        200 : #000000,
+        300 : #000000,
+        400 : #000000,
+        500 : #000000,
+        600 : #000000,
+        700 : #000000,
+        800 : #ffffff,
+        900 : #ffffff,
+        A100 : #000000,
+        A200 : #000000,
+        A400 : #000000,
+        A700 : #000000,
+    )
+);
 
-// Create the theme object (a Sass map containing all of the palettes).
-$custom-app-theme: mat-light-theme($custom-app-primary, $custom-app-accent, $custom-app-warn);
 
-// Include theme styles for core and each component used in your app.
-// Alternatively, you can import and @include the theme mixins for each component
-// that you are using.
-@include angular-material-theme($custom-app-theme);
-
-/* 224370 */
 
 /*
-
-$mat-grey
-$mat-blue-grey
-$mat-light-blue
-
-
+$theme-dark-primary:   mat-palette($primary, 700, 300, 900);
+$theme-dark-secondary: mat-palette($secondary);
+$theme-dark-accent:    mat-palette($accent);
 */
+$primary-dark-palette:   mat-palette($primary-dark, 500, 500, 500);
+$secondary-dark-palette: mat-palette($secondary-dark, 500, 500, 500);
+$warn-dark-palette:    mat-palette($warn-dark, 500, 500, 500);
+$theme-dark: mat-dark-theme(
+    $primary-dark-palette,
+    $secondary-dark-palette,
+    $warn-dark-palette
+);
+
+.theme-dark {
+    @include angular-material-theme($theme-dark);
+    .mat-menu-panel,
+    .mat-select-content,
+    .mat-expansion-panel,
+    .mat-dialog-container {
+        color: getValue('dark', 'primaryFont');
+        background-color: getValue('dark', 'primary');
+        background: getValue('dark', 'primary');
+    }
+
+    .mat-expansion-panel:not(.mat-expanded) {
+        .mat-expansion-panel-header:not([aria-disabled='true']) {
+            &:hover {
+                background-color: getValue('dark', 'btnHover');
+                background: getValue('dark', 'btnHover');
+            }
+        }
+    }
+
+    .mat-select-content .mat-option {
+        &.mat-selected {
+            background-color: getValue('dark', 'btnActiv');
+            background: getValue('dark', 'btnActiv');
+        }
+    }
+}
+
+
+$primary-light: (
+    50 : #fdfdfd,
+    100 : #f9f9f9,
+    200 : #f5f5f5,
+    300 : #f1f1f1,
+    400 : #eeeeee,
+    500 : #ebebeb,
+    600 : #e9e9e9,
+    700 : #e5e5e5,
+    800 : #e2e2e2,
+    900 : #dddddd,
+    A100 : #ffffff,
+    A200 : #ffffff,
+    A400 : #ffffff,
+    A700 : #ffffff,
+    contrast: (
+        50 : #000000,
+        100 : #000000,
+        200 : #000000,
+        300 : #000000,
+        400 : #000000,
+        500 : #000000,
+        600 : #000000,
+        700 : #000000,
+        800 : #000000,
+        900 : #000000,
+        A100 : #000000,
+        A200 : #000000,
+        A400 : #000000,
+        A700 : #000000,
+    )
+);
+
+$secondary-light: (
+    50 : #ffffff,
+    100 : #ffffff,
+    200 : #ffffff,
+    300 : #ffffff,
+    400 : #ffffff,
+    500 : #ffffff,
+    600 : #ffffff,
+    700 : #ffffff,
+    800 : #ffffff,
+    900 : #ffffff,
+    A100 : #ffffff,
+    A200 : #ffffff,
+    A400 : #ffffff,
+    A700 : #ffffff,
+    contrast: (
+        50 : #000000,
+        100 : #000000,
+        200 : #000000,
+        300 : #000000,
+        400 : #000000,
+        500 : #000000,
+        600 : #000000,
+        700 : #000000,
+        800 : #000000,
+        900 : #000000,
+        A100 : #000000,
+        A200 : #000000,
+        A400 : #000000,
+        A700 : #000000,
+    )
+);
+
+$warn-light: (
+    50 : #f3f7fe,
+    100 : #e1ecfc,
+    200 : #cedffa,
+    300 : #bad2f8,
+    400 : #abc8f7,
+    500 : #9cbef5,
+    600 : #94b8f4,
+    700 : #8aaff2,
+    800 : #80a7f0,
+    900 : #6e99ee,
+    A100 : #ffffff,
+    A200 : #ffffff,
+    A400 : #ffffff,
+    A700 : #e5eeff,
+    contrast: (
+        50 : #000000,
+        100 : #000000,
+        200 : #000000,
+        300 : #000000,
+        400 : #000000,
+        500 : #000000,
+        600 : #000000,
+        700 : #000000,
+        800 : #000000,
+        900 : #000000,
+        A100 : #000000,
+        A200 : #000000,
+        A400 : #000000,
+        A700 : #000000,
+    )
+);
+
+$primary-light-palette:   mat-palette($primary-light, 500, 500, 500);
+$secondary-light-palette: mat-palette($secondary-light, 500, 500, 500);
+$warn-light-palette:    mat-palette($warn-light, 500, 500, 500);
+$theme-light: mat-light-theme(
+    $primary-light-palette,
+    $secondary-light-palette,
+    $warn-light-palette
+);
+
+.theme-light {
+    @include angular-material-theme($theme-light);
+    .mat-menu-panel,
+    .mat-select-content,
+    .mat-expansion-panel,
+    .mat-dialog-container {
+        color: getValue('light', 'primaryFont');
+        background-color: getValue('light', 'primary');
+        background: getValue('light', 'primary');
+    }
+
+    .mat-menu-panel .mat-menu-item:hover:not([disabled]),
+    .mat-select-content .mat-option,
+    .mat-expansion-panel:not(.mat-expanded) .mat-expansion-panel-header:not([aria-disabled='true']) {
+        &:hover {
+            background-color: getValue('light', 'btnHover');
+            background: getValue('light', 'btnHover');
+        }
+    }
+
+    .mat-select-content .mat-option {
+        &.mat-selected {
+            background-color: getValue('light', 'btnActiv');
+            background: getValue('light', 'btnActiv');
+        }
+    }
+}

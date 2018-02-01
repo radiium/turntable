@@ -1,0 +1,17 @@
+<div>
+    <h2 mat-dialog-title>Select playlist</h2>
+
+    <mat-dialog-content>
+        <mat-selection-list #list>
+        <mat-list-option *ngFor="let pl of playlistList" [attr.data-pl-id]="pl.id"
+        [selected]="isSelected(pl.id)">
+            {{ pl.title }}
+        </mat-list-option>
+        </mat-selection-list>
+    </mat-dialog-content>
+
+    <mat-dialog-actions>
+        <button mat-button (click)="onCancel()">cancel</button>
+        <button mat-button (click)="onAccept()">Ok</button>
+    </mat-dialog-actions>
+</div>

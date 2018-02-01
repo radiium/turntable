@@ -1,0 +1,44 @@
+
+.videoListItemContainer {
+    display: flex;
+    flex-direction: row;
+    height: 100px;
+
+    .itemBox {
+        height: 100%;
+    }
+    .itemText {
+        overflow: hidden;
+        text-overflow: ellipsis;
+
+    }
+
+    .srThumb {
+        height: 100%;
+        margin-right: 20px;
+        position: relative;
+        img {
+            width: auto;
+            height: 100px;
+        }
+    }
+    .srInfos {
+        display: flex;
+        flex-direction: column;
+        .srTitle {
+            margin: 0 0 5px;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+        .srDesc {
+            margin: 0 0 5px;
+            font-size: 0.8rem;
+            font-weight: normal;
+        }
+        .duration {
+            font-size: 0.7rem;
+            padding: 2px;
+            align-self: self-start;
+        }
+    }
+}

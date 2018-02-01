@@ -3,7 +3,8 @@ import { HttpInterceptor, HttpHandler, HttpRequest, HttpEvent, HttpHeaders } fro
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/throw';
 import 'rxjs/add/operator/catch';
-import { AuthService } from '../youtube/auth.service';
+
+import { AuthService } from 'core/services/auth.service';
 
 @Injectable()
 export class HttpInterceptorService implements HttpInterceptor {

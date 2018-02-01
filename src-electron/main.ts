@@ -42,6 +42,11 @@ const createMainWindow = async () => {
         height: 620,
         minWidth: 1080,
         minHeight: 620,
+        // frame: false,
+        titleBarStyle: 'customButtonsOnHover',
+        backgroundColor: '#3D444C',
+        darkTheme: true,
+        vibrancy: 'dark',
         webPreferences: {
             nodeIntegration: true
         }
@@ -57,6 +62,10 @@ const createMainWindow = async () => {
     // Clear out the main window when the app is closed
     mainWindow.on('closed', () => {
         mainWindow = null;
+    });
+
+    mainWindow.once('ready-to-show', () => {
+        mainWindow.show();
     });
 
     // Build menus
@@ -181,6 +190,32 @@ ipcMain.on('remove-local-playlist', (event, user) => {
     });
 });
 */
+
+
+// ----------------------------------------------------------------------------
+// App state management
+
+// Store app state
+ipcMain.on('send-save-app-state', (event, data) => {
+    storage.set('app-state', data, (error) => {
+        if (error) { throw error; }
+    });
+
+});
+
+// Get app state
+ipcMain.on('send-get-app-state', (event, arg) => {
+    storage.get('app-state', (err, data) => {
+        if (err) { throw err; }
+        event.sender.send('get-app-state', data);
+    });
+});
+
+
+
+
+
+
 
 
 

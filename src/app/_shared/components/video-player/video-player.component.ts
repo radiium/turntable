@@ -8,10 +8,10 @@ import 'rxjs/add/observable/timer';
 
 import * as moment from 'moment';
 
-import { Video, Playlist } from '../../../_core/models';
+import { Video, Playlist } from 'core/models';
 
-import { PlayerStateService } from '../../../_core/services/player-state.service';
-import { DataService } from '../../../_core/services/data.service';
+import { PlayerStateService } from 'core/services/player-state.service';
+import { DataService } from 'core/services/data.service';
 
 @Component({
     selector: 'app-video-player',

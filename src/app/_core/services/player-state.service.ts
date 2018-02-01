@@ -1,10 +1,10 @@
 import { Injectable, Input } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
 
-import { UtilsService } from './utils.service';
-import { DataService } from './data.service';
+import { UtilsService } from 'core/services/utils.service';
+import { DataService } from 'core/services/data.service';
 
-import { Video, Playlist, Suggests } from '../models';
+import { Video, Playlist, Suggests } from 'core/models';
 
 @Injectable()
 export class PlayerStateService {

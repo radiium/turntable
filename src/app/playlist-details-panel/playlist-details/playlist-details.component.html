@@ -1,0 +1,62 @@
+<div *ngIf="playlist" id="playlistDetailsContainer" class="contentPanel">
+
+        <mat-accordion>
+            <mat-expansion-panel [expanded]="expanded" hideToggle="true"
+            (opened)="expanded = true" (closed)="expanded = false">
+            <!--
+            (opened)="onOpenPanel()" (closed)="onClosePanel()">
+            -->
+
+            <mat-expansion-panel-header [collapsedHeight]="'48px'" [expandedHeight]="'48px'">
+                    <mat-panel-title> {{ playlist.title }} </mat-panel-title>
+                    <mat-panel-description>
+                        <span>{{ playlist.videolist.length }} track<span *ngIf="playlist.videolist.length >1">s</span></span>
+                    </mat-panel-description>
+                    <div>
+                        <fa *ngIf="!expanded" [name]="'pencil'" [size]="2"></fa>
+                        <fa *ngIf="expanded" [name]="'times'" [size]="2"></fa>
+                    </div>
+                </mat-expansion-panel-header>
+
+                <!-- Set playlist title -->
+                <mat-form-field [floatLabel]="'never'" class="editField">
+                    <input matInput type="text" [(ngModel)]="title" [ngModelOptions]="{standalone: true}" placeholder="Title">
+                </mat-form-field>
+
+                <mat-form-field class="formItem">
+                    <textarea matInput type="text" [(ngModel)]="description" [ngModelOptions]="{standalone: true}" placeholder="Description"
+                    matTextareaAutosize matAutosizeMinRows="1" matAutosizeMaxRows="1"></textarea>
+                </mat-form-field>
+
+                <mat-action-row>
+                    <button mat-button (click)="deletePlaylist()">
+                        <fa [name]="'trash-o'" [size]="2"></fa>Delete
+                    </button>
+                    <button mat-button (click)="savePlaylistInfo()" [disabled]="playlist.title === title && playlist.description === description">
+                        <fa [name]="'floppy-o'" [size]="2"></fa>Save
+                    </button>
+                  </mat-action-row>
+            </mat-expansion-panel>
+        </mat-accordion>
+
+        <div class="spacer"></div>
+        <div class="scrollContainer notExpanded" [class.expanded]="expanded">
+
+            <!-- Video list -->
+            <div class="appList" >
+                <!-- Video list item -->
+                <div *ngFor="let video of playlist.videolist; let i = index" class="appListItem"
+                    dnd-draggable [dragData]="video" [dragEnabled]="expanded" [dropZones]="['zone2']">
+
+                    <app-video-list-item [video]="video" [index]="i + 1"></app-video-list-item>
+
+                    <div class="flexSpacer"></div>
+                    <button *ngIf="expanded" class=" btn btnHover" (click)="deleteVideo(video)">
+                        <fa [name]="'trash-o'" [size]="2"></fa>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+
+</div>

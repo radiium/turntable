@@ -1,5 +1,5 @@
 #playerPanelContainer {
-    height: 100%;
+    // height: 100%;
 }
 
 #playerContainer {
@@ -31,7 +31,7 @@
         width: 100%;
 
         .randomBtn {
-            cursor: pointer;
+            cursor: pointer !important;
             border: none;
             outline: transparent;
             color: gray;
@@ -264,7 +264,7 @@
 
 /* playlist control */
 .plBtn {
-    cursor: pointer;
+    cursor: pointer !important;
     width: 34px !important;
     height: 34px;
     border: none;

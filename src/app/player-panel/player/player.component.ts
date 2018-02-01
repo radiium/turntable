@@ -3,15 +3,15 @@ import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import { Subject } from 'rxjs/Subject';
 
-import { Video, Playlist } from '../../_core/models';
+import { Video, Playlist } from 'core/models';
 
 
-import { PlayerStateService } from '../../_core/services/player-state.service';
-import { DataService } from '../../_core/services/data.service';
+import { PlayerStateService } from 'core/services/player-state.service';
+import { DataService } from 'core/services/data.service';
 import { ElectronService } from 'ngx-electron';
 
 @Component({
-  selector: 'app-player-panel',
+  selector: 'app-player',
   templateUrl: './player.component.html',
   styleUrls: ['./player.component.scss']
 })

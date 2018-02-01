@@ -1,0 +1,21 @@
+<div>
+    <h2 mat-dialog-title>Create new playlist</h2>
+
+    <mat-dialog-content>
+
+        <!-- Playlist name -->
+        <form class="example-form">
+        <mat-form-field class="example-full-width">
+            <input matInput type="text" [(ngModel)]="name"
+            [ngModelOptions]="{standalone: true}" placeholder="Playlist name">
+        </mat-form-field>
+        </form>
+
+    </mat-dialog-content>
+
+    <!-- Controls -->
+    <mat-dialog-actions>
+        <button mat-button (click)="onCancel()">cancel</button>
+        <button mat-button (click)="onAccept()">Ok</button>
+    </mat-dialog-actions>
+</div>

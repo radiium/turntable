@@ -1,19 +1,140 @@
-<div id="appContainer">
 
-        <mat-tab-group [selectedIndex]="selectedTab" (selectedTabChange)="onTabChange($event)" disableRipple>
-            <mat-tab label="Library">
-            <app-library-panel class="tabContentCpnt"></app-library-panel>
-            </mat-tab>
+<div class="appWrapper theme-{{ theme }}">
 
-            <mat-tab label="Player">
-            <app-player-panel class="tabContentCpnt"></app-player-panel>
-            </mat-tab>
+    <!-- windowTitlebar -->
+    <div class="windowTitlebar"></div>
 
-            <mat-tab label="Settings">
-            <app-settings-panel class="tabContentCpnt"></app-settings-panel>
-            </mat-tab>
-        </mat-tab-group>
 
-        <app-login id="app-login"></app-login>
+    <!-- Toolbar -->
+    <mat-toolbar class="appToolbar">
+
+        <!-- App title -->
+        <div class="appTitle ">
+        <span class="title">Turntable</span>
+        </div>
+
+        <!-- Searchbar -->
+        <button (click)="onNavBack()" class="sidenavBtn returnBtn"
+        [disabled]="!prevSelectedTab" [class.btnHover]="prevSelectedTab" [class.disabled]="!prevSelectedTab">
+        <fa class="sidenavBtnIco" [name]="'angle-left'" [size]="5"></fa>
+        </button>
+
+        <!-- Searchbar -->
+        <app-search-bar></app-search-bar>
+
+        <div class="flexSpacer"></div>
+
+        <!-- Display playlists type -->
+        <div class="displayTypeBtn">
+            <mat-button-toggle-group *ngIf="selectedTab === 3" #group="matButtonToggleGroup"
+                [ngModel]="displayType" (change)="changeDisplayType($event)">
+                <mat-button-toggle value="grid"  checked="display.value === 'grid'">
+                    <fa [name]="'th'" [size]="1"></fa>
+                </mat-button-toggle>
+                <mat-button-toggle value="list" checked="display.value === 'list'">
+                    <fa [name]="'list'" [size]="1"></fa>
+                </mat-button-toggle>
+            </mat-button-toggle-group>
+        </div>
+
+
+        <div *ngIf="user" class="toolbarBtn">
+            <img src="{{ user.img }}" alt="">
+            <!--
+            <div class="sidenavBtnLabel">{{ user.name }}</div>
+            -->
+        </div>
+
+        <button [matMenuTriggerFor]="menu" class="toolbarBtn btnHover">
+            <fa class="sidenavBtnIco" [name]="'ellipsis-v'" [size]="3"></fa>
+        </button>
+
+        <mat-menu #menu="matMenu" yPosition="below" xPosition="after" [overlapTrigger]="false" class="menuBox">
+            <button *ngIf="user" (click)="signout()" class="menuItem btnHover">
+                <fa class="menuItemIco" [name]="'sign-out'" [size]="2"></fa>
+                <span class="menuItemLabel">Sign out</span>
+            </button>
+            <button *ngIf="!user" (click)="signin()" class="menuItem btnHover">
+                <fa class="menuItemIco" [name]="'sign-in'" [size]="2"></fa>
+                <span class="menuItemLabel">Sign in</span>
+            </button>
+            <button (click)="onSelectTab(6)" class="menuItem btnHover">
+                <fa class="menuItemIco" [name]="'cog'" [size]="2"></fa>
+                <span class="menuItemLabel">Settings</span>
+            </button>
+        </mat-menu>
+    </mat-toolbar>
+
+
+
+    <mat-sidenav-container class="appContainer">
+
+        <!-- Sidenav -->
+        <mat-sidenav #sidenav [mode]="'side'" opened="true" class="appSidenav">
+
+            <!-- Navigation -->
+            <div class="flexItem sectionLabel">
+                <span>Navigation</span>
+            </div>
+            <div class="flexItem">
+                <button class="sidenavBtn btnHover" (click)="onSelectTab(1)" [class.activ]="selectedTab === 1 || selectedTab === 2">
+                    <fa class="sidenavBtnIco" [name]="'home'" [size]="1"></fa>
+                    <span class="sidenavBtnLabel">Home</span>
+                </button>
+                <button class="sidenavBtn btnHover" (click)="onSelectTab(3)" [class.activ]="selectedTab === 3 || selectedTab === 4">
+                    <fa class="sidenavBtnIco" [name]="'th-list'" [size]="1"></fa>
+                    <span class="sidenavBtnLabel">Library</span>
+                </button>
+                <button class="sidenavBtn btnHover" (click)="onSelectTab(5)" [class.activ]="selectedTab === 5">
+                    <fa class="sidenavBtnIco" [name]="'play-circle'" [size]="1"></fa>
+                    <span class="sidenavBtnLabel">Player</span>
+                </button>
+            </div>
+
+            <!-- Playlists Scroll -->
+            <div class="flexItem sectionLabel">
+                <span>Playlists</span>
+                <div class="flexSpacer"></div>
+                <button *ngIf="user" mat-menu-item (click)="refreshYTPlaylists()" [class.rotate]="loading" class="refreshBtn btnHover">
+                <fa class="refreshBtnIco" [name]="'refresh'" [size]="1"></fa>
+                </button>
+            </div>
+            <div class="flexItem sidenavScroll" #scrollContainer>
+                <button  class="sidenavBtn btnHover" *ngFor="let pl of playlistsList" (click)="selectPlaylist(pl)"
+                    dnd-droppable (onDropSuccess)="onItemDrop($event, pl)" [dropZones]="['zone1']">
+
+                    <fa class="sidenavBtnIco" [name]="'folder-open-o'" [size]="1"></fa>
+                    <span class="sidenavBtnLabel">{{ pl.title }}</span>
+                </button>
+            </div>
+
+            <div class="flexSpacer"></div>
+
+            <!-- Add playlist button -->
+            <div class="flexItem">
+                <button class="sidenavBtn btnHover addBtn" (click)="addPlaylist()">
+                    <fa class="sidenavBtnIco" [name]="'plus'" [size]="1"></fa>
+                    <span class="sidenavBtnLabel">Add playlist</span>
+                </button>
+            </div>
+        </mat-sidenav>
+
+        <!-- Content -->
+        <mat-sidenav-content class="appContent">
+
+            <div *ngIf="loading" class="appLoader">
+                <mat-spinner></mat-spinner>
+            </div>
+
+            <div class="content">
+                <app-home             [hidden]="selectedTab !== 1"></app-home>
+                <app-search-results   [hidden]="selectedTab !== 2"></app-search-results>
+                <app-library          [hidden]="selectedTab !== 3"></app-library>
+                <app-playlist-details [hidden]="selectedTab !== 4"></app-playlist-details>
+                <app-player           [hidden]="selectedTab !== 5"></app-player>
+                <app-settings         [hidden]="selectedTab !== 6"></app-settings>
+            </div>
+        </mat-sidenav-content>
+    </mat-sidenav-container>
 
 </div>
