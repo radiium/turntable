@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, isDevMode, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, isDevMode, ViewEncapsulation, AfterViewInit } from '@angular/core';
 
 import { Observable } from 'rxjs/Observable';
 import { ElectronService } from 'ngx-electron';
@@ -25,11 +25,11 @@ import * as testPlaylist from './test-playlist.json';
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.scss'],
     // directives: [Dragula],
-    encapsulation: ViewEncapsulation.None,
-    viewProviders: [DragulaService]
+    // encapsulation: ViewEncapsulation.None,
+    // viewProviders: [DragulaService]
 
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, AfterViewInit {
 
     user: User;
     selectedTab: number;
@@ -54,8 +54,6 @@ export class AppComponent implements OnInit {
     public dialog: MatDialog,
     private overlayContainer: OverlayContainer,
     private dndService: DndService) {
-
-        this.dndService.initDnd();
 
         // User
         this.dataService.user$.subscribe((user) => {
@@ -112,22 +110,23 @@ export class AppComponent implements OnInit {
             this.initMatOverlay();
         });
 
-
         this.appState.loadAppState();
 
         // Load a local playlist for development
         if (isDevMode()) {
             // this.insertFakeData();
         }
-
-
     }
+
+    ngAfterViewInit() {
+        this.dndService.initDnd();
+    }
+
     initMatOverlay() {
         const darkTheme = 'theme-dark';
         const lightTheme = 'theme-light';
         const classList = this.overlayContainer.getContainerElement().classList;
 
-        console.log('classList', this.overlayContainer.getContainerElement().classList);
         if (classList.contains(lightTheme)) {
             classList.remove(lightTheme);
         }
@@ -140,8 +139,6 @@ export class AppComponent implements OnInit {
         } else if (this.theme === 'light') {
             classList.add(lightTheme);
         }
-
-        console.log('classList', this.overlayContainer.getContainerElement().classList);
     }
 
     ngOnInit() {
@@ -209,65 +206,53 @@ export class AppComponent implements OnInit {
     }
 
 
+    // Load a local playlist for development
+    insertFakeData() {
+        /*
+        const arr = [];
+        for (let i = 0; i < 25; i++) {
+        arr.push(testPlaylist);
+        }
+        this.playlistsList = <Playlist[]>arr;
+        */
 
-
-        // Load a local playlist for development
-        insertFakeData() {
-            /*
-            const arr = [];
-            for (let i = 0; i < 25; i++) {
-            arr.push(testPlaylist);
-            }
-            this.playlistsList = <Playlist[]>arr;
-            */
-
-            const videoList = new Array<Video>();
-            testPlaylist['testPlaylist']['videolist'].forEach(el => {
-                const video = new Video(
-                    el['id'],
-                    el['title'],
-                    el['description'],
-                    el['thumbUrl'],
-                    el['duration'],
-                    el['channelTitle'],
-                    el['publishedAt']
-                );
-                videoList.push(video);
-                videoList.push(video);
-                videoList.push(video);
-                videoList.push(video);
-                videoList.push(video);
-                videoList.push(video);
-                videoList.push(video);
-                videoList.push(video);
-                videoList.push(video);
-                videoList.push(video);
-                videoList.push(video);
-                videoList.push(video);
-            });
-            const datas = new Playlist(
-                testPlaylist['testPlaylist']['id'],
-                testPlaylist['testPlaylist']['title'],
-                testPlaylist['testPlaylist']['description'],
-                testPlaylist['testPlaylist']['thumbUrl'],
-                testPlaylist['testPlaylist']['thumbH'],
-                testPlaylist['testPlaylist']['thumbW'],
-                testPlaylist['testPlaylist']['publishedAt'],
-                testPlaylist['testPlaylist']['privacyStatus'],
-                true,
-                videoList
+        const videoList = new Array<Video>();
+        testPlaylist['testPlaylist']['videolist'].forEach(el => {
+            const video = new Video(
+                el['id'],
+                el['title'],
+                el['description'],
+                el['thumbUrl'],
+                el['duration'],
+                el['channelTitle'],
+                el['publishedAt']
             );
-            // this.playlistsList = <Playlist[]>[datas];
-            this.dataService.setPlaylistsList(<Playlist[]>[datas]);
-        }
-
-        onItemDrop(event: any, playlist: Playlist) {
-            console.log('onItemDrop event', event);
-
-
-            playlist.videolist.push(_.cloneDeep(event.dragData));
-
-        }
-
-
+            videoList.push(video);
+            videoList.push(video);
+            videoList.push(video);
+            videoList.push(video);
+            videoList.push(video);
+            videoList.push(video);
+            videoList.push(video);
+            videoList.push(video);
+            videoList.push(video);
+            videoList.push(video);
+            videoList.push(video);
+            videoList.push(video);
+        });
+        const datas = new Playlist(
+            testPlaylist['testPlaylist']['id'],
+            testPlaylist['testPlaylist']['title'],
+            testPlaylist['testPlaylist']['description'],
+            testPlaylist['testPlaylist']['thumbUrl'],
+            testPlaylist['testPlaylist']['thumbH'],
+            testPlaylist['testPlaylist']['thumbW'],
+            testPlaylist['testPlaylist']['publishedAt'],
+            testPlaylist['testPlaylist']['privacyStatus'],
+            true,
+            videoList
+        );
+        // this.playlistsList = <Playlist[]>[datas];
+        this.dataService.setPlaylistsList(<Playlist[]>[datas]);
+    }
 }

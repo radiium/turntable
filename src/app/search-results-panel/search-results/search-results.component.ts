@@ -22,6 +22,7 @@ export class SearchResultsComponent implements OnInit {
     playlistList: Array<Playlist>;
     hasNextPage: boolean;
     loadNextPage: boolean;
+    enableDrag: boolean;
 
     constructor(
     private dataService: DataService,
@@ -31,15 +32,19 @@ export class SearchResultsComponent implements OnInit {
             if (data.results.length === 1) {
                 this.videoList = data.results[0];
             } else if (data.results.length > 1) {
-                _.each(data.results.pop(), (video) => this.videoList.push(video));
+                _.each(data.results[data.results.length - 1], (video) => {
+                    this.videoList.push(video);
+                });
             }
             this.searchResults = data;
             this.loadNextPage = false;
             this.hasNextPage = data.nextPageToken ? true : false;
         });
 
+        this.enableDrag = false;
         this.dataService.playlistsList$.subscribe((data) => {
             this.playlistList = data;
+            this.enableDrag = data.length > 0 ? true : false;
         });
     }
 
@@ -75,7 +80,7 @@ export class SearchResultsComponent implements OnInit {
     }
 
     onDragStart(event) {
-        this.dataService
+        // this.dataService
 
     }
 

@@ -64,7 +64,7 @@ export class SearchBarComponent implements OnInit {
             // Clear playlist if no value
             if (this.search.value === '') {
                 this.dataService.setSuggestsResult({});
-                this.dataService.setSearchResults([]);
+                // this.dataService.setSearchResults(null);
                 this.dataService.setSuggestsBox(false);
             } else {
                 this.dataService.setSuggestsResult(suggests);

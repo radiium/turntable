@@ -73,6 +73,7 @@ input[type='submit'] {
     Custom global
 
 ****************************/
+
 // Custom Scroll bar
 ::-webkit-scrollbar { width: 10px; }
 ::-webkit-scrollbar-thumb {
@@ -93,7 +94,6 @@ input[type='submit'] {
     }
 }
 
-
 // Tab content
 .contentPanel {
     width: 100%;
@@ -105,18 +105,25 @@ input[type='submit'] {
     }
 }
 
-// App list
+// Video list
 .appList {
     width: 100%;
     height: auto;
     display: flex;
     flex-direction: column;
-
     .appListItem {
-        height: 100px;
-        display: flex;
-        flex-direction: row;
-        // cursor: default !important;
+        .itemBg {
+            height: 100px;
+            display: flex;
+            flex-direction: row;
+            cursor: default !important;
+            @include themify($themes) {
+                color: themed('primaryFont') !important;
+            }
+            @include themify($themes) {
+                background-color: themed('secondary');
+            }
+        }
     }
     .appListItem:not(:last-child) {
         margin-bottom: 16px;
@@ -129,18 +136,15 @@ input[type='submit'] {
         }
     }
     .loadLine {
-        margin-bottom: 16px;
+        // margin-bottom: 16px;
         @include themify($themes) {
             background-color: themed('primary') !important;
         }
     }
 }
 
-
 // Flex box spacer
-.flexSpacer {
-    flex: 1 1 auto;
-}
+.flexSpacer { flex: 1 1 auto; }
 
 // Custom button
 .btnHover:hover {
@@ -148,17 +152,23 @@ input[type='submit'] {
         background-color: themed('btnHover');
     }
 }
+.btnHovered {
+    @include themify($themes) {
+        background-color: themed('btnHover');
+    }
+}
+
 .activ {
     @include themify($themes) {
         background-color: themed('btnActiv');
     }
 }
+
 .disabled {
     color: green !important;
     &:hover {
         background-color: transparent !important;
     }
-
 }
 
 .returnBtn {
@@ -175,6 +185,69 @@ input[type='submit'] {
         margin-top: -7px!important;
     }
 }
+
+/****************************
+
+    Drag and Drop
+
+****************************/
+
+// Hide shadow aid item on over drop container
+.hiddenShadow {
+    &.gu-transit {
+        display: none !important;
+    }
+}
+
+// Over effect on over drop container
+.btnHoveredDrop {
+    border: 2px dashed black;
+    @include themify($themes) {
+        background-color: themed('btnHover');
+    }
+}
+
+// Dragged video list item
+.appListItem {
+    &.gu-mirror {
+        cursor: grabbing;
+        .itemBg {
+            border: 2px dashed black;
+            height: 40px !important;
+            display: flex;
+            flex-direction: row;
+            width: 300px !important;
+
+            @include themify($themes) {
+                background-color: themed('secondary');
+            }
+            div.handle {
+                padding: 3px 6px 3px 5px;
+                display: inline-flex;
+                align-items: center;
+            }
+            .srThumb img {
+                height: 36px !important;
+            }
+            .srTitle {
+                font-size: 0.8rem !important;
+                overflow: hidden;
+                height: 40px;
+                text-overflow: ellipsis;
+                word-break: break-word;
+            }
+            .srDesc, .duration, .srBtn {
+                display: none;
+            }
+        }
+    }
+}
+
+/****************************
+
+    Unglorious hack...
+
+****************************/
 
 .mat-menu-content {
     display: flex;
@@ -201,16 +274,7 @@ input[type='submit'] {
     }
 }
 
-
-
-/****************************
-
-    Unglorious hack...
-
-****************************/
 /*
-
-
 .cdk-overlay-container {
 
     .appContainer {

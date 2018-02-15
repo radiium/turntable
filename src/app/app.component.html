@@ -100,8 +100,12 @@
                 </button>
             </div>
             <div class="flexItem sidenavScroll" #scrollContainer>
-                <button  class="sidenavBtn btnHover" *ngFor="let pl of playlistsList" (click)="selectPlaylist(pl)"
-                    dnd-droppable (onDropSuccess)="onItemDrop($event, pl)" [dropZones]="['zone1']">
+                <button class="sidenavBtn btnHover" *ngFor="let pl of playlistsList"
+                    [dragula]="'searchResultsBag'"
+                    [dragulaModel]="pl.videolist"
+                    [attr.data-acceptDrop]="true"
+                    [attr.data-pl-id]="pl.id"
+                    (click)="selectPlaylist(pl)">
 
                     <fa class="sidenavBtnIco" [name]="'folder-open-o'" [size]="1"></fa>
                     <span class="sidenavBtnLabel">{{ pl.title }}</span>

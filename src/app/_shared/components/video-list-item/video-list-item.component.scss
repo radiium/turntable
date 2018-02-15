@@ -10,6 +10,8 @@
     .itemText {
         overflow: hidden;
         text-overflow: ellipsis;
+        user-select: text;
+        cursor: text;
 
     }
 

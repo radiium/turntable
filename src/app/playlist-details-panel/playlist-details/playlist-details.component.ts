@@ -15,7 +15,7 @@ export class PlaylistDetailsComponent implements OnInit {
 
     playlistsList: Array<Playlist>;
     playlist: Playlist;
-    expanded: boolean;
+    onEdit: boolean;
     title: string;
     description: string;
 
@@ -23,7 +23,7 @@ export class PlaylistDetailsComponent implements OnInit {
     private dataService: DataService,
     public dialog: MatDialog) {
 
-        this.expanded = false;
+        this.onEdit = false;
         this.title = '';
         this.description = '';
 
@@ -103,6 +103,6 @@ export class PlaylistDetailsComponent implements OnInit {
             this.title = this.playlist.title;
             this.description = this.playlist.description;
         }
-        this.expanded = false;
+        this.onEdit = false;
     }
 }

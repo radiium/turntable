@@ -38,7 +38,7 @@ export class EditPlaylistComponent implements OnInit, OnDestroy, OnChanges {
     type: string;
 
     originalPlaylist: Playlist;
-    searchResults: SearchResults;
+    // searchResults: SearchResults;
 
     totalDuration: Number = 0;
     totalDurationHistoric: Number = 0;
@@ -73,6 +73,7 @@ export class EditPlaylistComponent implements OnInit, OnDestroy, OnChanges {
         });
 
         // Get search result list
+        /*
         this.dataService.searchResults$.subscribe((data) => {
             this.searchResults = data;
 
@@ -88,6 +89,7 @@ export class EditPlaylistComponent implements OnInit, OnDestroy, OnChanges {
                 autoScroll: () => scroll.down
             });
         });
+           */
     }
 
     ngOnInit() {

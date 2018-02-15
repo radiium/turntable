@@ -2,7 +2,7 @@
 
     .srBtn {
         text-align: right;
-        min-width: 80px;
+        min-width: 100px;
 
         .btn {
             width: 40px;
@@ -22,6 +22,15 @@
             line-height: 40px;
             width: 100%;
             align-self: center;
+        }
+    }
+
+    div.handle {
+        cursor: grab !important;
+        padding: 10px;
+        display: inline-flex;
+        align-items: center;
+        &i .handle {
         }
     }
 }

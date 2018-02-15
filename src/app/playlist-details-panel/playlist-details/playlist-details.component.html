@@ -1,8 +1,8 @@
 <div *ngIf="playlist" id="playlistDetailsContainer" class="contentPanel">
 
         <mat-accordion>
-            <mat-expansion-panel [expanded]="expanded" hideToggle="true"
-            (opened)="expanded = true" (closed)="expanded = false">
+            <mat-expansion-panel [expanded]="onEdit" hideToggle="true"
+            (opened)="onEdit = true" (closed)="onEdit = false">
             <!--
             (opened)="onOpenPanel()" (closed)="onClosePanel()">
             -->
@@ -13,8 +13,8 @@
                         <span>{{ playlist.videolist.length }} track<span *ngIf="playlist.videolist.length >1">s</span></span>
                     </mat-panel-description>
                     <div>
-                        <fa *ngIf="!expanded" [name]="'pencil'" [size]="2"></fa>
-                        <fa *ngIf="expanded" [name]="'times'" [size]="2"></fa>
+                        <fa *ngIf="!onEdit" [name]="'pencil'" [size]="2"></fa>
+                        <fa *ngIf="onEdit" [name]="'times'" [size]="2"></fa>
                     </div>
                 </mat-expansion-panel-header>
 
@@ -40,20 +40,29 @@
         </mat-accordion>
 
         <div class="spacer"></div>
-        <div class="scrollContainer notExpanded" [class.expanded]="expanded">
+        <div class="scrollContainer notExpanded" [class.expanded]="onEdit">
 
             <!-- Video list -->
-            <div class="appList" >
+            <div class="appList"
+                [dragula]="'playlistDetailsBag'"
+                [dragulaModel]="playlist.videolist">
+
                 <!-- Video list item -->
                 <div *ngFor="let video of playlist.videolist; let i = index" class="appListItem"
-                    dnd-draggable [dragData]="video" [dragEnabled]="expanded" [dropZones]="['zone2']">
+                    [attr.data-movable]="onEdit">
 
-                    <app-video-list-item [video]="video" [index]="i + 1"></app-video-list-item>
+                    <div class="itemBg">
+                        <div *ngIf="onEdit" class="handle btnHovered">
+                            <i fa [name]="'arrows-alt'" [size]="1" class="handle"></i>
+                        </div>
 
-                    <div class="flexSpacer"></div>
-                    <button *ngIf="expanded" class=" btn btnHover" (click)="deleteVideo(video)">
-                        <fa [name]="'trash-o'" [size]="2"></fa>
-                    </button>
+                        <app-video-list-item [video]="video" [index]="i + 1"></app-video-list-item>
+
+                        <div class="flexSpacer"></div>
+                        <button *ngIf="onEdit" class=" btn btnHover" (click)="deleteVideo(video)">
+                            <fa [name]="'trash-o'" [size]="2"></fa>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>

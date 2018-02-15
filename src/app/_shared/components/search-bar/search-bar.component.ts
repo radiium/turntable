@@ -73,7 +73,7 @@ export class SearchBarComponent implements OnInit {
             if (this.search.value === '') {
                 this.dataService.setSuggestsResult({});
                 this.dataService.setSuggestsBox(false);
-                this.dataService.setSearchResults({});
+                // this.dataService.setSearchResults();
             } else {
                 this.dataService.setSuggestsResult(suggests);
                 this.dataService.setSuggestsBox(true);
@@ -98,7 +98,7 @@ export class SearchBarComponent implements OnInit {
         }
         /*
         else {
-            this.dataService.setSearchResults([]);
+            // this.dataService.setSearchResults([]);
             this.dataService.setSearchResultNextPage(null);
         }
         */

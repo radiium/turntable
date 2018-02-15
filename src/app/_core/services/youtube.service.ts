@@ -70,6 +70,7 @@ export class YoutubeService {
     // ------------------------------------------------------------------------
     // Search videos by query string
     searchVideos(query: string, pageToken?: string) {
+
         this.dataService.setLoading(!pageToken ? true : false);
 
         this.searchService.searchVideos(query, pageToken)
@@ -87,8 +88,8 @@ export class YoutubeService {
                 this.searchResults.query = query;
                 this.searchResults.results = [];
             }
-            this.searchResults.results.push(videoList);
 
+            this.searchResults.results.push(videoList);
             this.dataService.setSearchResults(this.searchResults);
             this.dataService.setLoading(false);
         });
