@@ -1,10 +1,13 @@
-import { Component, OnInit, OnDestroy, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { DragulaService } from 'ng2-dragula/ng2-dragula';
 import * as _ from 'lodash';
 import * as autoScroll from 'dom-autoscroller';
 
-import { Playlist, Video } from 'core/models';
+
+import { Playlist, Video, AutoScrollConfig } from 'core/models';
 import { DataService } from 'core/services/data.service';
+import { DndService } from 'core/services/dnd.service';
 import { ConfirmDialogComponent } from 'shared/dialogs/confirm-dialog/confirm-dialog.component';
 
 @Component({
@@ -12,7 +15,7 @@ import { ConfirmDialogComponent } from 'shared/dialogs/confirm-dialog/confirm-di
     templateUrl: './playlist-details.component.html',
     styleUrls: ['./playlist-details.component.scss']
 })
-export class PlaylistDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
+export class PlaylistDetailsComponent implements OnInit {
 
     playlistsList: Array<Playlist>;
     playlist: Playlist;
@@ -20,60 +23,46 @@ export class PlaylistDetailsComponent implements OnInit, OnDestroy, AfterViewIni
     title: string;
     description: string;
 
-    @ViewChild('scrollContainer')  scrollContainer: ElementRef;
-    isOnDrag: boolean;
-    scroll: any;
+    selectedTab;
 
+
+    @ViewChild('pldScrollContainer') set container(scrollContainer: ElementRef) {
+        const scrollConfig: AutoScrollConfig = {
+            container: scrollContainer,
+            selectedTab: 4,
+            margin: 40,
+            maxSpeed: 10
+        };
+        this.dndService.pldAutoScroll = scrollConfig;
+    }
 
     constructor(
     private dataService: DataService,
+    private dndService: DndService,
     public dialog: MatDialog) {
 
         this.onEdit = false;
         this.title = '';
         this.description = '';
 
+        // Get selected playlist
         this.dataService.onSelectPL$.subscribe((data) => {
             this.playlist = data;
             this.onStateChange();
-
-
         });
 
+        // Get playlist list
         this.dataService.playlistsList$.subscribe((data) => {
             this.playlistsList = data;
         });
 
-        // Selected tab
-        this.dataService.isOnDrag$.subscribe((data) => {
-            this.isOnDrag = data;
-            console.log('isOnDrag', data);
-            console.log(this.scrollContainer);
-
-            if (this.scrollContainer) {
-                this.scroll = autoScroll([
-                    this.scrollContainer.nativeElement
-                ], {
-                    margin: 70,
-                    maxSpeed: 6,
-                    scrollWhenOutside: true,
-                    autoScroll: () => {
-                        // console.log(this.isOnDrag);
-                        return this.scroll.down && this.isOnDrag && this.onEdit;
-                    }
-                });
-            }
+        // Get selected tab
+        this.dataService.selectedTab$.subscribe((data) => {
+            this.selectedTab = data;
         });
     }
 
     ngOnInit() {
-    }
-
-    ngAfterViewInit() {
-    }
-
-    ngOnDestroy() {
-        this.scroll.destroy();
     }
 
     savePlaylistInfo() {

@@ -1,18 +1,16 @@
 import { Component, OnInit, OnDestroy, ViewChild, ElementRef, isDevMode, ViewEncapsulation, AfterViewInit } from '@angular/core';
-
 import { Observable } from 'rxjs/Observable';
 import { ElectronService } from 'ngx-electron';
 import { OverlayContainer } from '@angular/cdk/overlay';
-import { DragulaService, dragula } from 'ng2-dragula/ng2-dragula';
+import * as autoScroll from 'dom-autoscroller';
+import * as _ from 'lodash';
 
-import { User, Video, Playlist } from 'core/models';
+import { User, Video, Playlist, AutoScrollConfig } from 'core/models';
 import { AppStateService } from 'core/services/app-state.service';
 import { AuthService } from 'core/services/auth.service';
 import { DataService } from 'core/services/data.service';
 import { YoutubeService } from 'core/services/youtube.service';
 import { DndService } from 'core/services/dnd.service';
-import * as autoScroll from 'dom-autoscroller';
-import * as _ from 'lodash';
 
 import { UUID } from 'angular2-uuid';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
@@ -41,18 +39,18 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     loading: any = false;
     theme: any;
 
-    @ViewChild('scrollContainer')  scrollContainer: ElementRef;
+    @ViewChild('plScrollContainer') scrollContainer: ElementRef;
     isOnDrag: boolean;
     scroll: any;
 
 
     constructor(
+    public dialog: MatDialog,
     private appState: AppStateService,
     private dataService: DataService,
     private Electron: ElectronService,
     private authService: AuthService,
     private YTService: YoutubeService,
-    public dialog: MatDialog,
     private overlayContainer: OverlayContainer,
     private dndService: DndService) {
 
@@ -74,23 +72,6 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
         this.playlistsList = new Array<Playlist>();
         this.dataService.playlistsList$.subscribe((data) => {
             this.playlistsList = data;
-
-            this.scroll = autoScroll([
-                this.scrollContainer.nativeElement
-            ], {
-                margin: 70,
-                maxSpeed: 6,
-                scrollWhenOutside: true,
-                autoScroll: () => {
-                    // console.log(this.isOnDrag);
-                    return this.scroll.down && this.isOnDrag;
-                }
-            });
-        });
-
-        // Selected tab
-        this.dataService.isOnDrag$.subscribe((data) => {
-            this.isOnDrag = data;
         });
 
         // Playlists display type
@@ -109,6 +90,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
             this.initMatOverlay();
         });
 
+        this.dndService.initDnd();
         this.appState.loadAppState();
 
         // Load a local playlist for development
@@ -117,8 +99,28 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
         }
     }
 
+    ngOnInit() {
+    }
+
     ngAfterViewInit() {
-        this.dndService.initDnd();
+        const scrollConfig: AutoScrollConfig = {
+            container: this.scrollContainer,
+            selectedTab: 2,
+            margin: 20,
+            maxSpeed: 10
+        };
+        this.dndService.srAutoScroll = scrollConfig;
+        console.log('App', scrollConfig);
+    }
+
+    ngOnDestroy() {
+        this.destroyScroll(true);
+    }
+
+    destroyScroll(cleanAnimation: boolean) {
+        if (this.scroll) {
+            this.scroll.destroy(cleanAnimation);
+        }
     }
 
     initMatOverlay() {
@@ -138,13 +140,6 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
         } else if (this.theme === 'light') {
             classList.add(lightTheme);
         }
-    }
-
-    ngOnInit() {
-    }
-
-    ngOnDestroy() {
-        this.scroll.destroy();
     }
 
     signin() {

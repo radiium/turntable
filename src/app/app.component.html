@@ -99,17 +99,21 @@
                 <fa class="refreshBtnIco" [name]="'refresh'" [size]="1"></fa>
                 </button>
             </div>
-            <div class="flexItem sidenavScroll" #scrollContainer>
-                <button class="sidenavBtn btnHover" *ngFor="let pl of playlistsList"
-                    [dragula]="'searchResultsBag'"
-                    [dragulaModel]="pl.videolist"
-                    [attr.data-acceptDrop]="true"
-                    [attr.data-pl-id]="pl.id"
-                    (click)="selectPlaylist(pl)">
 
-                    <fa class="sidenavBtnIco" [name]="'folder-open-o'" [size]="1"></fa>
-                    <span class="sidenavBtnLabel">{{ pl.title }}</span>
-                </button>
+            <div class="flexItem sidenavScroll" #plScrollContainer>
+
+                <div class="flexItem" >
+                    <button class="sidenavBtn btnHover" *ngFor="let pl of playlistsList"
+                        [dragula]="'searchResultsBag'"
+                        [dragulaModel]="pl.videolist"
+                        [attr.data-acceptDrop]="true"
+                        [attr.data-pl-id]="pl.id"
+                        (click)="selectPlaylist(pl)">
+
+                        <fa class="sidenavBtnIco" [name]="'folder-open-o'" [size]="1"></fa>
+                        <span class="sidenavBtnLabel">{{ pl.title }}</span>
+                    </button>
+                </div>
             </div>
 
             <div class="flexSpacer"></div>
