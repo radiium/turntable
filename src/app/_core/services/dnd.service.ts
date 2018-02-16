@@ -4,6 +4,7 @@ import * as _ from 'lodash';
 
 import { User, Playlist, Video, Suggests, SearchResults } from 'core/models';
 import { DataService } from 'core/services//data.service';
+
 @Injectable()
 export class DndService implements OnDestroy {
 
@@ -38,25 +39,7 @@ export class DndService implements OnDestroy {
             removeOnSpill: true,
             moves: (el, source, handle, sibling): boolean => {
                 return el.dataset.movable === 'true' && handle.classList.contains('handle');
-            },
-            /*
-            copy: (el, source): boolean => {
-                return source.dataset.acceptDrop === 'false';
-            },
-            accepts: (el, target, source, sibling): boolean => {
-
-                // Prevent duplicate
-                let accept = true;
-                if (source !== target) {
-                    that.videolist.forEach(video => {
-                        if (el.dataset.id === video.id) {
-                            accept = false;
-                        }
-                    });
-                }
-                return (accept && target.dataset.acceptDrop === 'true');
-            },
-            */
+            }
         });
 
 
@@ -101,40 +84,28 @@ export class DndService implements OnDestroy {
         this.dragulaService.out.subscribe((value) => {
             this.onOut(value[0], value.slice(1));
         });
-
         this.dragulaService.dropModel.subscribe((value) => {
             this.onDropModel(value[0], value.slice(1));
         });
-        /*
-
         this.dragulaService.drag.subscribe((value) => {
             this.onDrag(value[0], value.slice(1));
-        });
-        this.dragulaService.dragend.subscribe((value) => {
-            this.onDragend(value[0], value.slice(1));
-        });
-
-
-        this.dragulaService.shadow.subscribe((value) => {
-            this.onShadow(value[0], value.slice(1));
         });
         this.dragulaService.drop.subscribe((value) => {
             this.onDrop(value[0], value.slice(1));
         });
 
+
+        /*
+        this.dragulaService.shadow.subscribe((value) => {
+            this.onShadow(value[0], value.slice(1));
+        });
+        this.dragulaService.dragend.subscribe((value) => {
+            this.onDragend(value[0], value.slice(1));
+        });
         this.dragulaService.removeModel.subscribe((value) => {
             this.onRemoveModel(value[0], value.slice(1));
         });
         */
-
-
-        /*
-        drake1.on('drag', (value) => {
-            console.log('drake1.on', value);
-            // this.onDrag(value.slice(1));
-        });
-        */
-
     }
 
     private onOver(bagName: string, args) {
@@ -166,20 +137,36 @@ export class DndService implements OnDestroy {
         }
     }
 
-
-
-
-
-
-
     private onDrag(bagName: string, args) {
         const [el, source] = args;
+        this.dataService.setIsOnDrag(true);
+        /*
         if (bagName === this.searchResultsBag) {
             // el.classList.add('appListItemMirror');
         } else if (bagName === this.playlistDetailsBag) {
 
         }
+        */
     }
+
+    private onDrop(bagName: string, args) {
+        const [el, target, source, sibling] = args;
+        this.dataService.setIsOnDrag(false);
+        /*
+        if (bagName === this.searchResultsBag) {
+
+        } else if (bagName === this.playlistDetailsBag) {
+
+        }
+        */
+    }
+
+
+
+
+
+
+
 
     private onDragend(bagName: string, args) {
         const [el] = args;
@@ -203,21 +190,6 @@ export class DndService implements OnDestroy {
 
         }
     }
-
-    private onDrop(bagName: string, args) {
-        console.log('==========================');
-        console.log('onDrop bagName', bagName);
-        console.log('args', args);
-        const [el, target, source, sibling] = args;
-
-        if (bagName === this.searchResultsBag) {
-
-        } else if (bagName === this.playlistDetailsBag) {
-
-        }
-    }
-
-
 
     private onRemoveModel(bagName: string, args) {
         console.log('==========================');

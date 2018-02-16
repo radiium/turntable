@@ -40,19 +40,21 @@
         </mat-accordion>
 
         <div class="spacer"></div>
-        <div class="scrollContainer notExpanded" [class.expanded]="onEdit">
+        <div class="scrollContainer notExpanded" [class.expanded]="onEdit" #scrollContainer>
 
             <!-- Video list -->
             <div class="appList"
                 [dragula]="'playlistDetailsBag'"
                 [dragulaModel]="playlist.videolist">
 
-                <!-- Video list item -->
+                <!-- Video list item
+                -->
                 <div *ngFor="let video of playlist.videolist; let i = index" class="appListItem"
-                    [attr.data-movable]="onEdit">
+                [attr.data-movable]="true"
+                    >
 
                     <div class="itemBg">
-                        <div *ngIf="onEdit" class="handle btnHovered">
+                        <div *ngIf="onEdit || true" class="handle btnHovered">
                             <i fa [name]="'arrows-alt'" [size]="1" class="handle"></i>
                         </div>
 

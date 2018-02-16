@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, isDevMode, ViewEncapsulation, AfterViewInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef, isDevMode, ViewEncapsulation, AfterViewInit } from '@angular/core';
 
 import { Observable } from 'rxjs/Observable';
 import { ElectronService } from 'ngx-electron';
@@ -29,7 +29,7 @@ import * as testPlaylist from './test-playlist.json';
     // viewProviders: [DragulaService]
 
 })
-export class AppComponent implements OnInit, AfterViewInit {
+export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
 
     user: User;
     selectedTab: number;
@@ -41,9 +41,10 @@ export class AppComponent implements OnInit, AfterViewInit {
     loading: any = false;
     theme: any;
 
-    isOnDrag: boolean;
-
     @ViewChild('scrollContainer')  scrollContainer: ElementRef;
+    isOnDrag: boolean;
+    scroll: any;
+
 
     constructor(
     private appState: AppStateService,
@@ -74,19 +75,17 @@ export class AppComponent implements OnInit, AfterViewInit {
         this.dataService.playlistsList$.subscribe((data) => {
             this.playlistsList = data;
 
-            /*
-            const scroll = autoScroll([
+            this.scroll = autoScroll([
                 this.scrollContainer.nativeElement
             ], {
                 margin: 70,
                 maxSpeed: 6,
                 scrollWhenOutside: true,
                 autoScroll: () => {
-                    console.log(this.isOnDrag);
-                    return scroll.down; // && this.isOnDrag;
+                    // console.log(this.isOnDrag);
+                    return this.scroll.down && this.isOnDrag;
                 }
             });
-            */
         });
 
         // Selected tab
@@ -142,6 +141,10 @@ export class AppComponent implements OnInit, AfterViewInit {
     }
 
     ngOnInit() {
+    }
+
+    ngOnDestroy() {
+        this.scroll.destroy();
     }
 
     signin() {

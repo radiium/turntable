@@ -8,11 +8,8 @@ import { HttpClientModule, HttpClientJsonpModule, HTTP_INTERCEPTORS } from '@ang
 
 // modules
 import { DragulaModule } from 'ng2-dragula';
-import { DndModule } from 'ng2-dnd';
-import { NgxDnDModule } from '@swimlane/ngx-dnd';
 import { Angular2FontawesomeModule } from 'angular2-fontawesome/angular2-fontawesome';
 import { NgxElectronModule } from 'ngx-electron';
-import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 import { CustomMaterialModule } from './modules/material/custom-material.module';
 import { YoutubePlayerModule } from './modules/youtube-player/youtube-player.module';
@@ -71,11 +68,8 @@ import { VideoListItemComponent } from './components/video-list-item/video-list-
         FormsModule,
         ReactiveFormsModule,
         DragulaModule,
-        DndModule.forRoot(),
-        NgxDnDModule,
         Angular2FontawesomeModule,
         NgxElectronModule,
-        InfiniteScrollModule,
         YoutubePlayerModule,
         // EditPlaylistModule,
         CustomMaterialModule
@@ -88,11 +82,8 @@ import { VideoListItemComponent } from './components/video-list-item/video-list-
         FormsModule,
         ReactiveFormsModule,
         DragulaModule,
-        DndModule,
-        NgxDnDModule,
         Angular2FontawesomeModule,
         NgxElectronModule,
-        InfiniteScrollModule,
         YoutubePlayerModule,
         ClickOutsideDirective,
         DurationPipe,

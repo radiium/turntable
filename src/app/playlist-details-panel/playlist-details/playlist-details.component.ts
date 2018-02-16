@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import * as _ from 'lodash';
+import * as autoScroll from 'dom-autoscroller';
 
 import { Playlist, Video } from 'core/models';
 import { DataService } from 'core/services/data.service';
@@ -11,13 +12,18 @@ import { ConfirmDialogComponent } from 'shared/dialogs/confirm-dialog/confirm-di
     templateUrl: './playlist-details.component.html',
     styleUrls: ['./playlist-details.component.scss']
 })
-export class PlaylistDetailsComponent implements OnInit {
+export class PlaylistDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
 
     playlistsList: Array<Playlist>;
     playlist: Playlist;
     onEdit: boolean;
     title: string;
     description: string;
+
+    @ViewChild('scrollContainer')  scrollContainer: ElementRef;
+    isOnDrag: boolean;
+    scroll: any;
+
 
     constructor(
     private dataService: DataService,
@@ -30,14 +36,44 @@ export class PlaylistDetailsComponent implements OnInit {
         this.dataService.onSelectPL$.subscribe((data) => {
             this.playlist = data;
             this.onStateChange();
+
+
         });
 
         this.dataService.playlistsList$.subscribe((data) => {
             this.playlistsList = data;
         });
+
+        // Selected tab
+        this.dataService.isOnDrag$.subscribe((data) => {
+            this.isOnDrag = data;
+            console.log('isOnDrag', data);
+            console.log(this.scrollContainer);
+
+            if (this.scrollContainer) {
+                this.scroll = autoScroll([
+                    this.scrollContainer.nativeElement
+                ], {
+                    margin: 70,
+                    maxSpeed: 6,
+                    scrollWhenOutside: true,
+                    autoScroll: () => {
+                        // console.log(this.isOnDrag);
+                        return this.scroll.down && this.isOnDrag && this.onEdit;
+                    }
+                });
+            }
+        });
     }
 
     ngOnInit() {
+    }
+
+    ngAfterViewInit() {
+    }
+
+    ngOnDestroy() {
+        this.scroll.destroy();
     }
 
     savePlaylistInfo() {
