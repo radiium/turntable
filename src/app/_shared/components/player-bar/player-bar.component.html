@@ -1,0 +1,52 @@
+<!-- On play tool bar
+(click)="onNavBack()"
+-->
+<mat-toolbar class="playerBar">
+
+    <div class="playerCtrlBox controlBox">
+        <!-- Previous track -->
+        <button *ngIf="true" class="playerBarBtn"
+        [class.enabled]="hasPrev()" [class.btnHoverPlayer]="hasPrev()"
+        (click)="onPrev()">
+        <fa class="playerBarBtnIco" [name]="'step-backward'" [size]="2"></fa>
+        </button>
+
+        <!-- Play -->
+        <button *ngIf="isOnplay" class="playerBarBtn btnHoverPlayer enabled pointer playpauseBtn"
+        (click)="onPlayPause()">
+        <fa class="playerBarBtnIco" [name]="'play'" [size]="2"></fa>
+        </button>
+
+        <!-- Pause -->
+        <button *ngIf="!isOnplay" class="playerBarBtn btnHoverPlayer enabled pointer playpauseBtn"
+        (click)="onPlayPause()">
+        <fa class="playerBarBtnIco" [name]="'pause'" [size]="2"></fa>
+        </button>
+
+        <!-- Next track -->
+        <button *ngIf="true" class="playerBarBtn"
+        [class.enabled]="hasNext()" [class.btnHoverPlayer]="hasNext()"
+        (click)="onNext()">
+        <fa class="playerBarBtnIco" [name]="'step-forward'" [size]="2"></fa>
+        </button>
+    </div>
+
+    <div class="controlBox">
+        <mat-slider min="1" max="5" step="0.5" value="1.5"></mat-slider>
+    </div>
+
+    <div class="playlistCtrlBox controlBox">
+        <!-- Random -->
+        <button *ngIf="true" class="playerBarBtn pointer" [class.enabled]="isRandom"
+        (click)="onRandom()">
+        <fa class="playerBarBtnIco" [name]="'random'" [size]="2"></fa>
+        </button>
+
+        <!-- Random -->
+        <button *ngIf="true" class="playerBarBtn pointer" [class.enabled]="isRepeat"
+        (click)="onRepeat()">
+        <fa class="playerBarBtnIco" [name]="'repeat'" [size]="2"></fa>
+        </button>
+    </div>
+
+</mat-toolbar>

@@ -1,0 +1,31 @@
+@import '../../../../styles/themes';
+
+.playerBar {
+    height: 38.5px;
+    margin-left: 2px;
+
+    .controlBox {
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+}
+
+.playerBarBtn {
+    padding: 0 5px 0 5px;
+}
+
+.playerCtrlBox {
+    border-radius: 500px;
+    border: 1px solid white;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+.playpauseBtn {
+    width: 30px;
+}
+.playlistCtrlBox {
+
+}
+
+.playerBarBtn {
+}

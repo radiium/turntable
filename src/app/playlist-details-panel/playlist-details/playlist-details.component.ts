@@ -30,8 +30,8 @@ export class PlaylistDetailsComponent implements OnInit {
         const scrollConfig: AutoScrollConfig = {
             container: scrollContainer,
             selectedTab: 4,
-            margin: 40,
-            maxSpeed: 10
+            margin: 55,
+            maxSpeed: 13
         };
         this.dndService.pldAutoScroll = scrollConfig;
     }

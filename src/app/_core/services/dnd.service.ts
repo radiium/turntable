@@ -138,7 +138,7 @@ export class DndService implements OnDestroy {
         if (bagName === this.srBag) {
             this.destroyAutoScroll(this.srAutoScroll, true);
         } else if (bagName === this.pldBag) {
-            this.destroyAutoScroll(this.srAutoScroll, true);
+            this.destroyAutoScroll(this.pldAutoScroll, true);
         }
     }
 

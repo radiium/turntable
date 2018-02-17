@@ -152,6 +152,7 @@ input[type='submit'] {
         background-color: themed('btnHover');
     }
 }
+
 .btnHovered {
     @include themify($themes) {
         background-color: themed('btnHover');
@@ -185,6 +186,40 @@ input[type='submit'] {
         margin-top: -7px!important;
     }
 }
+
+
+.playerBar {
+
+    .pointer fa i { cursor: pointer; }
+    fa i {
+        cursor: default;
+        @include themify($themes) {
+            color: themed('primaryFontDisabled') !important;
+        }
+    }
+
+    .enabled fa i {
+        cursor: pointer;
+        @include themify($themes) {
+            color: themed('primaryFont') !important;
+        }
+    }
+
+    .btnHoverPlayer:hover fa i {
+        color: black !important;
+        @include themify($themes) {
+            color: themed('primaryFontLight') !important;
+        }
+    }
+}
+    .mat-toolbar {
+        &.playerBar {
+            @include themify($themes) {
+                background: themed('primary') !important;
+                background-color: themed('primary') !important;
+            }
+        }
+    }
 
 /****************************
 

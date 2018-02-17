@@ -35,6 +35,7 @@ import { ClickOutsideDirective } from './directives/click-outside.directive';
 import { DurationPipe } from './pipes/duration.pipe';
 import { FilterPlaylistsPipe } from './pipes/filter-playlists.pipe';
 import { VideoListItemComponent } from './components/video-list-item/video-list-item.component';
+import { PlayerBarComponent } from './components/player-bar/player-bar.component';
 
 
 @NgModule({
@@ -56,7 +57,8 @@ import { VideoListItemComponent } from './components/video-list-item/video-list-
         EditPlaylistComponent,
         PlaylistItemComponent,
         SearchBarComponent,
-        VideoListItemComponent
+        VideoListItemComponent,
+        PlayerBarComponent
     ],
     imports: [
         CommonModule,
@@ -96,6 +98,7 @@ import { VideoListItemComponent } from './components/video-list-item/video-list-
         PlaylistItemComponent,
         SearchBarComponent,
         VideoListItemComponent,
+        PlayerBarComponent
     ],
     providers: [],
 })

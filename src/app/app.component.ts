@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, ViewChild, ElementRef, isDevMode, ViewEnc
 import { Observable } from 'rxjs/Observable';
 import { ElectronService } from 'ngx-electron';
 import { OverlayContainer } from '@angular/cdk/overlay';
-import * as autoScroll from 'dom-autoscroller';
+import { MatSnackBar } from '@angular/material';
 import * as _ from 'lodash';
 
 import { User, Video, Playlist, AutoScrollConfig } from 'core/models';
@@ -43,9 +43,12 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     isOnDrag: boolean;
     scroll: any;
 
+    miniNav = false;
+
 
     constructor(
-    public dialog: MatDialog,
+    public snackBar: MatSnackBar,
+    public  dialog: MatDialog,
     private appState: AppStateService,
     private dataService: DataService,
     private Electron: ElectronService,
@@ -100,6 +103,9 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     ngOnInit() {
+        // this.snackBar.open('Hey', '', {
+        //    duration: 2000,
+        // });
     }
 
     ngAfterViewInit() {
@@ -114,14 +120,8 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     ngOnDestroy() {
-        this.destroyScroll(true);
     }
 
-    destroyScroll(cleanAnimation: boolean) {
-        if (this.scroll) {
-            this.scroll.destroy(cleanAnimation);
-        }
-    }
 
     initMatOverlay() {
         const darkTheme = 'theme-dark';
