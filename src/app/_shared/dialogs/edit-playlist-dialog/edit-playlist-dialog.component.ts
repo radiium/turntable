@@ -4,6 +4,7 @@ import { Playlist } from 'core/models';
 @Component({
   selector: 'app-edit-playlist-dialog',
   templateUrl: 'edit-playlist-dialog.component.html',
+  styleUrls: ['./edit-playlist-dialog.component.scss'],
 })
 export class EditPlaylistDialogComponent {
 
@@ -39,9 +40,12 @@ export class EditPlaylistDialogComponent {
     }
 
     onAccept() {
-        console.log();
         if (this.title !== '') {
-            // this.dialogRef.close({ name: this.title });
+            this.dialogRef.close({
+                title: this.title,
+                description: this.description,
+                privacyStatus: this.privacyStatus
+            });
         }
     }
 }

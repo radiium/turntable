@@ -4,7 +4,7 @@
     <mat-dialog-content>
 
         <form class="editForm" style="">
-            <div>Type '{{ title }}'</div>
+            <div class="titleText">Type '{{ title }}'</div>
             <mat-form-field [floatLabel]="'never'" class="editField">
                 <input matInput type="text" [(ngModel)]="titleCopy" required
                 [ngModelOptions]="{standalone: true}">
