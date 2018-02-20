@@ -33,19 +33,19 @@
                     <div class="plFooter" [class.localPl]="pl.isLocal" [class.notlocalPl]="!pl.isLocal">
                         <!-- Play playlist button -->
                         <button  class="playBtn plBtn" (click)="playPlaylist(pl)">
-                        <fa aria-label="Edit playlist" [name]="'play'" [size]="2"></fa>
+                        <fa [name]="'play'" [size]="2"></fa>
                         </button>
 
                         <div class="spacerBtn"></div>
 
                         <!-- Edit playlist button -->
-                        <button class="editBtn plBtn" (click)="editPlaylist(pl)">
-                        <fa aria-label="Edit playlist" [name]="'pencil'" [size]="2"></fa>
+                        <button class="editBtn plBtn" (click)="showPlaylist(pl)">
+                        <fa [name]="'eye'" [size]="2"></fa>
                         </button>
 
                         <!-- Remove playlist button -->
                         <button class="deleteBtn plBtn"(click)="deletePlaylist(pl)" >
-                        <fa aria-label="Delete playlist" [name]="'trash'" [size]="2"></fa>
+                        <fa [name]="'trash'" [size]="2"></fa>
                         </button>
                     </div>
                 </div>

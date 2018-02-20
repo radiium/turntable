@@ -193,6 +193,10 @@ input[type='submit'] {
     width: 44px;
     height: 44px;
     margin-right: 5px;
+    &.miniBtn {
+        width: 34px;
+        height: 34px;
+    }
     img {
         box-sizing: content-box;
         border-radius: 500px;
@@ -322,11 +326,6 @@ input[type='submit'] {
             align-self: center;
         }
     }
-}
-
-.editForm {
-    display: flex;
-    flex-direction: column;
 }
 
 .toolBarBG {

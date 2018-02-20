@@ -113,7 +113,6 @@
                 </div>
 
                 <div class="flexItem sidenavScroll" #plScrollContainer>
-
                     <div class="flexItem" *ngIf="playlistsList">
                         <button class="sidenavBtn btnHover" *ngFor="let pl of playlistsList"
                             [class.activ]="selectedTab === 4 && pl.id === onSelectPLID"
@@ -184,7 +183,7 @@
 
             <!--
             *ngIf="isOnPlay"
-        -->
+            -->
             <app-player-bar
             class="testttt"
             [class.toggleBar]="!isOnPlay"

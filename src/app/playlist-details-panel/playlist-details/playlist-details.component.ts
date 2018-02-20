@@ -55,7 +55,6 @@ export class PlaylistDetailsComponent implements OnInit {
         this.description = '';
         this.totalDuration = 0;
 
-
         // Get selected playlist
         this.dataService.onSelectPL$.subscribe((data) => {
             this.playlist = data;
@@ -79,18 +78,22 @@ export class PlaylistDetailsComponent implements OnInit {
     editPlaylist() {
         const dialogRef = this.dialog.open(EditPlaylistDialogComponent, {
             height: 'auto',
+            width: '300px',
             data: { playlist: this.playlist }
         });
         dialogRef.afterClosed().subscribe(result => {
             if (result) {
-                const selectedPL = _.each(this.playlistsList, (pl) => {
+                let selectedPL;
+                const newPLList = _.each(this.playlistsList, (pl) => {
                     if (pl.id === this.playlist.id) {
-                        pl.title = this.title;
-                        pl.description = this.description;
+                        pl.title = result.title;
+                        pl.description = result.description;
+                        pl.privacyStatus = result.privacyStatus;
+                        selectedPL = pl;
                     }
                 });
-                this.dataService.setPlaylistsList(selectedPL);
-                this.dataService.setOnSelectPL(this.playlist);
+                this.dataService.setPlaylistsList(newPLList);
+                this.dataService.setOnSelectPL(selectedPL);
                 this.updateState(false);
             }
         });
@@ -118,7 +121,6 @@ export class PlaylistDetailsComponent implements OnInit {
         });
         dialogRef.afterClosed().subscribe(delVideo => {
             if (delVideo) {
-
                 this.playlist.videolist = _.remove(this.playlist.videolist, (vid) => {
                     return vid.id !== video.id;
                 });
@@ -131,8 +133,6 @@ export class PlaylistDetailsComponent implements OnInit {
             }
         });
     }
-
-
 
     updateState(isOnEdit) {
         this.onSort = false;

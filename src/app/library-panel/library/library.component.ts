@@ -74,7 +74,7 @@ export class LibraryComponent implements OnInit {
 
 
     // Edit the selected playlist
-    editPlaylist(playlist: Playlist) {
+    showPlaylist(playlist: Playlist) {
         this.dataService.setOnSelectPL(playlist);
         this.dataService.setSelectedTab(4);
     }
