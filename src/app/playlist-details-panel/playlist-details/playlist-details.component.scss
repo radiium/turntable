@@ -1,13 +1,12 @@
+@import '../../../styles/themes';
+
 .spacer {
     height: 20px;
 }
 
-.notExpanded {
-    height: calc(100% - 48px - 20px);
-}
-
-.expanded {
-    height: calc(100% - 191px - 20px) !important;
+.plDetailToolbar {
+    // height: 64px;
+    height: 40px;
 }
 
 div.handle {
@@ -21,4 +20,8 @@ div.handle {
 
 .appList {
     min-height: 400px;
+}
+
+.plScrollContainer {
+    height: calc(100% - 64px - 20px);
 }

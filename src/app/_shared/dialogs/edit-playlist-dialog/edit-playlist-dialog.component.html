@@ -1,0 +1,38 @@
+<div>
+    <h2 mat-dialog-title>Edit {{ playlist.title }}</h2>
+
+    <mat-dialog-content>
+
+        <!-- Playlist name -->
+        <form class="editForm" style="">
+
+            <!-- Set playlist title -->
+            <mat-form-field [floatLabel]="'always'" class="editField">
+                <input matInput type="text" [(ngModel)]="title"
+                [ngModelOptions]="{standalone: true}" placeholder="Title">
+            </mat-form-field>
+
+            <!-- Set playlist description -->
+            <mat-form-field [floatLabel]="'always'" class="formItem">
+                <textarea matInput type="text" [(ngModel)]="description"
+                [ngModelOptions]="{standalone: true}" placeholder="Description"
+                matTextareaAutosize matAutosizeMinRows="2" matAutosizeMaxRows="2"></textarea>
+            </mat-form-field>
+
+            <mat-form-field [floatLabel]="'always'" class="formItem">
+                <mat-select placeholder="Privacy status">
+                    <mat-option *ngFor="let ps of privacyStatusList" [value]="ps">
+                    {{ ps }}
+                    </mat-option>
+                </mat-select>
+                </mat-form-field>
+        </form>
+
+    </mat-dialog-content>
+
+    <!-- Controls -->
+    <mat-dialog-actions>
+        <button mat-button (click)="onCancel()">cancel</button>
+        <button mat-button (click)="onAccept()">Ok</button>
+    </mat-dialog-actions>
+</div>

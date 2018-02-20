@@ -23,6 +23,8 @@ import { SearchBarComponent } from './components/search-bar/search-bar.component
 // Components
 import { ConfirmDialogComponent } from './dialogs/confirm-dialog/confirm-dialog.component';
 import { CreatePlaylistDialogComponent } from './dialogs/create-playlist-dialog/create-playlist-dialog.component';
+import { DeletePlaylistDialogComponent } from './dialogs/delete-playlist-dialog/delete-playlist-dialog.component';
+import { EditPlaylistDialogComponent } from './dialogs/edit-playlist-dialog/edit-playlist-dialog.component';
 import { SelectPlaylistDialogComponent } from './dialogs/select-playlist-dialog/select-playlist-dialog.component';
 
 import { RangeSliderComponent } from './components/range-slider/range-slider.component';
@@ -42,7 +44,9 @@ import { PlayerBarComponent } from './components/player-bar/player-bar.component
     entryComponents: [
         ConfirmDialogComponent,
         CreatePlaylistDialogComponent,
-        SelectPlaylistDialogComponent,
+        DeletePlaylistDialogComponent,
+        EditPlaylistDialogComponent,
+        SelectPlaylistDialogComponent
     ],
     declarations: [
         ClickOutsideDirective,
@@ -50,6 +54,8 @@ import { PlayerBarComponent } from './components/player-bar/player-bar.component
         FilterPlaylistsPipe,
         ConfirmDialogComponent,
         CreatePlaylistDialogComponent,
+        DeletePlaylistDialogComponent,
+        EditPlaylistDialogComponent,
         SelectPlaylistDialogComponent,
         RangeSliderComponent,
         VideoPlayerComponent,

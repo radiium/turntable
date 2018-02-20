@@ -146,6 +146,7 @@ input[type='submit'] {
 // Flex box spacer
 .flexSpacer { flex: 1 1 auto; }
 
+
 // Custom button
 .btnHover:hover {
     @include themify($themes) {
@@ -164,26 +165,40 @@ input[type='submit'] {
         background-color: themed('btnActiv');
     }
 }
+.returnBtn {
+    fa i {
+        height: 44px !important;
+        margin-top: -7px!important;
+    }
+}
 
 .disabled {
-    color: green !important;
+    cursor: default;
+    @include themify($themes) {
+        color: themed('primaryFontDisabled') !important;
+    }
+    fa i {
+        @include themify($themes) {
+            color: themed('primaryFontDisabled') !important;
+        }
+    }
     &:hover {
         background-color: transparent !important;
     }
 }
 
-.returnBtn {
-    &.disabled {
-        cursor: default;
-        i.fa.fa-angle-left.fa-5x {
-            @include themify($themes) {
-                color: themed('primaryFontDisabled') !important;
-            }
-        }
-    }
-    i.fa.fa-angle-left.fa-5x {
-        height: 44px !important;
-        margin-top: -7px!important;
+
+
+.toolbarBtn {
+    width: 44px;
+    height: 44px;
+    margin-right: 5px;
+    img {
+        box-sizing: content-box;
+        border-radius: 500px;
+        width: 35px;
+        height: 35px;
+        align-self: center;
     }
 }
 
@@ -309,87 +324,13 @@ input[type='submit'] {
     }
 }
 
-/*
-.cdk-overlay-container {
-
-    .appContainer {
-        // Panel list
-        .mat-expansion-panel {
-            box-shadow: none;
-            @include themify($themes) {
-                background-color: themed('primary');
-            }
-            .mat-expansion-panel-header {
-                height: 40px !important;
-                font-size: 0.8rem !important;
-            }
-        }
-    }
-
-
-    .mat-menu-panel {
-        @include themify($themes) {
-            background-color: themed('secondary') !important;
-        }
-    }
-
-    .theme-dark *.mat-dialog-container {
-        background-color: map-get(map-get($themes, 'dark'), 'primary');
-        color: map-get(map-get($themes, 'dark'), 'primaryFont');
-        .mat-dialog-content {
-            display: unset !important;
-        }
-    }
-
-    .theme-light *.mat-dialog-container {
-        background-color: map-get(map-get($themes, 'light'), 'primary');
-        color: map-get(map-get($themes, 'light'), 'primaryFont');
-        .mat-dialog-content {
-            display: unset !important;
-        }
-    }
-
-    .mat-select-content {
-        @include themify($themes) {
-            background-color: themed('secondary') !important;
-        }
-    }
-
-    .theme-dark *.mat-select-content {
-        background-color:  map-get(map-get($themes, 'dark'), 'secondary') !important;
-        background:  map-get(map-get($themes, 'dark'), 'secondary') !important;
-    }
-    .theme-light *.mat-select-content {
-        background-color:  map-get(map-get($themes, 'light'), 'secondary') !important;
-        background:  map-get(map-get($themes, 'light'), 'secondary') !important;
-    }
+.editForm {
+    display: flex;
+    flex-direction: column;
 }
 
-.mat-button-toggle-group {
-    box-shadow: none !important;
-    .mat-button-toggle:hover {
-        @include themify($themes) {
-            background-color: themed('btnHover') !important;
-        }
-    }
-    .mat-button-toggle-checked {
-        @include themify($themes) {
-            background-color: themed('btnActiv') !important;
-        }
-    }
-}
-
-.mat-progress-spinner circle, .mat-spinner circle {
+.toolBarBG {
     @include themify($themes) {
-        stroke: themed('accent') !important;
+        background-color: themed('primary') !important;
     }
 }
-
-.mat-form-field-underline {
-    @include themify($themes) {
-        background: themed('grayLight') !important;
-    }
-}
-
-
-*/

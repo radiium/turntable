@@ -1,64 +1,66 @@
-import { Component, EventEmitter, Input, Output, ChangeDetectionStrategy,
-    OnInit, ElementRef, ViewChild} from '@angular/core';
-
+import {
+  AfterContentInit,
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+  Renderer2,
+  SimpleChanges,
+} from '@angular/core';
 import { YoutubePlayerService } from './youtube-player.service';
-import { YoutubeApiService } from './youtube-api.service';
 
 @Component({
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    selector: 'app-youtube-player',
-    template: `
-        <div id="yt-player-ng2-component" #playercontainer></div>
-    `,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  selector: 'app-youtube-player',
+  template: `
+    <div id="yt-player-ngx-component"></div>
+  `,
 })
-export class YoutubePlayerComponent implements OnInit {
+export class YoutubePlayerComponent implements AfterContentInit {
+  @Input() videoId = '';
+  @Input() height: number;
+  @Input() width: number;
+  /**
+   * @description sets the protocol by the navigator object
+   * if there is no window, it sets a default http protocol
+   * unless the protocol is set from outside
+   */
+  @Input() protocol: string = this.getProtocol();
+  @Input() playerVars: YT.PlayerVars = {};
 
-    // Player configuration
-    @Input() videoId: string;
-    @Input() height: number;
-    @Input() width: number;
+  // player created and initialized - sends instance of the player
+  @Output() ready = new EventEmitter<YT.Player>();
+  // state change: send the YT event with its state
+  @Output() change = new EventEmitter<YT.PlayerEvent>();
 
-    // Player events
-    @Output() ready = new EventEmitter<YT.Player>();
-    @Output() change = new EventEmitter();
+  constructor(
+    public playerService: YoutubePlayerService,
+    private elementRef: ElementRef,
+    private renderer: Renderer2
+  ) { }
 
-    // Player container
-    @ViewChild('playercontainer') private playercontainer: ElementRef;
+  ngAfterContentInit() {
+    const htmlId = this.playerService.generateUniqueId();
+    const playerSize = { height: this.height, width: this.width };
+    const container = this.renderer.selectRootElement('#yt-player-ngx-component');
+    this.renderer.setAttribute(container, 'id', htmlId);
+    this.playerService.loadPlayerApi({
+      protocol: this.protocol
+    });
+    this.playerService.setupPlayer(htmlId, {
+      change: this.change,
+      ready: this.ready,
+    }, playerSize, this.videoId, this.playerVars);
+  }
 
-    constructor(
-    public youtubeApiService: YoutubeApiService,
-    public youtubePlayer: YoutubePlayerService) {
-        this.videoId = '';
-    }
-
-    ngOnInit () {
-
-        // Add unique id of player container
-        const playerId = this.generateUniqueId();
-        this.playercontainer.nativeElement.setAttribute('id', playerId);
-
-        // Define player configuration
-        const playerConfig = {
-            playerId: playerId,
-            width: this.width,
-            height: this.height,
-            videoId: this.videoId,
-            outputs: {
-                ready: this.ready,
-                change: this.change
-            }
-        };
-
-        // Load the Youtube API (iframe_api)
-        this.youtubeApiService.loadApi();
-
-        // Create and load the youtube player
-        this.youtubePlayer.load(playerConfig);
-    }
-
-    // Generate random string
-    generateUniqueId () {
-        const len = 7;
-        return Math.random().toString(35).substr(2, len);
-    }
+  getProtocol() {
+    const hasWindow = window && window.location;
+    const protocol = hasWindow
+      ? window.location.protocol.replace(':', '')
+      : 'http';
+    return 'https'; // protocol;
+  }
 }

@@ -33,7 +33,8 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     selectedTab: number;
     prevSelectedTab: number;
 
-    playlistsList: any;
+    playlistsList: Array<Playlist>;
+    onSelectPL: Playlist;
 
     displayType: any;
     loading: any = false;
@@ -41,6 +42,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
 
     @ViewChild('plScrollContainer') scrollContainer: ElementRef;
     isOnDrag: boolean;
+    isOnPlay: boolean;
     scroll: any;
 
     miniNav = false;
@@ -82,12 +84,17 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
             this.displayType = data;
         });
 
+        // Get selected playlist
+        this.dataService.onSelectPL$.subscribe((pl: any) => {
+            this.onSelectPL = pl;
+        });
+
         // Loading
         this.dataService.loading$.subscribe((data) => {
             this.loading = data;
         });
 
-        // Loading
+        // Theme
         this.dataService.theme$.subscribe((data) => {
             this.theme = data;
             this.initMatOverlay();
@@ -116,7 +123,6 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
             maxSpeed: 10
         };
         this.dndService.srAutoScroll = scrollConfig;
-        console.log('App', scrollConfig);
     }
 
     ngOnDestroy() {

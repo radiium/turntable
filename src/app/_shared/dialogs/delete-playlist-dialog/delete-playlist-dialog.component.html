@@ -1,0 +1,22 @@
+<div>
+    <h2 mat-dialog-title>Delete '{{ title }}'</h2>
+
+    <mat-dialog-content>
+
+        <form class="editForm" style="">
+            <div>Type '{{ title }}'</div>
+            <mat-form-field [floatLabel]="'never'" class="editField">
+                <input matInput type="text" [(ngModel)]="titleCopy" required
+                [ngModelOptions]="{standalone: true}">
+            </mat-form-field>
+            <div *ngIf="message" style="color: red !important;">Type the title</div>
+        </form>
+
+    </mat-dialog-content>
+
+    <!-- Controls -->
+    <mat-dialog-actions>
+        <button mat-button (click)="onCancel()">cancel</button>
+        <button mat-button (click)="onAccept()">Ok</button>
+    </mat-dialog-actions>
+</div>

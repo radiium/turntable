@@ -1,72 +1,63 @@
 <div *ngIf="playlist" id="playlistDetailsContainer" class="contentPanel">
 
-        <mat-accordion>
-            <mat-expansion-panel [expanded]="onEdit" hideToggle="true"
-            (opened)="onEdit = true" (closed)="onEdit = false">
-            <!--
-            (opened)="onOpenPanel()" (closed)="onClosePanel()">
+    <mat-toolbar class="toolBarBG plDetailToolbar">
+        <div>
+            {{ playlist.title }} - {{ playlist.videolist.length }} track<span *ngIf="playlist.videolist.length >1">s</span>
+            <span> - Total: {{ totalDuration | duration }}</span>
+        </div>
+
+        <div class="flexSpacer"></div>
+
+        <button *ngIf="!onSort" class="toolbarBtn btnHover" (click)="onSort = true"
+            [class.disabled]="playlist.videolist.length === 0"
+            [disabled]="playlist.videolist.length === 0">
+            <fa [name]="'sort'" [size]="2"></fa>
+        </button>
+
+        <button *ngIf="onSort" class="toolbarBtn btnHover" (click)="onSort = false">
+            <fa [name]="'check'" [size]="2"></fa>
+        </button>
+
+        <button class="toolbarBtn btnHover" (click)="editPlaylist()"
+            [class.disabled]="playlist.videolist.length === 0"
+            [disabled]="playlist.videolist.length === 0">
+            <fa [name]="'pencil'" [size]="2"></fa>
+        </button>
+
+        <button class="toolbarBtn btnHover" (click)="deletePlaylist()">
+            <fa [name]="'trash'" [size]="2"></fa>
+        </button>
+
+    </mat-toolbar>
+    <div class="spacer"></div>
+
+
+    <div class="scrollContainer plScrollContainer" #pldScrollContainer>
+
+        <!-- Video list -->
+        <div class="appList"
+            [dragula]="'playlistDetailsBag'"
+            [dragulaModel]="playlist.videolist">
+
+            <!-- Video list item
             -->
+            <div *ngFor="let video of playlist.videolist; let i = index" class="appListItem"
+            [attr.data-movable]="true">
 
-            <mat-expansion-panel-header [collapsedHeight]="'48px'" [expandedHeight]="'48px'">
-                    <mat-panel-title> {{ playlist.title }} </mat-panel-title>
-                    <mat-panel-description>
-                        <span>{{ playlist.videolist.length }} track<span *ngIf="playlist.videolist.length >1">s</span></span>
-                    </mat-panel-description>
-                    <div>
-                        <fa *ngIf="!onEdit" [name]="'pencil'" [size]="2"></fa>
-                        <fa *ngIf="onEdit" [name]="'times'" [size]="2"></fa>
+                <div class="itemBg">
+                    <div *ngIf="onSort" class="handle btnHovered">
+                        <i fa [name]="'arrows-alt'" [size]="1" class="handle"></i>
                     </div>
-                </mat-expansion-panel-header>
 
-                <!-- Set playlist title -->
-                <mat-form-field [floatLabel]="'never'" class="editField">
-                    <input matInput type="text" [(ngModel)]="title" [ngModelOptions]="{standalone: true}" placeholder="Title">
-                </mat-form-field>
+                    <app-video-list-item [video]="video" [index]="i + 1"></app-video-list-item>
 
-                <mat-form-field class="formItem">
-                    <textarea matInput type="text" [(ngModel)]="description" [ngModelOptions]="{standalone: true}" placeholder="Description"
-                    matTextareaAutosize matAutosizeMinRows="1" matAutosizeMaxRows="1"></textarea>
-                </mat-form-field>
-
-                <mat-action-row>
-                    <button mat-button (click)="deletePlaylist()">
-                        <fa [name]="'trash-o'" [size]="2"></fa>Delete
+                    <div class="flexSpacer"></div>
+                    <button *ngIf="onSort" class=" btn btnHover" (click)="deleteVideo(video)">
+                        <fa [name]="'trash-o'" [size]="2"></fa>
                     </button>
-                    <button mat-button (click)="savePlaylistInfo()" [disabled]="playlist.title === title && playlist.description === description">
-                        <fa [name]="'floppy-o'" [size]="2"></fa>Save
-                    </button>
-                  </mat-action-row>
-            </mat-expansion-panel>
-        </mat-accordion>
-        <div class="spacer"></div>
-
-        <div class="scrollContainer notExpanded" [class.expanded]="onEdit" #pldScrollContainer>
-
-            <!-- Video list -->
-            <div class="appList"
-                [dragula]="'playlistDetailsBag'"
-                [dragulaModel]="playlist.videolist">
-
-                <!-- Video list item
-                -->
-                <div *ngFor="let video of playlist.videolist; let i = index" class="appListItem"
-                [attr.data-movable]="true">
-
-                    <div class="itemBg">
-                        <div *ngIf="onEdit || true" class="handle btnHovered">
-                            <i fa [name]="'arrows-alt'" [size]="1" class="handle"></i>
-                        </div>
-
-                        <app-video-list-item [video]="video" [index]="i + 1"></app-video-list-item>
-
-                        <div class="flexSpacer"></div>
-                        <button *ngIf="onEdit" class=" btn btnHover" (click)="deleteVideo(video)">
-                            <fa [name]="'trash-o'" [size]="2"></fa>
-                        </button>
-                    </div>
                 </div>
             </div>
         </div>
-
+    </div>
 
 </div>

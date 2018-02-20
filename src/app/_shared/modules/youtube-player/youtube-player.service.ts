@@ -1,53 +1,126 @@
-import { NgZone, Injectable } from '@angular/core';
+import { Injectable, NgZone, EventEmitter } from '@angular/core';
+import { ReplaySubject } from 'rxjs/ReplaySubject';
+import { IPlayerApiScriptOptions, IPlayerOutputs, IPlayerSize } from './models';
 
-import { YoutubeApiService } from './youtube-api.service';
-import { IPlayerConfig } from './models';
+export function win() {
+  return window;
+}
+
+export function YT() {
+  return win()['YT'];
+}
+
+export function Player() {
+  return YT().Player;
+}
+
+export const defaultSizes = {
+  height: 270,
+  width: 367
+};
 
 @Injectable()
 export class YoutubePlayerService {
+  api: ReplaySubject<YT.Player>;
 
-    private defaultWidth:  Number = 300;
-    private defaultHeight: Number = 200;
+  private ytApiLoaded = false;
 
-    constructor(
-    private zone: NgZone,
-    private youtubeApi: YoutubeApiService ) {
+  constructor(private zone: NgZone) {
+    this.createApi();
+  }
+
+  loadPlayerApi(options: IPlayerApiScriptOptions) {
+    const doc = win().document;
+    if (!this.ytApiLoaded) {
+      this.ytApiLoaded = true;
+      const playerApiScript = doc.createElement('script');
+      playerApiScript.type = 'text/javascript';
+      playerApiScript.src = `${options.protocol}://www.youtube.com/iframe_api`;
+      doc.body.appendChild(playerApiScript);
     }
+  }
 
-    // Create and load player when Youtube api (iframe_api) is loaded
-    load(playerConfig: IPlayerConfig) {
-        this.youtubeApi.apiEmitter.subscribe((data) => {
-            this.zone.run(() => this.newPlayer(playerConfig));
-        });
+  setupPlayer(
+    elementId: string, outputs: IPlayerOutputs, sizes: IPlayerSize,
+    videoId = '', playerVars: YT.PlayerVars) {
+    const createPlayer = () => {
+      if (Player) {
+        this.createPlayer(elementId, outputs, sizes, videoId, playerVars);
+      }
+    };
+    this.api.subscribe(createPlayer);
+  }
+
+  play(player: YT.Player) {
+    player.playVideo();
+  }
+
+  pause(player: YT.Player) {
+    player.pauseVideo();
+  }
+
+  playVideo(media: any, player: YT.Player) {
+    const id = media.id.videoId ? media.id.videoId : media.id;
+    player.loadVideoById(id);
+    this.play(player);
+  }
+
+  isPlaying(player: YT.Player) {
+    // because YT is not loaded yet 1 is used - YT.PlayerState.PLAYING
+    const isPlayerReady: any = player && player.getPlayerState;
+    const playerState = isPlayerReady ? player.getPlayerState() : {};
+    const isPlayerPlaying = isPlayerReady
+      ? playerState !== YT().PlayerState.ENDED && playerState !== YT().PlayerState.PAUSED
+      : false;
+    return isPlayerPlaying;
+  }
+
+  createPlayer(
+    elementId: string, outputs: IPlayerOutputs, sizes: IPlayerSize,
+    videoId = '', playerVars: YT.PlayerVars = {}) {
+    const playerSize = {
+      height: sizes.height || defaultSizes.height,
+      width: sizes.width || defaultSizes.width
+    };
+    const ytPlayer = Player();
+    return new ytPlayer(elementId, {
+      ...playerSize,
+      events: {
+        onReady: (ev: YT.PlayerEvent) => {
+          this.zone.run(() => outputs.ready && outputs.ready.next(ev.target));
+        },
+        onStateChange: (ev: YT.PlayerEvent) => {
+          this.zone.run(() => outputs.change && outputs.change.next(ev));
+        }
+      },
+      playerVars,
+      videoId,
+    });
+  }
+
+  toggleFullScreen(player: YT.Player, isFullScreen: boolean | null | undefined) {
+    let { height, width } = defaultSizes;
+
+    if (!isFullScreen) {
+      height = window.innerHeight;
+      width = window.innerWidth;
     }
+    player.setSize(width, height);
+  }
 
-    // Create a player at DOM id
-    private newPlayer(playerConfig: IPlayerConfig) {
+  // adpoted from uid
+  generateUniqueId() {
+    const len = 7;
+    return Math.random().toString(35).substr(2, len);
+  }
 
-        // Player options
-        const options = {
-            enablejsapi: 1,
-            origin: 'https://www.youtube.com',
-            rel: 0
-        };
-
-        const player = new window['YT'].Player(playerConfig.playerId, {
-            width: playerConfig.width || this.defaultWidth,
-            height: playerConfig.height || this.defaultHeight,
-            videoId: playerConfig.videoId,
-            options,
-            events: {
-
-                // Send player when is ready
-                onReady: (event: YT.PlayerEvent) => {
-                    playerConfig.outputs.ready.emit(event.target);
-                },
-
-                // Send player state on change
-                onStateChange: (event: YT.OnStateChangeEvent) => {
-                    playerConfig.outputs.change.emit(event);
-                }
-            }
-        });
-    }
+  private createApi() {
+    this.api = new ReplaySubject(1);
+    const onYouTubeIframeAPIReady = () => {
+      if (win()) {
+        this.api.next(YT());
+      }
+    };
+    win()['onYouTubeIframeAPIReady'] = onYouTubeIframeAPIReady;
+  }
 }

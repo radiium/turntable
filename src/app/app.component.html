@@ -31,6 +31,8 @@
 
         <div class="flexSpacer"></div>
 
+        <button (click)="isOnPlay = !isOnPlay">playerbar</button>
+
         <!-- Display playlists type -->
         <div class="displayTypeBtn">
             <mat-button-toggle-group *ngIf="selectedTab === 3" #group="matButtonToggleGroup"
@@ -91,7 +93,7 @@
                         <fa class="sidenavBtnIco" [name]="'home'" [size]="1"></fa>
                         <span class="sidenavBtnLabel">Home</span>
                     </button>
-                    <button class="sidenavBtn btnHover" (click)="onSelectTab(3)" [class.activ]="selectedTab === 3 || selectedTab === 4">
+                    <button class="sidenavBtn btnHover" (click)="onSelectTab(3)" [class.activ]="selectedTab === 3">
                         <fa class="sidenavBtnIco" [name]="'th-list'" [size]="1"></fa>
                         <span class="sidenavBtnLabel">Library</span>
                     </button>
@@ -114,6 +116,7 @@
 
                     <div class="flexItem" >
                         <button class="sidenavBtn btnHover" *ngFor="let pl of playlistsList"
+                            [class.activ]="selectedTab === 4 && pl.id === onSelectPL.id"
                             [dragula]="'searchResultsBag'"
                             [dragulaModel]="pl.videolist"
                             [attr.data-acceptDrop]="true"
@@ -170,7 +173,7 @@
             </div>
 
             <!-- Content -->
-            <div class="content flexSpacer">
+            <div class="content flexSpacer" [class.withPlayerBar]="isOnPlay">
                 <app-home             [hidden]="selectedTab !== 1"></app-home>
                 <app-search-results   [hidden]="selectedTab !== 2"></app-search-results>
                 <app-library          [hidden]="selectedTab !== 3"></app-library>
@@ -179,7 +182,13 @@
                 <app-settings         [hidden]="selectedTab !== 6"></app-settings>
             </div>
 
-            <app-player-bar></app-player-bar>
+            <!--
+            *ngIf="isOnPlay"
+        -->
+            <app-player-bar
+            class="testttt"
+            [class.toggleBar]="!isOnPlay"
+            ></app-player-bar>
 
         </mat-sidenav-content>
     </mat-sidenav-container>

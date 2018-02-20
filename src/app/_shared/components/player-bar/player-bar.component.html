@@ -3,7 +3,23 @@
 -->
 <mat-toolbar class="playerBar">
 
+
+    <!-- Previous track -->
+    <button *ngIf="!isExpand" class="playerBarBtn"
+    [class.enabled]="!isExpand" [class.btnHoverPlayer]="hasPrev()"
+    (click)="onPrev()">
+    <fa class="playerBarBtnIco" [name]="'expand'" [size]="2"></fa>
+    </button>
+
+    <!-- Previous track -->
+    <button *ngIf="isExpand" class="playerBarBtn"
+    [class.enabled]="isExpand" [class.btnHoverPlayer]="hasPrev()"
+    (click)="onPrev()">
+    <fa class="playerBarBtnIco" [name]="'compress'" [size]="2"></fa>
+    </button>
+
     <div class="playerCtrlBox controlBox">
+
         <!-- Previous track -->
         <button *ngIf="true" class="playerBarBtn"
         [class.enabled]="hasPrev()" [class.btnHoverPlayer]="hasPrev()"

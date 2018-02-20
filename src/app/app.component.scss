@@ -41,8 +41,6 @@
             height: auto;
         }
         */
-
-
     }
 
     .returnBtn {
@@ -61,19 +59,6 @@
             margin-top: -8px!important;
         }
         */
-    }
-
-    .toolbarBtn {
-        width: 44px;
-        height: 44px;
-        margin-right: 5px;
-        img {
-            box-sizing: content-box;
-            border-radius: 500px;
-            width: 35px;
-            height: 35px;
-            align-self: center;
-        }
     }
 
     .displayTypeBtn {
@@ -213,8 +198,11 @@
         .content {
             padding: 20px;
             width: 100%;
-            // height: 100%;
-            height: calc(100% - 40px);
+            height: 100%;
+
+            &.withPlayerBar {
+                height: calc(100% - 40px);
+            }
         }
     }
 }
@@ -223,4 +211,13 @@
 @keyframes rotate {
     from {transform: rotate(0deg);}
     to {transform: rotate(360deg);}
+}
+
+.testttt {
+    transition: height ease 0.2s;
+    height: 40px;
+}
+.toggleBar {
+    height: 0;
+
 }

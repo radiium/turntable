@@ -12,6 +12,13 @@ export class DurationPipe implements PipeTransform {
         if (args || value >= 3600000) {
             format = 'HH:mm:ss';
         }
+        if (args || value >= 356400000) {
+            format = 'HHH:mm:ss';
+        }
+        if (args || value >= 3596400000) {
+            format = 'HHHH:mm:ss';
+        }
+
         return moment.utc(value).format(format);
     }
 }
