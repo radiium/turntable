@@ -37,10 +37,10 @@
         <div class="displayTypeBtn">
             <mat-button-toggle-group *ngIf="selectedTab === 3" #group="matButtonToggleGroup"
                 [ngModel]="displayType" (change)="changeDisplayType($event)">
-                <mat-button-toggle value="grid"  checked="display.value === 'grid'">
+                <mat-button-toggle value="grid"  checked="displayType.value === 'grid'">
                     <fa [name]="'th'" [size]="1"></fa>
                 </mat-button-toggle>
-                <mat-button-toggle value="list" checked="display.value === 'list'">
+                <mat-button-toggle value="list" checked="displayType.value === 'list'">
                     <fa [name]="'list'" [size]="1"></fa>
                 </mat-button-toggle>
             </mat-button-toggle-group>

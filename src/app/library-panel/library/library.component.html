@@ -56,7 +56,7 @@
 
         <!-- Display list -->
         <mat-list *ngIf="playlistsList && displayType === 'list'" role="list">
-        <mat-list-item class="listItemRow row"role="listitem"*ngFor="let pl of playlistsList | filterPlaylists:filterTitle.value:filterLocation ; let i = index">
+        <mat-list-item class="listItemRow row"role="listitem"*ngFor="let pl of playlistsList; let i = index">
             <div class="rowBorder" [class.local]="pl.isLocal" [class.notlocal]="!pl.isLocal"></div>
             <div class="thumbBox">
                 <div *ngIf="pl.thumbUrl === ''" class=""><img src="assets/images/pochette.png" alt=""></div>
