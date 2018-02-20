@@ -8,6 +8,7 @@ import * as autoScroll from 'dom-autoscroller';
 
 import { Playlist, Video, AutoScrollConfig } from 'core/models';
 import { DataService } from 'core/services/data.service';
+import { AppStateService } from 'core/services/app-state.service';
 import { DndService } from 'core/services/dnd.service';
 import { ConfirmDialogComponent } from 'shared/dialogs/confirm-dialog/confirm-dialog.component';
 import { EditPlaylistDialogComponent } from 'shared/dialogs/edit-playlist-dialog/edit-playlist-dialog.component';
@@ -44,6 +45,7 @@ export class PlaylistDetailsComponent implements OnInit {
 
     constructor(
     private dataService: DataService,
+    private appStateService: AppStateService,
     private dndService: DndService,
     public dialog: MatDialog) {
 
@@ -57,7 +59,7 @@ export class PlaylistDetailsComponent implements OnInit {
         // Get selected playlist
         this.dataService.onSelectPL$.subscribe((data) => {
             this.playlist = data;
-            this.onStateChange(false);
+            this.updateState(false);
         });
 
         // Get playlist list
@@ -74,19 +76,24 @@ export class PlaylistDetailsComponent implements OnInit {
     ngOnInit() {
     }
 
-    savePlaylistInfo() {
-        const selectedPL = _.each(this.playlistsList, (pl) => {
-            if (pl.id === this.playlist.id) {
-                pl.title = this.title;
-                pl.description = this.description;
+    editPlaylist() {
+        const dialogRef = this.dialog.open(EditPlaylistDialogComponent, {
+            height: 'auto',
+            data: { playlist: this.playlist }
+        });
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                const selectedPL = _.each(this.playlistsList, (pl) => {
+                    if (pl.id === this.playlist.id) {
+                        pl.title = this.title;
+                        pl.description = this.description;
+                    }
+                });
+                this.dataService.setPlaylistsList(selectedPL);
+                this.dataService.setOnSelectPL(this.playlist);
+                this.updateState(false);
             }
         });
-        this.dataService.setPlaylistsList(selectedPL);
-
-        this.playlist.title = this.title;
-        this.playlist.description = this.description;
-        this.dataService.setOnSelectPL(this.playlist);
-        this.onStateChange(false);
     }
 
     deletePlaylist() {
@@ -101,7 +108,6 @@ export class PlaylistDetailsComponent implements OnInit {
                 this.dataService.setPlaylistsList(newPl);
                 this.dataService.setOnSelectPL(null);
                 this.dataService.setSelectedTab(3);
-                // this.onStateChange();
             }
         });
     }
@@ -119,33 +125,16 @@ export class PlaylistDetailsComponent implements OnInit {
                 const plIdx = _.findIndex(this.playlistsList, { 'id': this.playlist.id });
                 this.playlistsList.splice(plIdx, 1, this.playlist);
                 this.dataService.setPlaylistsList(this.playlistsList);
-                /*
-                const newPl = _.filter(this.playlistsList, (pl) => {
-                    return pl.id !== this.playlist.id;
-                });
-                this.dataService.setPlaylistsList(newPl);
-                this.dataService.setOnSelectPL(null);
-                this.dataService.setSelectedTab(3);
-                this.onStateChange();
-                */
+
                const isOnEdit = this.playlist.videolist.length > 0 ? true : false;
-               this.onStateChange(isOnEdit);
-            }
-        });
-    }
-    editPlaylist() {
-        const dialogRef = this.dialog.open(EditPlaylistDialogComponent, {
-            height: 'auto',
-            data: { playlist: this.playlist }
-        });
-        dialogRef.afterClosed().subscribe(result => {
-            if (result) {
-
+               this.updateState(isOnEdit);
             }
         });
     }
 
-    onStateChange(isOnEdit) {
+
+
+    updateState(isOnEdit) {
         this.onSort = false;
         this.onEdit = isOnEdit;
         this.totalDuration = 0;

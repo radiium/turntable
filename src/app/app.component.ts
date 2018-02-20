@@ -34,7 +34,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     prevSelectedTab: number;
 
     playlistsList: Array<Playlist>;
-    onSelectPL: Playlist;
+    onSelectPLID: string;
 
     displayType: any;
     loading: any = false;
@@ -85,8 +85,9 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
         });
 
         // Get selected playlist
+        this.onSelectPLID= '';
         this.dataService.onSelectPL$.subscribe((pl: any) => {
-            this.onSelectPL = pl;
+            this.onSelectPLID = pl.id;
         });
 
         // Loading
@@ -202,9 +203,6 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
 
                 this.playlistsList.push(pl);
                 this.dataService.setPlaylistsList(this.playlistsList);
-
-                // Store local playlist in user data
-                this.appState.storeLocalPlaylists();
             }
         });
     }

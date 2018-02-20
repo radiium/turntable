@@ -114,9 +114,9 @@
 
                 <div class="flexItem sidenavScroll" #plScrollContainer>
 
-                    <div class="flexItem" >
+                    <div class="flexItem" *ngIf="playlistsList">
                         <button class="sidenavBtn btnHover" *ngFor="let pl of playlistsList"
-                            [class.activ]="selectedTab === 4 && pl.id === onSelectPL.id"
+                            [class.activ]="selectedTab === 4 && pl.id === onSelectPLID"
                             [dragula]="'searchResultsBag'"
                             [dragulaModel]="pl.videolist"
                             [attr.data-acceptDrop]="true"

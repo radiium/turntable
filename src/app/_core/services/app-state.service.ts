@@ -34,6 +34,7 @@ export class AppStateService {
         this.dataService.playlistsList$.subscribe((pll) => {
             this.playlistsList = pll;
             this.saveAppState();
+            this.storeLocalPlaylists();
         });
 
         this.dataService.langage$.subscribe((data) => {
@@ -53,7 +54,7 @@ export class AppStateService {
 
         this.dataService.selectedTab$.subscribe((data) => {
             this.selectedTab = data;
-            this.saveAppState();
+            // this.saveAppState();
         });
 
         const defaultAppState = new AppState(
@@ -105,6 +106,7 @@ export class AppStateService {
     }
 
     saveAppState() {
+        console.log('===== saveAppState');
         if (this.isElectronApp && !this.isFirstLoad) {
             const appState = new AppState(
                 this.langage,
@@ -112,14 +114,13 @@ export class AppStateService {
                 this.displayType,
                 this.selectedTab
             );
-            console.log('===== saveAppState', appState);
             this.electron.ipcRenderer.send('send-save-app-state', appState);
         }
     }
 
     // Retrieve and store local playlist
     storeLocalPlaylists() {
-        if (this.isElectronApp) {
+        if (this.isElectronApp && !this.isFirstLoad) {
             console.log('===== storeLocalPlaylists');
             const localPlaylists = new Array<Playlist>();
             this.playlistsList.forEach(playlist => {
