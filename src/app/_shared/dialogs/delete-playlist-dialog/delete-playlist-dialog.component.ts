@@ -34,6 +34,8 @@ export class DeletePlaylistDialogComponent {
     }
 
     onAccept() {
+        this.dialogRef.close(true);
+        /*
         if (this.titleCopy !== '') {
             if (this.title === this.titleCopy) {
                 this.dialogRef.close(true);
@@ -44,5 +46,6 @@ export class DeletePlaylistDialogComponent {
         else {
             this.message = "Type playlist title";
         }
+        */
     }
 }

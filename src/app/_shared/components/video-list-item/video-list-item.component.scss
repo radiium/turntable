@@ -4,6 +4,15 @@
     flex-direction: row;
     height: 100px;
 
+    .handle {
+        cursor: move !important;
+        padding: 5px;
+        display: inline-flex;
+        align-items: center;
+        &i .handle {
+        }
+    }
+
     .itemBox {
         height: 100%;
     }
@@ -20,6 +29,7 @@
         margin-right: 20px;
         position: relative;
         img {
+            min-width: 133.328px;
             width: auto;
             height: 100px;
         }

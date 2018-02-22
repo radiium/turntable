@@ -1,4 +1,4 @@
-import { Component, OnInit, isDevMode, ViewChild } from '@angular/core';
+import { Component, OnInit, isDevMode, ViewChild, HostListener } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { MatSidenav } from '@angular/material/sidenav';
 
@@ -26,7 +26,6 @@ import { AppStateService } from 'core/services/app-state.service';
 })
 export class LibraryComponent implements OnInit {
 
-
     playlistsList: Array<Playlist> = [];
     onSelectPL: Playlist;
     originalOnEditPlaylist: Playlist;
@@ -37,6 +36,8 @@ export class LibraryComponent implements OnInit {
 
     selectedTab: number;
     displayType: any;
+
+    colCount = 3;
 
 
 
@@ -115,5 +116,27 @@ export class LibraryComponent implements OnInit {
     filterPlaylists(title: string) {
         return this.playlistsList.filter(playlist =>
             playlist.title.toLowerCase().indexOf(title.toLowerCase()) === 0);
+    }
+
+
+    @HostListener('window:resize', ['$event'])
+    onResize(event) {
+
+
+        const contWidth = event.target.innerWidth - 250 - 40;
+
+        if (contWidth >= 1000) {
+            this.colCount = 5;
+        } else if (contWidth < 1000 && contWidth >= 800) {
+            this.colCount = 4;
+        } else if (contWidth < 800 && contWidth >= 600) {
+            this.colCount = 3;
+        } else if (contWidth < 600 && contWidth >= 450) {
+            this.colCount = 2;
+        } else {
+            this.colCount = 1;
+        }
+
+        console.log('colCount', this.colCount)
     }
 }

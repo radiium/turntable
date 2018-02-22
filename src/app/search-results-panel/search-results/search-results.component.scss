@@ -24,13 +24,4 @@
             align-self: center;
         }
     }
-
-    div.handle {
-        cursor: grab !important;
-        padding: 10px;
-        display: inline-flex;
-        align-items: center;
-        &i .handle {
-        }
-    }
 }

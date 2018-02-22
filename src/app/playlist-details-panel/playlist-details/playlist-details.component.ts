@@ -21,15 +21,15 @@ import { DeletePlaylistDialogComponent } from 'shared/dialogs/delete-playlist-di
 })
 export class PlaylistDetailsComponent implements OnInit {
 
-    playlistsList: Array<Playlist>;
     playlist: Playlist;
+    playlistsList: Array<Playlist>;
 
     onEdit: boolean;
     onSort: boolean;
 
     title: string;
     description: string;
-    totalDuration: any;
+    privacyStatus: string;
 
     selectedTab;
 
@@ -53,7 +53,7 @@ export class PlaylistDetailsComponent implements OnInit {
         this.onSort = false;
         this.title = '';
         this.description = '';
-        this.totalDuration = 0;
+        this.privacyStatus = '';
 
         // Get selected playlist
         this.dataService.onSelectPL$.subscribe((data) => {
@@ -137,13 +137,10 @@ export class PlaylistDetailsComponent implements OnInit {
     updateState(isOnEdit) {
         this.onSort = false;
         this.onEdit = isOnEdit;
-        this.totalDuration = 0;
         if (this.playlist) {
             this.title = this.playlist.title;
             this.description = this.playlist.description;
-            _.each(this.playlist.videolist, (video) => {
-                this.totalDuration += video.duration;
-            });
+            this.privacyStatus = this.playlist.privacyStatus;
         }
     }
 }

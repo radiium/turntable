@@ -35,6 +35,7 @@ import { ClickOutsideDirective } from './directives/click-outside.directive';
 
 // pipes
 import { DurationPipe } from './pipes/duration.pipe';
+import { TotalDurationPipe } from './pipes/total-duration.pipe';
 import { FilterPlaylistsPipe } from './pipes/filter-playlists.pipe';
 import { VideoListItemComponent } from './components/video-list-item/video-list-item.component';
 import { PlayerBarComponent } from './components/player-bar/player-bar.component';
@@ -51,6 +52,7 @@ import { PlayerBarComponent } from './components/player-bar/player-bar.component
     declarations: [
         ClickOutsideDirective,
         DurationPipe,
+        TotalDurationPipe,
         FilterPlaylistsPipe,
         ConfirmDialogComponent,
         CreatePlaylistDialogComponent,
@@ -95,6 +97,7 @@ import { PlayerBarComponent } from './components/player-bar/player-bar.component
         YoutubePlayerModule,
         ClickOutsideDirective,
         DurationPipe,
+        TotalDurationPipe,
         FilterPlaylistsPipe,
         RangeSliderComponent,
         VideoPlayerComponent,

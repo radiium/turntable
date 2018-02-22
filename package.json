@@ -71,6 +71,7 @@
         "font-awesome": "^4.7.0",
         "hammerjs": "^2.0.8",
         "lodash": "^4.17.4",
+        "material-design-icons": "^3.0.1",
         "moment": "^2.20.1",
         "ng2-dragula": "^1.5.0",
         "ngx-electron": "^1.0.4",

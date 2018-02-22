@@ -1,8 +1,116 @@
 <div id="libraryContainer" class="contentPanel">
     <div id="contentItemBox">
 
+        <div *ngIf="playlistsList && displayType === 'grid'" class="plGrid">
+            <div *ngFor="let pl of playlistsList; let i = index" class="plItem">
+
+                <div class="plItemBox">
+                    <div *ngIf="pl.thumbUrl !== ''" class="boxThumb thumbSize">
+                        <img class="thumbSize" src="{{ pl.thumbUrl }}" alt="">
+                    </div>
+                    <div *ngIf="pl.thumbUrl === ''" class="boxThumb thumbSize">
+                        <img class="thumbSize" src="assets/images/pochette.png" alt="">
+                    </div>
+
+                    <div class="boxThumbHover thumbSize"></div>
+
+                    <div class="totalTime lightColor">{{ pl.videolist | totalduration | duration }}</div>
+
+                    <div class="boxThumbHoverContent">
+                        <div class="numberTrack">
+                            <div class="lightColor">{{ pl.videolist.length }}</div>
+                            <div class="track lightColor">track<span *ngIf="pl.videolist.length > 1">s</span></div>
+                        </div>
+
+                        <button [matMenuTriggerFor]="menu" class="menuBtn">
+                            <fa class="menuBtnIco" [name]="'bars'" [size]="2"></fa>
+                        </button>
+
+                        <mat-menu #menu="matMenu">
+                            <!-- Play -->
+                            <button mat-menu-item (click)="playPlaylist(pl)">
+                                <mat-icon>playlist_play</mat-icon>
+                                <span>Play</span>
+                            </button>
+
+                            <!-- Add to current -->
+                            <button mat-menu-item>
+                                <mat-icon>playlist_add</mat-icon>
+                                <span>Add</span>
+                            </button>
+
+                            <!-- Show -->
+                            <button mat-menu-item (click)="showPlaylist(pl)">
+                                <mat-icon>remove_red_eye</mat-icon>
+                                <span>show playlist</span>
+                            </button>
+
+                            <!-- Remove -->
+                            <button mat-menu-item (click)="deletePlaylist(pl)" >
+                                <mat-icon>delete_forever</mat-icon>
+                                <span>delete playlist</span>
+                            </button>
+                        </mat-menu>
+
+                    </div>
+                </div>
+
+                <div class="plItemFooter">
+                    <div class="plName noOverflow" (click)="showPlaylist(pl)">{{ pl.title }}</div>
+                </div>
+
+<!--
+                    <div class="plBox">
+
+                        <!-- Privacy status playlist icons ->
+                        <div *ngIf="pl.privacyStatus === 'private' && !pl.isLocal" class="plStatus private">
+                        <fa aria-label="Playlist private" [name]="'lock'" [size]="1"></fa>
+                        </div>
+
+                        <div *ngIf="pl.privacyStatus === 'public' && !pl.isLocal" class="plStatus public">
+                        <fa aria-label="Playlist public" [name]="'globe'" [size]="1"></fa>
+                        </div>
+
+                        <div class="plContent">
+                            <div *ngIf="pl.thumbUrl === ''" class="iconBg"><fa [name]="'music'" [size]="5"></fa></div>
+                            <div *ngIf="pl.thumbUrl !== ''" class="thumbBg">
+                                <img src="{{ pl.thumbUrl }}" alt="">
+                            </div>
+
+                            <div class="plContentInfos">
+                                <p class="plName">{{ pl.title }}</p>
+                                <p class="plDesc">{{ pl.description }}</p>
+                                <p class="nbrVideo">{{ pl.videolist.length }} track<span *ngIf="pl.videolist.length > 1">s</span></p>
+                                test= {{ pl.videolist | totalduration | duration }}-
+                            </div>
+                        </div>
+
+                        <div class="plFooter" [class.localPl]="pl.isLocal" [class.notlocalPl]="!pl.isLocal">
+                            <!-- Play playlist button ->
+                            <button  class="playBtn plBtn" (click)="playPlaylist(pl)">
+                            <fa [name]="'play'" [size]="2"></fa>
+                            </button>
+
+                            <div class="spacerBtn"></div>
+
+                            <!-- Edit playlist button ->
+                            <button class="editBtn plBtn" (click)="showPlaylist(pl)">
+                            <fa [name]="'eye'" [size]="2"></fa>
+                            </button>
+
+                            <!-- Remove playlist button ->
+                            <button class="deleteBtn plBtn"(click)="deletePlaylist(pl)" >
+                            <fa [name]="'trash'" [size]="2"></fa>
+                            </button>
+                        </div>
+                    </div>
+                -->
+            </div>
+
+        </div>
+
         <!-- Display grid -->
-        <mat-grid-list  *ngIf="playlistsList && displayType === 'grid'" cols="4" rowHeight="160px" gutterSize="20px" >
+        <mat-grid-list  *ngIf="playlistsList && displayType === 'grid' && false" [cols]="colCount" rowHeight="160px" gutterSize="20px" >
 
             <!-- Playlist list items -->
             <mat-grid-tile *ngFor="let pl of playlistsList; let i = index">
@@ -26,7 +134,8 @@
                         <div class="plContentInfos">
                             <p class="plName">{{ pl.title }}</p>
                             <p class="plDesc">{{ pl.description }}</p>
-                            <p class="nbrVideo">{{ pl.videolist.length }} video<span *ngIf="pl.videolist.length > 1">s</span></p>
+                            <p class="nbrVideo">{{ pl.videolist.length }} track<span *ngIf="pl.videolist.length > 1">s</span></p>
+                            test= {{ pl.videolist | totalduration | duration }}-
                         </div>
                     </div>
 

@@ -2,6 +2,7 @@
 
 
 
+@import '../../../styles/themes';
 
 #libraryContainer {
     // height: 100%;
@@ -17,7 +18,122 @@
 
 
 
+.plGrid {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
 
+
+    .lightColor {
+        color: getValue('dark', 'primaryFont') !important;
+    }
+
+    .plItem {
+        margin: 0 12px 24px 0;
+        width: 210px;
+        height: 168px;
+        display: flex;
+        flex-direction: column;
+
+        .plIcon {
+            width: 2rem;
+            height: auto;
+
+        }
+
+        .plItemBox {
+            width: 100%;
+            height: 118px;
+            background-color: black;
+            position: relative;
+            box-shadow: 0 11px 15px -7px rgba(0,0,0,.2),
+                        0 24px 38px 3px rgba(0,0,0,.14),
+                        0 9px 46px 8px rgba(0,0,0,.12);
+
+            .thumbSize {
+                height: 118px;
+                width: 210px;
+            }
+
+            .boxThumb {
+                position: absolute;
+                z-index: 9;
+                img { object-fit: cover; }
+            }
+
+            .boxThumbHover {
+                z-index: 10;
+                position: absolute;
+                transition: all ease 50ms;
+                // background-color: black;
+                // opacity: 0.4;
+            }
+            &:hover .totalTime {
+                opacity: 0.85;
+            }
+
+            .totalTime {
+                opacity: 0;
+                padding: 2px 3px 2px 3px;
+                font-size: 0.7rem;
+                position: absolute;
+                left: 5px;
+                top: 5px;
+                z-index: 11;
+                background-color: rgba(0, 0, 0, 0.7);
+            }
+
+            .boxThumbHoverContent {
+                height: 118px;
+                width: 50%;
+                background-color: rgba(0, 0, 0, 0.7);
+                right: 0;
+                z-index: 11;
+                position: absolute;
+                text-align: center;
+
+                .numberTrack {
+                    position: absolute;
+                    width: 100%;
+                    margin-top: 50px;
+                    font-size:1.5rem;
+                    .track {
+                        font-size: 0.8rem;
+                    }
+                }
+
+                .menuBtn {
+                    width: 30px;
+                    height: 30px;
+                    position: absolute;
+                    top: 5px;
+                    right: 5px;
+                    &:hover {
+                        border: 1px solid lightgray;
+                        // background-color: rgba(0, 0, 0, 0.7);
+                    }
+                }
+            }
+        }
+
+        .plItemFooter {
+            width: 100%;
+            height: 50px;
+            .plName {
+                width: 210px;
+                margin-top: 5px;
+                font-size: 1.2rem;
+                float: left;
+                cursor: pointer;
+
+                &:hover {
+                    font-size: 1.22rem;
+                }
+            }
+        }
+    }
+}
 
 
 

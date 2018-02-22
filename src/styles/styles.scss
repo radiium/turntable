@@ -128,19 +128,26 @@ input[type='submit'] {
     .appListItem:not(:last-child) {
         margin-bottom: 16px;
     }
-
-    .duration {
-        @include themify($themes) {
-            border: 1px solid themed('primaryFont');
-            // background-color: themed('darkestBg') !important;
-        }
-    }
     .loadLine {
         // margin-bottom: 16px;
         @include themify($themes) {
             background-color: themed('primary') !important;
         }
     }
+}
+
+.duration {
+    padding-left: 2.5px;
+    padding-right: 2.5px;
+    @include themify($themes) {
+        border: 1px solid themed('primaryFont');
+        // background-color: themed('darkestBg') !important;
+    }
+}
+.noOverflow {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 // Flex box spacer
@@ -231,14 +238,18 @@ input[type='submit'] {
         }
     }
 }
-    .mat-toolbar {
-        &.playerBar {
-            @include themify($themes) {
-                background: themed('primary') !important;
-                background-color: themed('primary') !important;
-            }
+
+.theme-dark .plName:hover  { color: white !important; font-weight: bold; }
+.theme-light .plName:hover { color: black !important; font-weight: bold; }
+
+.mat-toolbar {
+    &.playerBar {
+        @include themify($themes) {
+            background: themed('primary') !important;
+            background-color: themed('primary') !important;
         }
     }
+}
 
 /****************************
 
@@ -274,11 +285,6 @@ input[type='submit'] {
 
             @include themify($themes) {
                 background-color: themed('secondary');
-            }
-            div.handle {
-                padding: 3px 6px 3px 5px;
-                display: inline-flex;
-                align-items: center;
             }
             .srThumb img {
                 height: 36px !important;
@@ -331,5 +337,20 @@ input[type='submit'] {
 .toolBarBG {
     @include themify($themes) {
         background-color: themed('primary') !important;
+    }
+}
+
+
+.plIcon {
+    width: 2rem;
+    height: auto;
+
+}
+
+.menuBtn {
+    .menuBtnIco {
+        .fa {
+            color: getValue('dark', 'primaryFont') !important;
+        }
     }
 }

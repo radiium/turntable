@@ -1,15 +1,20 @@
 <div class="videoListItemContainer">
-  <div class="srThumb itemBox">
-      <img draggable="false" [src]="video.thumbUrl" alt="">
-  </div>
-  <div class="srInfos itemBox">
-      <div class="srTitle itemText">{{ index }} - {{ video.title }}</div>
-      <div class="srDesc itemText">{{ video.channelTitle }} - since {{ video.publishedAt | date:'mediumDate' }} - {{ video.duration | duration }}</div>
-      <div class="duration">{{ video.duration | duration }}</div>
-      <div class="flexSpacer"></div>
-      <!--
-          <div class="duration">{{ video.duration | duration }}</div>
-          <p class="srDesc itemText flexSpacer">{{ video.description }} </p>
-      -->
-  </div>
+    <div *ngIf="sortable" class="handle btnHovered">
+        <i fa [name]="'ellipsis-v'" [size]="1" class="handle"></i>
+    </div>
+
+    <div class="srThumb itemBox">
+        <img draggable="false" [src]="video.thumbUrl" alt="">
+    </div>
+
+    <div class="srInfos itemBox">
+        <div class="srTitle itemText">{{ index }} - {{ video.title }}</div>
+        <div class="srDesc itemText">{{ video.channelTitle }} - since {{ video.publishedAt | date:'mediumDate' }} - {{ video.duration | duration }}</div>
+        <div class="duration">{{ video.duration | duration }}</div>
+        <div class="flexSpacer"></div>
+        <!--
+        <div class="duration">{{ video.duration | duration }}</div>
+        <p class="srDesc itemText flexSpacer">{{ video.description }} </p>
+        -->
+    </div>
 </div>

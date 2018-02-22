@@ -3,7 +3,7 @@
     <mat-toolbar class="toolBarBG plDetailToolbar">
         <div>
             {{ playlist.title }} - {{ playlist.videolist.length }} track<span *ngIf="playlist.videolist.length >1">s</span>
-            <span> - Total: {{ totalDuration | duration }}</span>
+            <span> - Total: {{ playlist.videolist | totalduration | duration }}</span>
         </div>
 
         <div class="flexSpacer"></div>
@@ -43,11 +43,7 @@
             [attr.data-movable]="true">
 
                 <div class="itemBg">
-                    <div *ngIf="onSort" class="handle btnHovered">
-                        <i fa [name]="'arrows-alt'" [size]="1" class="handle"></i>
-                    </div>
-
-                    <app-video-list-item [video]="video" [index]="i + 1"></app-video-list-item>
+                    <app-video-list-item [video]="video" [index]="i + 1" [sortable]="onSort"></app-video-list-item>
 
                     <div class="flexSpacer"></div>
                     <button *ngIf="onSort" class=" btn btnHover" (click)="deleteVideo(video)">

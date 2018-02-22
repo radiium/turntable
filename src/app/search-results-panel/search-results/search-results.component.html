@@ -13,11 +13,7 @@
 
 
                 <div class="itemBg">
-                    <div *ngIf="enableDrag" class="handle btnHovered">
-                        <i fa [name]="'arrows-alt'" [size]="1" class="handle"></i>
-                    </div>
-
-                    <app-video-list-item [video]="video" [index]="i + 1"></app-video-list-item>
+                    <app-video-list-item [video]="video" [index]="i + 1" [sortable]="enableDrag"></app-video-list-item>
 
                     <div class="flexSpacer"></div>
                     <div class="srBtn itemBox">
