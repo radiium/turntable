@@ -50,7 +50,8 @@ export class DndService implements OnDestroy {
         // Init playlist details drag
         this.dragulaService.setOptions(
             this.pldBag, {
-            removeOnSpill: true,
+            revertOnSpill: true,
+            removeOnSpill: false,
             moves: (el, source, handle, sibling): boolean => {
                 return el.dataset.movable === 'true' && handle.classList.contains('handle');
             }
@@ -60,6 +61,7 @@ export class DndService implements OnDestroy {
         // Init search result drag
         this.dragulaService.setOptions(
             this.srBag, {
+            revertOnSpill: true,
             removeOnSpill: true,
             mirrorContainer: document.getElementsByClassName('appWrapper')[0],
             copy: true,
