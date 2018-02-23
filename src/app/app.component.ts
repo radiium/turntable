@@ -87,7 +87,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
         // Get selected playlist
         this.onSelectPLID= '';
         this.dataService.onSelectPL$.subscribe((pl: any) => {
-            this.onSelectPLID = pl.id;
+            this.onSelectPLID = pl ? pl.id : '';
         });
 
         // Loading
