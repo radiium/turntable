@@ -1,7 +1,19 @@
 <div id="libraryContainer" class="contentPanel">
-    <div id="contentItemBox">
 
-        <div *ngIf="playlistsList && displayType === 'grid'" class="plGrid">
+    <app-toolbar [height]="'40px'" [padding]="'0 0 0 30px'" [margin]="'0 0 0 2px'">
+        <button class="libButton btnHover">
+            <span>Playlists</span>
+        </button>
+        <button class="libButton btnHover">
+            <span>subscription</span>
+        </button>
+        <div class="flexSpacer"></div>
+    </app-toolbar>
+
+    <div class="spacer"></div>
+
+    <div id="contentItemBox">
+        <div *ngIf="displayType === 'grid'" class="plGrid">
             <div *ngFor="let pl of playlistsList; let i = index" class="plItem">
 
                 <div class="plItemBox">
@@ -110,7 +122,7 @@
         </div>
 
         <!-- Display grid -->
-        <mat-grid-list  *ngIf="playlistsList && displayType === 'grid' && false" [cols]="colCount" rowHeight="160px" gutterSize="20px" >
+        <mat-grid-list  *ngIf="displayType === 'grid' && false" [cols]="colCount" rowHeight="160px" gutterSize="20px" >
 
             <!-- Playlist list items -->
             <mat-grid-tile *ngFor="let pl of playlistsList; let i = index">
@@ -164,7 +176,7 @@
 
 
         <!-- Display list -->
-        <mat-list *ngIf="playlistsList && displayType === 'list'" role="list">
+        <mat-list *ngIf="displayType === 'list'" role="list">
         <mat-list-item class="listItemRow row"role="listitem"*ngFor="let pl of playlistsList; let i = index">
             <div class="rowBorder" [class.local]="pl.isLocal" [class.notlocal]="!pl.isLocal"></div>
             <div class="thumbBox">

@@ -1,31 +1,72 @@
 @import '../../../../styles/themes';
 
 .playerBar {
-    height: 38.5px;
-    margin-left: 2px;
-
     .controlBox {
         margin-left: 10px;
         margin-right: 10px;
     }
+
+    .playerBarBtn {
+        padding: 0 5px 0 5px;
+    }
+
+    .playerCtrlBox {
+        border-radius: 500px;
+        border: 1px solid white;
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+    .playpauseBtn {
+        width: 30px;
+    }
+    .playlistCtrlBox {
+
+    }
+
+    .pointer fa i { cursor: pointer; }
+    :host-context() fa i {
+        cursor: default;
+        @include themify($themes) {
+            color: themed('primaryFontDisabled') !important;
+        }
+    }
+
+    .enabled fa i {
+        cursor: pointer;
+        @include themify($themes) {
+            color: themed('primaryFont') !important;
+        }
+    }
+
+    .btnHoverPlayer:hover fa i {
+        color: black !important;
+        @include themify($themes) {
+            color: themed('primaryFontLight') !important;
+        }
+    }
 }
 
-.playerBarBtn {
-    padding: 0 5px 0 5px;
-}
-
-.playerCtrlBox {
-    border-radius: 500px;
-    border: 1px solid white;
-    padding-left: 15px;
-    padding-right: 15px;
-}
-.playpauseBtn {
-    width: 30px;
-}
-.playlistCtrlBox {
+:host-context(.theme-dark){
 
 }
+    .pointer fa i { cursor: pointer; }
+    fa i {
+        cursor: default;
+        @include themify($themes) {
+            color: themed('primaryFontDisabled') !important;
+        }
+    }
 
-.playerBarBtn {
-}
+    .enabled fa i {
+        cursor: pointer;
+        @include themify($themes) {
+            color: themed('primaryFont') !important;
+        }
+    }
+
+    .btnHoverPlayer:hover fa i {
+        color: black !important;
+        @include themify($themes) {
+            color: themed('primaryFontLight') !important;
+        }
+    }

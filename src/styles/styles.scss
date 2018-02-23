@@ -215,7 +215,7 @@ input[type='submit'] {
 
 
 .playerBar {
-
+/*
     .pointer fa i { cursor: pointer; }
     fa i {
         cursor: default;
@@ -237,19 +237,12 @@ input[type='submit'] {
             color: themed('primaryFontLight') !important;
         }
     }
+    */
 }
 
 .theme-dark .plName:hover  { color: white !important; font-weight: bold; }
 .theme-light .plName:hover { color: black !important; font-weight: bold; }
 
-.mat-toolbar {
-    &.playerBar {
-        @include themify($themes) {
-            background: themed('primary') !important;
-            background-color: themed('primary') !important;
-        }
-    }
-}
 
 /****************************
 
@@ -331,12 +324,6 @@ input[type='submit'] {
             overflow: hidden;
             align-self: center;
         }
-    }
-}
-
-.toolBarBG {
-    @include themify($themes) {
-        background-color: themed('primary') !important;
     }
 }
 

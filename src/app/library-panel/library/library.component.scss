@@ -12,10 +12,12 @@
         width: 100%;
         height: 100%;
         overflow: auto;
-
         .mat-grid-tile { background: #242320; }
     }
 
+    .spacer {
+        height: 20px;
+    }
 
 
 .plGrid {
@@ -39,7 +41,6 @@
         .plIcon {
             width: 2rem;
             height: auto;
-
         }
 
         .plItemBox {
@@ -69,6 +70,7 @@
                 // background-color: black;
                 // opacity: 0.4;
             }
+
             &:hover .totalTime {
                 opacity: 0.85;
             }
@@ -98,6 +100,7 @@
                     width: 100%;
                     margin-top: 50px;
                     font-size:1.5rem;
+
                     .track {
                         font-size: 0.8rem;
                     }
@@ -109,10 +112,7 @@
                     position: absolute;
                     top: 5px;
                     right: 5px;
-                    &:hover {
-                        border: 1px solid lightgray;
-                        // background-color: rgba(0, 0, 0, 0.7);
-                    }
+                    &:hover { border: 1px solid lightgray; }
                 }
             }
         }
@@ -120,6 +120,7 @@
         .plItemFooter {
             width: 100%;
             height: 50px;
+
             .plName {
                 width: 210px;
                 margin-top: 5px;

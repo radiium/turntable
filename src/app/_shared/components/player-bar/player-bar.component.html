@@ -1,17 +1,17 @@
 <!-- On play tool bar
 (click)="onNavBack()"
--->
 <mat-toolbar class="playerBar">
+-->
+<app-toolbar [height]="'38.5px'" [margin]="'0 0 0 2px'" class="playerBar">
 
-
-    <!-- Previous track -->
+    <!-- Enable fullscreen -->
     <button *ngIf="!isExpand" class="playerBarBtn"
     [class.enabled]="!isExpand" [class.btnHoverPlayer]="hasPrev()"
     (click)="onPrev()">
     <fa class="playerBarBtnIco" [name]="'expand'" [size]="2"></fa>
     </button>
 
-    <!-- Previous track -->
+    <!-- disable fullscreen -->
     <button *ngIf="isExpand" class="playerBarBtn"
     [class.enabled]="isExpand" [class.btnHoverPlayer]="hasPrev()"
     (click)="onPrev()">
@@ -65,4 +65,4 @@
         </button>
     </div>
 
-</mat-toolbar>
+</app-toolbar>

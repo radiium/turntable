@@ -1,0 +1,15 @@
+@import '../../../../styles/themes';
+
+.appToolbar {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+}
+
+:host-context(.theme-dark) .appToolbar {
+    background-color: getValue('dark', 'primary') !important;
+}
+:host-context(.theme-light) .appToolbar {
+    background-color: getValue('light', 'primary') !important;
+}

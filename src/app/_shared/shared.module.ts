@@ -39,6 +39,7 @@ import { TotalDurationPipe } from './pipes/total-duration.pipe';
 import { FilterPlaylistsPipe } from './pipes/filter-playlists.pipe';
 import { VideoListItemComponent } from './components/video-list-item/video-list-item.component';
 import { PlayerBarComponent } from './components/player-bar/player-bar.component';
+import { ToolbarComponent } from './components/toolbar/toolbar.component';
 
 
 @NgModule({
@@ -66,7 +67,8 @@ import { PlayerBarComponent } from './components/player-bar/player-bar.component
         PlaylistItemComponent,
         SearchBarComponent,
         VideoListItemComponent,
-        PlayerBarComponent
+        PlayerBarComponent,
+        ToolbarComponent
     ],
     imports: [
         CommonModule,
@@ -107,7 +109,8 @@ import { PlayerBarComponent } from './components/player-bar/player-bar.component
         PlaylistItemComponent,
         SearchBarComponent,
         VideoListItemComponent,
-        PlayerBarComponent
+        PlayerBarComponent,
+        ToolbarComponent
     ],
     providers: [],
 })
