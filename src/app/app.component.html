@@ -8,12 +8,10 @@
     <!-- Toolbar -->
     <mat-toolbar class="appToolbar">
 
-        <!--
         <button class="toolbarBtn btnHover" (click)="miniNav = !miniNav">
             <fa *ngIf="!miniNav" class="sidenavBtnIco" [name]="'caret-right'" [size]="3"></fa>
             <fa *ngIf="miniNav" class="sidenavBtnIco" [name]="'caret-left'" [size]="3"></fa>
         </button>
-        -->
 
         <!-- App title -->
         <div class="appTitle ">
@@ -78,8 +76,30 @@
 
     <mat-sidenav-container class="appContainer" autosize>
 
-        <!-- Sidenav -->
-        <mat-sidenav #sidenav [mode]="'side'" opened="true" class="appSidenav" [class.miniNav]="miniNav">
+        <!-- Sidenav mini -->
+        <mat-sidenav  *ngIf="miniNav" #sidenav [mode]="'side'" opened="true" class="appSidenav miniNav">
+            <div class="flexItem sectionLabel"></div>
+            <button class="sidenavBtn btnHover" (click)="onSelectTab(1)" [class.activ]="selectedTab === 1 || selectedTab === 2">
+                <fa class="sidenavBtnIco" [name]="'home'" [size]="1"></fa>
+            </button>
+            <button class="sidenavBtn btnHover" (click)="onSelectTab(3)" [class.activ]="selectedTab === 3">
+                <fa class="sidenavBtnIco" [name]="'th-list'" [size]="1"></fa>
+                <span class="sidenavBtnLabel">Library</span>
+            </button>
+            <button class="sidenavBtn btnHover" (click)="onSelectTab(5)" [class.activ]="selectedTab === 5">
+                <fa class="sidenavBtnIco" [name]="'play-circle'" [size]="1"></fa>
+            </button>
+
+            <div class="flexSpacer"></div>
+
+            <button class="sidenavBtn btnHover addBtn" (click)="addPlaylist()">
+                <fa class="sidenavBtnIco" [name]="'plus'" [size]="1"></fa>
+            </button>
+        </mat-sidenav>
+
+
+        <!-- Sidenav normal -->
+        <mat-sidenav *ngIf="!miniNav" #sidenav [mode]="'side'" opened="true" class="appSidenav" [class.miniNav]="miniNav">
 
             <!--
             <div *ngIf="!miniNav">
@@ -113,7 +133,7 @@
                 </div>
 
                 <div class="flexItem sidenavScroll" #plScrollContainer>
-                    <div class="flexItem" *ngIf="playlistsList">
+                    <div class="flexItem">
                         <button class="sidenavBtn btnHover" *ngFor="let pl of playlistsList"
                             [class.activ]="selectedTab === 4 && pl.id === onSelectPLID"
                             [dragula]="'searchResultsBag'"
