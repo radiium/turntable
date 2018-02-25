@@ -46,7 +46,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     scroll: any;
 
     miniNav = false;
-
+    isLoaded= false;
 
     constructor(
     public snackBar: MatSnackBar,

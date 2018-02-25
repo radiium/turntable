@@ -11,3 +11,22 @@
 .plScrollContainer {
     height: calc(100% - 60px);
 }
+
+.name {
+    width: 300px;
+    max-width: 300px;
+    font-size: 1.2rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.length {
+    margin-left: 8px;
+    margin-right: 8px;
+    font-size: 0.8rem;
+    line-height: 1.5rem;
+}
+.duration {
+    margin-left: 8px;
+    margin-right: 8px;
+    font-size: 0.8rem;
+}

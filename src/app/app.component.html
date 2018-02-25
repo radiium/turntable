@@ -1,16 +1,20 @@
 
 <div class="appWrapper theme-{{ theme }}">
 
-    <!-- windowTitlebar -->
+
+    <!-- window title bar -->
     <div class="windowTitlebar"></div>
 
 
     <!-- Toolbar -->
     <mat-toolbar class="appToolbar">
 
-        <button class="toolbarBtn btnHover" (click)="miniNav = !miniNav">
-            <fa *ngIf="!miniNav" class="sidenavBtnIco" [name]="'caret-right'" [size]="3"></fa>
-            <fa *ngIf="miniNav" class="sidenavBtnIco" [name]="'caret-left'" [size]="3"></fa>
+        <button class="toolbarBtn menuBtn btnHover" (click)="miniNav = !miniNav">
+            <!--
+            <fa class="sidenavBtnIco" [name]="'bars'" [size]="2" [rotate]="!miniNav ? 90 : 0"></fa>
+            -->
+            <fa *ngIf="miniNav" class="sidenavBtnIco" [name]="'caret-right'" [size]="3"></fa>
+            <fa *ngIf="!miniNav" class="sidenavBtnIco" [name]="'caret-left'" [size]="3"></fa>
         </button>
 
         <!-- App title -->
@@ -18,7 +22,7 @@
         <span class="title">Turntable</span>
         </div>
 
-        <!-- Searchbar -->
+        <!-- Nav back button -->
         <button (click)="onNavBack()" class="sidenavBtn returnBtn"
         [disabled]="!prevSelectedTab" [class.btnHover]="prevSelectedTab" [class.disabled]="!prevSelectedTab">
         <fa class="sidenavBtnIco" [name]="'angle-left'" [size]="5"></fa>
@@ -26,7 +30,6 @@
 
         <!-- Searchbar -->
         <app-search-bar></app-search-bar>
-
         <div class="flexSpacer"></div>
 
         <button (click)="isOnPlay = !isOnPlay">playerbar</button>
@@ -74,7 +77,7 @@
 
 
 
-    <mat-sidenav-container class="appContainer" autosize>
+    <mat-sidenav-container class="appContainer flexSpacer" autosize>
 
         <!-- Sidenav mini -->
         <mat-sidenav  *ngIf="miniNav" #sidenav [mode]="'side'" opened="true" class="appSidenav miniNav">
@@ -204,10 +207,7 @@
             <!--
             *ngIf="isOnPlay"
             -->
-            <app-player-bar
-            class="testttt"
-            [class.toggleBar]="!isOnPlay"
-            ></app-player-bar>
+            <app-player-bar class="playerBar" [class.toggleBar]="!isOnPlay"></app-player-bar>
 
         </mat-sidenav-content>
     </mat-sidenav-container>

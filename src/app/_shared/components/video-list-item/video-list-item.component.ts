@@ -9,12 +9,11 @@ import { Video } from 'core/models';
 })
 export class VideoListItemComponent implements OnInit {
 
-    @Input() sortable: boolean;
+    @Input() movable: boolean;
     @Input() video: Video;
     @Input() index: Video;
 
     constructor() {
-        this.sortable = false;
     }
 
     ngOnInit() {

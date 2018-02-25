@@ -119,9 +119,7 @@ input[type='submit'] {
             cursor: default !important;
             @include themify($themes) {
                 color: themed('primaryFont') !important;
-            }
-            @include themify($themes) {
-                background-color: themed('secondary');
+                background-color: themed('secondary') !important;
             }
         }
     }
@@ -194,12 +192,14 @@ input[type='submit'] {
     }
 }
 
-
-
 .toolbarBtn {
     width: 44px;
     height: 44px;
     margin-right: 5px;
+    &.menuBtn {
+        width: 40px;
+        height: 40px;
+    }
     &.miniBtn {
         width: 34px;
         height: 34px;
@@ -265,36 +265,67 @@ input[type='submit'] {
     }
 }
 
-// Dragged video list item
+
+/*
 .appListItem {
     &.gu-mirror {
-        cursor: grabbing;
         .itemBg {
-            border: 2px dashed black;
-            height: 40px !important;
-            display: flex;
-            flex-direction: row;
-            width: 300px !important;
-
             @include themify($themes) {
                 background-color: themed('secondary');
-            }
-            .srThumb img {
-                height: 36px !important;
-            }
-            .srTitle {
-                font-size: 0.8rem !important;
-                overflow: hidden;
-                height: 40px;
-                text-overflow: ellipsis;
-                word-break: break-word;
-            }
-            .srDesc, .duration, .srBtn {
-                display: none;
             }
         }
     }
 }
+*/
+
+// Dragged video list item
+.appListItem {
+    &.gu-mirror {
+        &.hiddenShadow {
+            cursor: grabbing;
+            .itemBg {
+                border: 2px dashed black;
+                // height: 40px !important;
+                display: flex;
+                flex-direction: row;
+                // width: 300px !important;
+                background-color: white;
+                /*
+                @include themify($themes) {
+                    background-color: themed('secondary');
+                }
+                */
+
+                .handle {
+                    // height: 36px;
+                }
+                .srThumb img {
+                    // height: 36px !important;
+                    /*
+                    width: auto !important;
+                    min-width: auto !important;
+                    max-width: auto !important;
+                    */
+
+                    // width: 11.88px !important;
+                    // max-width: 11.88px !important;
+                }
+                .srTitle {
+                    font-size: 0.8rem !important;
+                    overflow: hidden;
+                    //height: 40px;
+                    text-overflow: ellipsis;
+                    word-break: break-word;
+                }
+                .srDesc, .duration, .srBtn {
+                    display: none;
+                }
+            }
+        }
+        }
+}
+
+
 
 /****************************
 

@@ -1,10 +1,9 @@
 <div *ngIf="playlist" id="playlistDetailsContainer" class="contentPanel">
 
-    <app-toolbar [height]="'40px'">
-        <div>
-            {{ playlist.title }} - {{ playlist.videolist.length }} track<span *ngIf="playlist.videolist.length >1">s</span>
-            <span> - Total: {{ playlist.videolist | totalduration | duration }}</span>
-        </div>
+    <app-toolbar [height]="'40px'" [margin]="'0 0 0 2px'" [padding]="'0 0 0 15px'">
+        <div class="name noOverflow">{{ playlist.title }}</div>
+        <div class="length noOverflow">{{ playlist.videolist.length }} track<span *ngIf="playlist.videolist.length >1">s</span></div>
+        <div class="duration noOverflow">{{ playlist.videolist | totalduration | duration }}</div>
 
         <div class="flexSpacer"></div>
 
@@ -39,16 +38,19 @@
 
             <!-- Video list item
             -->
-            <div *ngFor="let video of playlist?.videolist; let i = index" class="appListItem"
+            <div *ngFor="let video of playlist.videolist; let i = index" class="appListItem"
             [attr.data-movable]="true">
 
                 <div class="itemBg">
-                    <app-video-list-item [video]="video" [index]="i + 1" [sortable]="onSort"></app-video-list-item>
+
+                    <app-video-list-item [video]="video" [index]="i + 1" [movable]="onSort"></app-video-list-item>
 
                     <div class="flexSpacer"></div>
-                    <button *ngIf="onSort" class=" btn btnHover" (click)="deleteVideo(video)">
-                        <fa [name]="'trash-o'" [size]="2"></fa>
-                    </button>
+                    <div class="srBtn itemBox">
+                        <button *ngIf="onSort" class=" btn btnHover" (click)="deleteVideo(video)">
+                            <fa [name]="'trash-o'" [size]="2"></fa>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
