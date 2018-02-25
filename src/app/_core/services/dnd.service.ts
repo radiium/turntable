@@ -57,13 +57,19 @@ export class DndService implements OnDestroy {
             }
         });
 
+        /*
+        const coll = document.getElementsByClassName('appWrapper');
+        console.log('mirror=', coll);
+        console.log('mirror=', coll.length);
+        console.log('mirror=', coll.item(0));
+        */
 
         // Init search result drag
         this.dragulaService.setOptions(
             this.srBag, {
             revertOnSpill: true,
             removeOnSpill: true,
-            mirrorContainer: document.getElementsByClassName('appWrapper')[0],
+            // mirrorContainer: document.getElementsByClassName('appWrapper').item(0),
             copy: true,
             moves: (el, source, handle, sibling): boolean => {
                 return el.dataset.movable === 'true' && handle.classList.contains('handle');
