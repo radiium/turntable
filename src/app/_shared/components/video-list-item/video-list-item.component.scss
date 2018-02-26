@@ -1,8 +1,9 @@
 
-.videoListItemContainer {
+.itemContainer {
     display: flex;
     flex-direction: row;
     height: 100px;
+    width: 100%;
 
     .handle {
         cursor: move !important;

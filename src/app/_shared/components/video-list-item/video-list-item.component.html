@@ -1,4 +1,4 @@
-<div class="videoListItemContainer">
+<div class="itemContainer">
 
     <div *ngIf="movable" class="handle btnHovered">
         <i fa [name]="'ellipsis-v'" [size]="1" class="handle"></i>
@@ -17,5 +17,11 @@
         <div class="duration">{{ video.duration | duration }}</div>
         <p class="srDesc itemText flexSpacer">{{ video.description }} </p>
         -->
+    </div>
+
+    <div class="flexSpacer"></div>
+
+    <div class="control itemBox">
+        <ng-content></ng-content>
     </div>
 </div>

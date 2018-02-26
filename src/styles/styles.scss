@@ -113,6 +113,7 @@ input[type='submit'] {
     flex-direction: column;
     .appListItem {
         .itemBg {
+            width: 100%;
             height: 100px;
             display: flex;
             flex-direction: row;
@@ -257,11 +258,22 @@ input[type='submit'] {
     }
 }
 
+
 // Over effect on over drop container
 .btnHoveredDrop {
     border: 2px dashed black;
     @include themify($themes) {
         background-color: themed('btnHover');
+    }
+    .appListItem {
+        display: none !important;
+    }
+}
+.btnHoveredDropRefuse {
+    border: 2px dashed red;
+    background-color: red;
+    .appListItem {
+        display: none !important;
     }
 }
 

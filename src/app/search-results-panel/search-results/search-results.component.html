@@ -5,55 +5,26 @@
         <div class="appList"
             [dragula]="'searchResultsBag'"
             [dragulaModel]='videoList'
-            [attr.data-acceptDrop]="false">
+            [attr.data-acceptdrop]="false"
+            [attr.data-copy]="true">
 
             <div *ngFor="let video of videoList; let i = index"
-                class="appListItem hiddenShadow"
-                [attr.data-movable]="enableDrag">
-
-
-                <div class="itemBg">
-
-                    <app-video-list-item [video]="video" [index]="i + 1" [movable]="enableDrag"></app-video-list-item>
-
-                    <div class="flexSpacer"></div>
-                    <div class="srBtn itemBox">
-                        <button class=" btn btnHover" [matMenuTriggerFor]="menu" xPosition="'before'" yPosition="'above'">
-                            <fa [name]="'bars'" [size]="2"></fa>
-                        </button>
-                        <mat-menu #menu="matMenu">
-                            <button mat-menu-item>Add to current playlist</button>
-                            <button mat-menu-item>Add to playlist</button>
-                            <button mat-menu-item>Play</button>
-                        </mat-menu>
-
-
-                        <button class=" btn btnHover" (click)="addToPlaylist(video)" [disabled]="!playlistList" [class.disabled]="!playlistList">
-                            <fa [name]="'bars'" [size]="2"></fa>
-                        </button>
-
-                        <!--
-                        <button class=" btn btnHover" [matMenuTriggerFor]="menuPl" xPosition="'before'" yPosition="'above'">
+                class="appListItem hiddenShadow">
+                <app-video-list-item [video]="video" [index]="i + 1" [movable]="enableDrag" class="itemBg">
+                    <button class=" btn btnHover" [matMenuTriggerFor]="menu" xPosition="'before'" yPosition="'above'">
                         <fa [name]="'bars'" [size]="2"></fa>
-                        </button>
+                    </button>
+                    <mat-menu #menu="matMenu">
+                        <button mat-menu-item>Add to current playlist</button>
+                        <button mat-menu-item>Add to playlist</button>
+                        <button mat-menu-item>Play</button>
+                    </mat-menu>
 
-                        <mat-menu #menuPl="matMenu">
-                            --
-                            <button mat-menu-item *ngFor="let pl of playlistList">{{ pl.title }}</button>
-                            --
-                            <mat-selection-list #shoes>
-                            <mat-list-option *ngFor="let pl of playlistList">
-                            {{ pl.title }}
-                            </mat-list-option>
-                            </mat-selection-list>
-                        </mat-menu>
-
-                    -->
-                    </div>
-                </div>
-
+                    <button class=" btn btnHover" (click)="addToPlaylist(video)" [disabled]="!playlistList" [class.disabled]="!playlistList">
+                        <fa [name]="'bars'" [size]="2"></fa>
+                    </button>
+                </app-video-list-item>
             </div>
-
 
             <!-- Load more button -->
             <div *ngIf="hasNextPage" class="loadLine btnHover" [attr.data-movable]="false">
