@@ -10,13 +10,14 @@
 
     #contentItemBox {
         width: 100%;
-        height: 100%;
+        height: calc(100% - 40px);
+        padding: 20px;
         overflow: auto;
         .mat-grid-tile { background: #242320; }
     }
 
     .spacer {
-        height: 20px;
+        // height: 20px;
     }
 
 
