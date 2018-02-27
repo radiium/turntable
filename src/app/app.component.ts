@@ -123,12 +123,11 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
             margin: 20,
             maxSpeed: 10
         };
-        this.dndService.srAutoScroll = scrollConfig;
+        this.dndService.plButtonAutoScroll = scrollConfig;
     }
 
     ngOnDestroy() {
     }
-
 
     initMatOverlay() {
         const darkTheme = 'theme-dark';

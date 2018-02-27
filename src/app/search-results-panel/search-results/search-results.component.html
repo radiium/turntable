@@ -1,15 +1,19 @@
 <div id="searchResultsContainer" class="contentPanel">
 
     <div class="scrollContainer">
+
         <!-- Video list -->
         <div class="appList"
             [dragula]="'searchResultsBag'"
-            [dragulaModel]='videoList'
             [attr.data-acceptdrop]="false"
             [attr.data-copy]="true">
 
+            <!-- Video list item -->
             <div *ngFor="let video of videoList; let i = index"
+                [attr.data-vid]="video.id"
+                [attr.data-searchresults]="true"
                 class="appListItem hiddenShadow">
+
                 <app-video-list-item [video]="video" [index]="i + 1" [movable]="enableDrag" class="itemBg">
                     <button class=" btn btnHover" [matMenuTriggerFor]="menu" xPosition="'before'" yPosition="'above'">
                         <fa [name]="'bars'" [size]="2"></fa>
@@ -39,7 +43,6 @@
 
         </div>
     </div>
-
 
     <div *ngIf="!videoList || videoList.length === 0">
         No result...

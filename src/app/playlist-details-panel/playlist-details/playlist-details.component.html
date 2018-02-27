@@ -28,21 +28,21 @@
 
     <div class="spacer"></div>
 
-
     <div class="scrollContainer plScrollContainer" #pldScrollContainer>
 
-        <!-- Video list playlistDetailsBag -->
-        <div class="appList"
+        <!-- Video list -->
+        <div class="appList plDetail"
             [dragula]="'searchResultsBag'"
-            [dragulaModel]="playlist.videolist"
+            [attr.data-plid]="playlist.id"
             [attr.data-acceptdrop]="true"
             [attr.data-copy]="false">
 
-            <!--
-                Video list item
-            -->
+            <!-- Video list item -->
             <div *ngFor="let video of playlist.videolist; let i = index"
-                [attr.data-pl-id]="playlist.id" class="appListItem">
+                [attr.data-plid]="playlist.id"
+                [attr.data-vid]="video.id"
+                class="appListItem">
+
                 <app-video-list-item [video]="video" [index]="i + 1" [movable]="onSort" class="itemBg">
                     <button *ngIf="onSort" class=" btn btnHover" (click)="deleteVideo(video)">
                         <fa [name]="'trash-o'" [size]="2"></fa>

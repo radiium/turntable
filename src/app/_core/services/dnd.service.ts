@@ -15,14 +15,17 @@ import { User,
 export class DndService implements OnDestroy {
 
     srBag = 'searchResultsBag';
-    srAutoScroll: AutoScrollConfig;
     private srDrake: any;
 
-    pldBag = 'playlistDetailsBag';
+
+    plButtonAutoScroll: AutoScrollConfig;
+
+    // pldBag = 'playlistDetailsBag';
     pldAutoScroll: AutoScrollConfig;
     private pldDrake: any;
 
     playlistsList: Array<Playlist>;
+    searchResults: SearchResults;
 
     selectedTab: number;
     scroll: any;
@@ -35,34 +38,34 @@ export class DndService implements OnDestroy {
             this.playlistsList = data;
         });
 
+        this.dataService.searchResults$.subscribe((data) => {
+            this.searchResults = data;
+        });
+
         this.dataService.selectedTab$.subscribe((data) => {
             this.selectedTab = data;
         });
     }
 
     ngOnDestroy() {
-        this.dragulaService.destroy(this.pldBag);
         this.dragulaService.destroy(this.srBag);
+        // this.dragulaService.destroy(this.pldBag);
     }
 
     initDnd() {
 
+        /*
         // Init playlist details drag
         this.dragulaService.setOptions(
             this.pldBag, {
             revertOnSpill: true,
             removeOnSpill: false,
             moves: (el, source, handle, sibling): boolean => {
-                return el.dataset.movable === 'true' && handle.classList.contains('handle');
+                return handle.classList.contains('handle');
             }
         });
-
-        /*
-        const coll = document.getElementsByClassName('appWrapper');
-        console.log('mirror=', coll);
-        console.log('mirror=', coll.length);
-        console.log('mirror=', coll.item(0));
         */
+
 
         // Init search result drag
         this.dragulaService.setOptions(
@@ -71,18 +74,24 @@ export class DndService implements OnDestroy {
             removeOnSpill: true,
             // mirrorContainer: document.getElementsByClassName('appWrapper').item(0),
             copy: true,
+            copySortSource: true,
             moves: (el, source, handle, sibling): boolean => {
-                return el.dataset.movable === 'true' && handle.classList.contains('handle');
+                return handle.classList.contains('handle');
             },
-            accepts: (el: HTMLElement, target: HTMLElement, source, sibling): boolean => {
-                return target.dataset.acceptdrop === 'true';
+            accepts: (el, target, source, sibling): boolean => {
+
+                // prevents drop on itself by sidenav playlist
+                const accept = (el.dataset.plid && target.dataset.plid) && !target.classList.contains('plDetail')
+                    ? !(el.dataset.plid === target.dataset.plid)
+                    : true;
+
+                return (target.dataset.acceptdrop === 'true') && accept;
             },
         });
 
 
         // Get drake from each bag
         this.srDrake   = this.dragulaService.find(this.srBag).drake;
-        this.pldDrake = this.dragulaService.find(this.pldBag).drake;
 
 
         // Listen dragula event
@@ -91,6 +100,9 @@ export class DndService implements OnDestroy {
         });
         this.dragulaService.out.subscribe((value) => {
             this.onOut(value[0], value.slice(1));
+        });
+        this.dragulaService.drop.subscribe((value) => {
+            this.onDrop(value[0], value.slice(1));
         });
         this.dragulaService.dropModel.subscribe((value) => {
             this.onDropModel(value[0], value.slice(1));
@@ -104,50 +116,90 @@ export class DndService implements OnDestroy {
     }
 
     private onOver(bagName: string, args) {
-        const [el, container, source] = args;
-        if (bagName === this.srBag) {
-            if (container !== source) {
-                container.classList.add('btnHoveredDrop');
-            }
-        } else if (bagName === this.pldBag) {
+        const [el, target, source] = args;
 
+        if (el.dataset.searchresults === 'true') {
+        } else {
+            if (target === source) {
+                const element = target.querySelectorAll("[data-vid='" + el.dataset.vid + "']:not(.gu-transit)").item(0);
+                if (element) {
+                    element.style.display = 'none';
+                }
+            }
+        }
+
+        if (target.dataset.hideshadow === 'true') {
+            target.classList.add('btnHoveredDrop');
         }
     }
 
     private onOut(bagName: string, args) {
-        const [el, container, source] = args;
-        if (bagName === this.srBag) {
-            container.classList.remove('btnHoveredDrop');
-        } else if (bagName === this.pldBag) {
+        const [el, target, source] = args;
 
+        if (el.dataset.searchresults === 'true') {
+        } else {
+            const element = target.querySelectorAll("[data-vid='" + el.dataset.vid + "']:not(.gu-transit)").item(0);
+            if (element) {
+                element.style.display = '';
+            }
+        }
+
+        if (target.dataset.hideshadow === 'true') {
+            target.classList.remove('btnHoveredDrop');
         }
     }
 
-    private onDropModel(bagName: string, args) {
-        const [el, container, source] = args;
-        if (bagName === this.srBag) {
-            this.dataService.setPlaylistsList(this.playlistsList);
-        } else if (bagName === this.pldBag) {
+    private onDrop(bagName: string, args) {
+        const [el, target, source] = args;
+        let video: Video;
+        let plSourceIndex: number;
+        let plTargetIndex: number;
 
+        // Video to drop from searchresults
+        if (el.dataset.searchresults === 'true') {
+            video = _.find(_.union.apply(null, this.searchResults.results), {id: el.dataset.vid});
+
+        // Video to drop a playlist
+        } else {
+            plSourceIndex = _.findIndex(this.playlistsList, {id: el.dataset.plid});
+            video = _.find(this.playlistsList[plSourceIndex].videolist, {id: el.dataset.vid});
         }
+
+        // Drop on navbar playlist
+        if (target.tagName === 'BUTTON' && target.classList.contains('plDrop')) {
+            plTargetIndex = _.findIndex(this.playlistsList, {id: target.dataset.plid});
+            this.playlistsList[plTargetIndex].videolist.push(video)
+            this.dataService.setPlaylistsList(this.playlistsList);
+
+        // Reorder playlist
+        } else if (target.tagName === 'DIV' && target.classList.contains('plDetail') && target === source) {
+            plTargetIndex = _.findIndex(this.playlistsList, {id: target.dataset.plid});
+            const videoList = this.playlistsList[plTargetIndex].videolist;
+            const newVideoList = _.chain(target.children)
+                .map((node) => { return node['dataset'].vid})
+                .map((videoId) => { return _.find(videoList, {id: videoId});})
+                .value();
+            this.playlistsList[plTargetIndex].videolist = newVideoList;
+            this.dataService.setOnSelectPL(this.playlistsList[plTargetIndex]);
+            this.dataService.setPlaylistsList(this.playlistsList);
+        }
+        el.remove();
+    }
+
+    private onDropModel(bagName: string, args) {
+        const [el, target, source] = args;
     }
 
     private onDrag(bagName: string, args) {
         const [el, source] = args;
-        if (bagName === this.srBag) {
-            this.createAutoScroll(this.srAutoScroll);
-        } else if (bagName === this.pldBag) {
-            this.createAutoScroll(this.pldAutoScroll);
-        }
+        this.createAutoScroll(this.plButtonAutoScroll);
+        // this.createAutoScroll(this.pldAutoScroll);
     }
 
     private onDragend(bagName: string, args) {
         const [el] = args;
-        if (bagName === this.srBag) {
-            this.destroyAutoScroll(this.srAutoScroll, true);
-        } else if (bagName === this.pldBag) {
-            this.destroyAutoScroll(this.pldAutoScroll, true);
-        }
+        this.destroyAutoScroll(this.plButtonAutoScroll, true);
+        // this.destroyAutoScroll(this.pldAutoScroll, true);
     }
 
     createAutoScroll(autoScrollConfig: AutoScrollConfig) {
@@ -168,5 +220,10 @@ export class DndService implements OnDestroy {
         if (autoScrollConfig.scroll) {
             autoScrollConfig.scroll.destroy(cleanAnimation);
         }
+    }
+
+    checkPlaylist(elId, contId) {
+        return (elId !== undefined && contId !== undefined)
+            ? elId !== contId : true;
     }
 }

@@ -126,7 +126,7 @@
                     </button>
                 </div>
 
-                <!-- Playlists Scroll -->
+                <!-- Playlists list -->
                 <div class="flexItem sectionLabel">
                     <span>Playlists</span>
                     <div class="flexSpacer"></div>
@@ -134,17 +134,17 @@
                     <fa class="refreshBtnIco" [name]="'refresh'" [size]="1"></fa>
                     </button>
                 </div>
-
                 <div class="flexItem sidenavScroll" #plScrollContainer>
                     <div class="flexItem">
-                        <button class="sidenavBtn btnHover" *ngFor="let pl of playlistsList"
+
+                        <!-- Playlist list item button -->
+                        <button class="sidenavBtn btnHover plDrop" *ngFor="let pl of playlistsList"
                             [class.activ]="selectedTab === 4 && pl.id === onSelectPLID"
                             [dragula]="'searchResultsBag'"
-                            [dragulaModel]="pl.videolist"
-                            [attr.data-acceptDrop]="true"
-                            [attr.data-pl-id]="pl.id"
+                            [attr.data-acceptdrop]="true"
+                            [attr.data-hideshadow]="true"
+                            [attr.data-plid]="pl.id"
                             (click)="selectPlaylist(pl)">
-
                             <fa class="sidenavBtnIco" [name]="'folder-open-o'" [size]="1"></fa>
                             <span class="sidenavBtnLabel noOverflow">{{ pl.title }}</span>
                         </button>
