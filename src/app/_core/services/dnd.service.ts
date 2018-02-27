@@ -8,8 +8,7 @@ import { User,
          Playlist,
          Video,
          Suggests,
-         SearchResults,
-         AutoScrollConfig } from 'core/models';
+         SearchResults } from 'core/models';
 
 @Injectable()
 export class DndService implements OnDestroy {
@@ -17,17 +16,18 @@ export class DndService implements OnDestroy {
     srBag = 'searchResultsBag';
     private srDrake: any;
 
-
-    plButtonAutoScroll: AutoScrollConfig;
-
-    // pldBag = 'playlistDetailsBag';
-    pldAutoScroll: AutoScrollConfig;
-    private pldDrake: any;
+    plButtonContainer: ElementRef;
+    plDetailContainer: ElementRef;
+    autoScrollConfig = {
+        margin: 20,
+        maxSpeed: 10,
+        scrollWhenOutside: false
+    };
 
     playlistsList: Array<Playlist>;
     searchResults: SearchResults;
-
     selectedTab: number;
+
     scroll: any;
 
     constructor(
@@ -192,25 +192,65 @@ export class DndService implements OnDestroy {
 
     private onDrag(bagName: string, args) {
         const [el, source] = args;
-        this.createAutoScroll(this.plButtonAutoScroll);
-        // this.createAutoScroll(this.pldAutoScroll);
+        if (source.classList.contains('plDetail')) {
+            this.createAutoScroll(true);
+        } else {
+            this.createAutoScroll(false);
+        }
     }
 
     private onDragend(bagName: string, args) {
         const [el] = args;
-        this.destroyAutoScroll(this.plButtonAutoScroll, true);
-        // this.destroyAutoScroll(this.pldAutoScroll, true);
+        this.destroyAutoScroll(true);
     }
 
+    createAutoScroll(withPlDetail: boolean) {
+        const boxList = [];
+        if (this.plButtonContainer) {
+            boxList.push(this.plButtonContainer.nativeElement);
+        }
+        if (this.plDetailContainer && withPlDetail) {
+            boxList.push(this.plDetailContainer.nativeElement);
+        }
+
+        if (boxList.length > 0) {
+            this.scroll = autoScroll(boxList, {
+                margin: this.autoScrollConfig.margin || 20,
+                maxSpeed: this.autoScrollConfig.maxSpeed || 6,
+                scrollWhenOutside: this.autoScrollConfig.scrollWhenOutside || true,
+                autoScroll: () => {
+                    return  true; // this.scroll.down; //this.plButtonAutoScroll.scroll.down || this.plDetailAutoScroll.scroll.down; // autoScrollConfig.selectedTab === this.selectedTab;
+                }
+            });
+        }
+    }
+
+    destroyAutoScroll(cleanAnimation: boolean) {
+        if (this.scroll) {
+            this.scroll.destroy(cleanAnimation);
+            this.scroll = null;
+        }
+    }
+
+    /*
     createAutoScroll(autoScrollConfig: AutoScrollConfig) {
         if (autoScrollConfig.container) {
             autoScrollConfig.scroll = autoScroll(
                 [autoScrollConfig.container.nativeElement], {
                 margin: autoScrollConfig.margin || 20,
                 maxSpeed: autoScrollConfig.maxSpeed || 6,
-                scrollWhenOutside: true,
+                scrollWhenOutside: autoScrollConfig.scrollWhenOutside || true,
                 autoScroll: () => {
-                    return autoScrollConfig.selectedTab === this.selectedTab;
+
+                    let down = false;
+                    if (this.plButtonAutoScroll && this.plButtonAutoScroll.scroll) {
+                        down = this.plButtonAutoScroll.scroll.down;
+                    } else if (this.plDetailAutoScroll && this.plDetailAutoScroll.scroll) {
+                        down = this.plDetailAutoScroll.scroll.down;
+                    }
+                    console.log('down', down);
+
+                    return  down; //this.plButtonAutoScroll.scroll.down || this.plDetailAutoScroll.scroll.down; // autoScrollConfig.selectedTab === this.selectedTab;
                 }
             });
         }
@@ -221,9 +261,5 @@ export class DndService implements OnDestroy {
             autoScrollConfig.scroll.destroy(cleanAnimation);
         }
     }
-
-    checkPlaylist(elId, contId) {
-        return (elId !== undefined && contId !== undefined)
-            ? elId !== contId : true;
-    }
+    */
 }

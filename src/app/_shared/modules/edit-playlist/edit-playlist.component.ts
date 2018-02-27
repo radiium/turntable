@@ -25,9 +25,6 @@ export class EditPlaylistComponent implements OnInit, OnDestroy, OnChanges {
 
     dragulaBagName = 'drag-drop-list';
 
-    @ViewChild('autoscrollLeft')  autoscrollLeft: ElementRef;
-    @ViewChild('autoscrollRight') autoscrollRight: ElementRef;
-
     @Input()
     playlist: Playlist;
     historic: Playlist;
@@ -71,25 +68,6 @@ export class EditPlaylistComponent implements OnInit, OnDestroy, OnChanges {
             this.historic = historicPlaylist;
             this.totalDurationHistoric = this.computeTotalDuration(this.historic.videolist);
         });
-
-        // Get search result list
-        /*
-        this.dataService.searchResults$.subscribe((data) => {
-            this.searchResults = data;
-
-            // Set autoscroll on drag
-            // at begin or end of playlist container
-            const scroll = autoScroll([
-                this.autoscrollLeft.nativeElement,
-                this.autoscrollRight.nativeElement,
-            ], {
-                margin: 70,
-                maxSpeed: 6,
-                scrollWhenOutside: true,
-                autoScroll: () => scroll.down
-            });
-        });
-           */
     }
 
     ngOnInit() {

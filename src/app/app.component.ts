@@ -5,7 +5,7 @@ import { OverlayContainer } from '@angular/cdk/overlay';
 import { MatSnackBar } from '@angular/material';
 import * as _ from 'lodash';
 
-import { User, Video, Playlist, AutoScrollConfig } from 'core/models';
+import { User, Video, Playlist } from 'core/models';
 import { AppStateService } from 'core/services/app-state.service';
 import { AuthService } from 'core/services/auth.service';
 import { DataService } from 'core/services/data.service';
@@ -117,13 +117,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     ngAfterViewInit() {
-        const scrollConfig: AutoScrollConfig = {
-            container: this.scrollContainer,
-            selectedTab: 2,
-            margin: 20,
-            maxSpeed: 10
-        };
-        this.dndService.plButtonAutoScroll = scrollConfig;
+        this.dndService.plButtonContainer = this.scrollContainer
     }
 
     ngOnDestroy() {

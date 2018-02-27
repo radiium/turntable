@@ -3,10 +3,8 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { DragulaService } from 'ng2-dragula/ng2-dragula';
 import * as _ from 'lodash';
 import * as moment from 'moment';
-import * as autoScroll from 'dom-autoscroller';
 
-
-import { Playlist, Video, AutoScrollConfig } from 'core/models';
+import { Playlist, Video } from 'core/models';
 import { DataService } from 'core/services/data.service';
 import { AppStateService } from 'core/services/app-state.service';
 import { DndService } from 'core/services/dnd.service';
@@ -34,13 +32,7 @@ export class PlaylistDetailsComponent implements OnInit {
     selectedTab;
 
     @ViewChild('pldScrollContainer') set container(scrollContainer: ElementRef) {
-        const scrollConfig: AutoScrollConfig = {
-            container: scrollContainer,
-            selectedTab: 4,
-            margin: 55,
-            maxSpeed: 13
-        };
-        this.dndService.pldAutoScroll = scrollConfig;
+        this.dndService.plDetailContainer = scrollContainer;
     }
 
     constructor(
