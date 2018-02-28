@@ -9,7 +9,7 @@ import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/map';
 import * as _ from 'lodash';
 
-import { Video, Playlist, Button } from 'core/models';
+import { Video, Playlist } from 'core/models';
 import { UtilsService } from 'core/services/utils.service';
 import { CreatePlaylistDialogComponent } from 'shared/dialogs/create-playlist-dialog/create-playlist-dialog.component';
 import { DeletePlaylistDialogComponent } from 'shared/dialogs/delete-playlist-dialog/delete-playlist-dialog.component';
