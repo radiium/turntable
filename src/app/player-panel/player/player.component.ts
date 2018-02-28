@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, ViewChild } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import { Subject } from 'rxjs/Subject';
@@ -7,6 +7,7 @@ import * as _ from 'lodash';
 import { Video, Playlist } from 'core/models';
 import { PlayerStateService } from 'core/services/player-state.service';
 import { DataService } from 'core/services/data.service';
+import { DndService } from 'core/services/dnd.service';
 import { ElectronService } from 'ngx-electron';
 
 @Component({
@@ -16,6 +17,9 @@ import { ElectronService } from 'ngx-electron';
 })
 export class PlayerComponent {
 
+    @ViewChild('playerListScrollContainer') set container(scrollContainer: ElementRef) {
+        this.dndService.playerListContainer = scrollContainer;
+    }
 
     playerList: Array<Video>;
     historicList: Array<Video>;
@@ -56,6 +60,7 @@ export class PlayerComponent {
 
 
     constructor(
+        private dndService: DndService,
         private dataService: DataService,
         private _playerStateService: PlayerStateService,
         private Electron: ElectronService) {

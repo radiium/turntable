@@ -19,6 +19,7 @@ export class DndService implements OnDestroy {
 
     plButtonContainer: ElementRef;
     plDetailContainer: ElementRef;
+    playerListContainer: ElementRef;
     autoScrollConfig = {
         margin: 20,
         maxSpeed: 10,
@@ -204,8 +205,10 @@ export class DndService implements OnDestroy {
 
     private onDrag(bagName: string, args) {
         const [el, source] = args;
-        if (source.classList.contains('plDetail')) {
+        if (source.classList.contains('plDetail') && el.dataset.playerlist !== 'true') {
             this.createAutoScroll(true);
+        } else if (el.dataset.playerlist === 'true') {
+            this.createAutoScroll(false, true);
         } else {
             this.createAutoScroll(false);
         }
@@ -216,13 +219,18 @@ export class DndService implements OnDestroy {
         this.destroyAutoScroll(true);
     }
 
-    createAutoScroll(withPlDetail: boolean) {
+    createAutoScroll(withPlDetail: boolean, onlyPlayer?: boolean) {
         const boxList = [];
-        if (this.plButtonContainer) {
+
+        if (this.plButtonContainer && !onlyPlayer) {
             boxList.push(this.plButtonContainer.nativeElement);
         }
-        if (this.plDetailContainer && withPlDetail) {
+        if (this.plDetailContainer && withPlDetail && !onlyPlayer) {
             boxList.push(this.plDetailContainer.nativeElement);
+        }
+
+        if (this.playerListContainer && onlyPlayer) {
+            boxList.push(this.playerListContainer.nativeElement);
         }
 
         if (boxList.length > 0) {
@@ -243,35 +251,4 @@ export class DndService implements OnDestroy {
             this.scroll = null;
         }
     }
-
-    /*
-    createAutoScroll(autoScrollConfig: AutoScrollConfig) {
-        if (autoScrollConfig.container) {
-            autoScrollConfig.scroll = autoScroll(
-                [autoScrollConfig.container.nativeElement], {
-                margin: autoScrollConfig.margin || 20,
-                maxSpeed: autoScrollConfig.maxSpeed || 6,
-                scrollWhenOutside: autoScrollConfig.scrollWhenOutside || true,
-                autoScroll: () => {
-
-                    let down = false;
-                    if (this.plButtonAutoScroll && this.plButtonAutoScroll.scroll) {
-                        down = this.plButtonAutoScroll.scroll.down;
-                    } else if (this.plDetailAutoScroll && this.plDetailAutoScroll.scroll) {
-                        down = this.plDetailAutoScroll.scroll.down;
-                    }
-                    console.log('down', down);
-
-                    return  down; //this.plButtonAutoScroll.scroll.down || this.plDetailAutoScroll.scroll.down; // autoScrollConfig.selectedTab === this.selectedTab;
-                }
-            });
-        }
-    }
-
-    destroyAutoScroll(autoScrollConfig: AutoScrollConfig, cleanAnimation: boolean) {
-        if (autoScrollConfig.scroll) {
-            autoScrollConfig.scroll.destroy(cleanAnimation);
-        }
-    }
-    */
 }
