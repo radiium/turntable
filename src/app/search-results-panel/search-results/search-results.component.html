@@ -15,7 +15,7 @@
                 class="appListItem hiddenShadow">
 
                 <app-video-list-item [video]="video" [index]="i + 1" [movable]="enableDrag" class="itemBg">
-                    <button class=" btn btnHover" [matMenuTriggerFor]="menu" xPosition="'before'" yPosition="'above'">
+                    <button class="toolbarBtn btnHover" [matMenuTriggerFor]="menu" xPosition="'before'" yPosition="'above'">
                         <fa [name]="'bars'" [size]="2"></fa>
                     </button>
                     <mat-menu #menu="matMenu">
@@ -24,7 +24,7 @@
                         <button mat-menu-item>Play</button>
                     </mat-menu>
 
-                    <button class=" btn btnHover" (click)="addToPlaylist(video)" [disabled]="!playlistList" [class.disabled]="!playlistList">
+                    <button class="toolbarBtn btnHover" (click)="addToPlaylist(video)" [disabled]="!playlistList" [class.disabled]="!playlistList">
                         <fa [name]="'bars'" [size]="2"></fa>
                     </button>
                 </app-video-list-item>

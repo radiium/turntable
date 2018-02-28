@@ -44,7 +44,7 @@
                 class="appListItem">
 
                 <app-video-list-item [video]="video" [index]="i + 1" [movable]="onSort" class="itemBg">
-                    <button *ngIf="onSort" class=" btn btnHover" (click)="deleteVideo(video)">
+                    <button class="toolbarBtn btnHover" (click)="deleteVideo(video)">
                         <fa [name]="'trash-o'" [size]="2"></fa>
                     </button>
                 </app-video-list-item>
