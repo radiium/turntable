@@ -40,7 +40,7 @@ export class VideoPlayerComponent implements OnInit, OnChanges, OnDestroy {
 
     // Video(s)
     @Input() video: Video;          // Current played video
-    private onPlayPlaylist: Playlist;      // Playlist of video
+    private playerList: Array<Video>;      // Playlist of video
 
     // Timer
     private timerControl$: Subject<number>;
@@ -59,8 +59,8 @@ export class VideoPlayerComponent implements OnInit, OnChanges, OnDestroy {
             this.isRandom = isRandom;
         });
 
-        this.dataService.onPlayPlaylist$.subscribe((pl) => {
-            this.onPlayPlaylist = pl;
+        this.dataService.playerList$.subscribe((pl) => {
+            this.playerList = pl;
         });
 
         this.isPlaying = false;
@@ -211,12 +211,12 @@ export class VideoPlayerComponent implements OnInit, OnChanges, OnDestroy {
     getVideoToPlay() {
         let videoToPlay = null;
         if (this.isRandom) {
-            const randomIndex = Math.floor(Math.random() * this.onPlayPlaylist.videolist.length);
+            const randomIndex = Math.floor(Math.random() * this.playerList.length);
             console.log('isRandom true => randomIndex=', randomIndex);
-            videoToPlay = this.onPlayPlaylist.videolist[randomIndex];
+            videoToPlay = this.playerList[randomIndex];
         } else {
             console.log('isRandom false');
-            videoToPlay = this.onPlayPlaylist.videolist[0];
+            videoToPlay = this.playerList[0];
         }
         return videoToPlay;
     }

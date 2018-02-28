@@ -1,5 +1,19 @@
 #playerPanelContainer {
     // height: 100%;
+
+
+    .plPlayerContainer {
+        display: flex;
+        flex-direction: column;
+
+        .plPlayerToolbar {
+            display: flex;
+            flex-direction: row;
+
+        }
+    }
+
+
 }
 
 #playerContainer {

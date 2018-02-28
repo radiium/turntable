@@ -1,6 +1,6 @@
 import { Injectable, Input } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
-
+import * as _ from 'lodash';
 import { UtilsService } from 'core/services/utils.service';
 import { DataService } from 'core/services/data.service';
 
@@ -46,8 +46,8 @@ export class PlayerStateService {
     // --------------------------------------------------------
 
     // Playlist on play
-    onPlayHistoricPlaylist: Playlist;
-    onPlayPlaylist: Playlist;
+    playerList: Array<Video>;
+    historicList: Array<Video>;
 
     // --------------------------------------------------------
 
@@ -55,14 +55,12 @@ export class PlayerStateService {
     public utilsService: UtilsService,
     private dataService: DataService
     ) {
-        this.dataService.onPlayHistoricPlaylist$
-        .subscribe((pl) => {
-            this.onPlayHistoricPlaylist = pl;
+        this.dataService.playerList$.subscribe((data) => {
+            this.playerList = data;
         });
 
-        this.dataService.onPlayPlaylist$
-        .subscribe((pl) => {
-            this.onPlayPlaylist = pl;
+        this.dataService.historicList$.subscribe((data) => {
+            this.historicList = data;
         });
     }
 
@@ -95,17 +93,16 @@ export class PlayerStateService {
     updatePlaylists(video: Video) {
 
         // Add video to on play historic playlist
-        const hpl = this.utilsService.copyPlaylist(this.onPlayHistoricPlaylist);
-        hpl.videolist.push(video);
-        this.dataService.setOnPlayHistoricPlayList(hpl);
+        const hpl = _.cloneDeep(this.historicList);
+        hpl.push(video);
+        this.dataService.setHistoricList(hpl);
 
         // Remove video from on play playlist
-        const ppl = this.utilsService.copyPlaylist(this.onPlayPlaylist);
-        let videolist = ppl.videolist;
-        videolist = videolist.filter(function(el) {
-            return el.id !== video.id;
-        });
-        ppl.videolist = videolist;
-        this.dataService.setOnPlayPlayList(ppl);
+        let ppl = _.filter(
+            _.cloneDeep(this.playerList),
+            (el) =>{
+                return el.id !== video.id;
+            });
+        this.dataService.setPlayerList(ppl);
     }
 }

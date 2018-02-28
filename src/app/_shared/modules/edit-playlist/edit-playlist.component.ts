@@ -3,6 +3,7 @@ import { Component, OnInit, Input, Output, OnDestroy,
 
 import { DragulaService, dragula } from 'ng2-dragula/ng2-dragula';
 import * as autoScroll from 'dom-autoscroller';
+import * as _ from 'lodash';
 
 import { User, Video, Playlist, SearchResults } from 'core/models';
 
@@ -27,7 +28,7 @@ export class EditPlaylistComponent implements OnInit, OnDestroy, OnChanges {
 
     @Input()
     playlist: Playlist;
-    historic: Playlist;
+    historicList: Array<Video>;
 
     videolist: Array<Video>;
 
@@ -58,15 +59,10 @@ export class EditPlaylistComponent implements OnInit, OnDestroy, OnChanges {
         });
 
         // Get on play Historic playlist
-        this.dataService.setOnPlayHistoricPlayList(
-            new Playlist(
-                '', 'Historic', '', '', 0, 0, '', '', true,
-                new Array<Video>()
-            )
-        );
-        this.dataService.onPlayHistoricPlaylist$.subscribe((historicPlaylist) => {
-            this.historic = historicPlaylist;
-            this.totalDurationHistoric = this.computeTotalDuration(this.historic.videolist);
+        this.dataService.setHistoricList(new Array<Video>());
+        this.dataService.historicList$.subscribe((data) => {
+            this.historicList = data;
+            this.totalDurationHistoric = this.computeTotalDuration(data);
         });
     }
 
@@ -153,18 +149,18 @@ export class EditPlaylistComponent implements OnInit, OnDestroy, OnChanges {
     //  Delete video
     deleteVideoHistoric(videoId) {
         if (videoId) {
-            const pl = this.utils.copyPlaylist(this.historic);
-            pl.videolist = pl.videolist.filter(function(el) {
+            let pl = _.cloneDeep(this.historicList);
+            pl = pl.filter(function(el) {
                 return el.id !== videoId;
             });
-            this.dataService.setOnPlayHistoricPlayList(pl);
+            this.dataService.setHistoricList(pl);
         }
     }
 
     addToPlaylist(video: Video) {
         const pl = this.utils.copyPlaylist(this.playlist);
         pl.videolist.push(video);
-        this.dataService.setOnPlayPlayList(pl);
+        this.dataService.setPlayerList(pl);
     }
 
     // Play video
@@ -183,7 +179,7 @@ export class EditPlaylistComponent implements OnInit, OnDestroy, OnChanges {
     setPlaylist(playlist) {
         if (playlist) {
             if (this.type === 'player') {
-                this.dataService.setOnPlayPlayList(playlist);
+                this.dataService.setPlayerList(playlist);
             } else if (this.type === 'edit') {
                 this.dataService.setOnEditPlayList(playlist);
             }

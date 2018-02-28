@@ -58,9 +58,64 @@
             </app-video-player>
     </div>
 
-    <!-- On play playlist and search playlist-->
-    <div id="playlistContainer">
-        <app-edit-playlist [playlist]="onPlayPlaylist"  [type]="'player'"></app-edit-playlist>
-    </div>
+    <!-- On play playlist and search playlist
+        <div id="playlistContainer">
+            <app-edit-playlist [playlist]="onPlayPlaylist"  [type]="'player'"></app-edit-playlist>
+        </div>
+    -->
 
+    <div class="plPlayerContainer" *ngIf="playerList">
+        <div class="plPlayerToolbar">
+            <app-toolbar [height]="'40px'" [margin]="'0 5px 0 0'" [padding]="'0 10px 0 10px'">
+                <div>{{ onPlayPL?.title }}</div>
+            </app-toolbar>
+
+            <app-toolbar [height]="'40px'" [margin]="'0 5px 0 0'" [padding]="'0 10px 0 10px'">
+                <button (click)="onDisplayPl = 'playlist'">
+                    Playlist
+                </button>
+                <button (click)="onDisplayPl = 'historic'">
+                    Historic
+                </button>
+            </app-toolbar>
+        </div>
+
+        <div [hidden]="onDisplayPl !== 'playlist'" class="scrollContainer plPlayerList" #plPlayerList >
+
+            <!-- Video list -->
+            <div class="appList plDetail"
+                [dragula]="'test'"
+                [dragulaModel]="playerList">
+                <!-- Video list item -->
+                <div *ngFor="let video of playerList; let i = index"
+                    class="appListItem">
+
+                    <app-video-list-item [video]="video" [index]="i + 1" [movable]="true" class="itemBg">
+                        <button class=" btn btnHover" (click)="deleteVideo(video)">
+                            <fa [name]="'trash-o'" [size]="2"></fa>
+                        </button>
+                    </app-video-list-item>
+                </div>
+            </div>
+        </div>
+
+        <div [hidden]="onDisplayPl !== 'historic'" class="scrollContainer plPlayerList" #plPlayerList >
+
+                <!-- Video list -->
+                <div class="appList plDetail">
+                    <!-- Video list item -->
+                    <div *ngFor="let video of historicList; let i = index"
+                        class="appListItem">
+
+                        <app-video-list-item [video]="video" [index]="i + 1" [movable]="false" class="itemBg">
+                            <button class=" btn btnHover" (click)="deleteVideo(video)">
+                                <fa [name]="'trash-o'" [size]="2"></fa>
+                            </button>
+                        </app-video-list-item>
+                    </div>
+                </div>
+            </div>
+
+
+    </div>
 </div>

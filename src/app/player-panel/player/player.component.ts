@@ -17,6 +17,16 @@ import { ElectronService } from 'ngx-electron';
 })
 export class PlayerComponent {
 
+
+    playerList: Array<Video>;
+    historicList: Array<Video>;
+    onDisplayPl: string;
+
+
+
+
+
+
     title = 'TurnTable';
 
     // Timer
@@ -25,8 +35,7 @@ export class PlayerComponent {
     sub: Subscription;
 
     private playList: Video[] = [];
-    onPlayPlaylist: Playlist;
-    searchResultPlaylist: Array<Video>;
+
 
     // Video left controls
     videoLeft;
@@ -59,10 +68,22 @@ export class PlayerComponent {
         this._playerStateService.setVolumeLeft(this.volLeft);
         this._playerStateService.setVolumeRight(this.volRight);
 
+
+
+        this.onDisplayPl = 'playlist';
+
         // Get on play playlist
-        this.dataService.onPlayPlaylist$.subscribe((pl) => {
-            this.onPlayPlaylist = pl;
+        this.dataService.playerList$.subscribe((data) => {
+            this.playerList = data;
         });
+
+        // Get historic playlist
+        this.dataService.historicList$.subscribe((data) => {
+            this.historicList = data;
+        });
+
+
+
 
         // Get current volume right
         this._playerStateService.isRandom$.subscribe((isRandom) => {
@@ -118,7 +139,7 @@ export class PlayerComponent {
                 this.playerRight.playPauseVideo();
                 this.initTimerLTR();
 
-            } else if (this.onPlayPlaylist && this.onPlayPlaylist.videolist.length > 0) {
+            } else if (this.playerList && this.playerList.length > 0) {
                 this.stopTimer();
                 const videoToPlay = this.getVideoToPlay();
                 this._playerStateService.setPlayerRight(videoToPlay);
@@ -162,7 +183,7 @@ export class PlayerComponent {
                 this.playerLeft.playPauseVideo();
                 this.initTimerRTL();
 
-            } else if (this.onPlayPlaylist && this.onPlayPlaylist.videolist.length > 0) {
+            } else if (this.playerList && this.playerList.length > 0) {
                 this.stopTimer();
                 const videoToPlay = this.getVideoToPlay();
                 this._playerStateService.setPlayerLeft(videoToPlay);
@@ -210,12 +231,12 @@ export class PlayerComponent {
     getVideoToPlay() {
         let videoToPlay = null;
         if (this.isRandom) {
-            const randomIndex = Math.floor(Math.random() * this.onPlayPlaylist.videolist.length);
+            const randomIndex = Math.floor(Math.random() * this.playerList.length);
             console.log('isRandom true => randomIndex=', randomIndex);
-            videoToPlay = this.onPlayPlaylist.videolist[randomIndex];
+            videoToPlay = this.playerList[randomIndex];
         } else {
             console.log('isRandom false', );
-            videoToPlay = this.onPlayPlaylist.videolist[0];
+            videoToPlay = this.playerList[0];
         }
         return videoToPlay;
     }

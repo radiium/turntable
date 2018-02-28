@@ -63,19 +63,13 @@ export class DataService {
     private onSelectPL  = new Subject<Playlist>();
     public  onSelectPL$ = this.onSelectPL.asObservable();
 
-    // On play PlayList
-    private onPlayPlaylist  = new Subject<Playlist>();
-    public  onPlayPlaylist$ = this.onPlayPlaylist.asObservable();
+    // On play videolist
+    private playerList  = new Subject<Array<Video>>();
+    public  playerList$ = this.playerList.asObservable();
 
-
-    // On play historic PlayList
-    private onPlayHistoricPlaylist  = new Subject<Playlist>();
-    public  onPlayHistoricPlaylist$ = this.onPlayHistoricPlaylist.asObservable();
-
-
-    // Search result PlayList
-    private searchResultPlaylist  = new Subject<Video[]>();
-    public  searchResultPlaylist$ = this.searchResultPlaylist.asObservable();
+    // On play historic videolist
+    private historicList  = new Subject<Array<Video>>();
+    public  historicList$ = this.historicList.asObservable();
 
 
     // Loading spinner
@@ -133,16 +127,12 @@ export class DataService {
         this.onSelectPL.next(_.cloneDeep(data));
     }
 
-    setOnPlayPlayList(data) {
-        this.onPlayPlaylist.next(_.cloneDeep(data));
+    setPlayerList(data) {
+        this.playerList.next(_.cloneDeep(data));
     }
 
-    setOnPlayHistoricPlayList(data) {
-        this.onPlayHistoricPlaylist.next(_.cloneDeep(data));
-    }
-
-    setSearchResultPlaylist(data) {
-        this.searchResultPlaylist.next(_.cloneDeep(data));
+    setHistoricList(data) {
+        this.historicList.next(_.cloneDeep(data));
     }
 
     setLoading(data) {

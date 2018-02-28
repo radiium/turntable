@@ -28,6 +28,8 @@ export class LibraryComponent implements OnInit {
 
     playlistsList: Array<Playlist> = [];
     onSelectPL: Playlist;
+    playerList: Array<Video>;
+
     originalOnEditPlaylist: Playlist;
 
     filterLocation;
@@ -61,13 +63,18 @@ export class LibraryComponent implements OnInit {
         });
 
         // Get playlist list
-        this.dataService.playlistsList$.subscribe((pl: any) => {
-            this.playlistsList = pl;
+        this.dataService.playlistsList$.subscribe((data) => {
+            this.playlistsList = data;
+        });
+
+        // Get on play playlist
+        this.dataService.playerList$.subscribe((data) => {
+            this.playerList = data;
         });
 
         // Get selected playlist
-        this.dataService.onSelectPL$.subscribe((pl: any) => {
-            this.onSelectPL = pl;
+        this.dataService.onSelectPL$.subscribe((data) => {
+            this.onSelectPL = data;
         });
     }
 
@@ -80,16 +87,17 @@ export class LibraryComponent implements OnInit {
 
     // Play the selected playlist
     playPlaylist(playlist: Playlist) {
-        // if (playlist.videolist.length > 0) {
-            const pl = _.cloneDeep(playlist);
-            this.dataService.setOnPlayPlayList(pl);
-            this.dataService.setSelectedTab(4);
-        // }
+        console.log('playPlaylist');
+        const pl = _.cloneDeep(playlist.videolist);
+        this.dataService.setPlayerList(pl);
+        this.dataService.setSelectedTab(5);
     }
 
-
     addToCurrentPlaylist(playlist: Playlist) {
-
+        if (this.playerList) {
+            const newPlayerList = this.playerList.concat(playlist.videolist);
+            this.dataService.setPlayerList(newPlayerList);
+        }
     }
 
     // Delete the selected playlist
@@ -120,7 +128,6 @@ export class LibraryComponent implements OnInit {
     @HostListener('window:resize', ['$event'])
     onResize(event) {
 
-
         const contWidth = event.target.innerWidth - 250 - 40;
 
         if (contWidth >= 1000) {
@@ -135,6 +142,6 @@ export class LibraryComponent implements OnInit {
             this.colCount = 1;
         }
 
-        console.log('colCount', this.colCount)
+        // console.log('colCount', this.colCount)
     }
 }
