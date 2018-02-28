@@ -46,7 +46,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     scroll: any;
 
     miniNav = false;
-    isLoaded= false;
+    isLoaded = false;
 
     constructor(
     public snackBar: MatSnackBar,
@@ -85,7 +85,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
         });
 
         // Get selected playlist
-        this.onSelectPLID= '';
+        this.onSelectPLID = '';
         this.dataService.onSelectPL$.subscribe((pl: any) => {
             this.onSelectPLID = pl ? pl.id : '';
         });
@@ -117,7 +117,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     ngAfterViewInit() {
-        this.dndService.plButtonContainer = this.scrollContainer
+        this.dndService.plButtonContainer = this.scrollContainer;
     }
 
     ngOnDestroy() {

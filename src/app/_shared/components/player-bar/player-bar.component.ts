@@ -10,7 +10,7 @@ export class PlayerBarComponent implements OnInit {
     isOnplay: boolean;
     isRandom: boolean;
     isRepeat: boolean;
-    isExpand: boolean
+    isExpand: boolean;
 
     constructor() {
         this.isOnplay = true;

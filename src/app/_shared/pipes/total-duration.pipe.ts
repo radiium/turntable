@@ -10,25 +10,8 @@ export class TotalDurationPipe implements PipeTransform {
             return;
         }
 
-        let totalDuration = 0
-        _.each(videolist, (video) => {
-            totalDuration += video.duration;
-        });
-
-        return totalDuration
-
-/*
-        let format = 'mm:ss';
-        if (args || value >= 3600000) {
-            format = 'HH:mm:ss';
-        }
-        if (args || value >= 356400000) {
-            format = 'HHH:mm:ss';
-        }
-        if (args || value >= 3596400000) {
-            format = 'HHHH:mm:ss';
-        }
-
-        return moment.utc(value).format(format);*/
+        let totalDuration = 0;
+        _.each(videolist, (video) => totalDuration += video.duration);
+        return totalDuration;
     }
 }

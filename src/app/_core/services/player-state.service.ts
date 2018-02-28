@@ -98,11 +98,7 @@ export class PlayerStateService {
         this.dataService.setHistoricList(hpl);
 
         // Remove video from on play playlist
-        let ppl = _.filter(
-            _.cloneDeep(this.playerList),
-            (el) =>{
-                return el.id !== video.id;
-            });
+        const ppl = _.filter(_.cloneDeep(this.playerList), (el) => el.id !== video.id);
         this.dataService.setPlayerList(ppl);
     }
 }

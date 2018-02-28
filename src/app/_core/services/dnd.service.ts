@@ -126,7 +126,7 @@ export class DndService implements OnDestroy {
         if (el.dataset.searchresults === 'true') {
         } else {
             if (target === source) {
-                const element = target.querySelectorAll("[data-vid='" + el.dataset.vid + "']:not(.gu-transit)").item(0);
+                const element = target.querySelectorAll('[data-vid=\'' + el.dataset.vid + '\']:not(.gu-transit)').item(0);
                 if (element) {
                     element.style.display = 'none';
                 }
@@ -143,7 +143,7 @@ export class DndService implements OnDestroy {
 
         if (el.dataset.searchresults === 'true') {
         } else {
-            const element = target.querySelectorAll("[data-vid='" + el.dataset.vid + "']:not(.gu-transit)").item(0);
+            const element = target.querySelectorAll('[data-vid=\'' + el.dataset.vid + '\']:not(.gu-transit)').item(0);
             if (element) {
                 element.style.display = '';
             }
@@ -177,7 +177,7 @@ export class DndService implements OnDestroy {
         // Drop on navbar playlist
         if (target.tagName === 'BUTTON' && target.classList.contains('plDrop')) {
             plTargetIndex = _.findIndex(this.playlistsList, {id: target.dataset.plid});
-            this.playlistsList[plTargetIndex].videolist.push(video)
+            this.playlistsList[plTargetIndex].videolist.push(video);
             this.dataService.setPlaylistsList(this.playlistsList);
 
         // Reorder playlist
@@ -185,8 +185,8 @@ export class DndService implements OnDestroy {
             plTargetIndex = _.findIndex(this.playlistsList, {id: target.dataset.plid});
             const videoList = this.playlistsList[plTargetIndex].videolist;
             const newVideoList = _.chain(target.children)
-                .map((node) => { return node['dataset'].vid})
-                .map((videoId) => { return _.find(videoList, {id: videoId});})
+                .map((node) => node['dataset'].vid)
+                .map((videoId) => _.find(videoList, {id: videoId}))
                 .value();
             this.playlistsList[plTargetIndex].videolist = newVideoList;
             this.dataService.setOnSelectPL(this.playlistsList[plTargetIndex]);
@@ -238,9 +238,7 @@ export class DndService implements OnDestroy {
                 margin: this.autoScrollConfig.margin || 20,
                 maxSpeed: this.autoScrollConfig.maxSpeed || 6,
                 scrollWhenOutside: this.autoScrollConfig.scrollWhenOutside || true,
-                autoScroll: () => {
-                    return  true; // this.scroll.down; //this.plButtonAutoScroll.scroll.down || this.plDetailAutoScroll.scroll.down; // autoScrollConfig.selectedTab === this.selectedTab;
-                }
+                autoScroll: () => true
             });
         }
     }

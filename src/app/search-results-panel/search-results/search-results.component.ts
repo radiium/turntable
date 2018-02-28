@@ -28,7 +28,7 @@ export class SearchResultsComponent implements OnInit {
     private dataService: DataService,
     private YTService: YoutubeService,
     public dialog: MatDialog) {
-        this.videoList = new Array<Video>()
+        this.videoList = new Array<Video>();
         this.dataService.searchResults$.subscribe((data) => {
             if (data.results.length === 1) {
                 this.videoList = data.results[0];

@@ -24,6 +24,13 @@
     <div class="flexSpacer"></div>
 
     <div class="control itemBox">
+            <button class="toolbarBtn btnHover" [matMenuTriggerFor]="menu" xPosition="'before'" yPosition="'above'">
+                <fa [name]="'bars'" [size]="2"></fa>
+            </button>
+            <mat-menu #menu="matMenu">
+                <button mat-menu-item>Play</button>
+                <button mat-menu-item>Add to queue</button>
+            </mat-menu>
         <ng-content></ng-content>
     </div>
 </div>
