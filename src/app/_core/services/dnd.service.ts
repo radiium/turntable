@@ -90,8 +90,8 @@ export class DndService implements OnDestroy {
         });
 
 
-        // Get drake from each bag
-        this.srDrake   = this.dragulaService.find(this.srBag).drake;
+        // Get drake
+        this.srDrake = this.dragulaService.find(this.srBag).drake;
 
 
         // Listen dragula event
