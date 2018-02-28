@@ -2,10 +2,9 @@ import { Component, Input, Output, EventEmitter, ViewChild } from '@angular/core
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import { Subject } from 'rxjs/Subject';
+import * as _ from 'lodash';
 
 import { Video, Playlist } from 'core/models';
-
-
 import { PlayerStateService } from 'core/services/player-state.service';
 import { DataService } from 'core/services/data.service';
 import { ElectronService } from 'ngx-electron';
@@ -68,8 +67,6 @@ export class PlayerComponent {
         this._playerStateService.setVolumeLeft(this.volLeft);
         this._playerStateService.setVolumeRight(this.volRight);
 
-
-
         this.onDisplayPl = 'playlist';
 
         // Get on play playlist
@@ -81,9 +78,6 @@ export class PlayerComponent {
         this.dataService.historicList$.subscribe((data) => {
             this.historicList = data;
         });
-
-
-
 
         // Get current volume right
         this._playerStateService.isRandom$.subscribe((isRandom) => {
@@ -264,4 +258,11 @@ export class PlayerComponent {
         });
     }
     */
+
+    deleteVideo(video: Video) {
+        const updatedList = _.filter(this.playerList, (v) => {
+            return v.id !== video.id;
+        });
+        this.dataService.setPlayerList(updatedList);
+    }
 }
