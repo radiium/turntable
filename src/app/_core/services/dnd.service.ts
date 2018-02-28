@@ -13,6 +13,7 @@ import { User,
 @Injectable()
 export class DndService implements OnDestroy {
 
+    playerBag = 'playerListBag';
     srBag = 'searchResultsBag';
     private srDrake: any;
 
@@ -26,6 +27,7 @@ export class DndService implements OnDestroy {
 
     playlistsList: Array<Playlist>;
     searchResults: SearchResults;
+    playerList: Array<Video>;
     selectedTab: number;
 
     scroll: any;
@@ -42,6 +44,10 @@ export class DndService implements OnDestroy {
             this.searchResults = data;
         });
 
+        this.dataService.playerList$.subscribe((data) => {
+            this.playerList = data;
+        });
+
         this.dataService.selectedTab$.subscribe((data) => {
             this.selectedTab = data;
         });
@@ -54,17 +60,15 @@ export class DndService implements OnDestroy {
 
     initDnd() {
 
-        /*
         // Init playlist details drag
         this.dragulaService.setOptions(
-            this.pldBag, {
+            this.playerBag, {
             revertOnSpill: true,
             removeOnSpill: false,
             moves: (el, source, handle, sibling): boolean => {
                 return handle.classList.contains('handle');
             }
         });
-        */
 
 
         // Init search result drag
@@ -155,6 +159,10 @@ export class DndService implements OnDestroy {
         let plSourceIndex: number;
         let plTargetIndex: number;
 
+        if (el.dataset.playerlist === 'true') {
+            return;
+        }
+
         // Video to drop from searchresults
         if (el.dataset.searchresults === 'true') {
             video = _.find(_.union.apply(null, this.searchResults.results), {id: el.dataset.vid});
@@ -188,6 +196,10 @@ export class DndService implements OnDestroy {
 
     private onDropModel(bagName: string, args) {
         const [el, target, source] = args;
+
+        if (el.dataset.playerlist === 'true') {
+            this.dataService.setPlayerList(this.playerList);
+        }
     }
 
     private onDrag(bagName: string, args) {
