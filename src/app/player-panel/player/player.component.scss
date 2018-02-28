@@ -5,11 +5,18 @@
     .plPlayerContainer {
         display: flex;
         flex-direction: column;
+        height: calc(100% - 244px);
+        // padding: 20px;
 
         .plPlayerToolbar {
             display: flex;
             flex-direction: row;
+            height: 40px;
+            min-height: 40px;
+        }
 
+        .plPlayerList {
+            padding: 10px;
         }
     }
 
