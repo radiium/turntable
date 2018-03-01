@@ -46,7 +46,7 @@ export class PlayerStateService {
     // --------------------------------------------------------
 
     // Playlist on play
-    playerList: Array<Video>;
+    onPlayList: Array<Video>;
     historicList: Array<Video>;
 
     // --------------------------------------------------------
@@ -55,8 +55,8 @@ export class PlayerStateService {
     public utilsService: UtilsService,
     private dataService: DataService
     ) {
-        this.dataService.playerList$.subscribe((data) => {
-            this.playerList = data;
+        this.dataService.onPlayList$.subscribe((data) => {
+            this.onPlayList = data;
         });
 
         this.dataService.historicList$.subscribe((data) => {
@@ -98,7 +98,7 @@ export class PlayerStateService {
         this.dataService.setHistoricList(hpl);
 
         // Remove video from on play playlist
-        const ppl = _.filter(_.cloneDeep(this.playerList), (el) => el.id !== video.id);
-        this.dataService.setPlayerList(ppl);
+        const ppl = _.filter(_.cloneDeep(this.onPlayList), (el) => el.id !== video.id);
+        this.dataService.setOnPlayList(ppl);
     }
 }

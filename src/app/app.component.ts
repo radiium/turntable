@@ -1,4 +1,6 @@
-import { Component, OnInit, OnDestroy, ViewChild, ElementRef, isDevMode, ViewEncapsulation, AfterViewInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild,
+    ElementRef, isDevMode, ViewEncapsulation,
+    HostListener, AfterViewInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { ElectronService } from 'ngx-electron';
 import { OverlayContainer } from '@angular/cdk/overlay';
@@ -198,6 +200,11 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
                 this.dataService.setPlaylistsList(this.playlistsList);
             }
         });
+    }
+
+    @HostListener('window:resize', ['$event'])
+    onResize(event) {
+
     }
 
 

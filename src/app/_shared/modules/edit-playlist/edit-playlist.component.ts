@@ -160,7 +160,7 @@ export class EditPlaylistComponent implements OnInit, OnDestroy, OnChanges {
     addToPlaylist(video: Video) {
         const pl = this.utils.copyPlaylist(this.playlist);
         pl.videolist.push(video);
-        this.dataService.setPlayerList(pl);
+        this.dataService.setOnPlayList(pl);
     }
 
     // Play video
@@ -179,7 +179,7 @@ export class EditPlaylistComponent implements OnInit, OnDestroy, OnChanges {
     setPlaylist(playlist) {
         if (playlist) {
             if (this.type === 'player') {
-                this.dataService.setPlayerList(playlist);
+                this.dataService.setOnPlayList(playlist);
             } else if (this.type === 'edit') {
                 this.dataService.setOnEditPlayList(playlist);
             }

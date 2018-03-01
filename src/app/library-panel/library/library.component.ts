@@ -28,18 +28,9 @@ export class LibraryComponent implements OnInit {
 
     playlistsList: Array<Playlist> = [];
     onSelectPL: Playlist;
-    playerList: Array<Video>;
-
-    originalOnEditPlaylist: Playlist;
-
-    filterLocation;
-    allPlaylisLocation;
-    filterTitle: FormControl;
-
+    onPlayList: Array<Video>;
     selectedTab: number;
-    displayType: any;
-
-    colCount = 3;
+    displayType: string;
 
     constructor(
     private dataService: DataService,
@@ -68,8 +59,8 @@ export class LibraryComponent implements OnInit {
         });
 
         // Get on play playlist
-        this.dataService.playerList$.subscribe((data) => {
-            this.playerList = data;
+        this.dataService.onPlayList$.subscribe((data) => {
+            this.onPlayList = data;
         });
 
         // Get selected playlist
@@ -89,14 +80,14 @@ export class LibraryComponent implements OnInit {
     playPlaylist(playlist: Playlist) {
         console.log('playPlaylist');
         const pl = _.cloneDeep(playlist.videolist);
-        this.dataService.setPlayerList(pl);
+        this.dataService.setOnPlayList(pl);
         this.dataService.setSelectedTab(5);
     }
 
     addToCurrentPlaylist(playlist: Playlist) {
-        if (this.playerList) {
-            const newPlayerList = this.playerList.concat(playlist.videolist);
-            this.dataService.setPlayerList(newPlayerList);
+        if (this.onPlayList) {
+            const newPlayerList = this.onPlayList.concat(playlist.videolist);
+            this.dataService.setOnPlayList(newPlayerList);
         }
     }
 
@@ -122,26 +113,5 @@ export class LibraryComponent implements OnInit {
     filterPlaylists(title: string) {
         return this.playlistsList.filter(playlist =>
             playlist.title.toLowerCase().indexOf(title.toLowerCase()) === 0);
-    }
-
-
-    @HostListener('window:resize', ['$event'])
-    onResize(event) {
-
-        const contWidth = event.target.innerWidth - 250 - 40;
-
-        if (contWidth >= 1000) {
-            this.colCount = 5;
-        } else if (contWidth < 1000 && contWidth >= 800) {
-            this.colCount = 4;
-        } else if (contWidth < 800 && contWidth >= 600) {
-            this.colCount = 3;
-        } else if (contWidth < 600 && contWidth >= 450) {
-            this.colCount = 2;
-        } else {
-            this.colCount = 1;
-        }
-
-        // console.log('colCount', this.colCount)
     }
 }

@@ -21,7 +21,7 @@ export class PlayerComponent {
         this.dndService.playerListContainer = scrollContainer;
     }
 
-    playerList: Array<Video>;
+    onPlayList: Array<Video>;
     historicList: Array<Video>;
     onDisplayPl: string;
 
@@ -75,8 +75,8 @@ export class PlayerComponent {
         this.onDisplayPl = 'playlist';
 
         // Get on play playlist
-        this.dataService.playerList$.subscribe((data) => {
-            this.playerList = data;
+        this.dataService.onPlayList$.subscribe((data) => {
+            this.onPlayList = data;
         });
 
         // Get historic playlist
@@ -138,7 +138,7 @@ export class PlayerComponent {
                 this.playerRight.playPauseVideo();
                 this.initTimerLTR();
 
-            } else if (this.playerList && this.playerList.length > 0) {
+            } else if (this.onPlayList && this.onPlayList.length > 0) {
                 this.stopTimer();
                 const videoToPlay = this.getVideoToPlay();
                 this._playerStateService.setPlayerRight(videoToPlay);
@@ -182,7 +182,7 @@ export class PlayerComponent {
                 this.playerLeft.playPauseVideo();
                 this.initTimerRTL();
 
-            } else if (this.playerList && this.playerList.length > 0) {
+            } else if (this.onPlayList && this.onPlayList.length > 0) {
                 this.stopTimer();
                 const videoToPlay = this.getVideoToPlay();
                 this._playerStateService.setPlayerLeft(videoToPlay);
@@ -230,12 +230,12 @@ export class PlayerComponent {
     getVideoToPlay() {
         let videoToPlay = null;
         if (this.isRandom) {
-            const randomIndex = Math.floor(Math.random() * this.playerList.length);
+            const randomIndex = Math.floor(Math.random() * this.onPlayList.length);
             console.log('isRandom true => randomIndex=', randomIndex);
-            videoToPlay = this.playerList[randomIndex];
+            videoToPlay = this.onPlayList[randomIndex];
         } else {
             console.log('isRandom false', );
-            videoToPlay = this.playerList[0];
+            videoToPlay = this.onPlayList[0];
         }
         return videoToPlay;
     }
@@ -265,9 +265,9 @@ export class PlayerComponent {
     */
 
     deleteVideo(video: Video) {
-        const updatedList = _.filter(this.playerList, (v) => {
+        const updatedList = _.filter(this.onPlayList, (v) => {
             return v.id !== video.id;
         });
-        this.dataService.setPlayerList(updatedList);
+        this.dataService.setOnPlayList(updatedList);
     }
 }

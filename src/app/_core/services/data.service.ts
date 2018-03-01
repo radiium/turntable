@@ -64,8 +64,8 @@ export class DataService {
     public  onSelectPL$ = this.onSelectPL.asObservable();
 
     // On play videolist
-    private playerList  = new Subject<Array<Video>>();
-    public  playerList$ = this.playerList.asObservable();
+    private onPlayList  = new Subject<Array<Video>>();
+    public  onPlayList$ = this.onPlayList.asObservable();
 
     // On play historic videolist
     private historicList  = new Subject<Array<Video>>();
@@ -127,8 +127,8 @@ export class DataService {
         this.onSelectPL.next(_.cloneDeep(data));
     }
 
-    setPlayerList(data) {
-        this.playerList.next(_.cloneDeep(data));
+    setOnPlayList(data) {
+        this.onPlayList.next(_.cloneDeep(data));
     }
 
     setHistoricList(data) {

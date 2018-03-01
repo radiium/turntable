@@ -28,7 +28,7 @@ export class DndService implements OnDestroy {
 
     playlistsList: Array<Playlist>;
     searchResults: SearchResults;
-    playerList: Array<Video>;
+    onPlayList: Array<Video>;
     selectedTab: number;
 
     scroll: any;
@@ -45,8 +45,8 @@ export class DndService implements OnDestroy {
             this.searchResults = data;
         });
 
-        this.dataService.playerList$.subscribe((data) => {
-            this.playerList = data;
+        this.dataService.onPlayList$.subscribe((data) => {
+            this.onPlayList = data;
         });
 
         this.dataService.selectedTab$.subscribe((data) => {
@@ -199,7 +199,7 @@ export class DndService implements OnDestroy {
         const [el, target, source] = args;
 
         if (el.dataset.playerlist === 'true') {
-            this.dataService.setPlayerList(this.playerList);
+            this.dataService.setOnPlayList(this.onPlayList);
         }
     }
 
