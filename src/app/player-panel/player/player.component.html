@@ -64,11 +64,8 @@
         </div>
     -->
 
-    <div class="plPlayerContainer" *ngIf="playerList">
+    <div class="plPlayerContainer" *ngIf="onPlayList">
         <div class="plPlayerToolbar">
-            <app-toolbar [height]="'40px'" [margin]="'0 5px 0 0'" [padding]="'0 10px 0 10px'">
-                <div>{{ onPlayPL?.title }}</div>
-            </app-toolbar>
 
             <app-toolbar [height]="'40px'" [margin]="'0 5px 0 0'" [padding]="'0 10px 0 10px'">
                 <button (click)="onDisplayPl = 'playlist'">
@@ -77,6 +74,10 @@
                 <button (click)="onDisplayPl = 'historic'">
                     Historic
                 </button>
+            </app-toolbar>
+
+            <app-toolbar [height]="'40px'" [margin]="'0 5px 0 0'" [padding]="'0 10px 0 10px'">
+                <div>onPlayList</div>
             </app-toolbar>
         </div>
 
@@ -87,9 +88,10 @@
             <!-- Video list -->
             <div class="appList plDetail"
                 [dragula]="'playerListBag'"
-                [dragulaModel]="playerList">
+                [dragulaModel]="onPlayList">
+
                 <!-- Video list item -->
-                <div *ngFor="let video of playerList; let i = index"
+                <div *ngFor="let video of onPlayList; let i = index"
                     class="appListItem"
                     [attr.data-from]="'onplay'">
 
