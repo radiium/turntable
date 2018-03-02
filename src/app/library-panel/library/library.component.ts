@@ -78,7 +78,6 @@ export class LibraryComponent implements OnInit {
 
     // Play the selected playlist
     playPlaylist(playlist: Playlist) {
-        console.log('playPlaylist');
         const pl = _.cloneDeep(playlist.videolist);
         this.dataService.setOnPlayList(pl);
         this.dataService.setSelectedTab(5);
@@ -86,8 +85,12 @@ export class LibraryComponent implements OnInit {
 
     addToCurrentPlaylist(playlist: Playlist) {
         if (this.onPlayList) {
-            const newPlayerList = this.onPlayList.concat(playlist.videolist);
-            this.dataService.setOnPlayList(newPlayerList);
+            //const newOnPlayList = this.onPlayList.concat(playlist.videolist);
+            // this.dataService.setOnPlayList(newOnPlayList);
+            this.onPlayList.push(...playlist.videolist)
+            this.dataService.setOnPlayList(this.onPlayList);
+        } else {
+            this.playPlaylist(playlist);
         }
     }
 
