@@ -10,6 +10,7 @@
 
             <!-- Video list item -->
             <div *ngFor="let video of videoList; let i = index"
+                [attr.data-from]="'search'"
                 [attr.data-vid]="video.id"
                 [attr.data-searchresults]="true"
                 class="appListItem hiddenShadow">

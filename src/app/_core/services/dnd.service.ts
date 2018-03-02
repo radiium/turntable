@@ -86,7 +86,7 @@ export class DndService implements OnDestroy {
             accepts: (el, target, source, sibling): boolean => {
 
                 // prevents drop on itself by sidenav playlist
-                const accept = (el.dataset.plid && target.dataset.plid) && !target.classList.contains('plDetail')
+                const accept = (el.dataset.plid && target.dataset.plid) && el.dataset.from === 'detail'
                     ? !(el.dataset.plid === target.dataset.plid)
                     : true;
 
@@ -123,94 +123,104 @@ export class DndService implements OnDestroy {
     private onOver(bagName: string, args) {
         const [el, target, source] = args;
 
-        if (el.dataset.searchresults === 'true') {
-        } else {
-            if (target === source) {
+        if (bagName === this.playerBag) {
+
+        } else if (bagName === this.srBag) {
+            if (el.dataset.from === 'detail' && target === source){
                 const element = target.querySelectorAll('[data-vid=\'' + el.dataset.vid + '\']:not(.gu-transit)').item(0);
                 if (element) {
                     element.style.display = 'none';
                 }
             }
-        }
-
-        if (target.dataset.hideshadow === 'true') {
-            target.classList.add('btnHoveredDrop');
+            // else if (el.dataset.from === 'search') {}
+            if (target.dataset.hideshadow === 'true') {
+                target.classList.add('btnHoveredDrop');
+            }
         }
     }
 
     private onOut(bagName: string, args) {
         const [el, target, source] = args;
 
-        if (el.dataset.searchresults === 'true') {
-        } else {
-            const element = target.querySelectorAll('[data-vid=\'' + el.dataset.vid + '\']:not(.gu-transit)').item(0);
-            if (element) {
-                element.style.display = '';
-            }
-        }
+        if (bagName === this.playerBag) {
 
-        if (target.dataset.hideshadow === 'true') {
-            target.classList.remove('btnHoveredDrop');
+        } else if (bagName === this.srBag) {
+            if (el.dataset.from === 'detail') {
+                const element = target.querySelectorAll('[data-vid=\'' + el.dataset.vid + '\']:not(.gu-transit)').item(0);
+                if (element) {
+                    element.style.display = '';
+                }
+            }
+            // elseif (el.dataset.from === 'search') {}
+            if (target.dataset.hideshadow === 'true') {
+                target.classList.remove('btnHoveredDrop');
+            }
         }
     }
 
     private onDrop(bagName: string, args) {
         const [el, target, source] = args;
-        let video: Video;
-        let plSourceIndex: number;
-        let plTargetIndex: number;
 
-        if (el.dataset.playerlist === 'true') {
-            return;
+        if (bagName === this.playerBag) {
+
+        } else if (bagName === this.srBag) {
+
+            let video: Video;
+            let plSourceIndex: number;
+            let plTargetIndex: number;
+
+            // Video to drop from searchresults
+            if (el.dataset.from === 'search') {
+                video = _.find(_.union.apply(null, this.searchResults.results), {id: el.dataset.vid});
+
+            // Video to drop a playlist
+            } else {
+                plSourceIndex = _.findIndex(this.playlistsList, {id: el.dataset.plid});
+                video = _.find(this.playlistsList[plSourceIndex].videolist, {id: el.dataset.vid});
+            }
+
+            // Drop on navbar playlist
+            if (target.tagName === 'BUTTON' && target.classList.contains('plDrop')) {
+                plTargetIndex = _.findIndex(this.playlistsList, {id: target.dataset.plid});
+                this.playlistsList[plTargetIndex].videolist.push(video);
+                this.dataService.setPlaylistsList(this.playlistsList);
+
+            // Reorder playlist
+            } else if (target.tagName === 'DIV' && target.classList.contains('plDetail') && target === source) {
+                plTargetIndex = _.findIndex(this.playlistsList, {id: target.dataset.plid});
+                const videoList = this.playlistsList[plTargetIndex].videolist;
+                const newVideoList = _.chain(target.children)
+                    .map((node) => node['dataset'].vid)
+                    .map((videoId) => _.find(videoList, {id: videoId}))
+                    .value();
+                this.playlistsList[plTargetIndex].videolist = newVideoList;
+                this.dataService.setOnSelectPL(this.playlistsList[plTargetIndex]);
+                this.dataService.setPlaylistsList(this.playlistsList);
+            }
+            el.remove();
         }
 
-        // Video to drop from searchresults
-        if (el.dataset.searchresults === 'true') {
-            video = _.find(_.union.apply(null, this.searchResults.results), {id: el.dataset.vid});
-
-        // Video to drop a playlist
-        } else {
-            plSourceIndex = _.findIndex(this.playlistsList, {id: el.dataset.plid});
-            video = _.find(this.playlistsList[plSourceIndex].videolist, {id: el.dataset.vid});
-        }
-
-        // Drop on navbar playlist
-        if (target.tagName === 'BUTTON' && target.classList.contains('plDrop')) {
-            plTargetIndex = _.findIndex(this.playlistsList, {id: target.dataset.plid});
-            this.playlistsList[plTargetIndex].videolist.push(video);
-            this.dataService.setPlaylistsList(this.playlistsList);
-
-        // Reorder playlist
-        } else if (target.tagName === 'DIV' && target.classList.contains('plDetail') && target === source) {
-            plTargetIndex = _.findIndex(this.playlistsList, {id: target.dataset.plid});
-            const videoList = this.playlistsList[plTargetIndex].videolist;
-            const newVideoList = _.chain(target.children)
-                .map((node) => node['dataset'].vid)
-                .map((videoId) => _.find(videoList, {id: videoId}))
-                .value();
-            this.playlistsList[plTargetIndex].videolist = newVideoList;
-            this.dataService.setOnSelectPL(this.playlistsList[plTargetIndex]);
-            this.dataService.setPlaylistsList(this.playlistsList);
-        }
-        el.remove();
     }
 
     private onDropModel(bagName: string, args) {
         const [el, target, source] = args;
 
-        if (el.dataset.playerlist === 'true') {
+        if (bagName === this.playerBag) {
             this.dataService.setOnPlayList(this.onPlayList);
         }
     }
 
     private onDrag(bagName: string, args) {
         const [el, source] = args;
-        if (source.classList.contains('plDetail') && el.dataset.playerlist !== 'true') {
-            this.createAutoScroll(true);
-        } else if (el.dataset.playerlist === 'true') {
-            this.createAutoScroll(false, true);
-        } else {
-            this.createAutoScroll(false);
+
+        if (el.dataset.from === 'search') {
+            this.createAutoScroll('search');
+
+        } else if (el.dataset.from === 'detail') {
+            this.createAutoScroll('detail');
+
+        } else if (el.dataset.from === 'onplay') {
+            this.createAutoScroll('onplay');
         }
     }
 
@@ -219,18 +229,27 @@ export class DndService implements OnDestroy {
         this.destroyAutoScroll(true);
     }
 
-    createAutoScroll(withPlDetail: boolean, onlyPlayer?: boolean) {
+    createAutoScroll(scrollSrc: string) {
         const boxList = [];
-
-        if (this.plButtonContainer && !onlyPlayer) {
-            boxList.push(this.plButtonContainer.nativeElement);
-        }
-        if (this.plDetailContainer && withPlDetail && !onlyPlayer) {
-            boxList.push(this.plDetailContainer.nativeElement);
-        }
-
-        if (this.playerListContainer && onlyPlayer) {
-            boxList.push(this.playerListContainer.nativeElement);
+        switch (scrollSrc) {
+            case 'search':
+                if (this.plButtonContainer) {
+                    boxList.push(this.plButtonContainer.nativeElement);
+                }
+                break;
+            case 'detail':
+                if (this.plButtonContainer && this.plDetailContainer) {
+                    boxList.push(this.plButtonContainer.nativeElement);
+                    boxList.push(this.plDetailContainer.nativeElement);
+                }
+                break;
+            case 'onplay':
+                if (this.playerListContainer) {
+                    boxList.push(this.playerListContainer.nativeElement);
+                }
+                break;
+            default:
+                break;
         }
 
         if (boxList.length > 0) {

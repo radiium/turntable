@@ -39,6 +39,7 @@
 
             <!-- Video list item -->
             <div *ngFor="let video of playlist.videolist; let i = index"
+                [attr.data-from]="'detail'"
                 [attr.data-plid]="playlist.id"
                 [attr.data-vid]="video.id"
                 class="appListItem">

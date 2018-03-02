@@ -91,7 +91,7 @@
                 <!-- Video list item -->
                 <div *ngFor="let video of playerList; let i = index"
                     class="appListItem"
-                    [attr.data-playerlist]="true">
+                    [attr.data-from]="'onplay'">
 
                     <app-video-list-item [video]="video" [index]="i + 1" [movable]="true" [height]="'40px'" class="itemBg">
                         <button class="toolbarBtn btnHover" (click)="deleteVideo(video)">
