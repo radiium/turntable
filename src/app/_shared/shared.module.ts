@@ -16,8 +16,6 @@ import { YoutubePlayerModule } from './modules/youtube-player/youtube-player.mod
 
 // import { EditPlaylistModule } from './modules/edit-playlist/edit-playlist.module';
 
-import { EditPlaylistComponent } from './modules/edit-playlist/edit-playlist.component';
-import { PlaylistItemComponent } from './modules/edit-playlist/playlist-item/playlist-item.component';
 import { SearchBarComponent } from './components/search-bar/search-bar.component';
 
 // Components
@@ -63,8 +61,6 @@ import { ToolbarComponent } from './components/toolbar/toolbar.component';
         RangeSliderComponent,
         VideoPlayerComponent,
 
-        EditPlaylistComponent,
-        PlaylistItemComponent,
         SearchBarComponent,
         VideoListItemComponent,
         PlayerBarComponent,
@@ -104,9 +100,6 @@ import { ToolbarComponent } from './components/toolbar/toolbar.component';
         RangeSliderComponent,
         VideoPlayerComponent,
         CustomMaterialModule,
-        // EditPlaylistModule,
-        EditPlaylistComponent,
-        PlaylistItemComponent,
         SearchBarComponent,
         VideoListItemComponent,
         PlayerBarComponent,
