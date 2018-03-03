@@ -1,4 +1,6 @@
-import { Component, Input, Output, EventEmitter, ViewChild, ElementRef, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ViewChild,
+    ElementRef, ChangeDetectionStrategy, ChangeDetectorRef
+} from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import { Subject } from 'rxjs/Subject';
@@ -26,20 +28,10 @@ export class PlayerComponent {
     historicList: Array<Video>;
     onDisplayPl: string;
 
-
-
-
-
-
-    title = 'TurnTable';
-
     // Timer
     timerControl$: Subject<number> = new Subject<number>();
     timer$;
     sub: Subscription;
-
-    private playList: Video[] = [];
-
 
     // Video left controls
     videoLeft;
@@ -58,7 +50,6 @@ export class PlayerComponent {
     // Cross fader controls
     crossFaderValue: any = 50;
     isRandom: boolean;
-
 
     constructor(
         private cd: ChangeDetectorRef,
@@ -79,7 +70,7 @@ export class PlayerComponent {
         // Get on play playlist
         this.dataService.onPlayList$.subscribe((data) => {
             this.onPlayList = data;
-            this.cd.markForCheck();
+            this.cd.detectChanges();
         });
 
         // Get historic playlist
@@ -273,20 +264,40 @@ export class PlayerComponent {
         });
         this.dataService.setOnPlayList(updatedList);
     }
-    moveToTop() {
 
+
+    moveToTop(index: number) {
+        this.move(index, 0);
+        (<HTMLInputElement>document.getElementById('onPlayItem-' + 0)).scrollIntoView({behavior: 'smooth'});
     }
-    up() {
-
+    up(index: number, el) {
+        this.move(index, index - 1);
+        (<HTMLInputElement>document.getElementById('onPlayItem-' + (index - 1))).scrollIntoView({behavior: 'smooth'});
     }
-    down() {
-
+    down(index: number, el) {
+        this.move(index, index + 1);
+        (<HTMLInputElement>document.getElementById('onPlayItem-' + (index + 1))).scrollIntoView({behavior: 'smooth'});
     }
-    moveToBottom() {
-
+    moveToBottom(index: number, el) {
+        this.move(index, this.onPlayList.length - 1);
+        (<HTMLInputElement>document.getElementById('onPlayItem-' + (this.onPlayList.length - 1))).scrollIntoView({behavior: 'smooth'});
     }
 
-    trackByFn(index, item) {
-        return index; // or item.id
+    move(from, to) {
+        if( to === from ) return;
+
+        var target = this.onPlayList[from];
+        var increment = to < from ? -1 : 1;
+
+        for (var k = from; k != to; k += increment) {
+            this.onPlayList[k] = this.onPlayList[k + increment];
+        }
+
+        this.onPlayList[to] = target;
+        this.dataService.setOnPlayList(this.onPlayList);
+    }
+
+    trackByFn(index: number, item: any) {
+        return item.id; // index;
     }
 }

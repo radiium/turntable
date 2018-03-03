@@ -162,7 +162,28 @@ export class DndService implements OnDestroy {
         const [el, target, source] = args;
 
         if (bagName === this.playerBag) {
+            /*
+            const videoId = el.dataset.videoId;
+            const idx = parseInt(el.dataset.index);
+            let idddd = 0;
 
+            for (let index = 0; index < target.children.length; index++) {
+                const element = target.children[index];
+                if (element.dataset.videoId === videoId) {
+                    idddd = index;
+                    this.move(idx, index);
+                }
+            }
+
+            console.log('el', el);
+            console.log('id', videoId);
+            console.log('old index', idx);
+            console.log('new index', idddd);
+            console.log('target', target);
+            console.log('source', source);
+
+            this.dataService.setOnPlayList(this.onPlayList);
+            */
         } else if (bagName === this.srBag) {
 
             let video: Video;
@@ -267,5 +288,19 @@ export class DndService implements OnDestroy {
             this.scroll.destroy(cleanAnimation);
             this.scroll = null;
         }
+    }
+
+    move(from, to) {
+        if( to === from ) return;
+
+        var target = this.onPlayList[from];
+        var increment = to < from ? -1 : 1;
+
+        for (var k = from; k != to; k += increment) {
+            this.onPlayList[k] = this.onPlayList[k + increment];
+        }
+
+        this.onPlayList[to] = target;
+        this.dataService.setOnPlayList(this.onPlayList);
     }
 }

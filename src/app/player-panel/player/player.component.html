@@ -87,30 +87,52 @@
             #playerListScrollContainer >
 
             <!-- Video list
-            [dragulaModel]="onPlayList"
+                 [dragulaModel]="onPlayList"
+
+                 <div *ngFor="let video of onPlayList; let i = index;" style="display: flex; flex-direction: column;">
+                     <div>{{ i }} - {{ video.title }}</div>
+                 </div>
             -->
+
+
             <div class="appList plDetail"
                 [dragula]="'playerListBag'"
+                [dragulaModel]="onPlayList"
                 >
 
                 <!-- Video list item -->
                 <div *ngFor="let video of onPlayList; let i = index;trackBy: trackByFn"
+                    id="onPlayItem-{{ i }}"
                     class="appListItem"
-                    [attr.data-from]="'onplay'">
+                    [attr.data-from]="'onplay'"
+                    [attr.data-video-id]="video.id"
+                    [attr.data-index]="i">
 
                     <app-video-list-item [video]="video" [index]="i + 1" [movable]="true" [height]="'40px'" class="itemBg">
 
-                        <button class="toolbarBtn btnHover" (click)="moveToTop()">
+                        <button class="toolbarBtn btnHover"
+                            (click)="moveToTop(i)"
+                            [disabled]="i === 0"
+                            [class.disabled]="i === 0">
                             <fa [name]="'angle-double-up'" [size]="2"></fa>
                         </button>
-                        <button class="toolbarBtn btnHover" (click)="up()">
+                        <button class="toolbarBtn btnHover"
+                            (click)="up(i)"
+                            [disabled]="i === 0"
+                            [class.disabled]="i === 0">
                             <fa [name]="'angle-up'" [size]="2"></fa>
                         </button>
 
-                        <button class="toolbarBtn btnHover" (click)="down()">
+                        <button class="toolbarBtn btnHover"
+                            (click)="down(i)"
+                            [disabled]="i === (onPlayList.length - 1)"
+                            [class.disabled]="i === (onPlayList.length - 1)">
                             <fa [name]="'angle-down'" [size]="2"></fa>
                         </button>
-                        <button class="toolbarBtn btnHover" (click)="moveToBottom()">
+                        <button class="toolbarBtn btnHover"
+                            (click)="moveToBottom(i)"
+                            [disabled]="i === (onPlayList.length - 1)"
+                            [class.disabled]="i === (onPlayList.length - 1)">
                             <fa [name]="'angle-double-down'" [size]="2"></fa>
                         </button>
 
