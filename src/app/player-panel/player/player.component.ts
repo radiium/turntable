@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ViewChild, ElementRef, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import { Subject } from 'rxjs/Subject';
@@ -13,7 +13,8 @@ import { ElectronService } from 'ngx-electron';
 @Component({
   selector: 'app-player',
   templateUrl: './player.component.html',
-  styleUrls: ['./player.component.scss']
+  styleUrls: ['./player.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PlayerComponent {
 
@@ -60,6 +61,7 @@ export class PlayerComponent {
 
 
     constructor(
+        private cd: ChangeDetectorRef,
         private dndService: DndService,
         private dataService: DataService,
         private _playerStateService: PlayerStateService,
@@ -77,6 +79,7 @@ export class PlayerComponent {
         // Get on play playlist
         this.dataService.onPlayList$.subscribe((data) => {
             this.onPlayList = data;
+            this.cd.markForCheck();
         });
 
         // Get historic playlist
@@ -269,5 +272,21 @@ export class PlayerComponent {
             return v.id !== video.id;
         });
         this.dataService.setOnPlayList(updatedList);
+    }
+    moveToTop() {
+
+    }
+    up() {
+
+    }
+    down() {
+
+    }
+    moveToBottom() {
+
+    }
+
+    trackByFn(index, item) {
+        return index; // or item.id
     }
 }
