@@ -64,7 +64,7 @@
         </div>
     -->
 
-    <div class="plPlayerContainer" *ngIf="onPlayList">
+    <div class="plPlayerContainer">
         <div class="plPlayerToolbar">
 
             <app-toolbar [height]="'40px'" [margin]="'0 5px 0 0'" [padding]="'0 10px 0 10px'">
@@ -77,7 +77,8 @@
             </app-toolbar>
 
             <app-toolbar [height]="'40px'" [margin]="'0 5px 0 0'" [padding]="'0 10px 0 10px'">
-                <div>onPlayList</div>
+                <div *ngIf="onPlayList" class="length noOverflow">{{ onPlayList?.length }} track<span *ngIf="onPlayList.length >1">s</span></div>
+                <div *ngIf="onPlayList" class="duration noOverflow">{{ onPlayList | totalduration | duration }}</div>
             </app-toolbar>
         </div>
 
@@ -85,17 +86,35 @@
             class="scrollContainer plPlayerList"
             #playerListScrollContainer >
 
-            <!-- Video list -->
+            <!-- Video list
+            [dragulaModel]="onPlayList"
+            -->
             <div class="appList plDetail"
                 [dragula]="'playerListBag'"
-                [dragulaModel]="onPlayList">
+                >
 
                 <!-- Video list item -->
-                <div *ngFor="let video of onPlayList; let i = index"
+                <div *ngFor="let video of onPlayList; let i = index;trackBy: trackByFn"
                     class="appListItem"
                     [attr.data-from]="'onplay'">
 
                     <app-video-list-item [video]="video" [index]="i + 1" [movable]="true" [height]="'40px'" class="itemBg">
+
+                        <button class="toolbarBtn btnHover" (click)="moveToTop()">
+                            <fa [name]="'angle-double-up'" [size]="2"></fa>
+                        </button>
+                        <button class="toolbarBtn btnHover" (click)="up()">
+                            <fa [name]="'angle-up'" [size]="2"></fa>
+                        </button>
+
+                        <button class="toolbarBtn btnHover" (click)="down()">
+                            <fa [name]="'angle-down'" [size]="2"></fa>
+                        </button>
+                        <button class="toolbarBtn btnHover" (click)="moveToBottom()">
+                            <fa [name]="'angle-double-down'" [size]="2"></fa>
+                        </button>
+
+
                         <button class="toolbarBtn btnHover" (click)="deleteVideo(video)">
                             <fa [name]="'trash-o'" [size]="2"></fa>
                         </button>
