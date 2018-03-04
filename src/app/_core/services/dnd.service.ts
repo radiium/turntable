@@ -84,12 +84,10 @@ export class DndService implements OnDestroy {
                 return handle.classList.contains('handle');
             },
             accepts: (el, target, source, sibling): boolean => {
-
                 // prevents drop on itself by sidenav playlist
-                const accept = (el.dataset.plid && target.dataset.plid) && el.dataset.from === 'detail'
+                const accept = (el.dataset.plid && target.dataset.plid) && el.dataset.from === 'detail' && target !== source
                     ? !(el.dataset.plid === target.dataset.plid)
                     : true;
-
                 return (target.dataset.acceptdrop === 'true') && accept;
             },
         });
