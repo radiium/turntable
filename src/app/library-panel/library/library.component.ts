@@ -10,7 +10,7 @@ import 'rxjs/add/operator/map';
 import * as _ from 'lodash';
 
 import { Video, Playlist } from 'core/models';
-import { UtilsService } from 'core/services/utils.service';
+import { PlayerStateService } from 'core/services/player-state.service';
 import { CreatePlaylistDialogComponent } from 'shared/dialogs/create-playlist-dialog/create-playlist-dialog.component';
 import { DeletePlaylistDialogComponent } from 'shared/dialogs/delete-playlist-dialog/delete-playlist-dialog.component';
 
@@ -35,7 +35,7 @@ export class LibraryComponent implements OnInit {
     constructor(
     private dataService: DataService,
     private appStateService: AppStateService,
-    public utils: UtilsService,
+    public playerState: PlayerStateService,
     public dialog: MatDialog,
     private appState: AppStateService) {
     }
@@ -76,22 +76,14 @@ export class LibraryComponent implements OnInit {
         this.dataService.setSelectedTab(4);
     }
 
-    // Play the selected playlist
+    // Set current playlist
     playPlaylist(playlist: Playlist) {
-        const pl = _.cloneDeep(playlist.videolist);
-        this.dataService.setOnPlayList(pl);
-        this.dataService.setSelectedTab(5);
+        this.playerState.setPlaylist(playlist.videolist);
     }
 
+    // Add to current playlist
     addToCurrentPlaylist(playlist: Playlist) {
-        if (this.onPlayList) {
-            //const newOnPlayList = this.onPlayList.concat(playlist.videolist);
-            // this.dataService.setOnPlayList(newOnPlayList);
-            this.onPlayList.push(...playlist.videolist)
-            this.dataService.setOnPlayList(this.onPlayList);
-        } else {
-            this.playPlaylist(playlist);
-        }
+        this.playerState.addToPlaylist(playlist.videolist);
     }
 
     // Delete the selected playlist
@@ -110,11 +102,5 @@ export class LibraryComponent implements OnInit {
                 // this.onStateChange();
             }
         });
-    }
-
-    // Filter playlist by title
-    filterPlaylists(title: string) {
-        return this.playlistsList.filter(playlist =>
-            playlist.title.toLowerCase().indexOf(title.toLowerCase()) === 0);
     }
 }
