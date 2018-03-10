@@ -35,6 +35,16 @@ export class DataService {
     public  selectedTab$ = this.selectedTab.asObservable();
 
 
+    // Loading spinner
+    private loading  = new Subject<any>();
+    public  loading$ = this.loading.asObservable();
+
+
+    // On drag event
+    private isOnDrag  = new BehaviorSubject<boolean>(false);
+    public  isOnDrag$ = this.isOnDrag.asObservable();
+
+
     // Suggest list
     private suggestsResult  = new Subject<Suggests>();
     public  suggestsResult$ = this.suggestsResult.asObservable();
@@ -55,30 +65,20 @@ export class DataService {
     public  playlistsList$ = this.playlistsList.asObservable();
 
 
-    // On edit PlayList
-    private onEditPlaylist  = new Subject<Playlist>();
-    public  onEditPlaylist$ = this.onEditPlaylist.asObservable();
-
     // Selected playlist
     private onSelectPL  = new Subject<Playlist>();
     public  onSelectPL$ = this.onSelectPL.asObservable();
+
 
     // On play videolist
     private onPlayList  = new Subject<Array<Video>>();
     public  onPlayList$ = this.onPlayList.asObservable();
 
+
     // On play historic videolist
     private historicList  = new Subject<Array<Video>>();
     public  historicList$ = this.historicList.asObservable();
 
-
-    // Loading spinner
-    private loading  = new Subject<any>();
-    public  loading$ = this.loading.asObservable();
-
-    // On drag event
-    private isOnDrag  = new BehaviorSubject<boolean>(false);
-    public  isOnDrag$ = this.isOnDrag.asObservable();
 
     constructor() { }
 
@@ -117,10 +117,6 @@ export class DataService {
 
     setPlaylistsList(data) {
         this.playlistsList.next(_.cloneDeep(data));
-    }
-
-    setOnEditPlayList(data) {
-        this.onEditPlaylist.next(_.cloneDeep(data));
     }
 
     setOnSelectPL(data) {
