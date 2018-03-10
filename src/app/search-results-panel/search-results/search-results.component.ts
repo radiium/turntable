@@ -6,6 +6,7 @@ import * as _ from 'lodash';
 import { Playlist, Video, SearchResults } from 'core/models';
 import { DataService } from 'core/services/data.service';
 import { YoutubeService } from 'core/services/youtube.service';
+import { PlayerStateService } from 'core/services/player-state.service';
 import { SelectPlaylistDialogComponent } from 'shared/dialogs/select-playlist-dialog/select-playlist-dialog.component';
 
 @Component({
@@ -18,6 +19,7 @@ export class SearchResultsComponent implements OnInit {
     formControl = new FormControl();
 
     searchResults: SearchResults;
+    onPlayList: Array<Video>;
     videoList: Array<Video>;
     playlistList: Array<Playlist>;
     hasNextPage: boolean;
@@ -27,6 +29,7 @@ export class SearchResultsComponent implements OnInit {
     constructor(
     private dataService: DataService,
     private YTService: YoutubeService,
+    private playerState: PlayerStateService,
     public dialog: MatDialog) {
         this.videoList = new Array<Video>();
         this.dataService.searchResults$.subscribe((data) => {
@@ -46,6 +49,11 @@ export class SearchResultsComponent implements OnInit {
         this.dataService.playlistsList$.subscribe((data) => {
             this.playlistList = data;
             this.enableDrag = data.length > 0 ? true : false;
+        });
+
+         // Get on play list
+         this.dataService.onPlayList$.subscribe((data) => {
+            this.onPlayList = data;
         });
     }
 
@@ -80,12 +88,10 @@ export class SearchResultsComponent implements OnInit {
         }
     }
 
-    onDragStart(event) {
-        // this.dataService
-
+    playVideo(video: Video) {
+        this.playerState.playVideo(video);
     }
-
-    onDragEnd(event) {
-
+    addToQueue(video: Video) {
+        this.playerState.addToPlaylist(video);
     }
 }

@@ -7,6 +7,7 @@ import * as moment from 'moment';
 import { Playlist, Video } from 'core/models';
 import { DataService } from 'core/services/data.service';
 import { AppStateService } from 'core/services/app-state.service';
+import { PlayerStateService } from 'core/services/player-state.service';
 import { DndService } from 'core/services/dnd.service';
 import { ConfirmDialogComponent } from 'shared/dialogs/confirm-dialog/confirm-dialog.component';
 import { EditPlaylistDialogComponent } from 'shared/dialogs/edit-playlist-dialog/edit-playlist-dialog.component';
@@ -21,9 +22,9 @@ export class PlaylistDetailsComponent implements OnInit {
 
     playlist: Playlist;
     playlistsList: Array<Playlist>;
+    onPlayList: Array<Video>;
 
     onEdit: boolean;
-    onSort: boolean;
 
     title: string;
     description: string;
@@ -38,11 +39,11 @@ export class PlaylistDetailsComponent implements OnInit {
     constructor(
     private dataService: DataService,
     private appStateService: AppStateService,
+    private playerState: PlayerStateService,
     private dndService: DndService,
     public dialog: MatDialog) {
 
         this.onEdit = false;
-        this.onSort = false;
         this.title = '';
         this.description = '';
         this.privacyStatus = '';
@@ -61,6 +62,11 @@ export class PlaylistDetailsComponent implements OnInit {
         // Get selected tab
         this.dataService.selectedTab$.subscribe((data) => {
             this.selectedTab = data;
+        });
+
+        // Get on play list
+        this.dataService.onPlayList$.subscribe((data) => {
+            this.onPlayList = data;
         });
     }
 
@@ -127,12 +133,18 @@ export class PlaylistDetailsComponent implements OnInit {
     }
 
     updateState(isOnEdit) {
-        this.onSort = false;
         this.onEdit = isOnEdit;
         if (this.playlist) {
             this.title = this.playlist.title;
             this.description = this.playlist.description;
             this.privacyStatus = this.playlist.privacyStatus;
         }
+    }
+
+    playVideo(video: Video) {
+        this.playerState.playVideo(video);
+    }
+    addToQueue(video: Video) {
+        this.playerState.addToPlaylist(video);
     }
 }

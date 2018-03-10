@@ -7,16 +7,6 @@
 
         <div class="flexSpacer"></div>
 
-        <button *ngIf="!onSort" class="toolbarBtn miniBtn btnHover" (click)="onSort = true"
-            [class.disabled]="playlist.videolist.length === 0"
-            [disabled]="playlist.videolist.length === 0">
-            <fa [name]="'sort'" [size]="2"></fa>
-        </button>
-
-        <button *ngIf="onSort" class="toolbarBtn miniBtn btnHover" (click)="onSort = false">
-            <fa [name]="'check'" [size]="2"></fa>
-        </button>
-
         <button class="toolbarBtn miniBtn btnHover" (click)="editPlaylist()">
             <fa [name]="'pencil'" [size]="2"></fa>
         </button>
@@ -44,7 +34,22 @@
                 [attr.data-vid]="video.id"
                 class="appListItem">
 
-                <app-video-list-item [video]="video" [index]="i + 1" [movable]="onSort" class="itemBg">
+                <app-video-list-item [video]="video" [index]="i + 1" [movable]="true" class="itemBg">
+                    <button class="toolbarBtn btnHover"
+                        [matMenuTriggerFor]="menuDetail" xPosition="'before'" yPosition="'above'">
+                        <fa [name]="'bars'" [size]="2"></fa>
+                    </button>
+                    <mat-menu #menuDetail="matMenu">
+                        <button mat-menu-item (click)="playVideo(video)">
+                            <mat-icon>play_circle_outline</mat-icon>
+                            <span>Play</span>
+                        </button>
+                        <button mat-menu-item (click)="addToQueue(video)">
+                            <mat-icon>library_add</mat-icon>
+                            <span>Add to queue</span>
+                        </button>
+                    </mat-menu>
+
                     <button class="toolbarBtn btnHover" (click)="deleteVideo(video)">
                         <fa [name]="'trash-o'" [size]="2"></fa>
                     </button>
