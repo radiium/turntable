@@ -1,0 +1,295 @@
+#playerPanelContainer {
+    // height: 100%;
+
+    .plPlayerContainer {
+        display: flex;
+        flex-direction: column;
+        height: calc(100% - 244px);
+        // padding: 20px;
+
+        .plPlayerToolbar {
+            display: flex;
+            flex-direction: row;
+            height: 40px;
+            min-height: 40px;
+        }
+
+        .plPlayerList {
+            padding: 10px;
+        }
+    }
+}
+
+#playerContainer {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    height: 244px;
+}
+
+#playlistContainer {
+    height: calc(100% - 244px);
+}
+
+#controlBox {
+	background: url("../../../assets/images/crossfader-bg.png") center no-repeat;
+	background-color: #5C5B5B;
+	width: 100%;
+    height: 239px;
+	margin-left: 5px;
+	margin-right: 5px;
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: column;
+    justify-content: space-between;
+
+    #controlBtnBox {
+        padding-top: 70px;
+        width: 100%;
+
+        .randomBtn {
+            cursor: pointer !important;
+            border: none;
+            outline: transparent;
+            color: gray;
+            background-color: transparent;
+            margin-bottom: 25px;
+
+            &.activRandom {
+                color: #25E1DA;
+                background-color: #504F4C;
+                text-shadow: 0px 0px 15px #25E1DA;
+            }
+        }
+
+        /* CROSSFADER */
+        #crossfaderBox {
+            padding: 10px;
+            text-align: center;
+            margin: auto;
+
+            input[type='range'] {
+                -webkit-appearance: none !important;
+                background-color:#817E7E;
+                border: 1px solid #C9C8C3 ;
+                height: 15px;
+                width: 250px;
+                border-radius: 5px;
+                margin-top: 10px;
+                margin-bottom: 20px;
+                -webkit-box-shadow: inset 0px 0px 23px 0px rgba(0,0,0,0.67);
+                   -moz-box-shadow: inset 0px 0px 23px 0px rgba(0,0,0,0.67);
+                        box-shadow: inset 0px 0px 23px 0px rgba(0,0,0,0.67);
+            }
+
+            input[type='range']::-webkit-slider-thumb {
+                -webkit-appearance: none !important;
+                background-color:#6C6866 ;
+                border-top: 	8px solid #C9C8C3 ;
+                border-left: 	3px solid #504F4C ;
+                border-right: 	3px solid #504F4C ;
+                border-bottom: 	8px solid #817E7E ;
+                height: 55px;
+                width: 20px;
+                border-radius: 2px;
+                -webkit-box-shadow: 0px 4px 10px 0px rgba(0,0,0,0.67);
+                -moz-box-shadow: 0px 4px 10px 0px rgba(0,0,0,0.67);
+                        box-shadow: 0px 4px 10px 0px rgba(0,0,0,0.67);
+            }
+        }
+    }
+}
+
+
+.controlItem {
+    background-color: gray;
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+
+
+#tickmarks-center option {
+    font-weight: normal;
+    display: block;
+    white-space: pre;
+    min-height: 1,2em;
+    padding: 0px 2px 1px;
+    padding-top: 0px;
+    padding-right: 2px;
+    padding-bottom: 1px;
+    padding-left: 2px;
+}
+
+
+
+.hori-ticks {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	margin: 0 auto;
+	margin-bottom: 4px;
+	width: 230px;
+	height: 8px;
+	border-right: 1px solid #25E1DA;
+}
+
+.hori-ticks .item:nth-child(even) {
+	width: 10%;
+	height: 4px;
+	border-left: 1px solid #25E1DA;
+}
+
+.hori-ticks .item {
+	align-self: flex-end;
+	width: 10%;
+	height: 8px;
+	border-left: 1px solid #25E1DA;
+}
+
+.megaLoader {
+	padding: 0;
+	margin: 0;
+	z-index: 10000;
+	position: absolute;
+    width: calc(100% - 10px);
+    height: calc(100% - 10px);
+    background-color: red;
+}
+
+/* Playlist container */
+.doublePlaylistContainer {
+    width: 100%;
+    height: calc(100% + 30px);
+    margin: 0;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between
+}
+
+.playlistContainer {
+	width: calc(50% - 5px);
+	margin-top: 10px;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+	-ms-flex-direction: column;
+	flex-direction: column;
+	-ms-flex-wrap: nowrap;
+	flex-wrap: nowrap;
+	box-shadow: 0px 2px 3px 3px rgba(0,0,0,.2),0 2px 2px 0 rgba(0,0,0,.14),0 1px 5px 0 rgba(0,0,0,.12);
+}
+
+.marginLeft  { margin-left:  2.5px }
+.marginRight { margin-right: 2.5px }
+
+.title {
+    text-align: center;
+    height: 24px;
+    padding: 5px;
+    background-color: white;
+}
+
+.content {
+    height: 100%;
+    background-color: darkgray;
+    overflow: auto;
+}
+
+/*************************
+    PlaylistList items
+*************************/
+.plBox {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    position: relative;
+}
+
+/* Playlist privacy status */
+.plStatus {
+    z-index: 200;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    color: darkgray;
+}
+
+/* Playlist content */
+.plContent {
+    position: relative;
+    display: flex;
+    align-content: space-around
+}
+
+/* Background icon */
+.iconBg {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    color: white;
+    opacity: 0.2;
+    z-index: 5;
+    top: 20px;
+    left: calc(1vw + 20%);
+    right: calc(1vw + 20%);
+}
+.thumbBg {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    color: white;
+    opacity: 0.4;
+    z-index: 5;
+    text-align: center;
+}
+.thumbBg img {
+    height: 100%;
+}
+
+/* Content text */
+.plContentInfos {
+    color: white;
+    z-index: 6;
+    margin: 10px 10px 10px 20px;
+    width: calc(100% - 30px);
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.plName { font-size: 1.2rem; font-weight: bold; }
+.plDesc { font-size: 0.8rem; }
+.nbrVideo { font-size: 0.8rem; opacity: 0.8;}
+
+/* Playlist footer */
+.plFooter {
+    width: 100%;
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* playlist control */
+.plBtn {
+    cursor: pointer !important;
+    width: 34px !important;
+    height: 34px;
+    border: none;
+    background-color: transparent;
+    color: white;
+}
+.playBtn:hover { color: #48b735 }
+.editBtn:hover { color: #248fd6 }
+.deleteBtn:hover { color: #e83e3e }
+.spacerBtn { width: 100px; }
