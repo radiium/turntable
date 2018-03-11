@@ -25,8 +25,6 @@ import { DeletePlaylistDialogComponent } from './dialogs/delete-playlist-dialog/
 import { EditPlaylistDialogComponent } from './dialogs/edit-playlist-dialog/edit-playlist-dialog.component';
 import { SelectPlaylistDialogComponent } from './dialogs/select-playlist-dialog/select-playlist-dialog.component';
 
-import { VideoPlayerComponent } from './components/video-player/video-player.component';
-
 // Directives
 import { ClickOutsideDirective } from './directives/click-outside.directive';
 
@@ -57,7 +55,6 @@ import { ToolbarComponent } from './components/toolbar/toolbar.component';
         DeletePlaylistDialogComponent,
         EditPlaylistDialogComponent,
         SelectPlaylistDialogComponent,
-        VideoPlayerComponent,
 
         SearchBarComponent,
         VideoListItemComponent,
@@ -95,7 +92,6 @@ import { ToolbarComponent } from './components/toolbar/toolbar.component';
         DurationPipe,
         TotalDurationPipe,
         FilterPlaylistsPipe,
-        VideoPlayerComponent,
         CustomMaterialModule,
         SearchBarComponent,
         VideoListItemComponent,
