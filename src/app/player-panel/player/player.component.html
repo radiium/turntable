@@ -1,167 +1,31 @@
-<!--div class="megaLoader"><fa [name]="'spinner'" [size]="5"></fa></div-->
+    <div class="playerContainer">
 
-<div id="playerPanelContainer" class="contentPanel">
-
-    <div id="playerContainer">
-        <app-video-player
-            #playerLeft
-            [sidePlayer]="'left'"
-            [video]="videoLeft"
-            (nearEnd)="triggerMixLTR($event)"
-            [speed]="speedLeft"
-            (speedChange)="speedLeft">
-        </app-video-player>
-
-        <div id="controlBox">
-            <div id="controlBtnBox">
-
-                <!-- Random playlist button -->
-                <button class="randomBtn" [class.activRandom]="isRandom" (click)="setIsRandom()">
-                <fa aria-label="Edit playlist" [name]="'random'" [size]="2"></fa>
-                </button>
-
-                <span> isRandom: {{ isRandom }}</span>
-
-                <!-- Crossfader -->
-                <div id="crossfaderBox" class="line-border">
-                    <div class="hori-ticks">
-                        <div class="item"></div>
-                        <div class="item"></div>
-                        <div class="item"></div>
-                        <div class="item"></div>
-                        <div class="item"></div>
-                        <div class="item"></div>
-                        <div class="item"></div>
-                        <div class="item"></div>
-                        <div class="item"></div>
-                        <div class="item"></div>
-                    </div>
-                    <input
-                        [disabled]="!videoLeft || !videoLeft"
-                        class="crossfader horizontal" type="range"
-                        min="0" max="100" step="0.5"
-                        list="tickmarks-center"
-                        value="{{ crossFaderValue }}"
-                        [(ngModel)]="crossFaderValue"
-                        (ngModelChange)="onChangeCrossFaderValue($event)">
-                </div>
-            </div>
-        </div>
-
-        <app-video-player
-            #playerRight
-            [sidePlayer]="'right'"
-            [video]="videoRight"
-            (nearEnd)="triggerMixRTL($event)"
-            [speed]="speedRight"
-            (speedChange)="speedRight">
-            </app-video-player>
-    </div>
-
-    <!-- On play playlist and search playlist
-        <div id="playlistContainer">
-            <app-edit-playlist [playlist]="onPlayPlaylist"  [type]="'player'"></app-edit-playlist>
+        <!--
+        <div class="hiddenPlayer"
+            *ngIf="!videoId"
+            [style.height]="height + 'px'"
+            [style.width]="width + 'px'">
+            id {{ videoId }}
         </div>
     -->
 
-    <div class="plPlayerContainer">
-        <div class="plPlayerToolbar">
-
-            <app-toolbar [height]="'40px'" [margin]="'0 5px 0 0'" [padding]="'0 10px 0 10px'">
-                <button (click)="onDisplayPl = 'playlist'">
-                    Playlist
-                </button>
-                <button (click)="onDisplayPl = 'historic'">
-                    Historic
-                </button>
-            </app-toolbar>
-
-            <app-toolbar [height]="'40px'" [margin]="'0 5px 0 0'" [padding]="'0 10px 0 10px'">
-                <div *ngIf="onPlayList" class="length noOverflow">{{ onPlayList?.length }} track<span *ngIf="onPlayList.length >1">s</span></div>
-                <div *ngIf="onPlayList" class="duration noOverflow">{{ onPlayList | totalduration | duration }}</div>
-            </app-toolbar>
-        </div>
-
-        <div [hidden]="onDisplayPl !== 'playlist'"
-            class="scrollContainer plPlayerList"
-            #playerListScrollContainer >
-
-            <!-- Video list
-                 [dragulaModel]="onPlayList"
-
-                 <div *ngFor="let video of onPlayList; let i = index;" style="display: flex; flex-direction: column;">
-                     <div>{{ i }} - {{ video.title }}</div>
-                 </div>
-            -->
-
-
-            <div class="appList plDetail"
-                [dragula]="'playerListBag'"
-                [dragulaModel]="onPlayList"
-                >
-
-                <!-- Video list item -->
-                <div *ngFor="let video of onPlayList; let i = index;trackBy: trackByFn"
-                    id="onPlayItem-{{ i }}"
-                    class="appListItem"
-                    [attr.data-from]="'onplay'"
-                    [attr.data-video-id]="video.id"
-                    [attr.data-index]="i">
-
-                    <app-video-list-item [video]="video" [index]="i + 1" [movable]="true" [height]="'40px'" class="itemBg">
-
-                        <button class="toolbarBtn btnHover"
-                            (click)="moveToTop(i)"
-                            [disabled]="i === 0"
-                            [class.disabled]="i === 0">
-                            <fa [name]="'angle-double-up'" [size]="2"></fa>
-                        </button>
-                        <button class="toolbarBtn btnHover"
-                            (click)="up(i)"
-                            [disabled]="i === 0"
-                            [class.disabled]="i === 0">
-                            <fa [name]="'angle-up'" [size]="2"></fa>
-                        </button>
-
-                        <button class="toolbarBtn btnHover"
-                            (click)="down(i)"
-                            [disabled]="i === (onPlayList.length - 1)"
-                            [class.disabled]="i === (onPlayList.length - 1)">
-                            <fa [name]="'angle-down'" [size]="2"></fa>
-                        </button>
-                        <button class="toolbarBtn btnHover"
-                            (click)="moveToBottom(i)"
-                            [disabled]="i === (onPlayList.length - 1)"
-                            [class.disabled]="i === (onPlayList.length - 1)">
-                            <fa [name]="'angle-double-down'" [size]="2"></fa>
-                        </button>
-
-
-                        <button class="toolbarBtn btnHover" (click)="deleteVideo(video)">
-                            <fa [name]="'trash-o'" [size]="2"></fa>
-                        </button>
-                    </app-video-list-item>
-                </div>
-            </div>
-        </div>
-
-        <div [hidden]="onDisplayPl !== 'historic'" class="scrollContainer plPlayerList" #plPlayerList >
-
-                <!-- Video list -->
-                <div class="appList plDetail">
-                    <!-- Video list item -->
-                    <div *ngFor="let video of historicList; let i = index"
-                        class="appListItem">
-
-                        <app-video-list-item [video]="video" [index]="i + 1" [movable]="false" class="itemBg">
-                            <button class="toolbarBtn btnHover" (click)="deleteVideo(video)">
-                                <fa [name]="'trash-o'" [size]="2"></fa>
-                            </button>
-                        </app-video-list-item>
-                    </div>
-                </div>
+        <div class="playPauseBtn" [class.hiddenIco]="hiddenIco" (click)="onPlayPause()">
+                <fa *ngIf="state === 1"
+                    class="playPauseIco"
+                    [name]="'pause'"
+                    [size]="5"></fa>
+                <fa *ngIf="state === 2"
+                    class="playPauseIco"
+                    [name]="'play'"
+                    [size]="5"></fa>
             </div>
 
+        <app-youtube-player
+            class="player"
+            [height]="height"
+            [width]="width"
+            (ready)="onPlayerReady($event)"
+            (change)="onStateChange($event)">
+        </app-youtube-player>
 
     </div>
-</div>
