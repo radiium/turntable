@@ -27,10 +27,12 @@ export class PlayerPanelComponent implements OnInit {
 
     onDisplayPl: string;
     isDoublePlayer: boolean;
-
     playerPanelState: PlayerPanelState;
 
+    playerLeft: YT.Player;
     playerStateLeft: PlayerState;
+
+    playerRight: YT.Player;
     playerStateRight: PlayerState;
 
     /*
@@ -105,7 +107,9 @@ export class PlayerPanelComponent implements OnInit {
     // ------------------------------------------------------------------------
     // Player Left
     savePlayerLeft(player: YT.Player) {
-        this.playerStateLeft.player = player;
+        const videoId = player['a'].id;
+        this.playerLeft = this.playerState.getPlayer(videoId);
+        this.playerStateLeft.playerId = videoId;
         this.playerState.setPlayerStateLeft(this.playerStateLeft);
     }
 
@@ -115,11 +119,13 @@ export class PlayerPanelComponent implements OnInit {
     }
 
     onVolumeChangeLeft(volume: number) {
+        this.playerLeft.setVolume(volume);
         this.playerStateLeft.volume = volume;
         this.playerState.setPlayerStateLeft(this.playerStateLeft);
     }
 
     onSpeedChangeLeft(speed: number) {
+        this.playerLeft.setPlaybackRate(speed);
         this.playerStateLeft.speed = speed;
         this.playerState.setPlayerStateLeft(this.playerStateLeft);
     }
@@ -128,7 +134,9 @@ export class PlayerPanelComponent implements OnInit {
     // ------------------------------------------------------------------------
     // Player Right
     savePlayerRight(player: YT.Player) {
-        this.playerStateRight.player = player;
+        const videoId = player['a'].id;
+        this.playerRight = this.playerState.getPlayer(videoId);
+        this.playerStateRight.playerId = videoId;
         this.playerState.setPlayerStateRight(this.playerStateRight);
     }
 
@@ -138,11 +146,13 @@ export class PlayerPanelComponent implements OnInit {
     }
 
     onVolumeChangeRight(volume: number) {
+        this.playerRight.setVolume(volume);
         this.playerStateRight.volume = volume;
         this.playerState.setPlayerStateRight(this.playerStateRight);
     }
 
     onSpeedChangeRight(speed: number) {
+        this.playerRight.setPlaybackRate(speed);
         this.playerStateRight.speed = speed;
         this.playerState.setPlayerStateRight(this.playerStateRight);
     }

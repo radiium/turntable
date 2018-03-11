@@ -36,21 +36,26 @@
             </div>
 
             <!-- Player toolbar left -->
-            <app-player-control [playerState]="playerStateLeft"></app-player-control>
+            <app-player-control [side]="'left'" [playerState]="playerStateLeft"></app-player-control>
         </div>
 
         <!-- Crossfader -->
-        <div [hidden]="!isDoublePlayer">
-            <button (click)="getDuration()">Get duration</button>
-            <button (click)="isDoublePlayer = !isDoublePlayer" style="z-index: 100; background-color: green; padding: 15px; position: absolute;">Full Size</button>
+        <div class="controlWrapper flexSpacer" [hidden]="!isDoublePlayer">
+            <div class="controlBox flexSpacer">
+                <button (click)="getDuration()" class="toolbarBtn btnHover">Get duration</button>
+            </div>
 
-            <button class="playerBtn btnHover">
-                <fa [name]="'expand'" [size]="2"></fa>
-            </button>
+            <div class="toolbarBox">
+                <app-toolbar [width]="'100%'" [height]="'34px'">
+                    <button class=" toolbarBtn playerBtn btnHover">
+                        <fa [name]="'expand'" [size]="2"></fa>
+                    </button>
 
-            <button class="playerBtn btnHover">
-                <fa [name]="'arrows-alt'" [size]="2"></fa>
-            </button>
+                    <button class="toolbarBtn playerBtn btnHover">
+                        <fa [name]="'arrows-alt'" [size]="2"></fa>
+                    </button>
+                </app-toolbar>
+            </div>
         </div>
 
         <!-- Player right -->
@@ -87,7 +92,7 @@
             </div>
 
             <!-- Player toolbar right -->
-            <app-player-control [hidden]="!isDoublePlayer" [playerState]="playerStateRight"></app-player-control>
+            <app-player-control [side]="'left'" [playerState]="playerStateRight" [hidden]="!isDoublePlayer"></app-player-control>
         </div>
 
 

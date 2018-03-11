@@ -1,6 +1,4 @@
 #playerPanelContainer {
-    // height: 100%;
-
 
     .playerContainer {
         width: 100%;
@@ -32,7 +30,21 @@
             .player {
                 width: 100%;
                 overflow: hidden;
+            }
+        }
 
+        .controlWrapper {
+            height: 234px;
+            margin: 0 5px 0 5px;
+            display: flex;
+            flex-direction: column;
+            flex-wrap: nowrap;
+
+            .controlBox {
+
+            }
+
+            .toolbarBox {
 
             }
         }
@@ -59,21 +71,6 @@
 
 
 
-
-
-
-
-#playerContainer {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    justify-content: space-between;
-    height: 244px;
-}
-
-#playlistContainer {
-    height: calc(100% - 244px);
-}
 
 #controlBox {
 	background: url("../../../assets/images/crossfader-bg.png") center no-repeat;

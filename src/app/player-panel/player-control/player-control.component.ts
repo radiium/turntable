@@ -1,17 +1,21 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges,
+    ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 
 import { PlayerState } from 'core/models';
+import { PlayerStateService } from 'core/services/player-state.service';
 
 @Component({
     selector: 'app-player-control',
     templateUrl: './player-control.component.html',
-    styleUrls: ['./player-control.component.scss']
+    styleUrls: ['./player-control.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PlayerControlComponent implements OnInit {
 
+    @Input() side: string;
     @Input() playerState: PlayerState;
+    player: YT.Player;
 
-    isMuted: boolean;
     currentVolume;
     currentVolumeIcon: string;
     volumeIconList: Array<string> = [
@@ -20,70 +24,76 @@ export class PlayerControlComponent implements OnInit {
         'volume_off'
     ];
 
-    constructor() {
+    constructor(
+    private cdRef: ChangeDetectorRef,
+    private playerStateService: PlayerStateService
+    ) {
         this.currentVolumeIcon = this.volumeIconList[0]
+
     }
 
     ngOnInit() {
     }
 
     ngOnChanges(changes: SimpleChanges) {
-        if (changes.playerState && changes.playerState.currentValue) {
+        if (!this.player && window['YT'] && changes.playerState) {
+            // this.player = window['YT'].get(this.playerState.playerId);
+            this.player = this.playerStateService.getPlayer(this.playerState.playerId);
+        }
 
-            if (this.playerState.player) {
-                this.isMuted = this.playerState.player.isMuted();
-                this.currentVolume = this.playerState.volume;
-                this.updateVolumeIcon();
-            }
+        if (changes.playerState && changes.playerState.currentValue) {
+            this.currentVolume = this.playerState.volume;
+            this.updateVolumeIcon();
+            this.cdRef.detectChanges();
         }
     }
 
     updateVolumeIcon() {
-        if (this.checkPlayerState()) {
-            if (this.isMuted || this.currentVolume < 1) {
+        if (this.player) {
+
+            const isMuted = this.player.isMuted();
+            const volume = this.player.getVolume();
+
+            if (!isMuted) {
                 this.currentVolumeIcon = this.volumeIconList[2];
+
             } else {
-                if (this.currentVolume > 0 && this.currentVolume < 50) {
+                if (volume < 1) {
+                    this.currentVolumeIcon = this.volumeIconList[2];
+                }
+                if (volume > 0 && volume < 50) {
                     this.currentVolumeIcon = this.volumeIconList[1];
-                } else if (this.currentVolume >= 50 && this.currentVolume <= 100) {
+
+                } else if (volume >= 50 && volume <= 100) {
                     this.currentVolumeIcon = this.volumeIconList[0];
                 }
             }
         }
     }
 
-    setVolume(isMuted) {
-        if (this.checkPlayerState()) {
-            console.log('setVolume', isMuted)
-            if (isMuted) {
-                console.log('mute')
-                this.playerState.player.mute();
+    setMute(mute: boolean) {
+        if (this.player) {
+            if (mute) {
+                this.player.mute();
             } else {
-                console.log('mute')
-                this.playerState.player.unMute();
+                this.player.unMute();
             }
-            this.isMuted = this.playerState.player.isMuted();
             this.updateVolumeIcon();
         }
     }
 
     controlVolume() {
-        if (this.checkPlayerState()) {
-            this.setVolume(!this.playerState.player.isMuted());
+        if (this.player) {
+            this.setMute(!this.player.isMuted());
         }
     }
 
-    checkPlayerState() {
-        if (this.playerState && this.playerState.player) {
-            return true;
-        }
-        return false;
-    }
 
 
     onPlayPause() {
 
     }
+
     hasPrev() {
     return false;
     }
