@@ -25,6 +25,7 @@ import { OnlineService } from 'core/services/online.service';
 import { AppStateService } from 'core/services/app-state.service';
 import { DataService } from 'core/services/data.service';
 import { DndService } from 'core/services/dnd.service';
+import { TimerService } from 'core/services/timer.service';
 
 @NgModule({
     imports: [],
@@ -43,7 +44,7 @@ import { DndService } from 'core/services/dnd.service';
         DataService,
         AppStateService,
         DndService,
-
+        TimerService,
         // Youtube api service
         YoutubeService,
         AuthService,

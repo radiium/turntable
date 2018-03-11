@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
+import { TimerObservable} from "rxjs/observable/TimerObservable";
 import 'rxjs/add/observable/timer';
 
 import { UUID } from 'angular2-uuid';
@@ -20,28 +21,30 @@ interface SubscriptionList {
 }
 
 @Injectable()
-export class SimpleTimer {
+export class TimerService {
 
-    private timer: TimerList = {};
+    private timerList: TimerList = {};
     private subscription: SubscriptionList = {};
 
     getTimer(): string[] {
-        return Object.keys(this.timer);
+        return Object.keys(this.timerList);
     }
+
     getSubscription(): string[] {
         return Object.keys(this.subscription);
     }
-    newTimer(name: string, sec: number): boolean {
-        if (name === undefined || sec === undefined || this.timer[name]) {
+
+    newTimer(name: string, millisec: number): boolean {
+        if (name === undefined || millisec === undefined || this.timerList[name]) {
             return false;
         }
-        const o = Observable.timer(0, sec * 1000);
-        this.timer[name] = { second: sec, observable: o };
+        const o = Observable.timer(0, millisec);
+        this.timerList[name] = { second: millisec, observable: o };
         return true;
     }
 
     delTimer(name: string): boolean {
-        if (name === undefined || !this.timer[name]) {
+        if (name === undefined || !this.timerList[name]) {
             return false;
         }
         const s = this.getSubscription();
@@ -52,8 +55,8 @@ export class SimpleTimer {
             }
         });
         // delete queue 'name' subject and observable
-        delete this.timer[name].observable;
-        delete this.timer[name];
+        delete this.timerList[name].observable;
+        delete this.timerList[name];
     }
 
     /**
@@ -62,13 +65,14 @@ export class SimpleTimer {
      * @param callback
      */
     subscribe(name: string, callback: () => void): string {
-        if (!this.timer[name]) {
+        if (!this.timerList[name]) {
             return '';
         }
+
         const id = name + '-' + UUID.UUID();
         this.subscription[id] = {
             name: name,
-            subscription: this.timer[name].observable.subscribe(callback)
+            subscription: this.timerList[name].observable.subscribe(callback)
         };
         return id;
     }
@@ -81,6 +85,7 @@ export class SimpleTimer {
         if (!id || !this.subscription[id]) {
             return false;
         }
+        console.log('unsubscribe', id);
         this.subscription[id].subscription.unsubscribe();
         delete this.subscription[id];
     }
