@@ -53,6 +53,7 @@ export class YoutubePlayerComponent implements AfterContentInit {
             this.playerVars = {
                 'autoplay': 0,
                 'controls': 0,
+                'enablejsapi': 1,
                 'rel' : 0,
                 'fs' : 1,
                 'iv_load_policy': 3,
