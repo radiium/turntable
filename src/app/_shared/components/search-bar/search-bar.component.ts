@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
-
+import { EmptyObservable } from 'rxjs/observable/EmptyObservable';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/switchMap';
 
@@ -60,7 +60,7 @@ export class SearchBarComponent implements OnInit {
             } else if (!query) {
                 this.dataService.setSuggestsBox(false);
             }
-            return Observable.empty();
+            return new EmptyObservable();
         })
         .subscribe((sr) => {
             const acList: String[] = [];

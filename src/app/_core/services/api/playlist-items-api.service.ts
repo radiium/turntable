@@ -3,6 +3,7 @@ import { HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { PUBLIC_KEY } from './public-key';
 import { HttpClientService } from 'core/services/http/http-client.service';
+import { EmptyObservable } from 'rxjs/observable/EmptyObservable';
 
 @Injectable()
 export class PlaylistItemsApiService {
@@ -19,7 +20,7 @@ export class PlaylistItemsApiService {
     getPlaylistItems(playlistId: string, pageToken: string) {
 
         if (typeof pageToken === 'undefined') {
-            return Observable.empty();
+            return new EmptyObservable();
         }
 
         let queryUrl =
