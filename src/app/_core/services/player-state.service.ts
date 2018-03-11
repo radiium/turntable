@@ -9,15 +9,14 @@ import { UtilsService } from 'core/services/utils.service';
 import { DataService } from 'core/services/data.service';
 import { YoutubePlayerService } from 'shared/modules/youtube-player/youtube-player.service';
 import { Video, Playlist, Suggests,
-    PlayerPanelState, PlayerState } from 'core/models';
+    PlayerPanelState, PlayerState, PlayerSide } from 'core/models';
 
 
 @Injectable()
 export class PlayerStateService {
 
 
-
-    // Default config
+    // Player panel state
     private playerPLStateDefault: PlayerPanelState = {
         isFirstPlay: true,
         isRandom: false,
@@ -25,28 +24,40 @@ export class PlayerStateService {
         playlist: new Array<Video>(),
         historiclist: new Array<Video>()
     };
+    private playerPanelState  = new BehaviorSubject<PlayerPanelState>(this.playerPLStateDefault);
+    public  playerPanelState$ = this.playerPanelState.asObservable();
 
-    private playerStateDefault: PlayerState = {
-        player: null,
-        video: null,
+
+    // Player left
+    private playerStateDefaultLeft: PlayerState = {
+        side: PlayerSide.LEFT,
+        player: undefined,
+        playerId: undefined,
+        video: undefined,
         isReady: false,
         state: -1,
         volume: 100,
         speed: 1,
     };
-
-    // Player panel state
-    private playerPanelState  = new BehaviorSubject<PlayerPanelState>(this.playerPLStateDefault);
-    public  playerPanelState$ = this.playerPanelState.asObservable();
-
-    // Player left
-    private playerStateLeft  = new BehaviorSubject<any>(this.playerStateDefault);
+    private playerStateLeft  = new BehaviorSubject<any>(this.playerStateDefaultLeft);
     public  playerStateLeft$ = this.playerStateLeft.asObservable();
+    private playerLeft: YT.Player;
+
 
     // Player right
-    private playerStateRight  = new BehaviorSubject<any>(this.playerStateDefault);
+    private playerStateDefaultRight: PlayerState = {
+        side: PlayerSide.RIGHT,
+        player: undefined,
+        playerId: undefined,
+        video: undefined,
+        isReady: false,
+        state: -1,
+        volume: 100,
+        speed: 1,
+    };
+    private playerStateRight  = new BehaviorSubject<any>(this.playerStateDefaultRight);
     public  playerStateRight$ = this.playerStateRight.asObservable();
-
+    private playerRight: YT.Player;
 
     constructor(
     private YTPlayer: YoutubePlayerService,
@@ -80,19 +91,27 @@ export class PlayerStateService {
 
 
     // Player left
-    setPlayerStateLeft(player: PlayerState) {
-        this.playerStateLeft.next(_.cloneDeep(player));
+    setPlayerStateLeft(playerState: PlayerState) {
+        this.playerStateLeft.next(_.cloneDeep(playerState));
     }
 
     // Player right
-    setPlayerStateRight(player: PlayerState) {
-        this.playerStateRight.next(_.cloneDeep(player));
+    setPlayerStateRight(playerState: PlayerState) {
+        this.playerStateRight.next(_.cloneDeep(playerState));
+    }
+
+    getPlayer(playerId: string) {
+        if (playerId && window['YT']) {
+            return window['YT'].get(playerId);
+        }
+        return false
     }
 
 
 
     // Play from a choosen video
     playVideo(video: Video) {
+
         const panelState = this.playerPanelState.getValue();
 
         let playlist = panelState.playlist;
@@ -153,18 +172,17 @@ export class PlayerStateService {
 
         const playerStateLeft  = this.playerStateLeft.getValue();
         const playerStateright = this.playerStateLeft.getValue();
-
         const isFirstPlay = panelState.isFirstPlay;
 
-        console.log('playerStateLeft', playerStateLeft);
-        console.log('playerStateright', playerStateright);
+        debugger
+        const playerLeft = this.getPlayer(playerStateLeft.playerId);
 
-        if (playerStateLeft) {
-            playerStateLeft.player.cueVideoById(video.id);
-            playerStateLeft.player.playVideo();
+        if (playerLeft && playerStateLeft) {
+            playerLeft.cueVideoById(video.id);
+            playerLeft.playVideo();
 
-            console.log('PLAYER => ', playerStateLeft.player)
-            console.log('DURATION => ', playerStateLeft.player.getDuration())
+            console.log('PLAYER => ', playerLeft)
+            console.log('DURATION => ', playerLeft.getDuration())
 
 
 
