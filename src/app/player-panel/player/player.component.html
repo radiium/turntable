@@ -1,24 +1,19 @@
     <div class="playerContainer">
 
-        <!--
-        <div class="hiddenPlayer"
-            *ngIf="!videoId"
-            [style.height]="height + 'px'"
-            [style.width]="width + 'px'">
-            id {{ videoId }}
+        <div class="hiddenPlayer overPlayer" *ngIf="state === -1">
+            <mat-spinner *ngIf="!player && state === -1" class="centered"></mat-spinner>
         </div>
-    -->
 
-        <div class="playPauseBtn" [class.hiddenIco]="hiddenIco" (click)="onPlayPause()">
-                <fa *ngIf="state === 1"
-                    class="playPauseIco"
-                    [name]="'pause'"
-                    [size]="5"></fa>
-                <fa *ngIf="state === 2"
-                    class="playPauseIco"
-                    [name]="'play'"
-                    [size]="5"></fa>
-            </div>
+        <div class="playPauseBtn overPlayer" [class.hiddenIco]="hiddenIco" (click)="onPlayPause()">
+            <fa *ngIf="state === 1"
+                class="playPauseIco centered"
+                [name]="'play'"
+                [size]="5"></fa>
+            <fa *ngIf="state === 2"
+                class="playPauseIco centered"
+                [name]="'pause'"
+                [size]="5"></fa>
+        </div>
 
         <app-youtube-player
             class="player"
