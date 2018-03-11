@@ -1,0 +1,36 @@
+<app-toolbar class="playerControl" [width]="'100%'" [height]="'34px'"
+    [margin]="'0'" [padding]="'0'">
+
+    <!-- Prev track -->
+    <button *ngIf="true" class="playerBtn btnHover" [class.enabled]="hasPrev()"
+    (click)="onPrev()">
+    <fa [name]="'step-backward'" [size]="2"></fa>
+    </button>
+
+    <!-- Play -->
+    <button *ngIf="isOnplay" class="playerBtn btnHover"
+    (click)="onPlayPause()">
+    <fa [name]="'play'" [size]="2"></fa>
+    </button>
+
+    <!-- Pause -->
+    <button *ngIf="!isOnplay" class="playerBtn btnHover"
+    (click)="onPlayPause()">
+    <fa [name]="'pause'" [size]="2"></fa>
+    </button>
+
+    <!-- Next track -->
+    <button *ngIf="true" class="playerBtn btnHover" [class.enabled]="hasNext()"
+    (click)="onNext()">
+    <fa [name]="'step-forward'" [size]="2"></fa>
+    </button>
+
+    <div class="flexSpacer progress">
+        <mat-progress-bar class="progress" mode="determinate" value="40"></mat-progress-bar>
+    </div>
+
+    <button class="playerBtn btnHover" (click)="controlVolume()">
+      <mat-icon>{{ currentVolumeIcon }}</mat-icon>
+    </button>
+
+</app-toolbar>
