@@ -2,11 +2,12 @@ import { Component, OnInit, Input, Output, EventEmitter, ViewChild,
     ElementRef, ChangeDetectionStrategy, ChangeDetectorRef
 } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+import { EmptyObservable } from 'rxjs/observable/EmptyObservable';
 import { Subscription } from 'rxjs/Subscription';
 import { Subject } from 'rxjs/Subject';
 import * as _ from 'lodash';
 
-import { Video, Playlist, PlayerConfig, PlayerPanelState } from 'core/models';
+import { Video, Playlist, PlayerState, PlayerPanelState } from 'core/models';
 import { PlayerStateService } from 'core/services/player-state.service';
 import { DataService } from 'core/services/data.service';
 import { DndService } from 'core/services/dnd.service';
@@ -24,26 +25,13 @@ export class PlayerPanelComponent implements OnInit {
         this.dndService.playerListContainer = scrollContainer;
     }
 
-    // onPlayList: Array<Video>;
-    // historicList: Array<Video>;
-
-
     onDisplayPl: string;
+    isDoublePlayer: boolean;
 
     playerPanelState: PlayerPanelState;
 
-    idLeft: string;
-    playerLeft: any;
-    playerConfigLeft: PlayerConfig;
-
-    idRight: string;
-    playerRight: any;
-    playerConfigRight: PlayerConfig;
-
-
-
-
-
+    playerStateLeft: PlayerState;
+    playerStateRight: PlayerState;
 
     /*
     // Timer
@@ -78,7 +66,7 @@ export class PlayerPanelComponent implements OnInit {
     private Electron: ElectronService) {
 
         this.onDisplayPl = 'playlist';
-
+        this.isDoublePlayer = true;
 
         /*
         // Init crossfader value
@@ -89,53 +77,7 @@ export class PlayerPanelComponent implements OnInit {
         this.speedRight = 1;
         this._playerStateService.setVolumeLeft(this.volLeft);
         this._playerStateService.setVolumeRight(this.volRight);
-
-
-
-        // Get on play playlist
-        this.dataService.onPlayList$.subscribe((data) => {
-            this.onPlayList = data;
-            this.cd.detectChanges();
-        });
-
-        // Get historic playlist
-        this.dataService.historicList$.subscribe((data) => {
-            this.historicList = data;
-        });
-
-        // Get current volume right
-        this._playerStateService.isRandom$.subscribe((isRandom) => {
-            this.isRandom = isRandom;
-        });
-
-        // Get current player left
-        this._playerStateService.playerLeft$.subscribe((vl) => {
-            this.videoLeft = vl;
-        });
-        // Get current volume left
-        this._playerStateService.volumeLeft$.subscribe((volLeft) => {
-            this.volLeft = volLeft;
-        });
-
-        // Get current player right
-        this._playerStateService.playerRight$.subscribe((vr) => {
-            this.videoRight = vr;
-        });
-        // Get current volume right
-        this._playerStateService.volumeRight$.subscribe((volRight) => {
-            this.volRight = volRight;
-        });
         */
-    }
-
-    getDuration() {
-        const test = this.playerState.getDuration(this.playerState.currentPlayerLeft);
-        console.log('Duration now', test)
-    }
-
-    getVideoData() {
-        const test = this.playerState.getVideoData(this.playerState.currentPlayerLeft);
-        console.log('Duration now', test)
     }
 
     ngOnInit() {
@@ -145,21 +87,115 @@ export class PlayerPanelComponent implements OnInit {
             this.cd.markForCheck();
         });
 
-        this.playerState.playerConfigLeft$.subscribe((data) => {
-            this.playerConfigLeft = Object.assign({}, data);
-            console.log('config Left', data);
-            // this.cd.detectChanges();
+        // Get current player right
+        this.playerState.playerStateLeft$.subscribe((data) => {
+            this.playerStateLeft = data;
         });
-
-        this.playerState.playerConfigRight$.subscribe((data) => {
-            this.playerConfigRight = Object.assign({}, data);
-            console.log('config Right', data);
-            // this.cd.detectChanges();
+        // Get current volume right
+        this.playerState.playerStateRight$.subscribe((data) => {
+            this.playerStateRight = data;
         });
     }
 
+    getDuration() {
+        const test = this.playerStateLeft.player.getDuration();
+    }
 
 
+    // ------------------------------------------------------------------------
+    // Player Left
+    savePlayerLeft(player: YT.Player) {
+        this.playerStateLeft.player = player;
+        this.playerState.setPlayerStateLeft(this.playerStateLeft);
+    }
+
+    onStateChangeLeft(state: YT.PlayerState) {
+        this.playerStateLeft.state = state;
+        this.playerState.setPlayerStateLeft(this.playerStateLeft);
+    }
+
+    onVolumeChangeLeft(volume: number) {
+        this.playerStateLeft.volume = volume;
+        this.playerState.setPlayerStateLeft(this.playerStateLeft);
+    }
+
+    onSpeedChangeLeft(speed: number) {
+        this.playerStateLeft.speed = speed;
+        this.playerState.setPlayerStateLeft(this.playerStateLeft);
+    }
+
+
+    // ------------------------------------------------------------------------
+    // Player Right
+    savePlayerRight(player: YT.Player) {
+        this.playerStateRight.player = player;
+        this.playerState.setPlayerStateRight(this.playerStateRight);
+    }
+
+    onStateChangeRight(state: YT.PlayerState) {
+        this.playerStateRight.state = state;
+        this.playerState.setPlayerStateRight(this.playerStateRight);
+    }
+
+    onVolumeChangeRight(volume: number) {
+        this.playerStateRight.volume = volume;
+        this.playerState.setPlayerStateRight(this.playerStateRight);
+    }
+
+    onSpeedChangeRight(speed: number) {
+        this.playerStateRight.speed = speed;
+        this.playerState.setPlayerStateRight(this.playerStateRight);
+    }
+
+
+    // ------------------------------------------------------------------------
+    // Playlist control
+    deleteVideo(video: Video) {
+        const updatedList = _.filter(this.playerPanelState.playlist, (v) => {
+            return v.id !== video.id;
+        });
+        this.dataService.setOnPlayList(updatedList);
+    }
+
+    moveToTop(index: number) {
+        this.move(index, 0);
+        (<HTMLInputElement>document.getElementById('onPlayItem-' + 0)).scrollIntoView({behavior: 'smooth'});
+    }
+
+    up(index: number, el) {
+        this.move(index, index - 1);
+        (<HTMLInputElement>document.getElementById('onPlayItem-' + (index - 1))).scrollIntoView({behavior: 'smooth'});
+    }
+
+    down(index: number, el) {
+        this.move(index, index + 1);
+        (<HTMLInputElement>document.getElementById('onPlayItem-' + (index + 1))).scrollIntoView({behavior: 'smooth'});
+    }
+
+    moveToBottom(index: number, el) {
+        this.move(index, this.playerPanelState.playlist.length - 1);
+        (<HTMLInputElement>document.getElementById('onPlayItem-' + (this.playerPanelState.playlist.length - 1))).scrollIntoView({behavior: 'smooth'});
+    }
+
+    move(from, to) {
+        if( to === from ) return;
+
+        var target = this.playerPanelState.playlist[from];
+        var increment = to < from ? -1 : 1;
+
+        for (var k = from; k != to; k += increment) {
+            this.playerPanelState.playlist[k] = this.playerPanelState.playlist[k + increment];
+        }
+
+        this.playerPanelState.playlist[to] = target;
+        this.dataService.setOnPlayList(this.playerPanelState.playlist);
+    }
+
+    // ------------------------------------------------------------------------
+    // Track onPlay list item in ngFor
+    trackByFn(index: number, item: any) {
+        return item.id; // index;
+    }
 
 
     /*
@@ -275,7 +311,7 @@ export class PlayerPanelComponent implements OnInit {
     stopTimer() {
         this.timerControl$.next();
         if (this.sub) { this.sub.unsubscribe(); }
-        this.timer$ = Observable.empty();
+        this.timer$ = new EmptyObservable();
     }
 
     setIsRandom() {
@@ -318,73 +354,4 @@ export class PlayerPanelComponent implements OnInit {
         });
     }
     */
-
-
-
-
-
-    savePlayerLeft(player) {
-        // this.playerLeft = event;
-        this.playerState.setPlayerLeft(player);
-        console.log('savePlayerLeft', player);
-    }
-    onStateChangeLeft(state) {
-        console.log('onStateChangeLeft', state);
-    }
-
-
-
-
-
-    savePlayerRight(player) {
-        // this.playerRight = event;
-        this.playerState.setPlayerRight(player);
-        console.log('savePlayerRight', player);
-    }
-    onStateChangeRight(state) {
-        console.log('onStateChangeRight', state);
-    }
-
-    deleteVideo(video: Video) {
-        const updatedList = _.filter(this.playerPanelState.playlist, (v) => {
-            return v.id !== video.id;
-        });
-        this.dataService.setOnPlayList(updatedList);
-    }
-
-
-    moveToTop(index: number) {
-        this.move(index, 0);
-        (<HTMLInputElement>document.getElementById('onPlayItem-' + 0)).scrollIntoView({behavior: 'smooth'});
-    }
-    up(index: number, el) {
-        this.move(index, index - 1);
-        (<HTMLInputElement>document.getElementById('onPlayItem-' + (index - 1))).scrollIntoView({behavior: 'smooth'});
-    }
-    down(index: number, el) {
-        this.move(index, index + 1);
-        (<HTMLInputElement>document.getElementById('onPlayItem-' + (index + 1))).scrollIntoView({behavior: 'smooth'});
-    }
-    moveToBottom(index: number, el) {
-        this.move(index, this.playerPanelState.playlist.length - 1);
-        (<HTMLInputElement>document.getElementById('onPlayItem-' + (this.playerPanelState.playlist.length - 1))).scrollIntoView({behavior: 'smooth'});
-    }
-
-    move(from, to) {
-        if( to === from ) return;
-
-        var target = this.playerPanelState.playlist[from];
-        var increment = to < from ? -1 : 1;
-
-        for (var k = from; k != to; k += increment) {
-            this.playerPanelState.playlist[k] = this.playerPanelState.playlist[k + increment];
-        }
-
-        this.playerPanelState.playlist[to] = target;
-        this.dataService.setOnPlayList(this.playerPanelState.playlist);
-    }
-
-    trackByFn(index: number, item: any) {
-        return item.id; // index;
-    }
 }

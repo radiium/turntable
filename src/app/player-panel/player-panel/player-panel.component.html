@@ -2,54 +2,97 @@
 
 <div id="playerPanelContainer" class="contentPanel">
 
-    <div id="playerContainer">
+    <div class="playerContainer">
 
+        <!-- Player left -->
+        <div class="playerWrapper" [class.fullSize]="!isDoublePlayer">
+            <div class="playerRow">
+                <app-player
+                    class="player"
+                    [side]="'left'"
+                    (playerReady)="savePlayerLeft($event)"
+                    (stateChange)="onStateChangeLeft($event)">
+                </app-player>
 
-        <app-player
-            [playerConfig]="playerConfigLeft"
-            (playerReady)="savePlayerLeft($event)"
-            (stateChange)="onStateChangeLeft($event)">
-        </app-player>
-        <button (click)="getDuration()">Get duration</button>
+                <!-- Speed left -->
+                <app-range-slider
+                    [name]="'speed_left'"
+                    [step]="0.25"
+                    [min]="0.5"
+                    [max]="2"
+                    [value]="playerStateLeft.speed"
+                    (onValueChange)="onSpeedChangeLeft($event)">
+                </app-range-slider>
 
-        <!--
-            <app-player
-                [playerConfig]="playerConfigRight"
-                (playerReady)="savePlayerRight($event)"
-                (stateChange)="onStateChangeRight($event)">
-            </app-player>
-        {{ playerLeft?.width }}
-        <app-youtube-player
-            id="left"
-            [width]="leftWidth"
-            [height]="leftHeight"
-            [videoId]="idLeft"
-            (ready)="savePlayerLeft($event)"
-            (change)="onStateChangeLeft($event)">
-        </app-youtube-player>
+                <!-- Volume left -->
+                <app-range-slider
+                    [name]="'vol_left'"
+                    [min]="0"
+                    [max]="100"
+                    [step]="1"
+                    [value]="playerStateLeft.volume"
+                    (onValueChange)="onVolumeChangeLeft($event)">
+                </app-range-slider>
+            </div>
 
-        <app-youtube-player
-            id="right"
-            [width]="playerRight?.width"
-            [height]="playerRight?.height"
-            [videoId]="idRight"
-            (ready)="savePlayerRight($event)"
-            (change)="onStateChangeRight($event)">
-        </app-youtube-player>
-    -->
+            <!-- Player toolbar left -->
+            <app-player-control [playerState]="playerStateLeft"></app-player-control>
+        </div>
+
+        <!-- Crossfader -->
+        <div [hidden]="!isDoublePlayer">
+            <button (click)="getDuration()">Get duration</button>
+            <button (click)="isDoublePlayer = !isDoublePlayer" style="z-index: 100; background-color: green; padding: 15px; position: absolute;">Full Size</button>
+
+            <button class="playerBtn btnHover">
+                <fa [name]="'expand'" [size]="2"></fa>
+            </button>
+
+            <button class="playerBtn btnHover">
+                <fa [name]="'arrows-alt'" [size]="2"></fa>
+            </button>
+        </div>
+
+        <!-- Player right -->
+        <div class="playerWrapper" [hidden]="!isDoublePlayer" [style.width]="!isDoublePlayer ? '0' : ''">
+            <div class="playerRow">
+
+                <!-- Volume right -->
+                <app-range-slider [hidden]="!isDoublePlayer"
+                    [name]="'vol_right'"
+                    [min]="0"
+                    [max]="100"
+                    [step]="1"
+                    [value]="playerStateRight.volume"
+                    (onValueChange)="onVolumeChangeRight($event)">
+                </app-range-slider>
+
+                <!-- Speed right -->
+                <app-range-slider [hidden]="!isDoublePlayer"
+                    [name]="'speed_right'"
+                    [step]="0.25"
+                    [min]="0.5"
+                    [max]="2"
+                    [value]="playerStateRight.speed"
+                    (onValueChange)="onSpeedChangeRight($event)">
+                </app-range-slider>
+
+                <!-- Player left -->
+                <app-player [hidden]="!isDoublePlayer"
+                    class="player"
+                    [side]="'right'"
+                    (playerReady)="savePlayerRight($event)"
+                    (stateChange)="onStateChangeRight($event)">
+                </app-player>
+            </div>
+
+            <!-- Player toolbar right -->
+            <app-player-control [hidden]="!isDoublePlayer" [playerState]="playerStateRight"></app-player-control>
+        </div>
 
 
 
 <!--
-        <app-video-player
-            #playerLeft
-            [sidePlayer]="'left'"
-            [video]="videoLeft"
-            (nearEnd)="triggerMixLTR($event)"
-            [speed]="speedLeft"
-            (speedChange)="speedLeft">
-        </app-video-player>
-
         <div id="controlBox">
             <div id="controlBtnBox">
 
@@ -75,9 +118,11 @@
                         <div class="item"></div>
                     </div>
                     <input
+                    class="crossfader horizontal" type="range"
                         [disabled]="!videoLeft || !videoRight"
-                        class="crossfader horizontal" type="range"
-                        min="0" max="100" step="0.5"
+                        min="0"
+                        max="100"
+                        step="0.5"
                         list="tickmarks-center"
                         value="{{ crossFaderValue }}"
                         [(ngModel)]="crossFaderValue"
@@ -86,25 +131,13 @@
             </div>
         </div>
 
-        <app-video-player
-            #playerRight
-            [sidePlayer]="'right'"
-            [video]="videoRight"
-            (nearEnd)="triggerMixRTL($event)"
-            [speed]="speedRight"
-            (speedChange)="speedRight">
-            </app-video-player>
         -->
     </div>
+    <button (click)="isDoublePlayer = !isDoublePlayer" style="z-index: 100; background-color: green; padding: 15px; position: absolute;">Full Size</button>
 
 
-    <!-- On play playlist and search playlist
-        <div id="playlistContainer">
-            <app-edit-playlist [playlist]="onPlayPlaylist"  [type]="'player'"></app-edit-playlist>
-        </div>
-    -->
-
-    <div class="plPlayerContainer">
+    <!-- Videos list -->
+    <div class="plContainer">
         <div class="plPlayerToolbar">
 
             <app-toolbar [height]="'40px'" [margin]="'0 5px 0 0'" [padding]="'0 10px 0 10px'">

@@ -1,104 +1,202 @@
 import { Injectable, Input } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+
 import * as _ from 'lodash';
+
 import { UtilsService } from 'core/services/utils.service';
 import { DataService } from 'core/services/data.service';
+import { YoutubePlayerService } from 'shared/modules/youtube-player/youtube-player.service';
+import { Video, Playlist, Suggests,
+    PlayerPanelState, PlayerState } from 'core/models';
 
-import { Video, Playlist, Suggests } from 'core/models';
 
 @Injectable()
 export class PlayerStateService {
 
-    // --------------------------------------------------------
 
-    // Active player
-    private activePlayer: String = null; // = new Subject<Video>();
-    isFirstPlay: Boolean = true;
 
-    // Random video
-    isRandom =  new Subject<boolean>();
-    isRandom$ = this.isRandom.asObservable();
+    // Default config
+    private playerPLStateDefault: PlayerPanelState = {
+        isFirstPlay: true,
+        isRandom: false,
+        isRepeat: false,
+        playlist: new Array<Video>(),
+        historiclist: new Array<Video>()
+    };
 
-    // --------------------------------------------------------
+    private playerStateDefault: PlayerState = {
+        player: null,
+        video: null,
+        isReady: false,
+        state: -1,
+        volume: 100,
+        speed: 1,
+    };
 
-    // Player video left
-    private playerLeft = new Subject<Video>();
-    playerLeft$  = this.playerLeft.asObservable();
+    // Player panel state
+    private playerPanelState  = new BehaviorSubject<PlayerPanelState>(this.playerPLStateDefault);
+    public  playerPanelState$ = this.playerPanelState.asObservable();
 
-    volumeLeft = new Subject<number>();
-    volumeLeft$ = this.volumeLeft.asObservable();
+    // Player left
+    private playerStateLeft  = new BehaviorSubject<any>(this.playerStateDefault);
+    public  playerStateLeft$ = this.playerStateLeft.asObservable();
 
-    speedLeft = new Subject<number>();
-    speedLeft$ = this.speedLeft.asObservable();
+    // Player right
+    private playerStateRight  = new BehaviorSubject<any>(this.playerStateDefault);
+    public  playerStateRight$ = this.playerStateRight.asObservable();
 
-    // --------------------------------------------------------
-
-    // Player video right
-    private playerRight = new Subject<Video>();
-    playerRight$ = this.playerRight.asObservable();
-
-    volumeRight = new Subject<number>();
-    volumeRight$ = this.volumeRight.asObservable();
-
-    speedRight = new Subject<number>();
-    speedRight$ = this.speedRight.asObservable();
-
-    // --------------------------------------------------------
-
-    // Playlist on play
-    onPlayList: Array<Video>;
-    historicList: Array<Video>;
-
-    // --------------------------------------------------------
 
     constructor(
+    private YTPlayer: YoutubePlayerService,
     public utilsService: UtilsService,
-    private dataService: DataService
-    ) {
-        this.dataService.onPlayList$.subscribe((data) => {
-            this.onPlayList = data;
-        });
-
-        this.dataService.historicList$.subscribe((data) => {
-            this.historicList = data;
-        });
+    private dataService: DataService) {
     }
 
-    // --------------------------------------------------------
+
     // Setters
-
-    setActivePlayer(side) { this.activePlayer = side; }
-    getActivePlayer() { return this.activePlayer; }
-
-    setIsRandom(isRandom) { this.isRandom.next(isRandom); }
-
-    setPlayerLeft(vl) {
-        this.playerLeft.next(vl);
-        this.updatePlaylists(vl);
-    }
-    setPlayerRight(vr) {
-        this.playerRight.next(vr);
-        this.updatePlaylists(vr);
+    setPlayerPanelState(data: PlayerPanelState) {
+        this.playerPanelState.next(data);
     }
 
-    setVolumeLeft(volLeft)   { this.volumeLeft.next(volLeft); }
-    setVolumeRight(volRight) { this.volumeRight.next(volRight); }
-
-    setSpeedLeft(speedLeft)   { this.speedLeft.next(speedLeft); }
-    setSpeedRight(speedRight) { this.speedRight.next(speedRight); }
-
-
-
-    // Update on play playlist and on play historic
-    updatePlaylists(video: Video) {
-
-        // Add video to on play historic playlist
-        const hpl = _.cloneDeep(this.historicList);
-        hpl.push(video);
-        this.dataService.setHistoricList(hpl);
-
-        // Remove video from on play playlist
-        const ppl = _.filter(_.cloneDeep(this.onPlayList), (el) => el.id !== video.id);
-        this.dataService.setOnPlayList(ppl);
+    setPlaylist(videoList: Array<Video>) {
+        this.playerPanelState.getValue().playlist = _.cloneDeep(videoList);
+        this.setPlayerPanelState(this.playerPanelState.getValue());
     }
+
+    addToPlaylist(data: any) {
+        if (!Array.isArray(data)) {
+            data = [data];
+        }
+        this.playerPanelState.getValue().playlist.push(..._.cloneDeep(data));
+        this.setPlayerPanelState(this.playerPanelState.getValue());
+    }
+
+    setHistoriclist(data: Array<Video>) {
+        this.playerPanelState.getValue().historiclist = _.cloneDeep(data);
+        this.setPlayerPanelState(this.playerPanelState.getValue());
+    }
+
+
+    // Player left
+    setPlayerStateLeft(player: PlayerState) {
+        this.playerStateLeft.next(_.cloneDeep(player));
+    }
+
+    // Player right
+    setPlayerStateRight(player: PlayerState) {
+        this.playerStateRight.next(_.cloneDeep(player));
+    }
+
+
+
+    // Play from a choosen video
+    playVideo(video: Video) {
+        const panelState = this.playerPanelState.getValue();
+
+        let playlist = panelState.playlist;
+        const historiclist = panelState.historiclist;
+        let videoToPlay = null;
+
+        // Play from achoosen video
+        videoToPlay = _.find(playlist, { id: video.id });
+        if (videoToPlay) {
+            playlist = _.remove(playlist, { id: videoToPlay.id });
+        }
+        historiclist.unshift(video);
+
+        // Update player panel playlist
+        panelState.playlist     = playlist;
+        panelState.historiclist = historiclist;
+        this.setPlayerPanelState(panelState);
+
+        this.playOnPlayer(video);
+    }
+
+
+    playVideoAuto() {
+        const panelState = this.playerPanelState.getValue();
+
+        const playlist = panelState.playlist;
+        const historiclist = panelState.historiclist;
+        const isRandom = panelState.isRandom;
+        const isRepeat = panelState.isRepeat;
+
+        let videoToPlay = null;
+
+        if (isRandom && !isRepeat) {
+            videoToPlay = playlist[Math.floor(Math.random() * playlist.length)];
+            _.remove(playlist, { id: videoToPlay.id });
+            historiclist.unshift(videoToPlay);
+
+        } else if (isRandom && isRepeat || !isRandom && isRepeat) {
+            videoToPlay = historiclist[0];
+
+        } else if (!isRandom && !isRepeat) {
+            videoToPlay = playlist[0];
+            _.remove(playlist, { id: videoToPlay.id });
+            historiclist.unshift(videoToPlay);
+        }
+
+        // Update player panel playlist
+        panelState.playlist     = playlist;
+        panelState.historiclist = historiclist;
+        this.setPlayerPanelState(panelState);
+
+        this.playOnPlayer(videoToPlay);
+    }
+
+
+    playOnPlayer(video: Video) {
+        const panelState = this.playerPanelState.getValue();
+
+        const playerStateLeft  = this.playerStateLeft.getValue();
+        const playerStateright = this.playerStateLeft.getValue();
+
+        const isFirstPlay = panelState.isFirstPlay;
+
+        console.log('playerStateLeft', playerStateLeft);
+        console.log('playerStateright', playerStateright);
+
+        if (playerStateLeft) {
+            playerStateLeft.player.cueVideoById(video.id);
+            playerStateLeft.player.playVideo();
+
+            console.log('PLAYER => ', playerStateLeft.player)
+            console.log('DURATION => ', playerStateLeft.player.getDuration())
+
+
+
+            playerStateLeft.video = video;
+            this.setPlayerStateLeft(playerStateLeft);
+        }
+        /*
+        // First play
+        if (isFirstPlay && !isLeftOnPlay && !isRightOnPlay) {
+
+
+        // All player stopped
+        } else if (!isFirstPlay && !isLeftOnPlay && !isRightOnPlay) {
+
+
+        // Player left on play
+        } else if (!isFirstPlay && isLeftOnPlay && !isRightOnPlay) {
+
+
+        // Player right on play
+        } else if (!isFirstPlay && !isLeftOnPlay && isRightOnPlay) {
+
+        }
+        */
+    }
+
+    getDuration(player: YT.Player) {
+        return player.getDuration();
+    }
+
+    getVideoData(player: YT.Player) {
+        // return player.getVideoData();
+    }
+
 }
