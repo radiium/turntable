@@ -1,11 +1,11 @@
 .sliderContainer {
 	height: 200px;
-    width: 34px;
+    width: 30px;
 
 	button { border-radius: 0; }
 
 	.sliderBox {
-		height: 34px;
+		height: 30px;
 		width: 200px;
 
 		transform: rotate(270deg) translateX(-100%);
@@ -29,7 +29,7 @@
 				overflow: hidden;
 				cursor: pointer !important;
 				border-radius: 0;
-				height: 34px;
+				height: 30px;
 				width: 100%;
 				z-index: 0;
 			}
@@ -47,9 +47,21 @@
 
 			.btn {
 				z-index: 2;
-				width: 34px;
-				height: 34px;
+				width: 20px;
+				height: 30px;
 				padding: 0;
+
+				.value {
+					display:block;
+					-webkit-transform: rotate(90deg) translateX(-10%);
+					transform: rotate(90deg) translateX(-10%);
+					transform-origin: center center;
+					font-size: 0.7rem;
+					width: 30px;
+					text-align: center;
+					margin-top: 10px;
+					margin-left: -4px;
+				}
 
 				button {
 					color: black;
@@ -57,8 +69,8 @@
 					cursor: pointer !important;
 					border: none;
 					outline: none;
-					width: 34px;
-					height: 34px;
+					width: 20px;
+					height: 30px;
 					/*
 					text-shadow: 0px 0px 5px rgba(255, 255, 255, 0.5);
 					*/
@@ -87,26 +99,28 @@
 
 // CUSTOM RANGE SLIDER
 ::-webkit-slider-runnable-track {
-    background: #242320;;
+	background: #242320;
+	cursor: ns-resize;
 }
 
 // 1. Set to 0 height and width, and remove border for a slider without a thumb
 ::-webkit-slider-thumb {
     -webkit-appearance: none;
     width: 12px; /* 1 */
-    height: 34px; /* 1 */
+    height: 30px; /* 1 */
     background: #fff;
-    box-shadow: -100vw 0 0 100vw #504F4C;
+	box-shadow: -100vw 0 0 100vw #504F4C;
+	cursor: ns-resize;
 }
 
 ::-moz-range-track {
-    height: 34px;
+    height: 30px;
     background: #ddd;
 }
 
 ::-moz-range-thumb {
     background: #fff;
-    height: 34px;
+    height: 30px;
     width: 12px;
     border-radius: 0 !important;
     box-shadow: -100vw 0 0 100vw #504F4C;
@@ -120,9 +134,9 @@
 
 ::-ms-thumb {
     background: #fff;
-    height: 34px;
+    height: 30px;
     width: 12px;
-    box-sizing: border-box;
+	box-sizing: border-box;
 }
 
 ::-ms-ticks-after {
@@ -136,7 +150,7 @@
 ::-ms-track {
     background: #ddd;
     color: transparent;
-    height: 34px;
+    height: 30px;
     border: none;
 }
 
@@ -145,5 +159,5 @@
 }
 
 .fa-2x {
-    line-height: 34px !important;
+    line-height: 30px !important;
 }
