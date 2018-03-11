@@ -7,6 +7,7 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class ToolbarComponent implements OnInit {
 
+    @Input('width') width: string;
     @Input('height') height: string;
     @Input('padding') padding: string;
     @Input('margin') margin: string;
