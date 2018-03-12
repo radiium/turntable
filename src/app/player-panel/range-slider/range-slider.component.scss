@@ -47,48 +47,28 @@
 
 			.btn {
 				z-index: 2;
+				color: black;
+				background-color: #817E7E;
+				cursor: pointer !important;
 				width: 20px;
 				height: 30px;
-				padding: 0;
+				/*
+				text-shadow: 0px 0px 5px rgba(255, 255, 255, 0.5);
+				*/
 
-				.value {
-					display:block;
-					-webkit-transform: rotate(90deg) translateX(-10%);
-					transform: rotate(90deg) translateX(-10%);
-					transform-origin: center center;
-					font-size: 0.7rem;
-					width: 30px;
-					text-align: center;
-					margin-top: 10px;
-					margin-left: -4px;
+				&:active {
+					color: #25E1DA;
+					text-shadow: 0px 0px 15px #25E1DA;
 				}
 
-				button {
-					color: black;
-					background-color: #817E7E;
-					cursor: pointer !important;
-					border: none;
-					outline: none;
-					width: 20px;
-					height: 30px;
-					/*
-					text-shadow: 0px 0px 5px rgba(255, 255, 255, 0.5);
-					*/
+				&:hover {
+					color: #0f5e5b;
+					/*background-color: #e5e5e5;*/
+					/*background-color: #636363;*/
+				}
 
-					&:active {
-						color: #25E1DA;
-						text-shadow: 0px 0px 15px #25E1DA;
-					}
-
-					&:hover {
-						color: #0f5e5b;
-						/*background-color: #e5e5e5;*/
-						/*background-color: #636363;*/
-					}
-
-					&:hover:active  {
-						color: #25E1DA;
-					}
+				&:hover:active  {
+					color: #25E1DA;
 				}
 			}
 		}

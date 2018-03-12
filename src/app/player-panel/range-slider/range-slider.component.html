@@ -2,26 +2,18 @@
     <div class="sliderBox">
 
         <div class="grpBtn">
-            <div class="btn">
-            <button (click)="decrement()">
+            <button class="btn" (click)="decrement()">
                 <fa [name]="'minus'" [rotate]="90" [border]=false [size]="1"></fa>
             </button>
-            </div>
 
             <div class="slider slider-input">
             <input class="slider-range" type="range" [(ngModel)]="value" (input)="onInputChange($event)"
                 value="{{ value }}" min="{{ min }}" max="{{ max }}" step="{{ step }}"/>
             </div>
 
-            <div class="btn">
-            <button (click)="increment()">
+            <button class="btn" (click)="increment()">
                 <fa [name]="'plus'" [rotate]="90" [border]=false [size]="1"></fa>
             </button>
-            </div>
-
-            <div class="btn ">
-                <span class="value">{{ value }}</span>
-            </div>
         </div>
     </div>
 </div>
