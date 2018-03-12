@@ -1,13 +1,11 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges,
-    Output, EventEmitter } from '@angular/core';
-
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
     selector: 'app-range-slider',
     templateUrl: './range-slider.component.html',
     styleUrls: ['./range-slider.component.scss']
 })
-export class RangeSliderComponent implements OnInit {
+export class RangeSliderComponent {
 
     @Input()  name: number;
     @Input()  min: number;
@@ -18,12 +16,6 @@ export class RangeSliderComponent implements OnInit {
     @Output() onValueChange: EventEmitter<number> = new EventEmitter<number>();
 
     constructor() {
-    }
-
-    ngOnInit() {
-    }
-
-    ngOnChanges(changes: SimpleChanges) {
     }
 
     onInputChange(event) {
