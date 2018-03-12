@@ -118,8 +118,7 @@ export class PlayerPanelComponent implements OnInit {
     }
 
     onStateChangeLeft(state: YT.PlayerState) {
-        this.playerStateLeft.state = state;
-        this.playerState.setPlayerStateLeft(this.playerStateLeft);
+        this.playerState.setStateLeft(state);
     }
 
     onVolumeChangeLeft(volume: number) {
@@ -140,8 +139,7 @@ export class PlayerPanelComponent implements OnInit {
     }
 
     onStateChangeRight(state: YT.PlayerState) {
-        this.playerStateRight.state = state;
-        this.playerState.setPlayerStateRight(this.playerStateRight);
+        this.playerState.setStateRight(state);
     }
 
     onVolumeChangeRight(volume: number) {

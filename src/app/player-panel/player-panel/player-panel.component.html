@@ -1,84 +1,108 @@
 <!--div class="megaLoader"><fa [name]="'spinner'" [size]="5"></fa></div-->
 
 <div id="playerPanelContainer" class="contentPanel">
-
     <div class="playerContainer">
 
-        <!-- Player left -->
+        <!-- Left Player -->
         <div class="playerWrapper" [class.fullSize]="!isDoublePlayer">
-            <div class="playerRow">
-                <app-player
-                    class="player"
-                    [side]="'left'"
-                    (playerReady)="savePlayerLeft($event)"
-                    (stateChange)="onStateChangeLeft($event)">
-                </app-player>
-
-                <!-- Speed left -->
-                <app-range-slider
-                    [name]="'speed_left'"
-                    [step]="0.25"
-                    [min]="0.5"
-                    [max]="2"
-                    [value]="playerStateLeft.speed"
-                    (onValueChange)="onSpeedChangeLeft($event)">
-                </app-range-slider>
-
-                <!-- Volume left -->
-                <app-range-slider
-                    [name]="'vol_left'"
-                    [min]="0"
-                    [max]="100"
-                    [step]="1"
-                    [value]="playerStateLeft.volume"
-                    (onValueChange)="onVolumeChangeLeft($event)">
-                </app-range-slider>
-            </div>
-
-            <!-- Player toolbar left -->
+            <app-player
+                class="player playerRow"
+                [side]="'left'"
+                (playerReady)="savePlayerLeft($event)"
+                (stateChange)="onStateChangeLeft($event)">
+            </app-player>
             <app-player-control
                 [side]="'left'"
                 [player]="playerLeft"
-                [playerState]="playerStateLeft"></app-player-control>
+                [playerState]="playerStateLeft">
+            </app-player-control>
         </div>
 
         <!-- Crossfader -->
-        <div class="controlWrapper" *ngIf="isDoublePlayer">
-            <div class="controlBox">
-                <div class="flexSpacer">
-                    <button class=" toolbarBtn playerBtn btnHover">
-                        <fa [name]="'expand'" [size]="2"></fa>
-                    </button>
+        <div class="centerPanelWrapper" *ngIf="isDoublePlayer">
 
-                    <button class="toolbarBtn playerBtn btnHover">
-                        <fa [name]="'arrows-alt'" [size]="2"></fa>
-                    </button>
+            <div class="controlBox playerRow">
+
+                <!-- Left speed/volume control -->
+                <div class="rangeSliderBox">
+                    <app-range-slider
+                        [name]="'speed_left'"
+                        [step]="0.25"
+                        [min]="0.5"
+                        [max]="2"
+                        [value]="playerStateLeft.speed"
+                        (onValueChange)="onSpeedChangeLeft($event)">
+                    </app-range-slider>
+                    <app-range-slider
+                        [name]="'vol_left'"
+                        [min]="0"
+                        [max]="100"
+                        [step]="1"
+                        [value]="playerStateLeft.volume"
+                        (onValueChange)="onVolumeChangeLeft($event)">
+                    </app-range-slider>
                 </div>
 
-                <!-- Crossfader -->
-                <div id="crossfaderBox" class="line-border">
-                    <div class="hori-ticks">
-                        <div class="item"></div>
-                        <div class="item"></div>
-                        <div class="item"></div>
-                        <div class="item"></div>
-                        <div class="item"></div>
-                        <div class="item"></div>
-                        <div class="item"></div>
-                        <div class="item"></div>
-                        <div class="item"></div>
-                        <div class="item"></div>
+                <div class="centerBox flexSpacer">
+                    <div class="flexSpacer">
+                        <button class=" toolbarBtn playerBtn btnHover">
+                            <fa [name]="'expand'" [size]="2"></fa>
+                        </button>
+
+                        <button class="toolbarBtn playerBtn btnHover">
+                            <fa [name]="'arrows-alt'" [size]="2"></fa>
+                        </button>
                     </div>
-                    <!-- [disabled]="!videoLeft || !videoRight" -->
-                    <input id="crossfader"
-                    class="crossfader horizontal" type="range"
-                        min="0"
-                        max="100"
-                        step="0.5"
-                        list="tickmarks-center"
-                        value="{{ crossFaderValue }}"
-                        [(ngModel)]="crossFaderValue"
-                        (ngModelChange)="onChangeCrossFaderValue($event)">
+
+                    <!-- Crossfader -->
+                    <div id="crossfaderBox" class="line-border">
+                        <div class="hori-ticks">
+                            <div class="item"></div>
+                            <div class="item"></div>
+                            <div class="item"></div>
+                            <div class="item"></div>
+                            <div class="item"></div>
+                            <div class="item"></div>
+                            <div class="item"></div>
+                            <div class="item"></div>
+                            <div class="item"></div>
+                            <div class="item"></div>
+                        </div>
+                        <!-- [disabled]="!videoLeft || !videoRight" -->
+                        <input
+                            id="crossfader"
+                            class="crossfader horizontal"
+                            type="range"
+                            min="0"
+                            max="100"
+                            step="0.5"
+                            list="tickmarks-center"
+                            value="{{ crossFaderValue }}"
+                            [(ngModel)]="crossFaderValue"
+                            (ngModelChange)="onChangeCrossFaderValue($event)">
+                    </div>
+                </div>
+
+
+
+                <!-- Right speed/volume control -->
+                <div class="rangeSliderBox">
+                    <app-range-slider [hidden]="!isDoublePlayer"
+                        [name]="'vol_right'"
+                        [min]="0"
+                        [max]="100"
+                        [step]="1"
+                        [value]="playerStateRight.volume"
+                        (onValueChange)="onVolumeChangeRight($event)">
+                    </app-range-slider>
+                    <app-range-slider [hidden]="!isDoublePlayer"
+                        [name]="'speed_right'"
+                        [step]="0.25"
+                        [min]="0.5"
+                        [max]="2"
+                        [value]="playerStateRight.speed"
+                        (onValueChange)="onSpeedChangeRight($event)">
+                    </app-range-slider>
                 </div>
             </div>
 
@@ -92,45 +116,21 @@
             </app-toolbar>
         </div>
 
-        <!-- Player right -->
+
+        <!-- Player left -->
         <div class="playerWrapper" [hidden]="!isDoublePlayer" [style.width]="!isDoublePlayer ? '0' : ''">
-            <div class="playerRow">
-
-                <!-- Volume right -->
-                <app-range-slider [hidden]="!isDoublePlayer"
-                    [name]="'vol_right'"
-                    [min]="0"
-                    [max]="100"
-                    [step]="1"
-                    [value]="playerStateRight.volume"
-                    (onValueChange)="onVolumeChangeRight($event)">
-                </app-range-slider>
-
-                <!-- Speed right -->
-                <app-range-slider [hidden]="!isDoublePlayer"
-                    [name]="'speed_right'"
-                    [step]="0.25"
-                    [min]="0.5"
-                    [max]="2"
-                    [value]="playerStateRight.speed"
-                    (onValueChange)="onSpeedChangeRight($event)">
-                </app-range-slider>
-
-                <!-- Player left -->
-                <app-player [hidden]="!isDoublePlayer"
-                    class="player"
-                    [side]="'right'"
-                    (playerReady)="savePlayerRight($event)"
-                    (stateChange)="onStateChangeRight($event)">
-                </app-player>
-            </div>
-
-            <!-- Player toolbar right -->
+            <app-player [hidden]="!isDoublePlayer"
+                class="player playerRow"
+                [side]="'right'"
+                (playerReady)="savePlayerRight($event)"
+                (stateChange)="onStateChangeRight($event)">
+            </app-player>
             <app-player-control
                 [side]="'left'"
                 [player]="playerRight"
                 [playerState]="playerStateRight"
-                [hidden]="!isDoublePlayer"></app-player-control>
+                [hidden]="!isDoublePlayer">
+            </app-player-control>
         </div>
 
 
