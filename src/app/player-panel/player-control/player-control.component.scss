@@ -1,5 +1,20 @@
-.playerControl {
-    .progress {
-        height: 100%;
+
+.playerControlContainer {
+
+
+    .playerProgressBar {
+        .timeIndicator {
+            font-size: 0.6rem;
+            padding: 0 5px 0 5px;
+            // width: 70px;
+        }
+        .progress {
+            cursor: pointer;
+            height: 100%;
+        }
+    }
+
+    .playerControl {
+
     }
 }
