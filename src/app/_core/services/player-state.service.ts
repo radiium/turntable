@@ -108,16 +108,21 @@ export class PlayerStateService {
     setPlayerStateLeft(playerState: PlayerState) {
         this.playerStateLeft.next(_.cloneDeep(playerState));
     }
+    setStateLeft(state: number) {
+        const playerState = this.playerStateLeft.getValue();
+        playerState.state = state;
+        this.setPlayerStateLeft(playerState);
+    }
     setVolumeLeft(volume: number) {
-        const state = this.playerStateLeft.getValue();
-        state.volume = volume;
-        this.setPlayerStateLeft(state);
+        const playerState = this.playerStateLeft.getValue();
+        playerState.volume = volume;
+        this.setPlayerStateLeft(playerState);
         this.currentPlayerLeft.setVolume(volume);
     }
     setSpeedLeft(speed: number) {
-        const state = this.playerStateRight.getValue();
-        state.speed = speed;
-        this.setPlayerStateRight(state);
+        const playerState = this.playerStateLeft.getValue();
+        playerState.speed = speed;
+        this.setPlayerStateLeft(playerState);
         this.currentPlayerLeft.setPlaybackRate(speed);
     }
 
@@ -132,16 +137,21 @@ export class PlayerStateService {
     setPlayerStateRight(playerState: PlayerState) {
         this.playerStateRight.next(_.cloneDeep(playerState));
     }
+    setStateRight(state: number) {
+        const playerState = this.playerStateRight.getValue();
+        playerState.state = state;
+        this.setPlayerStateRight(playerState);
+    }
     setVolumeRight(volume: number) {
-        const state = this.playerStateRight.getValue();
-        state.volume = volume;
-        this.setPlayerStateRight(state);
+        const playerState = this.playerStateRight.getValue();
+        playerState.volume = volume;
+        this.setPlayerStateRight(playerState);
         this.currentPlayerRight.setVolume(volume);
     }
     setSpeedRight(speed: number) {
-        const state = this.playerStateRight.getValue();
-        state.speed = speed;
-        this.setPlayerStateRight(state);
+        const playerState = this.playerStateRight.getValue();
+        playerState.speed = speed;
+        this.setPlayerStateRight(playerState);
         this.currentPlayerRight.setPlaybackRate(speed);
     }
 
