@@ -89,27 +89,29 @@ export class PlayerPanelComponent implements OnInit {
             this.cd.markForCheck();
         });
 
-        // Get current player right
+        // Get player and player state left
         this.playerState.playerStateLeft$.subscribe((data) => {
             this.playerStateLeft = data;
         });
-        // Get current volume right
+        this.playerState.playerLeft$.subscribe((data) => {
+            this.playerLeft = data;
+        });
+
+        // Get player and player state right
         this.playerState.playerStateRight$.subscribe((data) => {
             this.playerStateRight = data;
         });
-    }
-
-    getDuration() {
-        const test = this.playerStateLeft.player.getDuration();
+        this.playerState.playerRight$.subscribe((data) => {
+            this.playerRight = data;
+        });
     }
 
 
     // ------------------------------------------------------------------------
     // Player Left
     savePlayerLeft(player: YT.Player) {
-        const videoId = player['a'].id;
-        this.playerLeft = this.playerState.getPlayer(videoId);
-        this.playerStateLeft.playerId = videoId;
+        this.playerStateLeft.playerId = player['a'].id;
+        this.playerState.setPlayerLeft(player);
         this.playerState.setPlayerStateLeft(this.playerStateLeft);
     }
 
@@ -119,24 +121,19 @@ export class PlayerPanelComponent implements OnInit {
     }
 
     onVolumeChangeLeft(volume: number) {
-        this.playerLeft.setVolume(volume);
-        this.playerStateLeft.volume = volume;
-        this.playerState.setPlayerStateLeft(this.playerStateLeft);
+        this.playerState.setVolumeLeft(volume);
     }
 
     onSpeedChangeLeft(speed: number) {
-        this.playerLeft.setPlaybackRate(speed);
-        this.playerStateLeft.speed = speed;
-        this.playerState.setPlayerStateLeft(this.playerStateLeft);
+        this.playerState.setSpeedLeft(speed);
     }
 
 
     // ------------------------------------------------------------------------
     // Player Right
     savePlayerRight(player: YT.Player) {
-        const videoId = player['a'].id;
-        this.playerRight = this.playerState.getPlayer(videoId);
-        this.playerStateRight.playerId = videoId;
+        this.playerStateRight.playerId = player['a'].id;
+        this.playerState.setPlayerRight(player);
         this.playerState.setPlayerStateRight(this.playerStateRight);
     }
 
@@ -146,15 +143,11 @@ export class PlayerPanelComponent implements OnInit {
     }
 
     onVolumeChangeRight(volume: number) {
-        this.playerRight.setVolume(volume);
-        this.playerStateRight.volume = volume;
-        this.playerState.setPlayerStateRight(this.playerStateRight);
+        this.playerState.setVolumeRight(volume);
     }
 
     onSpeedChangeRight(speed: number) {
-        this.playerRight.setPlaybackRate(speed);
-        this.playerStateRight.speed = speed;
-        this.playerState.setPlayerStateRight(this.playerStateRight);
+        this.playerState.setSpeedRight(speed);
     }
 
 

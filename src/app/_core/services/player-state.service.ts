@@ -31,7 +31,6 @@ export class PlayerStateService {
     // Player left
     private playerStateDefaultLeft: PlayerState = {
         side: PlayerSide.LEFT,
-        player: undefined,
         playerId: undefined,
         video: undefined,
         isReady: false,
@@ -39,15 +38,15 @@ export class PlayerStateService {
         volume: 100,
         speed: 1,
     };
-    private playerStateLeft  = new BehaviorSubject<any>(this.playerStateDefaultLeft);
+    private playerStateLeft  = new BehaviorSubject<PlayerState>(this.playerStateDefaultLeft);
     public  playerStateLeft$ = this.playerStateLeft.asObservable();
-    private playerLeft: YT.Player;
-
+    private playerLeft  = new Subject<YT.Player>();
+    public  playerLeft$ = this.playerLeft.asObservable();
+    private currentPlayerLeft: YT.Player;
 
     // Player right
     private playerStateDefaultRight: PlayerState = {
         side: PlayerSide.RIGHT,
-        player: undefined,
         playerId: undefined,
         video: undefined,
         isReady: false,
@@ -55,16 +54,25 @@ export class PlayerStateService {
         volume: 100,
         speed: 1,
     };
-    private playerStateRight  = new BehaviorSubject<any>(this.playerStateDefaultRight);
+    private playerStateRight  = new BehaviorSubject<PlayerState>(this.playerStateDefaultRight);
     public  playerStateRight$ = this.playerStateRight.asObservable();
-    private playerRight: YT.Player;
+    private playerRight  = new Subject<YT.Player>();
+    public  playerRight$ = this.playerRight.asObservable();
+    private currentPlayerRight: YT.Player;
 
     constructor(
     private YTPlayer: YoutubePlayerService,
     public utilsService: UtilsService,
     private dataService: DataService) {
-    }
 
+        this.playerLeft.subscribe((data) => {
+            this.currentPlayerLeft = data;
+        });
+
+        this.playerRight.subscribe((data) => {
+            this.currentPlayerRight = data;
+        });
+    }
 
     // Setters
     setPlayerPanelState(data: PlayerPanelState) {
@@ -91,22 +99,60 @@ export class PlayerStateService {
 
 
     // Player left
+    setPlayerLeft(player: YT.Player) {
+        const state = this.playerStateLeft.getValue();
+        state.isReady = true;
+        this.setPlayerStateLeft(state);
+        this.playerLeft.next(player);
+    }
     setPlayerStateLeft(playerState: PlayerState) {
         this.playerStateLeft.next(_.cloneDeep(playerState));
     }
+    setVolumeLeft(volume: number) {
+        const state = this.playerStateLeft.getValue();
+        state.volume = volume;
+        this.setPlayerStateLeft(state);
+        this.currentPlayerLeft.setVolume(volume);
+    }
+    setSpeedLeft(speed: number) {
+        const state = this.playerStateRight.getValue();
+        state.speed = speed;
+        this.setPlayerStateRight(state);
+        this.currentPlayerLeft.setPlaybackRate(speed);
+    }
+
 
     // Player right
+    setPlayerRight(player: YT.Player) {
+        const state = this.playerStateRight.getValue();
+        state.isReady = true;
+        this.setPlayerStateRight(state);
+        this.playerRight.next(player);
+    }
     setPlayerStateRight(playerState: PlayerState) {
         this.playerStateRight.next(_.cloneDeep(playerState));
     }
+    setVolumeRight(volume: number) {
+        const state = this.playerStateRight.getValue();
+        state.volume = volume;
+        this.setPlayerStateRight(state);
+        this.currentPlayerRight.setVolume(volume);
+    }
+    setSpeedRight(speed: number) {
+        const state = this.playerStateRight.getValue();
+        state.speed = speed;
+        this.setPlayerStateRight(state);
+        this.currentPlayerRight.setPlaybackRate(speed);
+    }
 
-    getPlayer(playerId: string) {
+
+    // Get player instance by id
+    getPlayerById(playerId: string) {
         if (playerId && window['YT']) {
             return window['YT'].get(playerId);
         }
         return false
     }
-
 
 
     // Play from a choosen video
@@ -175,7 +221,7 @@ export class PlayerStateService {
         const isFirstPlay = panelState.isFirstPlay;
 
         debugger
-        const playerLeft = this.getPlayer(playerStateLeft.playerId);
+        const playerLeft = this.getPlayerById(playerStateLeft.playerId);
 
         if (playerLeft && playerStateLeft) {
             playerLeft.cueVideoById(video.id);
