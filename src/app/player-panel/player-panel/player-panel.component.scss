@@ -2,7 +2,7 @@
 
     .playerContainer {
         width: 100%;
-        height: 244px;
+        height: 264px;
         display: flex;
         flex-direction: row;
         flex-wrap: nowrap;
@@ -10,7 +10,6 @@
 
         .playerWrapper {
             width: 100%;
-            width: 368px;
             display: flex;
             flex-direction: column;
             flex-wrap: nowrap;
@@ -29,22 +28,87 @@
 
             .player {
                 width: 100%;
+                min-width: 200px;
                 overflow: hidden;
             }
         }
 
         .controlWrapper {
-            height: 234px;
+            width: 100%;
+            height: 100%;
             margin: 0 5px 0 5px;
             display: flex;
             flex-direction: column;
             flex-wrap: nowrap;
 
             .controlBox {
+                height: 200px;
+                display: flex;
+                flex-direction: column;
+                flex-wrap: nowrap;
 
+                /* CROSSFADER */
+                #crossfaderBox {
+                    padding: 10px;
+                    text-align: center;
+
+                    #crossfader {
+                        -webkit-appearance: none !important;
+                        background-color:#817E7E;
+                        border: 1px solid #C9C8C3 ;
+                        height: 15px;
+                        width: 100%;
+                        border-radius: 5px;
+                        margin: 10px 0 20px 0;
+                        -webkit-box-shadow: inset 0px 0px 23px 0px rgba(0,0,0,0.67);
+                        -moz-box-shadow: inset 0px 0px 23px 0px rgba(0,0,0,0.67);
+                                box-shadow: inset 0px 0px 23px 0px rgba(0,0,0,0.67);
+                    }
+
+                    #crossfader::-webkit-slider-thumb {
+                        -webkit-appearance: none !important;
+                        background-color:#6C6866 ;
+                        border-top: 	8px solid #C9C8C3 ;
+                        border-left: 	3px solid #504F4C ;
+                        border-right: 	3px solid #504F4C ;
+                        border-bottom: 	8px solid #817E7E ;
+                        height: 55px;
+                        width: 20px;
+                        border-radius: 2px;
+                        cursor: ew-resize;
+                        -webkit-box-shadow: 0px 4px 10px 0px rgba(0,0,0,0.67);
+                        -moz-box-shadow: 0px 4px 10px 0px rgba(0,0,0,0.67);
+                                box-shadow: 0px 4px 10px 0px rgba(0,0,0,0.67);
+                    }
+
+                    .hori-ticks {
+                        display: flex;
+                        flex-direction: row;
+                        flex-wrap: nowrap;
+                        margin: 0 auto;
+                        margin-bottom: 4px;
+                        width: calc(100% - 20px);
+                        height: 8px;
+                        border-right: 1px solid #25E1DA;
+
+                        .item {
+                            align-self: flex-end;
+                            width: 10%;
+                            height: 8px;
+                            border-left: 1px solid #25E1DA;
+                        }
+
+                        .item:nth-child(even) {
+                            width: 10%;
+                            height: 4px;
+                            border-left: 1px solid #25E1DA;
+                        }
+                    }
+                }
             }
 
             .toolbarBox {
+                margin-top: 10px;
 
             }
         }
@@ -53,7 +117,7 @@
     .plContainer {
         display: flex;
         flex-direction: column;
-        height: calc(100% - 244px);
+        height: calc(100% - 264px);
         // padding: 20px;
 
         .plPlayerToolbar {
@@ -103,41 +167,7 @@
             }
         }
 
-        /* CROSSFADER */
-        #crossfaderBox {
-            padding: 10px;
-            text-align: center;
-            margin: auto;
 
-            input[type='range'] {
-                -webkit-appearance: none !important;
-                background-color:#817E7E;
-                border: 1px solid #C9C8C3 ;
-                height: 15px;
-                width: 250px;
-                border-radius: 5px;
-                margin-top: 10px;
-                margin-bottom: 20px;
-                -webkit-box-shadow: inset 0px 0px 23px 0px rgba(0,0,0,0.67);
-                   -moz-box-shadow: inset 0px 0px 23px 0px rgba(0,0,0,0.67);
-                        box-shadow: inset 0px 0px 23px 0px rgba(0,0,0,0.67);
-            }
-
-            input[type='range']::-webkit-slider-thumb {
-                -webkit-appearance: none !important;
-                background-color:#6C6866 ;
-                border-top: 	8px solid #C9C8C3 ;
-                border-left: 	3px solid #504F4C ;
-                border-right: 	3px solid #504F4C ;
-                border-bottom: 	8px solid #817E7E ;
-                height: 55px;
-                width: 20px;
-                border-radius: 2px;
-                -webkit-box-shadow: 0px 4px 10px 0px rgba(0,0,0,0.67);
-                -moz-box-shadow: 0px 4px 10px 0px rgba(0,0,0,0.67);
-                        box-shadow: 0px 4px 10px 0px rgba(0,0,0,0.67);
-            }
-        }
     }
 }
 
@@ -166,29 +196,8 @@
 
 
 
-.hori-ticks {
-	display: flex;
-	flex-direction: row;
-	flex-wrap: nowrap;
-	margin: 0 auto;
-	margin-bottom: 4px;
-	width: 230px;
-	height: 8px;
-	border-right: 1px solid #25E1DA;
-}
 
-.hori-ticks .item:nth-child(even) {
-	width: 10%;
-	height: 4px;
-	border-left: 1px solid #25E1DA;
-}
 
-.hori-ticks .item {
-	align-self: flex-end;
-	width: 10%;
-	height: 8px;
-	border-left: 1px solid #25E1DA;
-}
 
 .megaLoader {
 	padding: 0;

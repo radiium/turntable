@@ -35,6 +35,8 @@ export class PlayerPanelComponent implements OnInit {
     playerRight: YT.Player;
     playerStateRight: PlayerState;
 
+    // Cross fader controls
+    crossFaderValue: number = 50;
     /*
     // Timer
     timerControl$: Subject<number> = new Subject<number>();
@@ -55,7 +57,7 @@ export class PlayerPanelComponent implements OnInit {
     speedRight: any;
     currVolRight: any;
 
-    // Cross fader controls
+
     crossFaderValue: any = 50;
     isRandom: boolean;
     */
@@ -201,7 +203,6 @@ export class PlayerPanelComponent implements OnInit {
     }
 
 
-    /*
     onChangeCrossFaderValue(value) {
         let valLeft = 0;
         let valRight = 0;
@@ -217,9 +218,10 @@ export class PlayerPanelComponent implements OnInit {
         }
 
         // console.log('Cross fader value change', 'left=' + valLeft, '/right=' + valRight);
-        this._playerStateService.setVolumeLeft(valLeft);
-        this._playerStateService.setVolumeRight(valRight);
+        this.playerState.setVolumeLeft(valLeft);
+        this.playerState.setVolumeRight(valRight);
     }
+    /*
 
 
     // Manage mix
