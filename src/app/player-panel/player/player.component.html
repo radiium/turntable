@@ -1,6 +1,6 @@
     <div class="playerContainer">
 
-        <div class="hiddenPlayer overPlayer" *ngIf="state === -1">
+        <div class="hiddenPlayer overPlayer" *ngIf="(state === -1 || state === 5)">
             <mat-spinner *ngIf="!player && state === -1" class="centered"></mat-spinner>
         </div>
 
