@@ -72,6 +72,13 @@ export class PlayerControlComponent {
         }
     }
 
+    stop() {
+        if (this.player) {
+            this.player.stopVideo();
+            this.player.clearVideo();
+        }
+    }
+
     onPlayPause() {
         if (this.player) {
             if (this.playerState.state == 1) {
