@@ -108,7 +108,7 @@ export class PlayerStateService {
     setPlayerStateLeft(playerState: PlayerState) {
         this.playerStateLeft.next(_.cloneDeep(playerState));
     }
-    setStateLeft(state: number) {
+    setStateLeft(state: YT.PlayerState) {
         const playerState = this.playerStateLeft.getValue();
         playerState.state = state;
         this.setPlayerStateLeft(playerState);
@@ -137,7 +137,7 @@ export class PlayerStateService {
     setPlayerStateRight(playerState: PlayerState) {
         this.playerStateRight.next(_.cloneDeep(playerState));
     }
-    setStateRight(state: number) {
+    setStateRight(state: YT.PlayerState) {
         const playerState = this.playerStateRight.getValue();
         playerState.state = state;
         this.setPlayerStateRight(playerState);

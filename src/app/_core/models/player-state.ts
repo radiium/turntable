@@ -6,7 +6,7 @@ export interface PlayerState {
     playerId: string;
     video: Video;
     isReady: boolean;
-    state: number;
+    state: YT.PlayerState;
     volume: number;
     speed: number;
 }
