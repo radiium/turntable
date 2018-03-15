@@ -1,19 +1,25 @@
 <div class="playerControlContainer">
 
-     <!-- Player progress bar -->
+    <!-- Player progress bar -->
     <app-toolbar class="playerProgressBar" [width]="'100%'" [height]="'10px'" [margin]="'0'" [padding]="'0'">
-        <div class="currentTime timeIndicator">
-            00:00
-        </div>
+    <div class="currentTime timeIndicator">
+    {{ currentTime | duration }}
+    </div>
 
-        <div class="flexSpacer progress">
-            <mat-progress-bar class="progress" mode="determinate" value="40"></mat-progress-bar>
-        </div>
+    <div #progressBar class="flexSpacer progress">
+        <div class="progressBG"></div>
+        <div class="progressHover" [style.width]="widthOver + 'px'"></div>
+        <div class="progressCurrent" [style.width]="progress + 'px'"></div>
+    </div>
 
-        <div class="currentDuration timeIndicator">
-            06:24
-        </div>
+    <div class="currentDuration timeIndicator">
+    <span tooltip="Tooltip" placement="top" show-delay="50" z-index="100">{{ videoDuration | duration }}</span>
+    </div>
     </app-toolbar>
+
+    <!--
+    <app-player-progress-bar (videoDuration)="videoDuration"></app-player-progress-bar>
+    -->
 
     <!-- Player control -->
     <app-toolbar class="playerControl" [width]="'100%'" [height]="'30px'"
@@ -49,6 +55,7 @@
             <fa [name]="'step-forward'" [size]="2"></fa>
         </button>
 
+        {{ videoDuration }}
         <div class="flexSpacer"></div>
 
         <button class="toolbarBtn playerBtn btnHover" (click)="muteUnmute()">

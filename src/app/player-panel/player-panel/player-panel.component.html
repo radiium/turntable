@@ -19,7 +19,7 @@
         </div>
 
         <!-- Crossfader -->
-        <div class="centerPanelWrapper" *ngIf="isDoublePlayer">
+        <div class="centerPanelWrapper">
 
             <div class="controlBox playerRow">
 
@@ -43,7 +43,7 @@
                     </app-range-slider>
                 </div>
 
-                <div class="centerBox flexSpacer">
+                <div class="centerBox flexSpacer" *ngIf="isDoublePlayer">
                     <div class="flexSpacer">
                         <button class=" toolbarBtn playerBtn btnHover">
                             <fa [name]="'expand'" [size]="2"></fa>
@@ -55,7 +55,7 @@
                     </div>
 
                     <!-- Crossfader -->
-                    <div id="crossfaderBox" class="line-border">
+                    <div id="crossfaderBox" class="line-border" *ngIf="isDoublePlayer">
                         <div class="hori-ticks">
                             <div class="item"></div>
                             <div class="item"></div>
@@ -132,28 +132,9 @@
                 [hidden]="!isDoublePlayer">
             </app-player-control>
         </div>
-
-
-
-<!--
-        <div id="controlBox">
-            <div id="controlBtnBox">
-
-                <!-- Random playlist button --
-                <button class="randomBtn" [class.activRandom]="isRandom" (click)="setIsRandom()">
-                <fa aria-label="Edit playlist" [name]="'random'" [size]="2"></fa>
-                </button>
-
-                <span> isRandom: {{ isRandom }}</span>
-
-
-            </div>
-        </div>
-
-        -->
     </div>
-    <button (click)="isDoublePlayer = !isDoublePlayer" style="z-index: 100; background-color: green; padding: 15px; position: absolute;">Full Size</button>
 
+    <button (click)="isDoublePlayer = !isDoublePlayer" style="z-index: 100; background-color: green; padding: 15px; position: absolute;">Full Size</button>
 
     <!-- Videos list -->
     <div class="plContainer">
@@ -179,18 +160,15 @@
             #playerListScrollContainer >
 
             <!-- Video list
-                 [dragulaModel]="onPlayList"
-
-                 <div *ngFor="let video of onPlayList; let i = index;" style="display: flex; flex-direction: column;">
-                     <div>{{ i }} - {{ video.title }}</div>
-                 </div>
+                [dragulaModel]="onPlayList"
+                <div *ngFor="let video of onPlayList; let i = index;" style="display: flex; flex-direction: column;">
+                    <div>{{ i }} - {{ video.title }}</div>
+                </div>
             -->
-
 
             <div class="appList plDetail"
                 [dragula]="'playerListBag'"
-                [dragulaModel]="playerPanelState.playlist"
-                >
+                [dragulaModel]="playerPanelState.playlist">
 
                 <!-- Video list item -->
                 <div *ngFor="let video of playerPanelState.playlist; let i = index;trackBy: trackByFn"
@@ -205,18 +183,13 @@
                         [video]="video"
                         [index]="i + 1"
                         [movable]="true"
-                        [height]="'40px'"
-                        >
+                        [height]="'40px'">
 
                         <button *ngIf="playerPanelState.playlist.length > 1" class="toolbarBtn btnHover"
                             [matMenuTriggerFor]="menu" xPosition="'before'" yPosition="'above'">
                             <fa [name]="'sort'" [size]="2"></fa>
                         </button>
                         <mat-menu #menu="matMenu">
-                            <!--
-                            <button mat-menu-item>Play</button>
-                            <button mat-menu-item>Add to queue</button>
-                            -->
                             <div class="inlineBtn">
                                 <button class="toolbarBtn iconMenuBtn btnHover"
                                     (click)="moveToTop(i)"
@@ -260,22 +233,22 @@
 
         <div [hidden]="onDisplayPl !== 'historic'" class="scrollContainer plPlayerList" #plPlayerList >
 
-                <!-- Video list -->
-                <div class="appList plDetail">
-                    <!-- Video list item -->
-                    <div *ngFor="let video of playerPanelState.historiclist; let i = index"
-                        class="appListItem">
+            <!-- Video list -->
+            <div class="appList plDetail">
+                <!-- Video list item -->
+                <div *ngFor="let video of playerPanelState.historiclist; let i = index"
+                    class="appListItem">
 
-                        <app-video-list-item [video]="video" [index]="i + 1" [movable]="false" class="itemBg">
-                            <div class="video-list-item-buttons">
-                                <button class="toolbarBtn btnHover" (click)="deleteVideo(video)">
-                                    <fa [name]="'trash-o'" [size]="2"></fa>
-                                </button>
-                            </div>
-                        </app-video-list-item>
-                    </div>
+                    <app-video-list-item [video]="video" [index]="i + 1" [movable]="false" class="itemBg">
+                        <div class="video-list-item-buttons">
+                            <button class="toolbarBtn btnHover" (click)="deleteVideo(video)">
+                                <fa [name]="'trash-o'" [size]="2"></fa>
+                            </button>
+                        </div>
+                    </app-video-list-item>
                 </div>
             </div>
+        </div>
 
     </div>
 </div>

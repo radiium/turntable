@@ -1,16 +1,42 @@
 
 .playerControlContainer {
 
-
     .playerProgressBar {
         .timeIndicator {
             font-size: 0.6rem;
             padding: 0 5px 0 5px;
-            // width: 70px;
+            width: 50px;
+            text-align: center;
         }
+
         .progress {
             cursor: pointer;
             height: 100%;
+            position: relative;
+
+            .progressBG {
+                z-index: 10;
+                position: absolute;
+                background-color: black;
+                height: 100%;
+                width: 100%;
+                opacity: 0.5;
+            }
+            .progressHover {
+                z-index: 12;
+                position: absolute;
+                background-color: gray;
+                height: 100%;
+                opacity: 0.5;
+
+            }
+            .progressCurrent {
+                z-index: 11;
+                position: absolute;
+                height: 100%;
+                background-color: blue;
+
+            }
         }
     }
 

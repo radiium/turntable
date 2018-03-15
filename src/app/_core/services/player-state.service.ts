@@ -2,6 +2,7 @@ import { Injectable, Input } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Subscription } from 'rxjs/Subscription';
 
 import * as _ from 'lodash';
 
@@ -9,12 +10,11 @@ import { UtilsService } from 'core/services/utils.service';
 import { DataService } from 'core/services/data.service';
 import { YoutubePlayerService } from 'shared/modules/youtube-player/youtube-player.service';
 import { Video, Playlist, Suggests,
-    PlayerPanelState, PlayerState, PlayerSide } from 'core/models';
-
+    PlayerPanelState, PlayerState,
+    PlayerSide } from 'core/models';
 
 @Injectable()
 export class PlayerStateService {
-
 
     // Player panel state
     private playerPLStateDefault: PlayerPanelState = {
@@ -230,17 +230,15 @@ export class PlayerStateService {
         const playerStateright = this.playerStateLeft.getValue();
         const isFirstPlay = panelState.isFirstPlay;
 
-        debugger
+        // debugger
         const playerLeft = this.getPlayerById(playerStateLeft.playerId);
 
         if (playerLeft && playerStateLeft) {
             playerLeft.cueVideoById(video.id);
             playerLeft.playVideo();
 
-            console.log('PLAYER => ', playerLeft)
+            console.log('PLAYER LEFT => ', playerLeft)
             console.log('DURATION => ', playerLeft.getDuration())
-
-
 
             playerStateLeft.video = video;
             this.setPlayerStateLeft(playerStateLeft);
@@ -264,13 +262,4 @@ export class PlayerStateService {
         }
         */
     }
-
-    getDuration(player: YT.Player) {
-        return player.getDuration();
-    }
-
-    getVideoData(player: YT.Player) {
-        // return player.getVideoData();
-    }
-
 }
