@@ -27,6 +27,7 @@ import { SelectPlaylistDialogComponent } from './dialogs/select-playlist-dialog/
 
 // Directives
 import { ClickOutsideDirective } from './directives/click-outside.directive';
+import { TooltipDirective } from './directives/tooltip.directive';
 
 // pipes
 import { DurationPipe } from './pipes/duration.pipe';
@@ -47,6 +48,7 @@ import { ToolbarComponent } from './components/toolbar/toolbar.component';
     ],
     declarations: [
         ClickOutsideDirective,
+        TooltipDirective,
         DurationPipe,
         TotalDurationPipe,
         FilterPlaylistsPipe,
@@ -89,6 +91,7 @@ import { ToolbarComponent } from './components/toolbar/toolbar.component';
         NgxElectronModule,
         YoutubePlayerModule,
         ClickOutsideDirective,
+        TooltipDirective,
         DurationPipe,
         TotalDurationPipe,
         FilterPlaylistsPipe,
