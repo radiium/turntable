@@ -418,3 +418,30 @@ iframe {
         }
     }
 }
+
+
+
+
+.ng-tooltip {
+    max-width: 200px;
+    background-color: black;
+    border: 1px solid white;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    padding: 2px 5px 2px 5px;
+    position: absolute;
+    z-index: 1000;
+    display: block;
+    opacity: 0;
+    top: 100%;
+    left: 50%;
+    -webkit-transition: opacity 300ms;
+       -moz-transition: opacity 300ms;
+         -o-transition: opacity 300ms;
+            transition: opacity 300ms;
+}
+.ng-tooltip-show {
+    opacity: 1;
+}
