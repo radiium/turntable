@@ -31,11 +31,12 @@
             <fa [name]="'repeat'" [size]="2" [flip]="'horizontal'"></fa>
         </button>
 
-        <!-- Stop video -->
+        <!-- Stop video
         <button *ngIf="true" class="toolbarBtn playerBtn btnHover"
         (click)="stop()">
             <fa [name]="'stop'" [size]="2"></fa>
         </button>
+        -->
 
         <!-- Play -->
         <button *ngIf="!isOnPlay" class="toolbarBtn playerBtn btnHover"
@@ -55,7 +56,6 @@
             <fa [name]="'step-forward'" [size]="2"></fa>
         </button>
 
-        {{ videoDuration }}
         <div class="flexSpacer"></div>
 
         <button class="toolbarBtn playerBtn btnHover" (click)="muteUnmute()">
