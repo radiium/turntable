@@ -1,10 +1,16 @@
 <div id="libraryContainer" class="contentPanel">
 
-    <app-toolbar [height]="'40px'" [padding]="'0 0 0 30px'" [margin]="'0 0 0 2px'">
-        <button class="libButton btnHover">
+    <app-toolbar [height]="'40px'" [margin]="'0 0 0 2px'">
+        <button
+            class="toolbarBtn textBtn btnHover"
+            (click)="onDisplay = 'playlistList'"
+            [class.activeUnderLine]="onDisplay === 'playlistList'">
             <span>Playlists</span>
         </button>
-        <button class="libButton btnHover">
+        <button
+            class="toolbarBtn textBtn btnHover"
+            (click)="onDisplay = 'subscriptionList'"
+            [class.activeUnderLine]="onDisplay === 'subscriptionList'">
             <span>subscription</span>
         </button>
         <div class="flexSpacer"></div>
@@ -12,7 +18,9 @@
 
     <div class="spacer"></div>
 
-    <div id="contentItemBox">
+
+    <!-- Playlists list -->
+    <div id="contentItemBox" [hidden]="onDisplay !== 'playlistList'">
         <div *ngIf="displayType === 'grid'" class="plGrid">
             <div *ngFor="let pl of playlistsList; let i = index" class="plItem">
 
@@ -70,110 +78,9 @@
                 <div class="plItemFooter">
                     <div class="plName noOverflow" (click)="showPlaylist(pl)">{{ pl.title }}</div>
                 </div>
-
-<!--
-                    <div class="plBox">
-
-                        <!-- Privacy status playlist icons ->
-                        <div *ngIf="pl.privacyStatus === 'private' && !pl.isLocal" class="plStatus private">
-                        <fa aria-label="Playlist private" [name]="'lock'" [size]="1"></fa>
-                        </div>
-
-                        <div *ngIf="pl.privacyStatus === 'public' && !pl.isLocal" class="plStatus public">
-                        <fa aria-label="Playlist public" [name]="'globe'" [size]="1"></fa>
-                        </div>
-
-                        <div class="plContent">
-                            <div *ngIf="pl.thumbUrl === ''" class="iconBg"><fa [name]="'music'" [size]="5"></fa></div>
-                            <div *ngIf="pl.thumbUrl !== ''" class="thumbBg">
-                                <img src="{{ pl.thumbUrl }}" alt="">
-                            </div>
-
-                            <div class="plContentInfos">
-                                <p class="plName">{{ pl.title }}</p>
-                                <p class="plDesc">{{ pl.description }}</p>
-                                <p class="nbrVideo">{{ pl.videolist.length }} track<span *ngIf="pl.videolist.length > 1">s</span></p>
-                                test= {{ pl.videolist | totalduration | duration }}-
-                            </div>
-                        </div>
-
-                        <div class="plFooter" [class.localPl]="pl.isLocal" [class.notlocalPl]="!pl.isLocal">
-                            <!-- Play playlist button ->
-                            <button  class="playBtn plBtn" (click)="playPlaylist(pl)">
-                            <fa [name]="'play'" [size]="2"></fa>
-                            </button>
-
-                            <div class="spacerBtn"></div>
-
-                            <!-- Edit playlist button ->
-                            <button class="editBtn plBtn" (click)="showPlaylist(pl)">
-                            <fa [name]="'eye'" [size]="2"></fa>
-                            </button>
-
-                            <!-- Remove playlist button ->
-                            <button class="deleteBtn plBtn"(click)="deletePlaylist(pl)" >
-                            <fa [name]="'trash'" [size]="2"></fa>
-                            </button>
-                        </div>
-                    </div>
-                -->
             </div>
 
         </div>
-
-        <!-- Display grid -->
-        <mat-grid-list  *ngIf="displayType === 'grid' && false" [cols]="colCount" rowHeight="160px" gutterSize="20px" >
-
-            <!-- Playlist list items -->
-            <mat-grid-tile *ngFor="let pl of playlistsList; let i = index">
-                <div class="plBox">
-
-                    <!-- Privacy status playlist icons -->
-                    <div *ngIf="pl.privacyStatus === 'private' && !pl.isLocal" class="plStatus private">
-                    <fa aria-label="Playlist private" [name]="'lock'" [size]="1"></fa>
-                    </div>
-
-                    <div *ngIf="pl.privacyStatus === 'public' && !pl.isLocal" class="plStatus public">
-                    <fa aria-label="Playlist public" [name]="'globe'" [size]="1"></fa>
-                    </div>
-
-                    <div class="plContent">
-                        <div *ngIf="pl.thumbUrl === ''" class="iconBg"><fa [name]="'music'" [size]="5"></fa></div>
-                        <div *ngIf="pl.thumbUrl !== ''" class="thumbBg">
-                            <img src="{{ pl.thumbUrl }}" alt="">
-                        </div>
-
-                        <div class="plContentInfos">
-                            <p class="plName">{{ pl.title }}</p>
-                            <p class="plDesc">{{ pl.description }}</p>
-                            <p class="nbrVideo">{{ pl.videolist.length }} track<span *ngIf="pl.videolist.length > 1">s</span></p>
-                            test= {{ pl.videolist | totalduration | duration }}-
-                        </div>
-                    </div>
-
-                    <div class="plFooter" [class.localPl]="pl.isLocal" [class.notlocalPl]="!pl.isLocal">
-                        <!-- Play playlist button -->
-                        <button  class="playBtn plBtn" (click)="playPlaylist(pl)">
-                        <fa [name]="'play'" [size]="2"></fa>
-                        </button>
-
-                        <div class="spacerBtn"></div>
-
-                        <!-- Edit playlist button -->
-                        <button class="editBtn plBtn" (click)="showPlaylist(pl)">
-                        <fa [name]="'eye'" [size]="2"></fa>
-                        </button>
-
-                        <!-- Remove playlist button -->
-                        <button class="deleteBtn plBtn"(click)="deletePlaylist(pl)" >
-                        <fa [name]="'trash'" [size]="2"></fa>
-                        </button>
-                    </div>
-                </div>
-
-            </mat-grid-tile>
-        </mat-grid-list>
-
 
         <!-- Display list -->
         <mat-list *ngIf="displayType === 'list'" role="list">
@@ -212,6 +119,12 @@
             </div>
         </mat-list-item>
         </mat-list>
+    </div>
+
+
+    <!-- Subscription list -->
+    <div id="contentItemBox" [hidden]="onDisplay !== 'playlistList'">
+        Hello subscription!!
     </div>
 
 </div>

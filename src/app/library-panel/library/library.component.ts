@@ -32,6 +32,8 @@ export class LibraryComponent implements OnInit {
     selectedTab: number;
     displayType: string;
 
+    onDisplay: string;
+
     constructor(
     private dataService: DataService,
     private appStateService: AppStateService,
@@ -41,6 +43,8 @@ export class LibraryComponent implements OnInit {
     }
 
     ngOnInit() {
+
+        this.onDisplay = 'playlistList';
 
         // Get current selected tab
         this.dataService.selectedTab$.subscribe((data) => {
