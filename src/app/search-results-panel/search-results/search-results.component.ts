@@ -94,4 +94,10 @@ export class SearchResultsComponent implements OnInit {
     addToQueue(video: Video) {
         this.playerState.addToPlaylist(video);
     }
+
+    // ------------------------------------------------------------------------
+    // Track onPlay list item in ngFor
+    trackByFn(index: number, item: any) {
+        return item.id; // index;
+    }
 }

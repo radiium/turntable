@@ -134,17 +134,16 @@
         </div>
     </div>
 
-    <button (click)="isDoublePlayer = !isDoublePlayer" style="z-index: 100; background-color: green; padding: 15px; position: absolute;">Full Size</button>
 
     <!-- Videos list -->
     <div class="plContainer">
         <div class="plPlayerToolbar">
 
-            <app-toolbar [height]="'40px'" [margin]="'0 5px 0 0'" [padding]="'0 10px 0 10px'">
-                <button (click)="onDisplayPl = 'playlist'">
+            <app-toolbar [height]="'40px'" [margin]="'0 5px 0 0'">
+                <button class="toolbarBtn textBtn btnHover" (click)="onDisplayPl = 'playlist'">
                     Playlist
                 </button>
-                <button (click)="onDisplayPl = 'historic'">
+                <button class="toolbarBtn textBtn btnHover" (click)="onDisplayPl = 'historic'">
                     Historic
                 </button>
             </app-toolbar>
@@ -153,7 +152,13 @@
                 <div *ngIf="playerPanelState.playlist" class="length noOverflow">{{ playerPanelState.playlist?.length }} track<span *ngIf="playerPanelState.playlist.length >1">s</span></div>
                 <div *ngIf="playerPanelState.playlist" class="duration noOverflow">{{ playerPanelState.playlist | totalduration | duration }}</div>
             </app-toolbar>
+
+            <app-toolbar [height]="'40px'" [margin]="'0 5px 0 0'">
+                <button class="toolbarBtn textBtn btnHover" (click)="isDoublePlayer = !isDoublePlayer">Full Size</button>
+            </app-toolbar>
         </div>
+
+
 
         <div [hidden]="onDisplayPl !== 'playlist'"
             class="scrollContainer plPlayerList"
@@ -166,12 +171,70 @@
                 </div>
             -->
 
+
+            <!-- Video list -->
+            <app-video-list
+                [dragBagName]="'playerListBag'"
+                [useDragModel]="true"
+                [draggable]="true"
+                [videoList]="playerPanelState.playlist"
+                [displayType]="'list'"
+                [attrFrom]="'onplay'"
+                [showShadow]="true">
+
+
+                <button class="toolbarBtn btnHover" (click)="playVideo(video, i)">
+                    <fa [name]="'play'" [size]="2"></fa>
+                </button>
+
+                <button *ngIf="playerPanelState.playlist.length > 1" class="toolbarBtn btnHover"
+                    [matMenuTriggerFor]="menu" xPosition="'before'" yPosition="'above'">
+                    <fa [name]="'sort'" [size]="2"></fa>
+                </button>
+                <mat-menu #menu="matMenu">
+                    <div class="inlineBtn">
+                        <button class="toolbarBtn iconMenuBtn btnHover"
+                            (click)="moveToTop(i)"
+                            [disabled]="i === 0"
+                            [class.disabled]="i === 0">
+                            <fa [name]="'angle-double-up'" [size]="2"></fa>
+                        </button>
+                        <button class="toolbarBtn iconMenuBtn btnHover"
+                            (click)="up(i)"
+                            [disabled]="i === 0"
+                            [class.disabled]="i === 0">
+                            <fa [name]="'angle-up'" [size]="2"></fa>
+                        </button>
+                    </div>
+                    <div class="inlineBtn">
+                        <button class="toolbarBtn iconMenuBtn btnHover"
+                            (click)="down(i)"
+                            [disabled]="i === (playerPanelState.playlist.length - 1)"
+                            [class.disabled]="i === (playerPanelState.playlist.length - 1)">
+                            <fa [name]="'angle-down'" [size]="2"></fa>
+                        </button>
+                        <button class="toolbarBtn iconMenuBtn btnHover"
+                            (click)="moveToBottom(i)"
+                            [disabled]="i === (playerPanelState.playlist.length - 1)"
+                            [class.disabled]="i === (playerPanelState.playlist.length - 1)">
+                            <fa [name]="'angle-double-down'" [size]="2"></fa>
+                        </button>
+                    </div>
+                    </mat-menu>
+
+                    <button class="toolbarBtn btnHover" (click)="deleteVideo(video)">
+                        <fa [name]="'trash-o'" [size]="2"></fa>
+                    </button>
+            </app-video-list>
+
+
+            <!--
             <div class="appList plDetail"
                 [dragula]="'playerListBag'"
                 [dragulaModel]="playerPanelState.playlist">
 
-                <!-- Video list item -->
-                <div *ngFor="let video of playerPanelState.playlist; let i = index;trackBy: trackByFn"
+                <!-- Video list item -
+                <div *ngFor="let video of playerPanelState.playlist; let i = index; trackBy: trackByFn"
                     id="onPlayItem-{{ i }}"
                     class="appListItem"
                     [attr.data-from]="'onplay'"
@@ -184,6 +247,13 @@
                         [index]="i + 1"
                         [movable]="true"
                         [height]="'40px'">
+
+                        <button class="toolbarBtn btnHover" (click)="playVideo(video, i)">
+                            <fa [name]="'play'" [size]="2"></fa>
+                            <!--
+                            <mat-icon>play_circle_outline</mat-icon>
+                            --
+                        </button>
 
                         <button *ngIf="playerPanelState.playlist.length > 1" class="toolbarBtn btnHover"
                             [matMenuTriggerFor]="menu" xPosition="'before'" yPosition="'above'">
@@ -229,9 +299,16 @@
                     </app-video-list-item>
                 </div>
             </div>
+            -->
         </div>
 
         <div [hidden]="onDisplayPl !== 'historic'" class="scrollContainer plPlayerList" #plPlayerList >
+
+            <!-- Video list -->
+            <app-video-list
+                [videoList]="playerPanelState.historiclist"
+                [displayType]="'list'">
+            </app-video-list>
 
             <!-- Video list -->
             <div class="appList plDetail">
@@ -239,7 +316,12 @@
                 <div *ngFor="let video of playerPanelState.historiclist; let i = index"
                     class="appListItem">
 
-                    <app-video-list-item [video]="video" [index]="i + 1" [movable]="false" class="itemBg">
+                    <app-video-list-item
+                        class="itemBg"
+                        [video]="video"
+                        [index]="i + 1"
+                        [movable]="false"
+                        [height]="'40px'">
                         <div class="video-list-item-buttons">
                             <button class="toolbarBtn btnHover" (click)="deleteVideo(video)">
                                 <fa [name]="'trash-o'" [size]="2"></fa>

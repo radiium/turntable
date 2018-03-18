@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, ApplicationRef } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { DragulaService } from 'ng2-dragula/ng2-dragula';
 import * as _ from 'lodash';
@@ -34,9 +34,11 @@ export class PlaylistDetailsComponent implements OnInit {
 
     @ViewChild('pldScrollContainer') set container(scrollContainer: ElementRef) {
         this.dndService.plDetailContainer = scrollContainer;
+
     }
 
     constructor(
+    private appRef: ApplicationRef,
     private dataService: DataService,
     private appStateService: AppStateService,
     private playerState: PlayerStateService,
@@ -52,21 +54,19 @@ export class PlaylistDetailsComponent implements OnInit {
         this.dataService.onSelectPL$.subscribe((data) => {
             this.playlist = data;
             this.updateState(false);
+            this.appRef.tick()
+            console.log('onSelectPL');
         });
 
         // Get playlist list
         this.dataService.playlistsList$.subscribe((data) => {
             this.playlistsList = data;
+            console.log('playlistsList');
         });
 
         // Get selected tab
         this.dataService.selectedTab$.subscribe((data) => {
             this.selectedTab = data;
-        });
-
-        // Get on play list
-        this.dataService.onPlayList$.subscribe((data) => {
-            this.onPlayList = data;
         });
     }
 
@@ -146,5 +146,11 @@ export class PlaylistDetailsComponent implements OnInit {
     }
     addToQueue(video: Video) {
         this.playerState.addToPlaylist(video);
+    }
+
+    // ------------------------------------------------------------------------
+    // Track onPlay list item in ngFor
+    trackByFn(index: number, item: any) {
+        return item.id; // index;
     }
 }

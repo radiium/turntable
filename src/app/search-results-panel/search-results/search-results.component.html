@@ -3,52 +3,50 @@
     <div class="scrollContainer srList">
 
         <!-- Video list -->
-        <div class="appList"
-            [dragula]="'searchResultsBag'"
-            [attr.data-acceptdrop]="false"
-            [attr.data-copy]="true">
+        <app-video-list
+            [draggable]="true"
+            [videoList]="videoList"
+            [displayType]="'list'"
+            [dragBagName]="'searchResultsBag'"
+            [attrCopy]="true"
+            [attrAcceptDrop]="false"
+            [attrFrom]="'search'">
 
-            <!-- Video list item -->
-            <div *ngFor="let video of videoList; let i = index"
-                [attr.data-from]="'search'"
-                [attr.data-vid]="video.id"
-                [attr.data-searchresults]="true"
-                class="appListItem hiddenShadow">
-
-                <app-video-list-item [video]="video" [index]="i + 1" [movable]="enableDrag" class="itemBg">
-                    <button class="toolbarBtn btnHover"
-                        [matMenuTriggerFor]="menuSearch" xPosition="'before'" yPosition="'above'">
-                        <fa [name]="'bars'" [size]="2"></fa>
+            <!-- Item control buttons -->
+            <ng-template #itemControl let-video>
+                <button class="toolbarBtn btnHover"
+                    [matMenuTriggerFor]="menuSearch" xPosition="'before'" yPosition="'above'">
+                    <fa [name]="'bars'" [size]="2"></fa>
+                </button>
+                <mat-menu #menuSearch="matMenu">
+                    <button mat-menu-item (click)="playVideo(video)">
+                        <mat-icon>play_circle_outline</mat-icon>
+                        <span>Play</span>
                     </button>
-                    <mat-menu #menuSearch="matMenu">
-                        <button mat-menu-item (click)="playVideo(video)">
-                            <mat-icon>play_circle_outline</mat-icon>
-                            <span>Play</span>
-                        </button>
-                        <button mat-menu-item (click)="addToQueue(video)">
-                            <mat-icon>library_add</mat-icon>
-                            <span>Add to queue</span>
-                        </button>
-                    </mat-menu>
-
-                    <button class="toolbarBtn btnHover resize" (click)="addToPlaylist(video)" [disabled]="!playlistList" [class.disabled]="!playlistList">
-                        <mat-icon>playlist_add</mat-icon>
+                    <button mat-menu-item (click)="addToQueue(video)">
+                        <mat-icon>library_add</mat-icon>
+                        <span>Add to queue</span>
                     </button>
-                </app-video-list-item>
-            </div>
+                </mat-menu>
+
+                <button class="toolbarBtn btnHover resize" (click)="addToPlaylist(video)" [disabled]="!playlistList" [class.disabled]="!playlistList">
+                    <mat-icon>playlist_add</mat-icon>
+                </button>
+            </ng-template>
 
             <!-- Load more button -->
-            <div *ngIf="hasNextPage" class="loadLine btnHover" [attr.data-movable]="false">
-                <div mat-line *ngIf="loadNextPage" class="loadLineItem">
-                    <mat-spinner [diameter]="40" class="spinner"></mat-spinner>
+            <ng-template #footer let-footer>
+                <div *ngIf="hasNextPage" class="loadLine btnHover" [attr.data-movable]="false">
+                    <div mat-line *ngIf="loadNextPage" class="loadLineItem">
+                        <mat-spinner [diameter]="40" class="spinner"></mat-spinner>
+                    </div>
+                    <div mat-line *ngIf="!loadNextPage" class="loadLineItem" (click)="loadMore()">
+                        <span><fa class="loadLineItemIco" [name]="'ellipsis-h'" [size]="1"></fa></span>
+                        <span class="loadLineItemLabel">Load more</span>
+                    </div>
                 </div>
-                <div mat-line *ngIf="!loadNextPage" class="loadLineItem" (click)="loadMore()">
-                    <span><fa class="loadLineItemIco" [name]="'ellipsis-h'" [size]="1"></fa></span>
-                    <span class="loadLineItemLabel">Load more</span>
-                </div>
-            </div>
-
-        </div>
+            </ng-template>
+        </app-video-list>
     </div>
 
     <div *ngIf="!videoList || videoList.length === 0">

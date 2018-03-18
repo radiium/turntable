@@ -1,9 +1,9 @@
 <div *ngIf="playlist" id="playlistDetailsContainer" class="contentPanel">
 
     <app-toolbar [height]="'40px'" [margin]="'0 0 0 2px'" [padding]="'0 0 0 15px'">
-        <div class="name noOverflow">{{ playlist.title }}</div>
-        <div class="length noOverflow">{{ playlist.videolist.length }} track<span *ngIf="playlist.videolist.length >1">s</span></div>
-        <div class="duration noOverflow">{{ playlist.videolist | totalduration | duration }}</div>
+        <div class="name noOverflow">{{ playlist?.title }}</div>
+        <div class="length noOverflow">{{ playlist?.videolist?.length }} track<span *ngIf="playlist.videolist.length >1">s</span></div>
+        <div class="duration noOverflow">{{ playlist?.videolist | totalduration | duration }}</div>
 
         <div class="flexSpacer"></div>
 
@@ -19,43 +19,39 @@
     <div class="spacer"></div>
 
     <div class="scrollContainer plScrollContainer" #pldScrollContainer>
-
         <!-- Video list -->
-        <div class="appList plDetail"
-            [dragula]="'searchResultsBag'"
-            [attr.data-plid]="playlist.id"
-            [attr.data-acceptdrop]="true"
-            [attr.data-copy]="false">
+        <app-video-list
+            [draggable]="true"
+            [videoList]="playlist.videolist"
+            [displayType]="'list'"
+            [dragBagName]="'searchResultsBag'"
+            [attrCopy]="false"
+            [attrAcceptDrop]="true"
+            [attrPlaylistId]="playlist.id"
+            [attrFrom]="'detail'"
+            [showShadow]="true">
 
-            <!-- Video list item -->
-            <div *ngFor="let video of playlist.videolist; let i = index"
-                [attr.data-from]="'detail'"
-                [attr.data-plid]="playlist.id"
-                [attr.data-vid]="video.id"
-                class="appListItem">
-
-                <app-video-list-item [video]="video" [index]="i + 1" [movable]="true" class="itemBg">
-                    <button class="toolbarBtn btnHover"
-                        [matMenuTriggerFor]="menuDetail" xPosition="'before'" yPosition="'above'">
-                        <fa [name]="'bars'" [size]="2"></fa>
+            <!-- Item control buttons -->
+            <ng-template #itemControl let-video>
+                <button class="toolbarBtn btnHover"
+                    [matMenuTriggerFor]="menuDetail" xPosition="'before'" yPosition="'above'">
+                    <fa [name]="'bars'" [size]="2"></fa>
+                </button>
+                <mat-menu #menuDetail="matMenu">
+                    <button mat-menu-item (click)="playVideo(video)">
+                        <mat-icon>play_circle_outline</mat-icon>
+                        <span>Play</span>
                     </button>
-                    <mat-menu #menuDetail="matMenu">
-                        <button mat-menu-item (click)="playVideo(video)">
-                            <mat-icon>play_circle_outline</mat-icon>
-                            <span>Play</span>
-                        </button>
-                        <button mat-menu-item (click)="addToQueue(video)">
-                            <mat-icon>library_add</mat-icon>
-                            <span>Add to queue</span>
-                        </button>
-                    </mat-menu>
-
-                    <button class="toolbarBtn btnHover" (click)="deleteVideo(video)">
-                        <fa [name]="'trash-o'" [size]="2"></fa>
+                    <button mat-menu-item (click)="addToQueue(video)">
+                        <mat-icon>library_add</mat-icon>
+                        <span>Add to queue</span>
                     </button>
-                </app-video-list-item>
-            </div>
-        </div>
+                </mat-menu>
+
+                <button class="toolbarBtn btnHover" (click)="deleteVideo(video)">
+                    <fa [name]="'trash-o'" [size]="2"></fa>
+                </button>
+            </ng-template>
+        </app-video-list>
     </div>
-
 </div>

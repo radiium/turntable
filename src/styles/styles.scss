@@ -105,6 +105,7 @@ input[type='submit'] {
     }
 }
 
+/*
 // Video list
 .appList {
     width: 100%;
@@ -134,6 +135,7 @@ input[type='submit'] {
         }
     }
 }
+*/
 
 .duration {
     padding-left: 2.5px;
@@ -198,6 +200,15 @@ input[type='submit'] {
     height: 44px;
     margin-right: 5px;
 
+    &.textBtn {
+        height: 44px;
+        padding: 2px;
+        font-size: 1rem;
+        width: auto;
+        padding-left: 5px;
+        padding-right: 5px;
+        margin-right: 0;
+    }
     &.iconMenuBtn {
         margin-right: 0;
     }
@@ -286,7 +297,7 @@ iframe {
 ****************************/
 
 // Hide shadow aid item on over drop container
-.hiddenShadow {
+.hideShadow {
     &.gu-transit {
         display: none !important;
     }
@@ -303,72 +314,100 @@ iframe {
         display: none !important;
     }
 }
-.btnHoveredDropRefuse {
-    border: 2px dashed red;
-    background-color: red;
-    .appListItem {
-        display: none !important;
-    }
-}
-
-
-/*
-.appListItem {
-    &.gu-mirror {
-        .itemBg {
-            @include themify($themes) {
-                background-color: themed('secondary');
-            }
-        }
-    }
-}
-*/
 
 // Dragged video list item
 .appListItem {
     &.gu-mirror {
-        &.hiddenShadow {
-            cursor: grabbing;
-            .itemBg {
-                border: 2px dashed black;
-                // height: 40px !important;
-                display: flex;
-                flex-direction: row;
-                // width: 300px !important;
-                background-color: white;
-                /*
-                @include themify($themes) {
-                    background-color: themed('secondary');
-                }
-                */
+        border: 2px dashed black;
+        display: flex;
+        flex-direction: row;
+        background-color: white;
 
-                .handle {
-                    // height: 36px;
-                }
-                .srThumb img {
-                    // height: 36px !important;
-                    /*
-                    width: auto !important;
-                    min-width: auto !important;
-                    max-width: auto !important;
-                    */
 
-                    // width: 11.88px !important;
-                    // max-width: 11.88px !important;
-                }
-                .srTitle {
-                    font-size: 0.8rem !important;
-                    overflow: hidden;
-                    //height: 40px;
-                    text-overflow: ellipsis;
-                    word-break: break-word;
-                }
-                .srDesc, .duration, .srBtn {
-                    display: none;
-                }
+        .itemBox { height: 100%; }
+
+        .handle {
+            cursor: move !important;
+            padding: 5px;
+            display: inline-flex;
+            align-items: center;
+            &i .handle {
             }
         }
+
+        .controlBox {
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-end;
+            min-width: 100px;
         }
+
+        .itemText {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            user-select: text;
+            cursor: text;
+        }
+
+        .srThumb {
+            height: 100%;
+            margin-right: 20px;
+            position: relative;
+            img {
+                // min-width: 133.33px;
+                width: auto;
+                height: 100px;
+            }
+        }
+        .srInfos {
+            display: flex;
+            flex-direction: column;
+
+            .srTitle {
+                margin: 0 0 5px;
+                font-size: 1rem;
+                font-weight: 600;
+            }
+            .srDesc {
+                margin: 0 0 5px;
+                font-size: 0.8rem;
+                font-weight: normal;
+            }
+            .duration {
+                font-size: 0.7rem;
+                padding: 2px;
+                align-self: self-start;
+            }
+        }
+
+        /*
+        .handle {
+            padding: 5px;
+            display: inline-flex;
+            align-items: center;
+            &i .handle {
+            }
+        }
+        */
+
+        /*
+        .srThumb img {
+            width: auto !important;
+            min-width: auto !important;
+            max-width: auto !important;
+            height: 100%;
+        }
+        .srTitle {
+            font-size: 0.8rem !important;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            word-break: break-word;
+        }
+        .srDesc, .duration, .srBtn {
+            display: none;
+        }
+        */
+    }
 }
 
 

@@ -1,10 +1,11 @@
 <div class="appListContainer">
 
-    <!-- Video list -->
+    <!-- Video list
+        *ngIf="displayType === 'list' && dragBagName"
+    -->
     <div
         class="appList"
         [ngClass]="attrFrom"
-        *ngIf="displayType === 'list' && dragBagName"
         [dragula]="dragBagName"
         [dragulaModel]="useDragModel ? videoList : null"
         [attr.data-plid]="attrPlaylistId"
@@ -46,12 +47,11 @@
 
             <!-- Video control buttons -->
             <div class="controlBox itemBox">
-                <ng-container *ngTemplateOutlet="itemControlTmpl, context: { $implicit: itemControl }"></ng-container>
+                <ng-container *ngTemplateOutlet="itemControlTmpl, context: { $implicit: video }"></ng-container>
             </div>
         </div>
 
         <ng-container *ngTemplateOutlet="footerTmpl,context: { $implicit: footer }"></ng-container>
-
     </div>
 
 

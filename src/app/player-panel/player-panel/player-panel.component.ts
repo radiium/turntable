@@ -1,6 +1,6 @@
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild,
-    ElementRef, ChangeDetectionStrategy, ChangeDetectorRef
-} from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter,
+    ViewChild, ElementRef, ApplicationRef,
+    ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { EmptyObservable } from 'rxjs/observable/EmptyObservable';
 import { Subscription } from 'rxjs/Subscription';
@@ -17,7 +17,7 @@ import { ElectronService } from 'ngx-electron';
   selector: 'app-player-panel',
   templateUrl: './player-panel.component.html',
   styleUrls: ['./player-panel.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  // changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PlayerPanelComponent implements OnInit {
 
@@ -40,7 +40,8 @@ export class PlayerPanelComponent implements OnInit {
 
 
     constructor(
-    private cd: ChangeDetectorRef,
+    // private cd: ChangeDetectorRef,
+    private appRef: ApplicationRef,
     private dndService: DndService,
     private dataService: DataService,
     private playerState: PlayerStateService,
@@ -53,7 +54,9 @@ export class PlayerPanelComponent implements OnInit {
     ngOnInit() {
         this.playerState.playerPanelState$.subscribe((data) => {
             this.playerPanelState = data;
-            this.cd.markForCheck();
+            console.log('playerPanelState', data)
+            // this.appRef.tick();
+            // this.cd.markForCheck();
         });
 
         // Get player and player state left
@@ -181,5 +184,9 @@ export class PlayerPanelComponent implements OnInit {
 
         this.playerState.setVolumeLeft(valLeft);
         this.playerState.setVolumeRight(valRight);
+    }
+
+    playVideo(video: Video, index: number) {
+        this.playerState.playVideo(video, index);
     }
 }
