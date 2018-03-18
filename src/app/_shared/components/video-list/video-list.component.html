@@ -1,0 +1,66 @@
+<div class="appListContainer">
+
+    <!-- Video list -->
+    <div
+        class="appList"
+        [ngClass]="attrFrom"
+        *ngIf="displayType === 'list' && dragBagName"
+        [dragula]="dragBagName"
+        [dragulaModel]="useDragModel ? videoList : null"
+        [attr.data-plid]="attrPlaylistId"
+        [attr.data-acceptdrop]="attrAcceptDrop"
+        [attr.data-copy]="attrCopy">
+
+        <!-- Video list item -->
+        <div
+            class="appListItem"
+            [class.showShadow]="showShadow"
+            [class.hideShadow]="!showShadow"
+            *ngFor="let video of videoList; let i = index; trackBy: trackByFn;"
+            [attr.data-from]="attrFrom"
+            [attr.data-vid]="video.id"
+            [attr.data-plid]="attrPlaylistId"
+            [attr.data-index]="i">
+
+            <!-- Drag handle -->
+            <div *ngIf="draggable"class="handle btnHovered itemBox">
+                <i fa [name]="'ellipsis-v'" [size]="1" class="handle"></i>
+            </div>
+
+            <!-- Video thumbnail -->
+            <div class="srThumb itemBox">
+                <img draggable="false" [src]="video?.thumbUrl" alt=""
+                [style.height]="imgHeight"
+                [style.minWidth]="imgWidth">
+            </div>
+
+            <!-- Video infos -->
+            <div class="srInfos itemBox">
+                <div class="srTitle itemText">{{ i + 1 }} - {{ video?.title }}</div>
+                <div class="srDesc itemText">{{ video?.channelTitle }} - since {{ video?.publishedAt | date:'mediumDate' }} - {{ video?.duration | duration }}</div>
+                <div class="duration">{{ video?.duration | duration }}</div>
+                <div class="flexSpacer"></div>
+            </div>
+
+            <div class="flexSpacer"></div>
+
+            <!-- Video control buttons -->
+            <div class="controlBox itemBox">
+                <ng-container *ngTemplateOutlet="itemControlTmpl, context: { $implicit: itemControl }"></ng-container>
+            </div>
+        </div>
+
+        <ng-container *ngTemplateOutlet="footerTmpl,context: { $implicit: footer }"></ng-container>
+
+    </div>
+
+
+    <!--
+    <div class="" *ngIf="displayType === 'miniList'">
+    </div>
+
+    <div class="" *ngIf="">
+    </div>
+    -->
+</div>
+
