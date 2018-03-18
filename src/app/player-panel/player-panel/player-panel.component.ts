@@ -186,4 +186,14 @@ export class PlayerPanelComponent implements OnInit {
     playVideo(video: Video, index: number) {
         this.playerState.playVideo(video, index);
     }
+
+    onRandom() {
+        const isRandom = !this.playerPanelState.isRandom;
+        this.playerState.setRandom(isRandom);
+    }
+
+    onRepeat() {
+        const isRepeat = !this.playerPanelState.isRepeat;
+        this.playerState.setRepeat(isRepeat);
+    }
 }
