@@ -204,6 +204,20 @@ input[type='submit'] {
         text-decoration: underline;
     }
 
+    &.playerBtn {
+        cursor: pointer;
+        .fa {
+            @include themify($themes) {
+                color: themed('primaryFontDisabled') !important;
+            }
+        }
+        &.enabledBtn .fa {
+            @include themify($themes) {
+                color: themed('primaryFont') !important;
+            }
+        }
+    }
+
     &.textBtn {
         height: 44px;
         padding: 2px;
