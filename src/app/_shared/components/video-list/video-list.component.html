@@ -32,10 +32,10 @@
 
             <!-- Video thumbnail -->
             <div class="srThumb itemBox">
-                    <div class="hoverThumbPlayBtnIco hoverThumb" (click)="playVideo(video, i)">
-                        <fa class="ico" [name]="'play'" [size]="4"></fa>
-                    </div>
-                    <div class="hoverThumbPlayBtn hoverThumb" (click)="playVideo(video, i)"></div>
+                <div class="hoverThumbPlayBtnIco hoverThumb" >
+                    <fa class="ico" [name]="'play-circle-o'" [size]="4" (click)="playVideo(video, i)"></fa>
+                </div>
+                <div class="hoverThumbPlayBtn hoverThumb"></div>
 
                 <img draggable="false" [src]="video?.thumbUrl" alt=""
                 [style.height]="imgHeight"
