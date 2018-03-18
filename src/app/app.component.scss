@@ -27,10 +27,11 @@
 
     // Title
     .appTitle {
-        width: 250px;
+        width: 205px;
         height: 64px;
-        text-align: center;
+        //text-align: center;
         .title {
+            margin-left: 20px;
             font-size: 2rem;
             line-height: 64px;
         }
