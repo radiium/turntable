@@ -39,6 +39,10 @@
             flex-direction: column;
             flex-wrap: nowrap;
 
+            &.fullSize {
+                width: auto;
+            }
+
             .controlBox {
                 height: 200px;
                 display: flex;

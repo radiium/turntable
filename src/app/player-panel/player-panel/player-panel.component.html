@@ -19,7 +19,7 @@
         </div>
 
         <!-- Crossfader -->
-        <div class="centerPanelWrapper">
+        <div class="centerPanelWrapper" [class.fullSize]="!isDoublePlayer">
 
             <div class="controlBox playerRow">
 
@@ -83,10 +83,8 @@
                     </div>
                 </div>
 
-
-
                 <!-- Right speed/volume control -->
-                <div class="rangeSliderBox">
+                <div class="rangeSliderBox" *ngIf="isDoublePlayer">
                     <app-range-slider [hidden]="!isDoublePlayer"
                         [name]="'vol_right'"
                         [min]="0"
