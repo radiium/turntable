@@ -192,7 +192,7 @@ export class DndService implements OnDestroy {
 
             // Video to drop from searchresults
             if (el.dataset.from === 'search') {
-                video = _.find(_.union.apply(null, this.searchResults.results), {id: el.dataset.vid});
+                video = (<Video>_.find(_.union.apply(null, this.searchResults.results), {id: el.dataset.vid}));
 
             // Video to drop a playlist
             } else {
