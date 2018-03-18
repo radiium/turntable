@@ -55,13 +55,11 @@ export class PlaylistDetailsComponent implements OnInit {
             this.playlist = data;
             this.updateState(false);
             this.appRef.tick()
-            console.log('onSelectPL');
         });
 
         // Get playlist list
         this.dataService.playlistsList$.subscribe((data) => {
             this.playlistsList = data;
-            console.log('playlistsList');
         });
 
         // Get selected tab
@@ -113,21 +111,21 @@ export class PlaylistDetailsComponent implements OnInit {
         });
     }
 
-    deleteVideo(video: Video) {
+    deleteVideo(video: Video, index: number) {
         const dialogRef = this.dialog.open(ConfirmDialogComponent, {
             data: { title: 'Delete \'' + video.title + '\'?' }
         });
         dialogRef.afterClosed().subscribe(delVideo => {
             if (delVideo) {
-                this.playlist.videolist = _.remove(this.playlist.videolist, (vid) => {
-                    return vid.id !== video.id;
-                });
+
+                this.playlist.videolist.splice(index, 1);
+
                 const plIdx = _.findIndex(this.playlistsList, { 'id': this.playlist.id });
                 this.playlistsList.splice(plIdx, 1, this.playlist);
                 this.dataService.setPlaylistsList(this.playlistsList);
 
-               const isOnEdit = this.playlist.videolist.length > 0 ? true : false;
-               this.updateState(isOnEdit);
+                const isOnEdit = this.playlist.videolist.length > 0 ? true : false;
+                this.updateState(isOnEdit);
             }
         });
     }

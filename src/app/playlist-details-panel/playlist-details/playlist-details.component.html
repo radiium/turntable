@@ -32,7 +32,7 @@
             [showShadow]="true">
 
             <!-- Item control buttons -->
-            <ng-template #itemControl let-video>
+            <ng-template #itemControl let-video="video" let-index="index">
                 <button class="toolbarBtn btnHover"
                     [matMenuTriggerFor]="menuDetail" xPosition="'before'" yPosition="'above'">
                     <fa [name]="'bars'" [size]="2"></fa>
@@ -48,7 +48,7 @@
                     </button>
                 </mat-menu>
 
-                <button class="toolbarBtn btnHover" (click)="deleteVideo(video)">
+                <button class="toolbarBtn btnHover" (click)="deleteVideo(video, index)">
                     <fa [name]="'trash-o'" [size]="2"></fa>
                 </button>
             </ng-template>

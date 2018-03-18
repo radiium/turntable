@@ -5,21 +5,15 @@
     </div>
 
     <div class="srThumb itemBox">
-        <img draggable="false" [src]="video?.thumbUrl" alt=""
-        [style.height]="imgHeight"
-        [style.minWidth]="imgWidth">
+        <img draggable="false" [src]="video?.thumbUrl" alt="">
     </div>
 
-    <div class="srInfos itemBox" [class.column]="isColumn" [class.row]="!isColumn">
+    <div class="srInfos itemBox">
         <div class="srTitle itemText">{{ index }} - {{ video?.title }}</div>
         <div class="srDesc itemText">{{ video?.channelTitle }} - since {{ video?.publishedAt | date:'mediumDate' }} - {{ video?.duration | duration }}</div>
         <div class="duration">{{ video?.duration | duration }}</div>
         <div class="flexSpacer"></div>
-        <!--
-            [class.noOverflow]="!isColumn"
-            <div class="duration">{{ video.duration | duration }}</div>
-            <p class="srDesc itemText flexSpacer">{{ video.description }} </p>
-        -->
+
     </div>
 
     <div class="flexSpacer"></div>

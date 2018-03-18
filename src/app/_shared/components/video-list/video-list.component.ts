@@ -5,6 +5,7 @@ import { Component, OnInit, Input, Output,
 
 import * as _ from 'lodash';
 import { Video } from 'core/models';
+import { PlayerStateService } from 'core/services/player-state.service';
 
 @Component({
     selector: 'app-video-list',
@@ -31,7 +32,8 @@ export class VideoListComponent implements OnInit {
     @ContentChild('footer') footerTmpl: TemplateRef<any>;
 
     constructor(
-    private cdRef: ChangeDetectorRef) {
+    private cdRef: ChangeDetectorRef,
+    private playerState: PlayerStateService) {
     }
 
     ngOnInit() {
@@ -39,10 +41,15 @@ export class VideoListComponent implements OnInit {
 
     ngOnChanges(changes: SimpleChanges) {
         if (changes.videoList.currentValue) {
-            console.log('videoList change', this.videoList);
             this.cdRef.detectChanges();
         }
+    }
 
+    playVideo(video: Video, index: number) {
+        if (this.dragBagName !== 'playerListBag') {
+            index = undefined;
+        }
+        this.playerState.playVideo(video, index);
     }
 
     // ------------------------------------------------------------------------

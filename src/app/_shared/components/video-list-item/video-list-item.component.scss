@@ -44,29 +44,7 @@
     }
     .srInfos {
         display: flex;
-
-        &.column {
-            flex-direction: column;
-        }
-        &.row {
-            flex-direction: row-reverse;
-            width: 100%;
-            justify-content: flex-end;
-            align-items: center;
-
-            .srDesc {
-                display: none;
-                flex: 1 1 auto;
-            }
-            .duration {
-                align-self: center;
-                margin-right: 10px;
-            }
-            .flexSpacer {
-                display: none;
-                flex: 0;
-            }
-        }
+        flex-direction: column;
 
         .srTitle {
             margin: 0 0 5px;

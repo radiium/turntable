@@ -13,7 +13,7 @@
             [attrFrom]="'search'">
 
             <!-- Item control buttons -->
-            <ng-template #itemControl let-video>
+            <ng-template #itemControl let-video="video" let-index="index">
                 <button class="toolbarBtn btnHover"
                     [matMenuTriggerFor]="menuSearch" xPosition="'before'" yPosition="'above'">
                     <fa [name]="'bars'" [size]="2"></fa>

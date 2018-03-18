@@ -121,11 +121,9 @@ export class PlayerPanelComponent implements OnInit {
 
     // ------------------------------------------------------------------------
     // Playlist control
-    deleteVideo(video: Video) {
-        const updatedList = _.filter(this.playerPanelState.playlist, (v) => {
-            return v.id !== video.id;
-        });
-        this.dataService.setOnPlayList(updatedList);
+    deleteVideo(video: Video, index: number) {
+        this.playerPanelState.playlist.splice(index, 1);
+        this.playerState.setPlayerPanelState(this.playerPanelState);
     }
 
     moveToTop(index: number) {

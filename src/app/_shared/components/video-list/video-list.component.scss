@@ -41,7 +41,36 @@
             height: 100%;
             margin-right: 20px;
             position: relative;
+
+            &:hover .hoverThumbPlayBtnIco {
+                opacity: 1;
+            }
+            &:hover .hoverThumbPlayBtn {
+                opacity: 0.5;
+            }
+            .hoverThumb {
+                cursor: pointer;
+                width: 100%;
+                height: 100%;
+                position: absolute;
+                opacity: 0;
+                transition: all ease 50ms;
+            }
+            .hoverThumbPlayBtnIco {
+                z-index: 11;
+                display: flex;
+                align-items: center;
+                .ico {
+                    margin: 0 auto;
+                }
+            }
+            .hoverThumbPlayBtn {
+                z-index: 10;
+                background-color: black;
+            }
+
             img {
+                z-index: 9;
                 // min-width: 133.33px;
                 width: auto;
                 height: 100px;
