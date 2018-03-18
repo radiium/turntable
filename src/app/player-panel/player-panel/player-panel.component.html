@@ -45,13 +45,9 @@
 
                 <div class="centerBox flexSpacer" *ngIf="isDoublePlayer">
                     <div class="flexSpacer">
-                        <button class=" toolbarBtn playerBtn btnHover">
-                            <fa [name]="'expand'" [size]="2"></fa>
-                        </button>
 
-                        <button class="toolbarBtn playerBtn btnHover">
-                            <fa [name]="'arrows-alt'" [size]="2"></fa>
-                        </button>
+
+
                     </div>
 
                     <!-- Crossfader -->
@@ -104,14 +100,28 @@
                 </div>
             </div>
 
-            <app-toolbar class="toolbarBox" [width]="'100%'" [height]="'30px'">
-                <button class="toolbarBtn playerBtn btnHover">
-                    <fa [name]="'arrows-alt'" [size]="2"></fa>
+            <app-toolbar class="toolbarBox" [height]="'30px'">
+                <div class="flexSpacer"></div>
+                <!-- Random -->
+                <button
+                    *ngIf="true"
+                    class="toolbarBtn playerBtn"
+                    [class.enabledBtn]="playerPanelState.isRandom"
+                    (click)="onRandom()">
+                    <fa class="playerBarBtnIco" [name]="'random'" [size]="2"></fa>
                 </button>
-                <button class=" btnHover">
-                    <h2>next</h2>
+
+                <!-- Repeat -->
+                <button
+                    *ngIf="true"
+                    class="toolbarBtn playerBtn"
+                    [class.enabledBtn]="playerPanelState.isRepeat"
+                    (click)="onRepeat()">
+                    <fa class="playerBarBtnIco" [name]="'retweet'" [size]="2"></fa>
                 </button>
+                <div class="flexSpacer"></div>
             </app-toolbar>
+
         </div>
 
 
