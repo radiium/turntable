@@ -353,6 +353,12 @@ iframe {
             height: 100%;
             margin-right: 20px;
             position: relative;
+
+            .hoverThumbPlayBtn,
+            .hoverThumbPlayBtnIco {
+                display: none;
+            }
+
             img {
                 // min-width: 133.33px;
                 width: auto;
