@@ -200,6 +200,10 @@ input[type='submit'] {
     height: 44px;
     margin-right: 5px;
 
+    &.activeUnderLine {
+        text-decoration: underline;
+    }
+
     &.textBtn {
         height: 44px;
         padding: 2px;

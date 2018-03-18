@@ -138,10 +138,16 @@
         <div class="plPlayerToolbar">
 
             <app-toolbar [height]="'40px'" [margin]="'0 5px 0 0'">
-                <button class="toolbarBtn textBtn btnHover" (click)="onDisplayPl = 'playlist'">
+                <button
+                    class="toolbarBtn textBtn btnHover"
+                    (click)="onDisplayPl = 'playlist'"
+                    [class.activeUnderLine]="onDisplayPl === 'playlist'">
                     Playlist
                 </button>
-                <button class="toolbarBtn textBtn btnHover" (click)="onDisplayPl = 'historic'">
+                <button
+                    class="toolbarBtn textBtn btnHover"
+                    (click)="onDisplayPl = 'historic'"
+                    [class.activeUnderLine]="onDisplayPl === 'historic'">
                     Historic
                 </button>
             </app-toolbar>
