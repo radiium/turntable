@@ -3,12 +3,13 @@ import { DragulaService, dragula } from 'ng2-dragula/ng2-dragula';
 import * as autoScroll from 'dom-autoscroller';
 import * as _ from 'lodash';
 
-import { DataService } from 'core/services//data.service';
+import { DataService } from 'core/services/data.service';
 import { User,
          Playlist,
          Video,
          Suggests,
-         SearchResults } from 'core/models';
+         SearchResults,
+         PlayerPanelState } from 'core/models';
 
 @Injectable()
 export class DndService implements OnDestroy {
@@ -31,11 +32,13 @@ export class DndService implements OnDestroy {
     onPlayList: Array<Video>;
     selectedTab: number;
 
+    plPanelState: PlayerPanelState;
+
     scroll: any;
 
     constructor(
-    private dragulaService: DragulaService,
-    private dataService: DataService) {
+        private dragulaService: DragulaService,
+        private dataService: DataService) {
 
         this.dataService.playlistsList$.subscribe((data) => {
             this.playlistsList = data;
@@ -70,7 +73,6 @@ export class DndService implements OnDestroy {
                 return handle.classList.contains('handle');
             }
         });
-
 
         // Init search result drag
         this.dragulaService.setOptions(
@@ -202,23 +204,21 @@ export class DndService implements OnDestroy {
             if (target.tagName === 'BUTTON' && target.classList.contains('plDrop')) {
                 plTargetIndex = _.findIndex(this.playlistsList, {id: target.dataset.plid});
                 this.playlistsList[plTargetIndex].videolist.push(video);
-                this.dataService.setPlaylistsList(this.playlistsList);
 
             // Reorder playlist
-            } else if (target.tagName === 'DIV' && target.classList.contains('plDetail') && target === source) {
+            } else if (target.tagName === 'DIV' && target.classList.contains('detail') && target === source) {
                 plTargetIndex = _.findIndex(this.playlistsList, {id: target.dataset.plid});
                 const videoList = this.playlistsList[plTargetIndex].videolist;
                 const newVideoList = _.chain(target.children)
-                    .map((node) => node['dataset'].vid)
-                    .map((videoId) => _.find(videoList, {id: videoId}))
+                    .map((node: HTMLElement) => node['dataset'].vid)
+                    .map((videoId: string) => _.find(videoList, {id: videoId}))
                     .value();
                 this.playlistsList[plTargetIndex].videolist = newVideoList;
                 this.dataService.setOnSelectPL(this.playlistsList[plTargetIndex]);
-                this.dataService.setPlaylistsList(this.playlistsList);
             }
             el.remove();
+            this.dataService.setPlaylistsList(this.playlistsList);
         }
-
     }
 
     private onDropModel(bagName: string, args) {
