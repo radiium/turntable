@@ -54,7 +54,6 @@ export class PlayerPanelComponent implements OnInit {
     ngOnInit() {
         this.playerState.playerPanelState$.subscribe((data) => {
             this.playerPanelState = data;
-            console.log('playerPanelState', data)
             // this.appRef.tick();
             // this.cd.markForCheck();
         });
