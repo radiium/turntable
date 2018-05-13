@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, ViewChild,
     ElementRef, isDevMode, ViewEncapsulation,
     HostListener, AfterViewInit } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { ElectronService } from 'ngx-electron';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { MatSnackBar } from '@angular/material';

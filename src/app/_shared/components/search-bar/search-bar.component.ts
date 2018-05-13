@@ -1,16 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { EmptyObservable } from 'rxjs/observable/EmptyObservable';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/switchMap';
-
 import * as moment from 'moment';
 
 import { YoutubeService } from 'core/services/youtube.service';
 import { DataService } from 'core/services/data.service';
 import { Suggests, SearchResults } from 'core/models';
-
 
 @Component({
     selector: 'app-search-bar',

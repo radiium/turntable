@@ -1,10 +1,11 @@
 import { Injectable, Input } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Subscription } from 'rxjs/Subscription';
-
+import { Observable,
+         Subject,
+         BehaviorSubject,
+         Subscription,
+         timer } from 'rxjs';
 import * as _ from 'lodash';
+
 
 import { UtilsService } from 'core/services/utils.service';
 import { DataService } from 'core/services/data.service';
@@ -97,6 +98,16 @@ export class PlayerStateService {
         this.setPlayerPanelState(this.playerPanelState.getValue());
     }
 
+    setRandom(isRandom: boolean) {
+        this.playerPanelState.getValue().isRandom = isRandom;
+        this.setPlayerPanelState(this.playerPanelState.getValue());
+    }
+
+    setRepeat(isRepeat: boolean) {
+        this.playerPanelState.getValue().isRepeat = isRepeat;
+        this.setPlayerPanelState(this.playerPanelState.getValue());
+    }
+
 
     // Player left
     setPlayerLeft(player: YT.Player) {
@@ -161,36 +172,30 @@ export class PlayerStateService {
         if (playerId && window['YT']) {
             return window['YT'].get(playerId);
         }
-        return false
+        return false;
     }
 
-
-    // Play from a choosen video
-    playVideo(video: Video) {
+    playVideo(video: Video, index?: number) {
+        console.log('playVideo');
 
         const panelState = this.playerPanelState.getValue();
 
-        let playlist = panelState.playlist;
-        const historiclist = panelState.historiclist;
-        let videoToPlay = null;
-
-        // Play from achoosen video
-        videoToPlay = _.find(playlist, { id: video.id });
-        if (videoToPlay) {
-            playlist = _.remove(playlist, { id: videoToPlay.id });
+        let videoToPlay;
+        if (index !== undefined) {
+            videoToPlay = panelState.playlist[index];
+            panelState.playlist.splice(index, 1);
+        } else {
+            videoToPlay = video;
         }
-        historiclist.unshift(video);
 
-        // Update player panel playlist
-        panelState.playlist     = playlist;
-        panelState.historiclist = historiclist;
+        panelState.historiclist.unshift(videoToPlay);
         this.setPlayerPanelState(panelState);
-
-        this.playOnPlayer(video);
+        this.playOnPlayer(videoToPlay);
     }
 
 
     playVideoAuto() {
+        /*
         const panelState = this.playerPanelState.getValue();
 
         const playlist = panelState.playlist;
@@ -220,6 +225,19 @@ export class PlayerStateService {
         this.setPlayerPanelState(panelState);
 
         this.playOnPlayer(videoToPlay);
+        */
+
+        console.log('start video right');
+        let count = 0;
+        const timer$ = timer(0, 250);
+        const sub = timer$.subscribe((t) => {
+            count++;
+            console.log('down volume');
+            if (count === 56) {
+                console.log('video left ended');
+                sub.unsubscribe();
+            }
+        });
     }
 
 
@@ -237,8 +255,8 @@ export class PlayerStateService {
             playerLeft.cueVideoById(video.id);
             playerLeft.playVideo();
 
-            console.log('PLAYER LEFT => ', playerLeft)
-            console.log('DURATION => ', playerLeft.getDuration())
+            console.log('PLAYER LEFT => ', playerLeft);
+            console.log('DURATION => ', playerLeft.getDuration());
 
             playerStateLeft.video = video;
             this.setPlayerStateLeft(playerStateLeft);

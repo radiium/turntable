@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
-import { TimerObservable} from "rxjs/observable/TimerObservable";
-import 'rxjs/add/observable/timer';
-
+import { Observable,
+         Subscription,
+         timer } from 'rxjs';
+import 'rxjs/observable/TimerObservable';
 import { UUID } from 'angular2-uuid';
 
 interface TimerList {
@@ -38,7 +37,7 @@ export class TimerService {
         if (name === undefined || millisec === undefined || this.timerList[name]) {
             return false;
         }
-        const o = Observable.timer(0, millisec);
+        const o = timer(0, millisec);
         this.timerList[name] = { second: millisec, observable: o };
         return true;
     }

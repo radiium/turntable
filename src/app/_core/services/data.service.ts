@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs/Subject';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Subject ,  BehaviorSubject } from 'rxjs';
 import { ElectronService } from 'ngx-electron';
 import * as _ from 'lodash';
 

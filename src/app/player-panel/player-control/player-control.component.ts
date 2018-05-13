@@ -1,10 +1,9 @@
-import { Component, Input, OnChanges, SimpleChanges,
+import { Component, Input, Output, OnChanges, SimpleChanges,
     ChangeDetectionStrategy, ChangeDetectorRef,
     OnInit, ElementRef, HostListener, ViewChild,
-    Renderer2  } from '@angular/core';
+    Renderer2, EventEmitter} from '@angular/core';
 
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
+import { Observable, Subscription, timer } from 'rxjs';
 import { EmptyObservable } from 'rxjs/observable/EmptyObservable';
 
 import { DurationPipe } from 'shared/pipes/duration.pipe';
@@ -23,13 +22,16 @@ export class PlayerControlComponent implements OnInit {
     @Input() player: any; // YT.Player => error YT is defined;
     @Input() playerState: PlayerState;
 
+    @Output() nearEnd = new EventEmitter<string>();
+    isSendedNearEnd: boolean;
+
     // Progress bar
-    @ViewChild("progressBar") progressBar: ElementRef;
+    @ViewChild('progressBar') progressBar: ElementRef;
     videoDuration: number;
     progress: number;
     state: YT.PlayerState;
     tooltip: any;
-    widthOver: number = 0;
+    widthOver: number;
     tpState = {
         isVisible: false,
         posX: 0,
@@ -63,7 +65,9 @@ export class PlayerControlComponent implements OnInit {
         this.currentVolumeIcon = this.volumeIconList[0];
         this.currentTime = 0;
         this.progress = 0;
+        this.widthOver = 0;
         this.videoDuration = 0;
+        this.isSendedNearEnd = false;
         this.cdRef.detectChanges();
 
         this.renderer.listen(
@@ -92,7 +96,7 @@ export class PlayerControlComponent implements OnInit {
         this.renderer.listen(
             this.progressBar.nativeElement,
             'mousemove', (event) => {
-                if(this.tpState.isVisible && this.tooltip) {
+                if (this.tpState.isVisible && this.tooltip) {
                     if (this.tooltip) {
                         this.setTooltipPosition(event.clientX);
                     }
@@ -105,7 +109,7 @@ export class PlayerControlComponent implements OnInit {
                 if (this.player) {
                     this.player.seekTo(this.tpState.timeValue / 1000);
                 }
-                //if (this.tpState.timeValue > 0) {}
+                // if (this.tpState.timeValue > 0) {}
         });
     }
 
@@ -114,6 +118,7 @@ export class PlayerControlComponent implements OnInit {
 
             if (changes.playerState.currentValue.video) {
                 this.videoDuration = changes.playerState.currentValue.video.duration;
+                this.isSendedNearEnd = false;
             }
 
             if (this.playerState.state === 1) {
@@ -122,14 +127,14 @@ export class PlayerControlComponent implements OnInit {
                 this.stopTimer();
             }
 
-            this.isOnPlay = this.playerState.state == 1;
-            this.setMute(this.playerState.volume == 0);
+            this.isOnPlay = this.playerState.state === 1;
+            this.setMute(this.playerState.volume === 0);
             this.cdRef.detectChanges();
         }
     }
 
     updateVolumeIcon() {
-        if (this.playerState.volume == 0) {
+        if (this.playerState.volume === 0) {
             this.currentVolumeIcon = this.volumeIconList[2];
          } else if (this.playerState.volume > 0 && this.playerState.volume < 50) {
              this.currentVolumeIcon = this.volumeIconList[1];
@@ -173,10 +178,10 @@ export class PlayerControlComponent implements OnInit {
 
     onPlayPause() {
         if (this.player) {
-            if (this.playerState.state == 1) {
+            if (this.playerState.state === 1) {
                 this.player.pauseVideo();
                 this.isOnPlay = false;
-            } else if (this.playerState.state == 2) {
+            } else if (this.playerState.state === 2) {
                 this.player.playVideo();
                 this.isOnPlay = true;
             }
@@ -184,13 +189,12 @@ export class PlayerControlComponent implements OnInit {
     }
 
     hasPrev() {
-    return false;
+        return false;
     }
 
     hasNext() {
-    return true;
+        return true;
     }
-
 
     createTooltip() {
         this.tooltip = document.createElement('span');
@@ -199,11 +203,11 @@ export class PlayerControlComponent implements OnInit {
     }
 
     showTooltip() {
-        this.tooltip.className += 'ng-tooltip-show'
+        this.tooltip.className += 'ng-tooltip-show';
         document.body.appendChild(this.tooltip);
     }
     hideTooltip() {
-        this.tooltip.classList.remove("ng-tooltip-show");
+        this.tooltip.classList.remove('ng-tooltip-show');
         this.tooltip.parentNode.removeChild(this.tooltip);
     }
 
@@ -227,13 +231,20 @@ export class PlayerControlComponent implements OnInit {
     }
 
     initTimer() {
-        this.timer$ = Observable.timer(0, 1000);
+        this.timer$ = timer(0, 1000);
         this.sub = this.timer$.subscribe((t) => {
             const currentTime = this.player.getCurrentTime();
             this.currentTime = currentTime * 1000;
             this.tpState.timeValue = (this.tpState.progressPosX * this.videoDuration) / 1000;
             const progressBar = this.progressBar.nativeElement.getBoundingClientRect();
             this.progress = progressBar.width * this.currentTime / this.playerState.video.duration;
+
+            const restTime = (this.playerState.video.duration / 1000) - this.player.getCurrentTime();
+            if (restTime < 15 && !this.isSendedNearEnd) {
+                this.isSendedNearEnd = true;
+                this.nearEnd.emit(this.side);
+            }
+
             this.cdRef.detectChanges();
         });
     }

@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { ElectronService } from 'ngx-electron';
-import 'rxjs/add/operator/mergeMap';
-import { Subject } from 'rxjs/Subject';
+
+import { Subject } from 'rxjs';
 
 import { UserInfosApiService } from 'core/services/api';
 import { DataService } from 'core/services/data.service';

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { PUBLIC_KEY } from './public-key';
 import { HttpClientService } from 'core/services/http/http-client.service';
 import { EmptyObservable } from 'rxjs/observable/EmptyObservable';

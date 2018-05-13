@@ -4,9 +4,9 @@ import { MatSidenav } from '@angular/material/sidenav';
 
 import { UUID } from 'angular2-uuid';
 import { FormGroup, FormControl } from '@angular/forms';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/startWith';
-import 'rxjs/add/operator/map';
+import { Observable } from 'rxjs';
+
+
 import * as _ from 'lodash';
 
 import { Video, Playlist } from 'core/models';

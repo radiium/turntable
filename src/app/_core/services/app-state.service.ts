@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
 import { ElectronService } from 'ngx-electron';
 
 import { User, Playlist, Video, AppState } from '../models';

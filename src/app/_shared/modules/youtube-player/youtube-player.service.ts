@@ -1,5 +1,5 @@
 import { Injectable, NgZone, EventEmitter } from '@angular/core';
-import { ReplaySubject } from 'rxjs/ReplaySubject';
+import { ReplaySubject } from 'rxjs';
 import { IPlayerApiScriptOptions, IPlayerOutputs, IPlayerSize } from './models';
 
 export function win() {

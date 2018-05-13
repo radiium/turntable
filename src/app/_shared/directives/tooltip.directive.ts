@@ -1,12 +1,11 @@
 import { Directive, ElementRef, HostListener, Input } from '@angular/core';
 
 @Directive({
-    selector: '[tooltip]'
+    selector: '[app-tooltip]'
 })
-
 export class TooltipDirective{
 
-    constructor(private elementRef: ElementRef){}
+    constructor(private elementRef: ElementRef) { }
 
     tooltip: any;
     elemPosition: any;
@@ -14,43 +13,45 @@ export class TooltipDirective{
     hideTimeoutId: number;
     showTimeoutId: number;
 
-    @Input('tooltip') tooltipText = "";
-    @Input() placement = "top";
+    @Input('tooltip') tooltipText = '';
+    @Input() placement = 'top';
     @Input() delay = 0;
     @Input('show-delay') showDelay = 0;
     @Input('hide-delay') hideDelay = 300;
     @Input('z-index') zIndex = false;
 
-    @HostListener("focusin")
-    @HostListener("mouseenter")
-    @HostListener("mousemove")
+    @HostListener('focusin')
+    @HostListener('mouseenter')
+    @HostListener('mousemove')
     onMouseEnter() {
         this.getElemPosition();
 
-        if (!this.tooltip){
+        if (!this.tooltip) {
             this.create();
             this.setPosition();
             this.show();
         }
     }
 
-    @HostListener("focusout")
-    @HostListener("mouseleave")
-    @HostListener ("mousedown")
+    @HostListener('focusout')
+    @HostListener('mouseleave')
+    @HostListener ('mousedown')
     onMouseLeave() {
         this.hide();
     }
 
-    getElemPosition(){
+    getElemPosition() {
         this.elemPosition = this.elementRef.nativeElement.getBoundingClientRect();
     }
 
     create() {
         this.showDelay = this.delay || this.showDelay;
         this.tooltip = document.createElement('span');
-        this.tooltip.className += "ng-tooltip ng-tooltip-"+this.placement;
+        this.tooltip.className += 'ng-tooltip ng-tooltip-' + this.placement;
         this.tooltip.textContent = this.tooltipText;
-        if (this.zIndex) this.tooltip.style.zIndex = this.zIndex;
+        if (this.zIndex) {
+            this.tooltip.style.zIndex = this.zIndex;
+        }
 
         document.body.appendChild(this.tooltip);
     }
@@ -62,8 +63,8 @@ export class TooltipDirective{
 
         this.showDelay = this.delay || this.showDelay;
         this.showTimeoutId = window.setTimeout(() => {
-            if (this.tooltip){
-                this.tooltip.className += " ng-tooltip-show";
+            if (this.tooltip) {
+                this.tooltip.className += ' ng-tooltip-show';
             }
         }, this.showDelay);
     }
@@ -75,8 +76,8 @@ export class TooltipDirective{
             clearTimeout(this.hideTimeoutId);
         }
 
-        if (this.tooltip){
-            this.tooltip.classList.remove("ng-tooltip-show");
+        if (this.tooltip) {
+            this.tooltip.classList.remove('ng-tooltip-show');
             this.hideTimeoutId = window.setTimeout(() => {
                this.tooltip.parentNode.removeChild(this.tooltip);
                this.tooltip = null;
@@ -85,34 +86,34 @@ export class TooltipDirective{
     }
 
     setPosition() {
-        let elemHeight = this.elementRef.nativeElement.offsetHeight;
-        let elemWidth = this.elementRef.nativeElement.offsetWidth;
-        let tooltipHeight = this.tooltip.clientHeight;
-        let tooltipWidth = this.tooltip.offsetWidth;
-        let scrollY = window.pageYOffset;
+        const elemHeight = this.elementRef.nativeElement.offsetHeight;
+        const elemWidth = this.elementRef.nativeElement.offsetWidth;
+        const tooltipHeight = this.tooltip.clientHeight;
+        const tooltipWidth = this.tooltip.offsetWidth;
+        const scrollY = window.pageYOffset;
 
-        if (this.placement == 'top'){
-            this.tooltip.style.top = (this.elemPosition.top + scrollY) - (tooltipHeight + this.tooltipOffset)+'px';
+        if (this.placement === 'top') {
+            this.tooltip.style.top = (this.elemPosition.top + scrollY) - (tooltipHeight + this.tooltipOffset) + 'px';
         }
 
-        if (this.placement == 'bottom'){
-            this.tooltip.style.top = (this.elemPosition.top + scrollY) + elemHeight + this.tooltipOffset +'px';
+        if (this.placement === 'bottom') {
+            this.tooltip.style.top = (this.elemPosition.top + scrollY) + elemHeight + this.tooltipOffset + 'px';
         }
 
-        if (this.placement == 'top' || this.placement == 'bottom'){
-            this.tooltip.style.left = (this.elemPosition.left + elemWidth/2) - tooltipWidth/2 +'px';
+        if (this.placement === 'top' || this.placement === 'bottom') {
+            this.tooltip.style.left = (this.elemPosition.left + elemWidth / 2) - tooltipWidth / 2 + 'px';
         }
 
-        if (this.placement == 'left'){
-            this.tooltip.style.left = this.elemPosition.left - tooltipWidth - this.tooltipOffset +'px';
+        if (this.placement === 'left') {
+            this.tooltip.style.left = this.elemPosition.left - tooltipWidth - this.tooltipOffset + 'px';
         }
 
-        if (this.placement == 'right'){
-            this.tooltip.style.left = this.elemPosition.left + elemWidth + this.tooltipOffset +'px';
+        if (this.placement === 'right') {
+            this.tooltip.style.left = this.elemPosition.left + elemWidth + this.tooltipOffset + 'px';
         }
 
-        if (this.placement == 'left' || this.placement == 'right'){
-            this.tooltip.style.top = (this.elemPosition.top + scrollY) + elemHeight/2 - this.tooltip.clientHeight/2+'px';
+        if (this.placement === 'left' || this.placement === 'right') {
+            this.tooltip.style.top = (this.elemPosition.top + scrollY) + elemHeight / 2 - this.tooltip.clientHeight / 2 + 'px';
         }
     }
 }

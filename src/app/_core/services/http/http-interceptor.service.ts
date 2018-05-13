@@ -1,7 +1,11 @@
+
+import {throwError as observableThrowError,  Observable } from 'rxjs';
 import { Injectable, Injector } from '@angular/core';
-import { HttpInterceptor, HttpHandler, HttpRequest, HttpEvent, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/throw';
+import { HttpInterceptor,
+         HttpHandler,
+         HttpRequest,
+         HttpEvent,
+         HttpHeaders } from '@angular/common/http';
 import 'rxjs/add/operator/catch';
 
 import { AuthService } from 'core/services/auth.service';
@@ -42,7 +46,7 @@ export class HttpInterceptorService implements HttpInterceptor {
                 return next.handle(req);
             }
 
-            return Observable.throw(error);
+            return observableThrowError(error);
         }) as any;
     }
 }

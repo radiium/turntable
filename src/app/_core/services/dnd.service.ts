@@ -126,7 +126,7 @@ export class DndService implements OnDestroy {
         if (bagName === this.playerBag) {
 
         } else if (bagName === this.srBag) {
-            if (el.dataset.from === 'detail' && target === source){
+            if (el.dataset.from === 'detail' && target === source) {
                 const element = target.querySelectorAll('[data-vid=\'' + el.dataset.vid + '\']:not(.gu-transit)').item(0);
                 if (element) {
                     element.style.display = 'none';
@@ -289,12 +289,14 @@ export class DndService implements OnDestroy {
     }
 
     move(from, to) {
-        if( to === from ) return;
+        if (to === from) {
+            return;
+        }
 
-        var target = this.onPlayList[from];
-        var increment = to < from ? -1 : 1;
+        const target = this.onPlayList[from];
+        const increment = to < from ? -1 : 1;
 
-        for (var k = from; k != to; k += increment) {
+        for (let k = from; k !== to; k += increment) {
             this.onPlayList[k] = this.onPlayList[k + increment];
         }
 

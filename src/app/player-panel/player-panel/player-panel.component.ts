@@ -1,10 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter,
     ViewChild, ElementRef, ApplicationRef,
     ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable ,  Subscription ,  Subject } from 'rxjs';
 import { EmptyObservable } from 'rxjs/observable/EmptyObservable';
-import { Subscription } from 'rxjs/Subscription';
-import { Subject } from 'rxjs/Subject';
 import * as _ from 'lodash';
 
 import { Video, Playlist, PlayerState, PlayerPanelState } from 'core/models';
@@ -142,16 +140,19 @@ export class PlayerPanelComponent implements OnInit {
 
     moveToBottom(index: number, el) {
         this.move(index, this.playerPanelState.playlist.length - 1);
-        (<HTMLInputElement>document.getElementById('onPlayItem-' + (this.playerPanelState.playlist.length - 1))).scrollIntoView({behavior: 'smooth'});
+        (<HTMLInputElement>document.getElementById('onPlayItem-' + (this.playerPanelState.playlist.length - 1)))
+            .scrollIntoView({behavior: 'smooth'});
     }
 
     move(from, to) {
-        if( to === from ) return;
+        if ( to === from ) {
+            return;
+        }
 
-        var target = this.playerPanelState.playlist[from];
-        var increment = to < from ? -1 : 1;
+        const target = this.playerPanelState.playlist[from];
+        const increment = to < from ? -1 : 1;
 
-        for (var k = from; k != to; k += increment) {
+        for (let k = from; k !== to; k += increment) {
             this.playerPanelState.playlist[k] = this.playerPanelState.playlist[k + increment];
         }
 
@@ -195,5 +196,11 @@ export class PlayerPanelComponent implements OnInit {
     onRepeat() {
         const isRepeat = !this.playerPanelState.isRepeat;
         this.playerState.setRepeat(isRepeat);
+    }
+
+    onNearEnd(side: string) {
+        console.log('=> Player ' + side + ' is near end!');
+        this.playerState.playVideoAuto();
+
     }
 }

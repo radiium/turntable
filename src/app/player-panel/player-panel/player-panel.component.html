@@ -14,7 +14,8 @@
             <app-player-control
                 [side]="'left'"
                 [player]="playerLeft"
-                [playerState]="playerStateLeft">
+                [playerState]="playerStateLeft"
+                (nearEnd)="onNearEnd($event)">
             </app-player-control>
         </div>
 
@@ -137,6 +138,7 @@
                 [side]="'left'"
                 [player]="playerRight"
                 [playerState]="playerStateRight"
+                (nearEnd)="onNearEnd($event)"
                 [hidden]="!isDoublePlayer">
             </app-player-control>
         </div>

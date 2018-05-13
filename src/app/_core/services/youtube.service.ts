@@ -1,34 +1,27 @@
 import { Injectable } from '@angular/core';
-
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
-import { mergeMap } from 'rxjs/operators';
-import 'rxjs/add/operator/expand';
-import 'rxjs/add/operator/pluck';
-import 'rxjs/add/operator/scan';
-import 'rxjs/add/operator/last';
-import 'rxjs/add/operator/mergemap';
+import { Observable, Subject } from 'rxjs';
+import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/forkJoin';
-
+import 'rxjs/add/operator/last';
+import 'rxjs/add/operator/scan';
+import 'rxjs/add/operator/pluck';
+import 'rxjs/add/operator/expand';
+import 'rxjs/add/operator/mergeMap';
 import * as moment from 'moment';
 import * as _ from 'lodash';
-
 
 import { User,
          Video,
          Suggests,
          Playlist,
          SearchResults } from 'core/models';
-
 import { VideosApiService,
          PlaylistsApiService,
          PlaylistItemsApiService,
          SearchApiService,
          SuggestApiService,
          UserInfosApiService } from 'core/services/api';
-
 import { DataService } from 'core/services/data.service';
-
 
 @Injectable()
 export class YoutubeService {
