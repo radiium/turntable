@@ -1,12 +1,29 @@
 import { Injectable } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
-import 'rxjs/add/operator/map';
+import { Observable,
+         Subject,
+         forkJoin,
+         of,
+         empty } from 'rxjs';
+import { mergeMap,
+         expand,
+         pluck,
+         scan,
+         last,
+         map,
+         flatMap,
+         catchError } from 'rxjs/operators';
+/*
 import 'rxjs/add/observable/forkJoin';
+import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/last';
 import 'rxjs/add/operator/scan';
 import 'rxjs/add/operator/pluck';
 import 'rxjs/add/operator/expand';
 import 'rxjs/add/operator/mergeMap';
+*/
+
+
+
 import * as moment from 'moment';
 import * as _ from 'lodash';
 
@@ -67,13 +84,15 @@ export class YoutubeService {
         this.dataService.setLoading(!pageToken ? true : false);
 
         this.searchService.searchVideos(query, pageToken)
-        .mergeMap((searchResult) => {
-            this.searchResults.prevPageToken = searchResult['prevPageToken'];
-            this.searchResults.nextPageToken = searchResult['nextPageToken'];
+        .pipe(
+            mergeMap((searchResult) => {
+                this.searchResults.prevPageToken = searchResult['prevPageToken'];
+                this.searchResults.nextPageToken = searchResult['nextPageToken'];
 
-            const idList = searchResult['items'].map(item => item.id.videoId);
-            return this.videosService.getVideosById(idList.join(','));
-        })
+                const idList = searchResult['items'].map(item => item.id.videoId);
+                return this.videosService.getVideosById(idList.join(','));
+            })
+        )
         .subscribe((videoResults) => {
             const videoList = videoResults['items'].map(item => this.parseVideo(item));
 
@@ -95,83 +114,89 @@ export class YoutubeService {
 
         this.dataService.setLoading(true);
 
-        // Get all playlist
-        this.playlistsService.getPlaylists()
-        .flatMap((plList) => {
+        this.playlistsService.getPlaylists().subscribe(
+            (data) => {
+                const aReq = this.getPlaylistItemsRequest(data);
+                forkJoin(aReq).subscribe(
+                    (playlistList) => {
+                        playlistList.forEach((playlist: Playlist) => {
+                            this.playlistList.push(playlist);
+                        });
+                        this.dataService.setPlaylistsList(this.playlistList);
+                    },
+                    (err) => console.log('Something went wrong:', err),
+                    () => this.dataService.setLoading(false)
+                );
+            },
+            (err) => console.log('Something went wrong:', err),
+            () => this.dataService.setLoading(false)
+        );
+    }
 
-            // Get all playlist items for each playlist
-            const aRequest = [];
-            plList['items'].forEach((playlist, i) => {
-                const req = this.playlistItemsService.getPlaylistItems(playlist.id, '')
+    getPlaylistItemsRequest(playlistList) {
+        // Get all playlist items for each playlist
+        const aRequest = [];
+        playlistList['items'].forEach((playlist, i) => {
+            let items = [];
+            const req = this.playlistItemsService.getPlaylistItems(playlist.id, '').pipe(
+
                 // Recursive call for playlist items
-                .expand((data: any) => this.playlistItemsService.getPlaylistItems(playlist.id, data.nextPageToken), 1)
+                expand((data: any) => this.playlistItemsService.getPlaylistItems(playlist.id, data.nextPageToken), 1),
+
                 // Group each response by 'items' field
-                .pluck('items')
+                pluck('items'),
+
                 // Concat each items in array
-                .scan((array: any, data) => {
+                scan((array: any, data) => {
                     for (const key in data) {
                         if (data.hasOwnProperty(key)) {
                             array.push(data[key]);
                         }
                     }
                     return array;
-                }, [])
-                // Get last observable
-                .last()
-                .flatMap((plItemsList) => {
+                }, []),
+
+                last(),
+
+                flatMap((plItemsList) => {
+
                     // Parse videos id
                     const videoIdList = this.parseVideoId(plItemsList);
                     const aReq = [];
+
                     // Get videos metadatas
-                    videoIdList.forEach(videoIds => {
+                    videoIdList.forEach((videoIds) => {
                         const reqVideo = this.videosService.getVideosById(videoIds);
                         aReq.push(reqVideo);
                     });
-                    const fork = Observable.forkJoin(aReq)
-                    // Parse videos metadatas in video object
-                    .map((res) => {
-                        const videoList = [];
-                        res.forEach((el: any, index) => {
-                            el.items.forEach(video => {
-                                if (video.status.embeddable) {
-                                    const objVideo = this.parseVideo(video);
-                                    videoList.push(objVideo);
-                                }
+
+                    return forkJoin(aReq).pipe(
+                        // Parse videos metadatas in video object
+                        map((res) => {
+                            const videoList = [];
+                            res.forEach((el: any, index) => {
+                                el.items.forEach(video => {
+                                    if (video.status.embeddable) {
+                                        const objVideo = this.parseVideo(video);
+                                        videoList.push(objVideo);
+                                    }
+                                });
                             });
-                        });
 
-                        // Create playlist object
-                        return this.parsePlaylist(playlist, videoList);
-                    });
-                    return fork;
-                });
+                            // Create playlist object
+                            return this.parsePlaylist(playlist, videoList);
+                        })
+                    );
+                })
+            );
 
-                aRequest.push(req);
-            });
-            return Observable.forkJoin(aRequest);
-        })
-        .subscribe((playlistList) => {
-            this.dataService.setLoading(false);
-
-            /*
-            this.dataService.setPlaylistsList(playlistList);
-            // this.playlistsList.push(playlistList); ------------------------------------ <===
-
-            // Set playlistlist
-            this.dataService.playlistsList$.subscribe((pll) => {
-                pll.forEach((playlist: Playlist) => {
-                    playlistList.push(playlist);
-                });
-            });
-            */
-
-            playlistList.forEach((playlist: Playlist) => {
-                this.playlistList.push(playlist);
-            });
-            this.dataService.setPlaylistsList(this.playlistList);
+            aRequest.push(req);
 
         });
+
+        return aRequest;
     }
+
 
     // Get all video id from an array of playlist items
     parseVideoId(playlistItemsList) {

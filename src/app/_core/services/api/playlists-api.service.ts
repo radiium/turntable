@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpHeaders } from '@angular/common/http';
 import { HttpClientService } from 'core/services/http/http-client.service';
-
+import { Observable } from 'rxjs';
 @Injectable()
 export class PlaylistsApiService {
 
@@ -15,7 +15,7 @@ export class PlaylistsApiService {
 
     // ------------------------------------------------------------------------
     // Get all playlist of user
-    getPlaylists() {
+    getPlaylists(): Observable<any> {
         const queryUrl =
             this.ENDPOINT +
             '?part=snippet,status' +

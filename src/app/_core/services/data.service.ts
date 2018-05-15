@@ -4,7 +4,6 @@ import { ElectronService } from 'ngx-electron';
 import * as _ from 'lodash';
 
 import { User, Playlist, Video, Suggests, SearchResults } from 'core/models';
-
 @Injectable()
 export class DataService {
 

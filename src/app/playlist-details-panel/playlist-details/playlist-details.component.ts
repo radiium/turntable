@@ -12,6 +12,7 @@ import { DndService } from 'core/services/dnd.service';
 import { ConfirmDialogComponent } from 'shared/dialogs/confirm-dialog/confirm-dialog.component';
 import { EditPlaylistDialogComponent } from 'shared/dialogs/edit-playlist-dialog/edit-playlist-dialog.component';
 import { DeletePlaylistDialogComponent } from 'shared/dialogs/delete-playlist-dialog/delete-playlist-dialog.component';
+import { SelectPlaylistDialogComponent } from 'shared/dialogs/select-playlist-dialog/select-playlist-dialog.component';
 
 @Component({
     selector: 'app-playlist-details',
@@ -54,7 +55,7 @@ export class PlaylistDetailsComponent implements OnInit {
         this.dataService.onSelectPL$.subscribe((data) => {
             this.playlist = data;
             this.updateState(false);
-            this.appRef.tick()
+            this.appRef.tick();
         });
 
         // Get playlist list
@@ -144,6 +145,40 @@ export class PlaylistDetailsComponent implements OnInit {
     }
     addToQueue(video: Video) {
         this.playerState.addToPlaylist(video);
+    }
+
+    addToPlaylist(video: Video) {
+        const plList = _.filter(this.playlistsList, (pl) => {
+            return pl.id !== this.playlist.id;
+        });
+        debugger
+        if (video && plList && plList.length > 0) {
+            const dialogRef = this.dialog.open(SelectPlaylistDialogComponent, {
+                height: 'auto',
+                data: {
+                    videoId: video.id,
+                    playlistList: plList
+                }
+            });
+            dialogRef.afterClosed().subscribe(resp => {
+                if (resp) {
+                    _.each(resp.plIdList, (plId) => {
+                        const pl = _.find(this.playlistsList, { 'id': plId });
+                        pl.videolist.push(_.cloneDeep(video));
+                    });
+                }
+            });
+        }
+    }
+
+    // Set current playlist
+    playPlaylist() {
+        this.playerState.setPlaylist(this.playlist.videolist);
+    }
+
+    // Add to current playlist
+    addToCurrentPlaylist() {
+        this.playerState.addToPlaylist(this.playlist.videolist);
     }
 
     // ------------------------------------------------------------------------

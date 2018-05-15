@@ -7,10 +7,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <script>
-        if (global === undefined) {
+        if (!global) {
           var global = window;
         }
-      </script>
+        window.eval = global.eval = function () {
+            throw new Error(`Sorry, this app does not support window.eval().`)
+        }
+    </script>
+    <style>
+        ::selection { background: white; }
+        /*
+            ::selection {
+                background:rgba(255, 255, 125, 0.99);
+                color:#032764;
+            }
+        */
+    </style>
 </head>
 <body>
 

@@ -8,7 +8,7 @@ import {
     OnChanges,
     Output,
     Renderer2,
-    SimpleChanges,
+    SimpleChanges
     } from '@angular/core';
 import { YoutubePlayerService } from './youtube-player.service';
 
@@ -17,7 +17,7 @@ import { YoutubePlayerService } from './youtube-player.service';
     selector: 'app-youtube-player',
     template: '<div id="yt-player-ngx-component"></div>'
 })
-export class YoutubePlayerComponent implements AfterContentInit {
+export class YoutubePlayerComponent implements AfterContentInit, OnChanges {
     @Input() videoId = '';
     @Input() height: number;
     @Input() width: number;
@@ -43,6 +43,16 @@ export class YoutubePlayerComponent implements AfterContentInit {
     ) { }
 
     ngAfterContentInit() {
+        // if (this.videoId) {
+            this.initPlayer();
+        // }
+    }
+
+    ngOnChanges(changes: SimpleChanges) {
+        // console.log('changes', changes)
+    }
+
+    initPlayer() {
         const htmlId = this.playerService.generateUniqueId();
         const playerSize = {
             height: this.height,
@@ -59,7 +69,7 @@ export class YoutubePlayerComponent implements AfterContentInit {
                 'iv_load_policy': 3,
                 'showinfo': 0,
                 'modestbranding': 1
-            }
+            };
         }
         const container = this.renderer.selectRootElement('#yt-player-ngx-component');
         this.renderer.setAttribute(container, 'id', htmlId);

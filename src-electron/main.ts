@@ -48,7 +48,8 @@ const createMainWindow = async () => {
         darkTheme: true,
         vibrancy: 'dark',
         webPreferences: {
-            nodeIntegration: true
+            nodeIntegration: true,
+            // contextIsolation: true,
         }
     });
 

@@ -20,18 +20,24 @@
                 </button>
                 <mat-menu #menuSearch="matMenu">
                     <button mat-menu-item (click)="playVideo(video)">
-                        <mat-icon>play_circle_outline</mat-icon>
+                        <mat-icon svgIcon="play-circle-outline"></mat-icon>
                         <span>Play</span>
                     </button>
                     <button mat-menu-item (click)="addToQueue(video)">
-                        <mat-icon>library_add</mat-icon>
-                        <span>Add to queue</span>
+                        <mat-icon svgIcon="library-plus"></mat-icon>
+                        <span>Add to player list</span>
+                    </button>
+                    <button mat-menu-item (click)="addToPlaylist(video)" [disabled]="!playlistList" [class.disabled]="!playlistList">
+                        <mat-icon svgIcon="playlist-plus"></mat-icon>
+                        <span>Add to playlist(s)</span>
                     </button>
                 </mat-menu>
 
-                <button class="toolbarBtn btnHover resize" (click)="addToPlaylist(video)" [disabled]="!playlistList" [class.disabled]="!playlistList">
-                    <mat-icon>playlist_add</mat-icon>
-                </button>
+                <!--
+                    <button class="toolbarBtn btnHover resize" (click)="addToPlaylist(video)" [disabled]="!playlistList" >
+                        <mat-icon svgIcon="playlist-plus"></mat-icon>
+                    </button>
+                -->
             </ng-template>
 
             <!-- Load more button -->

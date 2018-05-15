@@ -13,7 +13,7 @@ export class RangeSliderComponent {
     @Input()  step: number;
     @Input()  value: number;
 
-    @Output() onValueChange: EventEmitter<number> = new EventEmitter<number>();
+    @Output() valueChange: EventEmitter<number> = new EventEmitter<number>();
 
     constructor() {
     }
@@ -44,6 +44,6 @@ export class RangeSliderComponent {
 
     changeValue(value) {
         this.value = value;
-        this.onValueChange.emit(value);
+        this.valueChange.emit(value);
     }
 }

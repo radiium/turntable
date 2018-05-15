@@ -10,6 +10,8 @@ import { HttpClientModule, HttpClientJsonpModule, HTTP_INTERCEPTORS } from '@ang
 import { DragulaModule } from 'ng2-dragula';
 import { Angular2FontawesomeModule } from 'angular2-fontawesome/angular2-fontawesome';
 import { NgxElectronModule } from 'ngx-electron';
+import { MatIconRegistry, MatIconModule } from '@angular/material';
+import { DomSanitizer } from '@angular/platform-browser';
 
 import { CustomMaterialModule } from './modules/material/custom-material.module';
 import { YoutubePlayerModule } from './modules/youtube-player/youtube-player.module';
@@ -77,6 +79,7 @@ import { VideoListComponent } from './components/video-list/video-list.component
         DragulaModule,
         Angular2FontawesomeModule,
         NgxElectronModule,
+        MatIconModule,
         YoutubePlayerModule,
         // EditPlaylistModule,
         CustomMaterialModule
@@ -91,6 +94,7 @@ import { VideoListComponent } from './components/video-list/video-list.component
         DragulaModule,
         Angular2FontawesomeModule,
         NgxElectronModule,
+        MatIconModule,
         YoutubePlayerModule,
         ClickOutsideDirective,
         TooltipDirective,
@@ -106,4 +110,8 @@ import { VideoListComponent } from './components/video-list/video-list.component
     ],
     providers: [],
 })
-export class SharedModule { }
+export class SharedModule {
+    constructor(matIconRegistry: MatIconRegistry, domSanitizer: DomSanitizer){
+        matIconRegistry.addSvgIconSet(domSanitizer.bypassSecurityTrustResourceUrl('./assets/icons/mdi.svg')); // Or whatever path you placed mdi.svg at
+    }
+}

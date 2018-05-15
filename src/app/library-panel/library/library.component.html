@@ -49,26 +49,26 @@
                         <mat-menu #menu="matMenu">
                             <!-- Play -->
                             <button mat-menu-item (click)="playPlaylist(pl)">
-                                <mat-icon>playlist_play</mat-icon>
-                                <span>Play</span>
+                                <mat-icon svgIcon="playlist-play"></mat-icon>
+                                <span>Play all</span>
                             </button>
 
                             <!-- Add to current -->
                             <button mat-menu-item (click)="addToCurrentPlaylist(pl)">
-                                <mat-icon>playlist_add</mat-icon>
-                                <span>Add</span>
+                                <mat-icon svgIcon="playlist-plus"></mat-icon>
+                                <span>Add to player list</span>
                             </button>
 
                             <!-- Show -->
                             <button mat-menu-item (click)="showPlaylist(pl)">
-                                <mat-icon>remove_red_eye</mat-icon>
-                                <span>show playlist</span>
+                                <mat-icon svgIcon="eye-outline"></mat-icon>
+                                <span>Show details</span>
                             </button>
 
                             <!-- Remove -->
                             <button mat-menu-item (click)="deletePlaylist(pl)" >
-                                <mat-icon>delete_forever</mat-icon>
-                                <span>delete playlist</span>
+                                <mat-icon svgIcon="delete-forever"></mat-icon>
+                                <span>Delete</span>
                             </button>
                         </mat-menu>
 

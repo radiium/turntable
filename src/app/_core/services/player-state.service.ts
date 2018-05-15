@@ -83,6 +83,7 @@ export class PlayerStateService {
     setPlaylist(videoList: Array<Video>) {
         this.playerPanelState.getValue().playlist = _.cloneDeep(videoList);
         this.setPlayerPanelState(this.playerPanelState.getValue());
+        this.dataService.setSelectedTab(5);
     }
 
     addToPlaylist(data: any) {
@@ -91,6 +92,7 @@ export class PlayerStateService {
         }
         this.playerPanelState.getValue().playlist.push(..._.cloneDeep(data));
         this.setPlayerPanelState(this.playerPanelState.getValue());
+        this.dataService.setSelectedTab(5);
     }
 
     setHistoriclist(data: Array<Video>) {

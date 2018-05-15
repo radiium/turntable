@@ -16,7 +16,7 @@ import { PlayerState, ProgressPosition } from 'core/models';
     providers: [ DurationPipe ],
     // changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class PlayerControlComponent implements OnInit {
+export class PlayerControlComponent implements OnInit, OnChanges {
 
     @Input() side: string;
     @Input() player: any; // YT.Player => error YT is defined;
@@ -45,9 +45,9 @@ export class PlayerControlComponent implements OnInit {
     isOnPlay: boolean;
     currentVolumeIcon: string;
     volumeIconList: Array<string> = [
-        'volume_up',
-        'volume_down',
-        'volume_off'
+        'volume-high',
+        'volume-medium',
+        'volume-off'
     ];
 
     // Timer

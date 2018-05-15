@@ -13,7 +13,7 @@
     </div>
 
     <div class="currentDuration timeIndicator">
-    <span app-tooltip="Tooltip" placement="top" show-delay="50" z-index="100">{{ videoDuration | duration }}</span>
+    <span appTooltip text="Tooltip" placement="top" showDelay="50" zIndex="100">{{ videoDuration | duration }}</span>
     </div>
     </app-toolbar>
 
@@ -59,7 +59,7 @@
         <div class="flexSpacer"></div>
 
         <button class="toolbarBtn playerBtn btnHover" (click)="muteUnmute()">
-            <mat-icon>{{ currentVolumeIcon }}</mat-icon>
+            <mat-icon svgIcon="{{ currentVolumeIcon }}"></mat-icon>
         </button>
 
     </app-toolbar>

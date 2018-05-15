@@ -13,7 +13,7 @@ import { PlayerStateService } from 'core/services/player-state.service';
     styleUrls: ['./video-list.component.scss'],
     // changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class VideoListComponent implements OnInit {
+export class VideoListComponent implements OnInit, OnChanges {
 
     @Input() videoList: Array<Video>;
 

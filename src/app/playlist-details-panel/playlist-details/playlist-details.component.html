@@ -7,13 +7,36 @@
 
         <div class="flexSpacer"></div>
 
-        <button class="toolbarBtn miniBtn btnHover" (click)="editPlaylist()">
-            <fa [name]="'pencil'" [size]="2"></fa>
+        <button class="toolbarBtn miniBtn btnHover" [matMenuTriggerFor]="menu">
+            <fa class="menuBtnIco" [name]="'bars'" [size]="2"></fa>
         </button>
 
-        <button class="toolbarBtn miniBtn btnHover" (click)="deletePlaylist()">
-            <fa [name]="'trash'" [size]="2"></fa>
-        </button>
+        <mat-menu #menu="matMenu" overlapTrigger="false">
+
+            <!-- Play -->
+            <button mat-menu-item (click)="playPlaylist()">
+                <mat-icon svgIcon="playlist-play"></mat-icon>
+                <span>Play all</span>
+            </button>
+
+            <!-- Add to current -->
+            <button mat-menu-item (click)="addToCurrentPlaylist()">
+                <mat-icon svgIcon="playlist-plus"></mat-icon>
+                <span>Add to player list</span>
+            </button>
+
+            <!-- Edit -->
+            <button mat-menu-item (click)="editPlaylist()">
+                <mat-icon svgIcon="pencil"></mat-icon>
+                <span>Edit infos</span>
+            </button>
+
+            <!-- Remove -->
+            <button mat-menu-item (click)="deletePlaylist()" >
+                <mat-icon svgIcon="delete-forever"></mat-icon>
+                <span>Delete</span>
+            </button>
+        </mat-menu>
     </app-toolbar>
 
     <div class="spacer"></div>
@@ -39,12 +62,16 @@
                 </button>
                 <mat-menu #menuDetail="matMenu">
                     <button mat-menu-item (click)="playVideo(video)">
-                        <mat-icon>play_circle_outline</mat-icon>
+                        <mat-icon svgIcon="play-circle-outline"></mat-icon>
                         <span>Play</span>
                     </button>
                     <button mat-menu-item (click)="addToQueue(video)">
-                        <mat-icon>library_add</mat-icon>
-                        <span>Add to queue</span>
+                        <mat-icon svgIcon="library-plus"></mat-icon>
+                        <span>Add to player list</span>
+                    </button>
+                    <button mat-menu-item (click)="addToPlaylist(video)">
+                        <mat-icon svgIcon="playlist-plus"></mat-icon>
+                        <span>Copy to playlist(s)</span>
                     </button>
                 </mat-menu>
 

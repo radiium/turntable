@@ -1,24 +1,26 @@
 import { Directive, ElementRef, HostListener, Input } from '@angular/core';
 
 @Directive({
-    selector: '[app-tooltip]'
+    selector: '[appTooltip]'
 })
-export class TooltipDirective{
-
-    constructor(private elementRef: ElementRef) { }
+export class TooltipDirective {
 
     tooltip: any;
     elemPosition: any;
-    tooltipOffset: number = 8;
+    tooltipOffset: number;
     hideTimeoutId: number;
     showTimeoutId: number;
 
-    @Input('tooltip') tooltipText = '';
+    @Input() text = '';
     @Input() placement = 'top';
     @Input() delay = 0;
-    @Input('show-delay') showDelay = 0;
-    @Input('hide-delay') hideDelay = 300;
-    @Input('z-index') zIndex = false;
+    @Input() showDelay = 0;
+    @Input() hideDelay = 300;
+    @Input() zIndex = false;
+
+    constructor(private elementRef: ElementRef) {
+        this.tooltipOffset = 8;
+    }
 
     @HostListener('focusin')
     @HostListener('mouseenter')
@@ -48,7 +50,7 @@ export class TooltipDirective{
         this.showDelay = this.delay || this.showDelay;
         this.tooltip = document.createElement('span');
         this.tooltip.className += 'ng-tooltip ng-tooltip-' + this.placement;
-        this.tooltip.textContent = this.tooltipText;
+        this.tooltip.textContent = this.text;
         if (this.zIndex) {
             this.tooltip.style.zIndex = this.zIndex;
         }

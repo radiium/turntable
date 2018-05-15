@@ -32,7 +32,7 @@
                         [min]="0.5"
                         [max]="2"
                         [value]="playerStateLeft.speed"
-                        (onValueChange)="onSpeedChangeLeft($event)">
+                        (valueChange)="onSpeedChangeLeft($event)">
                     </app-range-slider>
                     <app-range-slider
                         [name]="'vol_left'"
@@ -40,7 +40,7 @@
                         [max]="100"
                         [step]="1"
                         [value]="playerStateLeft.volume"
-                        (onValueChange)="onVolumeChangeLeft($event)">
+                        (valueChange)="onVolumeChangeLeft($event)">
                     </app-range-slider>
                 </div>
 
@@ -88,7 +88,7 @@
                         [max]="100"
                         [step]="1"
                         [value]="playerStateRight.volume"
-                        (onValueChange)="onVolumeChangeRight($event)">
+                        (valueChange)="onVolumeChangeRight($event)">
                     </app-range-slider>
                     <app-range-slider [hidden]="!isDoublePlayer"
                         [name]="'speed_right'"
@@ -96,7 +96,7 @@
                         [min]="0.5"
                         [max]="2"
                         [value]="playerStateRight.speed"
-                        (onValueChange)="onSpeedChangeRight($event)">
+                        (valueChange)="onSpeedChangeRight($event)">
                     </app-range-slider>
                 </div>
             </div>
