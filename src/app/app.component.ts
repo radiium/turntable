@@ -156,10 +156,6 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
         this.dataService.setSelectedTab(4);
     }
 
-    changeDisplayType(evt) {
-        this.dataService.setDisplayType(evt.value);
-    }
-
     setIsMiniSideBar() {
         this.dataService.setIsMiniSideBar(!this.appState.isMiniSideBar);
     }

@@ -137,6 +137,14 @@ input[type='submit'] {
 }
 */
 
+.plList {
+    .plListItem {
+        @include themify($themes) {
+            background-color: themed('primary') !important;
+        }
+    }
+}
+
 .duration {
     padding-left: 2.5px;
     padding-right: 2.5px;
@@ -199,6 +207,11 @@ input[type='submit'] {
     width: 44px;
     height: 44px;
     margin-right: 5px;
+
+    &.plListItemBtn {
+        width: 50px !important;
+        height: 50px !important;
+    }
 
     &.activeUnderLine {
         text-decoration: underline;
@@ -481,8 +494,6 @@ iframe {
         }
     }
 }
-
-
 
 
 .ng-tooltip {

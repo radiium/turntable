@@ -24,11 +24,11 @@
                         <span>Play</span>
                     </button>
                     <button mat-menu-item (click)="addToQueue(video)">
-                        <mat-icon svgIcon="library-plus"></mat-icon>
+                        <mat-icon svgIcon="playlist-plus"></mat-icon>
                         <span>Add to player list</span>
                     </button>
                     <button mat-menu-item (click)="addToPlaylist(video)" [disabled]="!playlistList" [class.disabled]="!playlistList">
-                        <mat-icon svgIcon="playlist-plus"></mat-icon>
+                        <mat-icon svgIcon="library-plus"></mat-icon>
                         <span>Add to playlist(s)</span>
                     </button>
                 </mat-menu>

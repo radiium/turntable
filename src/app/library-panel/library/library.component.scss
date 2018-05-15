@@ -1,11 +1,11 @@
-
-
-
-
 @import '../../../styles/themes';
 
 #libraryContainer {
     // height: 100%;
+
+    .displayTypeBtn {
+        box-shadow: none !important;
+    }
 
 
     #contentItemBox {
@@ -140,9 +140,10 @@
 
 
 
-/*************************
-    PlaylistList items
-*************************/
+
+    /*************************
+        PlaylistList items
+    *************************/
 
 
     .plBox {
@@ -239,9 +240,64 @@
         }
     }
 
+    .plList {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
 
+        .plListItem {
+            width: 100%;
+            height: 50px;
+            margin-bottom: 10px;
+            display: flex;
+            flex-direction: row;
 
+            .rowBorder {
+                width: 5px;
+                height: 100%;
+                &.local { background-color: #448aff; }
+                &.notlocal { background-color: #cc181e; }
+            }
 
+            .thumbBox {
+                height: 100%;
+                width: 89px;
+                img {
+                    height: 100%;
+                    width: 89px;
+                }
+            }
+
+            .counterBox {
+                text-align: center;
+                height: 100%;
+                width: 60px;
+                display: flex;
+                flex-direction: column;
+                padding: 2px;
+            }
+
+            .infosBox {
+                width: calc(100% / 6);
+                margin-left: 10px;
+                padding: 2px;
+                display: flex;
+                flex-direction: column;
+                .infosBoxTitle {
+                    width: 100%;
+                }
+                .infosBoxDesc {
+                    width: 100%;
+                    font-size: 0.8rem
+                }
+            }
+
+            .ctrlBox {
+                width: 50px;
+                height: 50px;
+            }
+        }
+    }
 
 
     .row {
@@ -274,6 +330,7 @@
 
     .listItemRow {
         height: 90px !important;
+        width: 100% !important;
         .thumbBox {
             height: 100%;
             width: 120px;
@@ -281,6 +338,9 @@
                 height: 90px;
                 width: 120px;
             }
+        }
+        .mat-list-item-content {
+            width: 100% !important;
         }
 
         .contentBox {

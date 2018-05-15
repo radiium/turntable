@@ -110,8 +110,11 @@ import { VideoListComponent } from './components/video-list/video-list.component
     ],
     providers: [],
 })
+
 export class SharedModule {
-    constructor(matIconRegistry: MatIconRegistry, domSanitizer: DomSanitizer){
-        matIconRegistry.addSvgIconSet(domSanitizer.bypassSecurityTrustResourceUrl('./assets/icons/mdi.svg')); // Or whatever path you placed mdi.svg at
+    constructor(
+    matIconRegistry: MatIconRegistry,
+    domSanitizer: DomSanitizer) {
+        matIconRegistry.addSvgIconSet(domSanitizer.bypassSecurityTrustResourceUrl('./assets/icons/mdi.svg'));
     }
 }

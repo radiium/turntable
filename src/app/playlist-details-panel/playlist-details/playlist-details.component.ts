@@ -151,7 +151,6 @@ export class PlaylistDetailsComponent implements OnInit {
         const plList = _.filter(this.playlistsList, (pl) => {
             return pl.id !== this.playlist.id;
         });
-        debugger
         if (video && plList && plList.length > 0) {
             const dialogRef = this.dialog.open(SelectPlaylistDialogComponent, {
                 height: 'auto',

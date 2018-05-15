@@ -4,6 +4,7 @@ import * as autoScroll from 'dom-autoscroller';
 import * as _ from 'lodash';
 
 import { DataService } from 'core/services/data.service';
+import { PlayerStateService } from 'core/services/player-state.service';
 import { User,
          Playlist,
          Video,
@@ -30,6 +31,7 @@ export class DndService implements OnDestroy {
     playlistsList: Array<Playlist>;
     searchResults: SearchResults;
     onPlayList: Array<Video>;
+    historicList: Array<Video>;
     selectedTab: number;
 
     plPanelState: PlayerPanelState;
@@ -38,7 +40,8 @@ export class DndService implements OnDestroy {
 
     constructor(
         private dragulaService: DragulaService,
-        private dataService: DataService) {
+        private dataService: DataService,
+        private playerStateService: PlayerStateService) {
 
         this.dataService.playlistsList$.subscribe((data) => {
             this.playlistsList = data;
@@ -54,6 +57,10 @@ export class DndService implements OnDestroy {
 
         this.dataService.appState$.subscribe((data) => {
             this.selectedTab = data.selectedTab;
+        });
+
+        this.playerStateService.playerPanelState$.subscribe((data) => {
+            this.historicList = data.historiclist;
         });
     }
 
@@ -194,7 +201,11 @@ export class DndService implements OnDestroy {
             if (el.dataset.from === 'search') {
                 video = (<Video>_.find(_.union.apply(null, this.searchResults.results), {id: el.dataset.vid}));
 
-            // Video to drop a playlist
+            // Video to drop from historicList
+            } else if (el.dataset.from === 'historic') {
+                video = _.find(this.historicList, {id: el.dataset.vid});
+
+                // Video to drop a playlist
             } else {
                 plSourceIndex = _.findIndex(this.playlistsList, {id: el.dataset.plid});
                 video = _.find(this.playlistsList[plSourceIndex].videolist, {id: el.dataset.vid});

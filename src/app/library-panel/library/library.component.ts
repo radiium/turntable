@@ -66,6 +66,10 @@ export class LibraryComponent implements OnInit {
         });
     }
 
+    // Change display type
+    changeDisplayType(evt) {
+        this.dataService.setDisplayType(evt.value);
+    }
 
     // Edit the selected playlist
     showPlaylist(playlist: Playlist) {

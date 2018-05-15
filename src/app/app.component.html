@@ -12,9 +12,12 @@
         <button class="toolbarBtn menuBtn btnHover" (click)="setIsMiniSideBar()">
             <!--
             <fa class="sidenavBtnIco" [name]="'bars'" [size]="2" [rotate]="!appState.isMiniSideBar ? 90 : 0"></fa>
-            -->
             <fa *ngIf="appState.isMiniSideBar" class="sidenavBtnIco" [name]="'caret-right'" [size]="3"></fa>
             <fa *ngIf="!appState.isMiniSideBar" class="sidenavBtnIco" [name]="'caret-left'" [size]="3"></fa>
+            -->
+
+            <mat-icon *ngIf="appState.isMiniSideBar"  class="sidenavBtnIco" svgIcon="chevron-left"></mat-icon>
+            <mat-icon *ngIf="!appState.isMiniSideBar" class="sidenavBtnIco" svgIcon="chevron-down"></mat-icon>
         </button>
 
         <!-- App title -->
@@ -33,20 +36,6 @@
         <div class="flexSpacer"></div>
 
         <button (click)="setShowPlayerBar()">playerbar</button>
-
-        <!-- Display playlists type -->
-        <div class="displayTypeBtn">
-            <mat-button-toggle-group *ngIf="appState.selectedTab === 3" #group="matButtonToggleGroup"
-                [ngModel]="appState.displayType" (change)="changeDisplayType($event)">
-                <mat-button-toggle value="grid"  checked="appState.displayType.value === 'grid'">
-                    <fa [name]="'th'" [size]="1"></fa>
-                </mat-button-toggle>
-                <mat-button-toggle value="list" checked="appState.displayType.value === 'list'">
-                    <fa [name]="'list'" [size]="1"></fa>
-                </mat-button-toggle>
-            </mat-button-toggle-group>
-        </div>
-
 
         <div *ngIf="user" class="toolbarBtn userImg">
             <img src="{{ user.img }}" alt="">

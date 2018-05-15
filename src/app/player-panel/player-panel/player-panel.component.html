@@ -248,7 +248,12 @@
         <div [hidden]="onDisplayPl !== 'historic'" class="scrollContainer plPlayerList" #plPlayerList >
             <app-video-list
                 [videoList]="playerPanelState.historiclist"
-                [displayType]="'list'">
+                [displayType]="'list'"
+                [draggable]="true"
+                [dragBagName]="'searchResultsBag'"
+                [attrCopy]="true"
+                [attrAcceptDrop]="false"
+                [attrFrom]="'historic'">
                 <ng-template #itemControl let-video="video" let-index="index">
                 </ng-template>
             </app-video-list>

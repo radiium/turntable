@@ -110,7 +110,7 @@ export class YoutubeService {
                         playlistList.forEach((playlist: Playlist) => {
                             this.playlistList.push(playlist);
                         });
-                        this.playlistList = _.uniqBy(this.playlistList, 'id')
+                        this.playlistList = _.uniqBy(this.playlistList, 'id');
                         this.dataService.setPlaylistsList(this.playlistList);
                     },
                     (err) => console.log('Something went wrong:', err),
@@ -126,7 +126,7 @@ export class YoutubeService {
         // Get all playlist items for each playlist
         const aRequest = [];
         playlistList['items'].forEach((playlist, i) => {
-            let items = [];
+            const items = [];
             const req = this.playlistItemsService.getPlaylistItems(playlist.id, '').pipe(
 
                 // Recursive call for playlist items

@@ -14,6 +14,17 @@
             <span>subscription</span>
         </button>
         <div class="flexSpacer"></div>
+
+        <!-- Display playlists type -->
+        <mat-button-toggle-group class="displayTypeBtn" *ngIf="appState.selectedTab === 3" #group="matButtonToggleGroup"
+            [ngModel]="appState.displayType" (change)="changeDisplayType($event)">
+            <mat-button-toggle value="grid"  checked="appState.displayType.value === 'grid'">
+                <fa [name]="'th'" [size]="1"></fa>
+            </mat-button-toggle>
+            <mat-button-toggle value="list" checked="appState.displayType.value === 'list'">
+                <fa [name]="'list'" [size]="1"></fa>
+            </mat-button-toggle>
+        </mat-button-toggle-group>
     </app-toolbar>
 
     <div class="spacer"></div>
@@ -21,6 +32,7 @@
 
     <!-- Playlists list -->
     <div id="contentItemBox" [hidden]="onDisplay !== 'playlistList'">
+
         <div *ngIf="appState.displayType === 'grid'" class="plGrid">
             <div *ngFor="let pl of playlistsList; let i = index" class="plItem">
 
@@ -83,8 +95,63 @@
         </div>
 
         <!-- Display list -->
+        <div *ngIf="appState.displayType === 'list'" class="plList">
+
+            <div *ngFor="let pl of playlistsList; let i = index" class="plListItem">
+                <div class="rowBorder" [class.local]="pl.isLocal" [class.notlocal]="!pl.isLocal"></div>
+                <div class="thumbBox">
+                    <img *ngIf="pl.thumbUrl === ''" src="assets/images/pochette.png" alt="">
+                    <img *ngIf="pl.thumbUrl !== ''" src="{{ pl.thumbUrl }}" alt="">
+                </div>
+
+                <div class="counterBox">
+                    <div class="">{{ pl.videolist.length }}</div>
+                    <div>track<span *ngIf="pl.videolist.length > 1">s</span></div>
+                </div>
+
+                <div class="infosBox flexSpacer">
+                    <div class="infosBoxTitle noOverflow">{{ pl.title }}</div>
+                    <div class="infosBoxDesc noOverflow" *ngIf="pl.description">{{ pl.description }}</div>
+                </div>
+
+                <div class="ctrlBox">
+                    <button [matMenuTriggerFor]="menu" class="toolbarBtn plListItemBtn btnHover">
+                        <fa class="menuBtnIco" [name]="'bars'" [size]="3"></fa>
+                    </button>
+
+                    <mat-menu #menu="matMenu">
+                        <!-- Play -->
+                        <button mat-menu-item (click)="playPlaylist(pl)">
+                            <mat-icon svgIcon="playlist-play"></mat-icon>
+                            <span>Play all</span>
+                        </button>
+
+                        <!-- Add to current -->
+                        <button mat-menu-item (click)="addToCurrentPlaylist(pl)">
+                            <mat-icon svgIcon="playlist-plus"></mat-icon>
+                            <span>Add to player list</span>
+                        </button>
+
+                        <!-- Show -->
+                        <button mat-menu-item (click)="showPlaylist(pl)">
+                            <mat-icon svgIcon="eye-outline"></mat-icon>
+                            <span>Show details</span>
+                        </button>
+
+                        <!-- Remove -->
+                        <button mat-menu-item (click)="deletePlaylist(pl)" >
+                            <mat-icon svgIcon="delete-forever"></mat-icon>
+                            <span>Delete</span>
+                        </button>
+                    </mat-menu>
+                </div>
+            </div>
+        </div>
+
+        <!-- Display list
         <mat-list *ngIf="appState.displayType === 'list'" role="list">
-        <mat-list-item class="listItemRow row"role="listitem"*ngFor="let pl of playlistsList; let i = index">
+
+        <mat-list-item class="listItemRow row" role="listitem" *ngFor="let pl of playlistsList; let i = index">
             <div class="rowBorder" [class.local]="pl.isLocal" [class.notlocal]="!pl.isLocal"></div>
             <div class="thumbBox">
                 <div *ngIf="pl.thumbUrl === ''" class=""><img src="assets/images/pochette.png" alt=""></div>
@@ -92,7 +159,7 @@
             </div>
 
             <div class="contentBox">
-                <div class="infosBox">
+                <div class="infosBox flexSpacer">
                     <div class="infosBoxTitle">{{ pl.title }}</div>
                     <div class="" *ngIf="pl.description">{{ pl.description }}</div>
                     <div class="">{{ pl.videolist.length }} video<span *ngIf="pl.videolist.length > 1">s</span></div>
@@ -101,24 +168,40 @@
                 <span class="spacerToolbar"></span>
 
                 <div class="ctrlBox">
-                    <!-- Play playlist button -->
-                    <button  class="playBtn" (click)="playPlaylist(pl)">
-                    <fa aria-label="Edit playlist" [name]="'play'" [size]="2"></fa>
+                    <button [matMenuTriggerFor]="menu" class="menuBtn">
+                        <fa class="menuBtnIco" [name]="'bars'" [size]="2"></fa>
                     </button>
 
-                    <!-- Edit playlist button -->
-                    <button class="editBtn" (click)="editPlaylist(pl)">
-                    <fa aria-label="Edit playlist" [name]="'pencil'" [size]="2"></fa>
-                    </button>
+                    <mat-menu #menu="matMenu">
+                        <!-- Play --
+                        <button mat-menu-item (click)="playPlaylist(pl)">
+                            <mat-icon svgIcon="playlist-play"></mat-icon>
+                            <span>Play all</span>
+                        </button>
 
-                    <!-- Remove playlist button -->
-                    <button class="deleteBtn"(click)="deletePlaylist(pl)" >
-                    <fa aria-label="Delete playlist" [name]="'trash'" [size]="2"></fa>
-                    </button>
+                        <!-- Add to current --
+                        <button mat-menu-item (click)="addToCurrentPlaylist(pl)">
+                            <mat-icon svgIcon="playlist-plus"></mat-icon>
+                            <span>Add to player list</span>
+                        </button>
+
+                        <!-- Show --
+                        <button mat-menu-item (click)="showPlaylist(pl)">
+                            <mat-icon svgIcon="eye-outline"></mat-icon>
+                            <span>Show details</span>
+                        </button>
+
+                        <!-- Remove --
+                        <button mat-menu-item (click)="deletePlaylist(pl)" >
+                            <mat-icon svgIcon="delete-forever"></mat-icon>
+                            <span>Delete</span>
+                        </button>
+                    </mat-menu>
                 </div>
             </div>
         </mat-list-item>
-        </mat-list>
+    </mat-list>
+    -->
     </div>
 
 

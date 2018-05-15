@@ -20,7 +20,8 @@ export class PlaylistItemsApiService {
     getPlaylistItems(playlistId: string, pageToken: string) {
 
         if (typeof pageToken === 'undefined') {
-            return empty();
+            // return empty();
+            return Observable.empty();
         }
 
         let queryUrl =

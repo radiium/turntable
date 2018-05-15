@@ -67,6 +67,7 @@ export class AppStateService {
             this.electron.ipcRenderer.on('get-app-state', (event, data) => {
                 // console.log('get-app-state', data);
                 if (data && Object.keys(data).length > 0) {
+                    data.loading = false;
                     this.dataService.setAppState(data);
                 }
             });

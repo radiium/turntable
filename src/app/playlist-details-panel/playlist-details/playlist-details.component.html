@@ -66,11 +66,13 @@
                         <span>Play</span>
                     </button>
                     <button mat-menu-item (click)="addToQueue(video)">
-                        <mat-icon svgIcon="library-plus"></mat-icon>
+                        <mat-icon svgIcon="playlist-plus"></mat-icon>
                         <span>Add to player list</span>
                     </button>
-                    <button mat-menu-item (click)="addToPlaylist(video)">
-                        <mat-icon svgIcon="playlist-plus"></mat-icon>
+                    <button mat-menu-item (click)="addToPlaylist(video)"
+                        [disabled]="!playlistList && playlistsList?.length < 2"
+                        [class.disabled]="!playlistList && playlistsList?.length < 2">
+                        <mat-icon svgIcon="library-plus"></mat-icon>
                         <span>Copy to playlist(s)</span>
                     </button>
                 </mat-menu>
