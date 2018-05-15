@@ -21,7 +21,7 @@
 
     <!-- Playlists list -->
     <div id="contentItemBox" [hidden]="onDisplay !== 'playlistList'">
-        <div *ngIf="displayType === 'grid'" class="plGrid">
+        <div *ngIf="appState.displayType === 'grid'" class="plGrid">
             <div *ngFor="let pl of playlistsList; let i = index" class="plItem">
 
                 <div class="plItemBox">
@@ -83,7 +83,7 @@
         </div>
 
         <!-- Display list -->
-        <mat-list *ngIf="displayType === 'list'" role="list">
+        <mat-list *ngIf="appState.displayType === 'list'" role="list">
         <mat-list-item class="listItemRow row"role="listitem"*ngFor="let pl of playlistsList; let i = index">
             <div class="rowBorder" [class.local]="pl.isLocal" [class.notlocal]="!pl.isLocal"></div>
             <div class="thumbBox">

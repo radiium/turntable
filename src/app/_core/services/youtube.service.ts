@@ -12,18 +12,6 @@ import { mergeMap,
          map,
          flatMap,
          catchError } from 'rxjs/operators';
-/*
-import 'rxjs/add/observable/forkJoin';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/last';
-import 'rxjs/add/operator/scan';
-import 'rxjs/add/operator/pluck';
-import 'rxjs/add/operator/expand';
-import 'rxjs/add/operator/mergeMap';
-*/
-
-
-
 import * as moment from 'moment';
 import * as _ from 'lodash';
 
@@ -122,6 +110,7 @@ export class YoutubeService {
                         playlistList.forEach((playlist: Playlist) => {
                             this.playlistList.push(playlist);
                         });
+                        this.playlistList = _.uniqBy(this.playlistList, 'id')
                         this.dataService.setPlaylistsList(this.playlistList);
                     },
                     (err) => console.log('Something went wrong:', err),
@@ -129,7 +118,7 @@ export class YoutubeService {
                 );
             },
             (err) => console.log('Something went wrong:', err),
-            () => this.dataService.setLoading(false)
+            () => {}
         );
     }
 
@@ -223,18 +212,6 @@ export class YoutubeService {
     }
 
     // Parse and convert playlist object from YouTube api to app playlist object
-    /* Playlist resource model
-    id: string,
-    title: string,
-    description: string,
-    thumbUrl: string,
-    thumbH: number,
-    thumbW: number,
-    publishedAt: string,
-    privacyStatus: string,
-    isLocal: boolean,
-    videolist?: Video[]): Playlist
-    */
     parsePlaylist(playlist: any, videolist?: Video[]) {
         return new Playlist(
             playlist.id,
@@ -251,13 +228,6 @@ export class YoutubeService {
     }
 
     // Parse and convert video object from YouTube api to app video object
-    /* Video resource model
-    this.id = id;
-    this.title = title;
-    this.description = description;
-    this.thumbUrl = thumbUrl;
-    this.duration = duration;
-    */
     parseVideo(video: any) {
         return new Video(
             video.id,

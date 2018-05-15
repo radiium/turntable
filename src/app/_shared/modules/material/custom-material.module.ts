@@ -34,39 +34,6 @@ import {
 
 @NgModule({
     imports: [
-        /*
-        CommonModule,
-        BrowserModule,
-
-        MatAutocompleteModule,
-        MatButtonModule,
-        MatButtonToggleModule,
-        MatCardModule,
-        MatCheckboxModule,
-        MatChipsModule,
-        MatDatepickerModule,
-        MatDialogModule,
-        MatExpansionModule,
-        MatGridListModule,
-        MatIconModule,
-        MatInputModule,
-        MatListModule,
-        MatMenuModule,
-        MatPaginatorModule,
-        MatProgressBarModule,
-        MatProgressSpinnerModule,
-        MatRadioModule,
-        MatSelectModule,
-        MatSidenavModule,
-        MatSliderModule,
-        MatSlideToggleModule,
-        MatSnackBarModule,
-        MatSortModule,
-        MatTableModule,
-        MatTabsModule,
-        MatToolbarModule,
-        MatTooltipModule,
-        */
     ],
     exports: [
         CommonModule,
@@ -99,6 +66,6 @@ import {
         MatToolbarModule,
         MatTooltipModule,
     ],
-        declarations: []
+    declarations: []
 })
 export class CustomMaterialModule { }

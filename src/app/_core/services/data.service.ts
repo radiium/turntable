@@ -3,7 +3,8 @@ import { Subject ,  BehaviorSubject } from 'rxjs';
 import { ElectronService } from 'ngx-electron';
 import * as _ from 'lodash';
 
-import { User, Playlist, Video, Suggests, SearchResults } from 'core/models';
+import { User, Playlist, Video, Suggests, SearchResults, AppState } from 'core/models';
+
 @Injectable()
 export class DataService {
 
@@ -13,29 +14,9 @@ export class DataService {
     public  user$ = this.user.asObservable();
 
 
-    // Langage (en or fr)
-    private langage  = new BehaviorSubject<any>('en');
-    public  langage$ = this.langage.asObservable();
-
-
-    // Theme (light or dark)
-    private theme  = new BehaviorSubject<any>('dark');
-    public  theme$ = this.theme.asObservable();
-
-
-    // Display Type (grid or list)
-    private displayType  = new BehaviorSubject<any>('grid');
-    public  displayType$ = this.displayType.asObservable();
-
-
-    // Selected tabs
-    private selectedTab  = new BehaviorSubject<any>(1);
-    public  selectedTab$ = this.selectedTab.asObservable();
-
-
-    // Loading spinner
-    private loading  = new Subject<any>();
-    public  loading$ = this.loading.asObservable();
+    // App state
+    private appState  = new BehaviorSubject<any>(new AppState());
+    public  appState$ = this.appState.asObservable();
 
 
     // On drag event
@@ -85,20 +66,20 @@ export class DataService {
         this.user.next(_.cloneDeep(data));
     }
 
-    setLangage(data) {
-        this.langage.next(data);
+    setAppState(data) {
+        this.appState.next(data);
     }
-
-    setTheme(data) {
-        this.theme.next(data);
-    }
-
-    setDisplayType(data) {
-        this.displayType.next(data);
-    }
-
-    setSelectedTab(data) {
-        this.selectedTab.next(data);
+    setLangage(data)       { this.setAppStateKey('langage', data); }
+    setTheme(data)         { this.setAppStateKey('theme', data); }
+    setDisplayType(data)   { this.setAppStateKey('displayType', data); }
+    setSelectedTab(data)   { this.setAppStateKey('selectedTab', data); }
+    setShowPlayerBar(data) { this.setAppStateKey('showPlayerBar', data); }
+    setLoading(data)       { this.setAppStateKey('loading', data); }
+    setIsMiniSideBar(data) { this.setAppStateKey('isMiniSideBar', data); }
+    setAppStateKey(key: string, value: any) {
+        const appState = this.appState.getValue();
+        appState[key] = value;
+        this.setAppState(appState);
     }
 
     setSuggestsResult(data) {
@@ -127,10 +108,6 @@ export class DataService {
 
     setHistoricList(data) {
         this.historicList.next(_.cloneDeep(data));
-    }
-
-    setLoading(data) {
-        this.loading.next(data);
     }
 
     setIsOnDrag(data) {

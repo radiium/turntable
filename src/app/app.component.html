@@ -1,5 +1,5 @@
 
-<div class="appWrapper theme-{{ theme }}">
+<div class="appWrapper theme-{{ appState.theme }}">
 
 
     <!-- window title bar -->
@@ -9,12 +9,12 @@
     <!-- Toolbar -->
     <mat-toolbar class="appToolbar">
 
-        <button class="toolbarBtn menuBtn btnHover" (click)="miniNav = !miniNav">
+        <button class="toolbarBtn menuBtn btnHover" (click)="setIsMiniSideBar()">
             <!--
-            <fa class="sidenavBtnIco" [name]="'bars'" [size]="2" [rotate]="!miniNav ? 90 : 0"></fa>
+            <fa class="sidenavBtnIco" [name]="'bars'" [size]="2" [rotate]="!appState.isMiniSideBar ? 90 : 0"></fa>
             -->
-            <fa *ngIf="miniNav" class="sidenavBtnIco" [name]="'caret-right'" [size]="3"></fa>
-            <fa *ngIf="!miniNav" class="sidenavBtnIco" [name]="'caret-left'" [size]="3"></fa>
+            <fa *ngIf="appState.isMiniSideBar" class="sidenavBtnIco" [name]="'caret-right'" [size]="3"></fa>
+            <fa *ngIf="!appState.isMiniSideBar" class="sidenavBtnIco" [name]="'caret-left'" [size]="3"></fa>
         </button>
 
         <!-- App title -->
@@ -32,16 +32,16 @@
         <app-search-bar></app-search-bar>
         <div class="flexSpacer"></div>
 
-        <button (click)="isOnPlay = !isOnPlay">playerbar</button>
+        <button (click)="setShowPlayerBar()">playerbar</button>
 
         <!-- Display playlists type -->
         <div class="displayTypeBtn">
-            <mat-button-toggle-group *ngIf="selectedTab === 3" #group="matButtonToggleGroup"
-                [ngModel]="displayType" (change)="changeDisplayType($event)">
-                <mat-button-toggle value="grid"  checked="displayType.value === 'grid'">
+            <mat-button-toggle-group *ngIf="appState.selectedTab === 3" #group="matButtonToggleGroup"
+                [ngModel]="appState.displayType" (change)="changeDisplayType($event)">
+                <mat-button-toggle value="grid"  checked="appState.displayType.value === 'grid'">
                     <fa [name]="'th'" [size]="1"></fa>
                 </mat-button-toggle>
-                <mat-button-toggle value="list" checked="displayType.value === 'list'">
+                <mat-button-toggle value="list" checked="appState.displayType.value === 'list'">
                     <fa [name]="'list'" [size]="1"></fa>
                 </mat-button-toggle>
             </mat-button-toggle-group>
@@ -80,16 +80,16 @@
     <mat-sidenav-container class="appContainer flexSpacer" autosize>
 
         <!-- Sidenav mini -->
-        <mat-sidenav  *ngIf="miniNav" #sidenav [mode]="'side'" opened="true" class="appSidenav miniNav">
+        <mat-sidenav  *ngIf="appState.isMiniSideBar" #sidenav [mode]="'side'" opened="true" class="appSidenav miniNav">
             <div class="flexItem sectionLabel"></div>
-            <button class="sidenavBtn btnHover" (click)="onSelectTab(1)" [class.activ]="selectedTab === 1 || selectedTab === 2">
+            <button class="sidenavBtn btnHover" (click)="onSelectTab(1)" [class.activ]="appState.selectedTab === 1 || selectedTab === 2">
                 <fa class="sidenavBtnIco" [name]="'home'" [size]="1"></fa>
             </button>
-            <button class="sidenavBtn btnHover" (click)="onSelectTab(3)" [class.activ]="selectedTab === 3">
+            <button class="sidenavBtn btnHover" (click)="onSelectTab(3)" [class.activ]="appState.selectedTab === 3">
                 <fa class="sidenavBtnIco" [name]="'th-list'" [size]="1"></fa>
                 <span class="sidenavBtnLabel">Library</span>
             </button>
-            <button class="sidenavBtn btnHover" (click)="onSelectTab(5)" [class.activ]="selectedTab === 5">
+            <button class="sidenavBtn btnHover" (click)="onSelectTab(5)" [class.activ]="appState.selectedTab === 5">
                 <fa class="sidenavBtnIco" [name]="'play-circle'" [size]="1"></fa>
             </button>
 
@@ -102,25 +102,25 @@
 
 
         <!-- Sidenav normal -->
-        <mat-sidenav *ngIf="!miniNav" #sidenav [mode]="'side'" opened="true" class="appSidenav" [class.miniNav]="miniNav">
+        <mat-sidenav *ngIf="!appState.isMiniSideBar" #sidenav [mode]="'side'" opened="true" class="appSidenav" [class.miniNav]="appState.isMiniSideBar">
 
             <!--
-            <div *ngIf="!miniNav">
+            <div *ngIf="!appState.isMiniSideBar">
             -->
                 <!-- Navigation -->
                 <div class="flexItem sectionLabel">
                     <span>Navigation</span>
                 </div>
                 <div class="flexItem">
-                    <button class="sidenavBtn btnHover" (click)="onSelectTab(1)" [class.activ]="selectedTab === 1 || selectedTab === 2">
+                    <button class="sidenavBtn btnHover" (click)="onSelectTab(1)" [class.activ]="appState.selectedTab === 1 || selectedTab === 2">
                         <fa class="sidenavBtnIco" [name]="'home'" [size]="1"></fa>
                         <span class="sidenavBtnLabel">Home</span>
                     </button>
-                    <button class="sidenavBtn btnHover" (click)="onSelectTab(3)" [class.activ]="selectedTab === 3">
+                    <button class="sidenavBtn btnHover" (click)="onSelectTab(3)" [class.activ]="appState.selectedTab === 3">
                         <fa class="sidenavBtnIco" [name]="'th-list'" [size]="1"></fa>
                         <span class="sidenavBtnLabel">Library</span>
                     </button>
-                    <button class="sidenavBtn btnHover" (click)="onSelectTab(5)" [class.activ]="selectedTab === 5">
+                    <button class="sidenavBtn btnHover" (click)="onSelectTab(5)" [class.activ]="appState.selectedTab === 5">
                         <fa class="sidenavBtnIco" [name]="'play-circle'" [size]="1"></fa>
                         <span class="sidenavBtnLabel">Player</span>
                     </button>
@@ -130,7 +130,7 @@
                 <div class="flexItem sectionLabel">
                     <span>Playlists</span>
                     <div class="flexSpacer"></div>
-                    <button *ngIf="user" mat-menu-item (click)="refreshYTPlaylists()" [class.rotate]="loading" class="refreshBtn btnHover">
+                    <button *ngIf="user" mat-menu-item (click)="refreshYTPlaylists()" [class.rotate]="appState.loading" class="refreshBtn btnHover">
                     <fa class="refreshBtnIco" [name]="'refresh'" [size]="1"></fa>
                     </button>
                 </div>
@@ -139,7 +139,7 @@
 
                         <!-- Playlist list item button -->
                         <button class="sidenavBtn btnHover plDrop" *ngFor="let pl of playlistsList"
-                            [class.activ]="selectedTab === 4 && pl.id === onSelectPLID"
+                            [class.activ]="appState.selectedTab === 4 && pl.id === onSelectPLID"
                             [dragula]="'searchResultsBag'"
                             [attr.data-acceptdrop]="true"
                             [attr.data-hideshadow]="true"
@@ -163,16 +163,16 @@
             <!--
             </div>
 
-            <div *ngIf="miniNav">
+            <div *ngIf="appState.isMiniSideBar">
                 <div class="flexItem sectionLabel"><span></span></div>
                 <div class="flexItem">
-                    <button class="sidenavBtnMini btnHover" (click)="onSelectTab(1)" [class.activ]="selectedTab === 1 || selectedTab === 2">
+                    <button class="sidenavBtnMini btnHover" (click)="onSelectTab(1)" [class.activ]="appState.selectedTab === 1 || selectedTab === 2">
                         <fa class="sidenavBtnIcoMini" [name]="'home'" [size]="1"></fa>
                     </button>
-                    <button class="sidenavBtnMini btnHover" (click)="onSelectTab(3)" [class.activ]="selectedTab === 3 || selectedTab === 4">
+                    <button class="sidenavBtnMini btnHover" (click)="onSelectTab(3)" [class.activ]="appState.selectedTab === 3 || selectedTab === 4">
                         <fa class="sidenavBtnIcoMini" [name]="'th-list'" [size]="1"></fa>
                     </button>
-                    <button class="sidenavBtnMini btnHover" (click)="onSelectTab(5)" [class.activ]="selectedTab === 5">
+                    <button class="sidenavBtnMini btnHover" (click)="onSelectTab(5)" [class.activ]="appState.selectedTab === 5">
                         <fa class="sidenavBtnIcoMini" [name]="'play-circle'" [size]="1"></fa>
                     </button>
                 </div>
@@ -190,24 +190,24 @@
         <!-- Content -->
         <mat-sidenav-content class="appContent">
 
-            <div *ngIf="loading" class="appLoader">
+            <div *ngIf="appState.loading" class="appLoader">
                 <mat-spinner></mat-spinner>
             </div>
 
             <!-- Content -->
-            <div class="content flexSpacer" [class.withPlayerBar]="isOnPlay">
-                <app-home             [hidden]="selectedTab !== 1"></app-home>
-                <app-search-results   [hidden]="selectedTab !== 2"></app-search-results>
-                <app-library          [hidden]="selectedTab !== 3"></app-library>
-                <app-playlist-details [hidden]="selectedTab !== 4"></app-playlist-details>
-                <app-player-panel     [hidden]="selectedTab !== 5"></app-player-panel>
-                <app-settings         [hidden]="selectedTab !== 6"></app-settings>
+            <div class="content flexSpacer" [class.withPlayerBar]="appState.showPlayerBar">
+                <app-home             [hidden]="appState.selectedTab !== 1"></app-home>
+                <app-search-results   [hidden]="appState.selectedTab !== 2"></app-search-results>
+                <app-library          [hidden]="appState.selectedTab !== 3"></app-library>
+                <app-playlist-details [hidden]="appState.selectedTab !== 4"></app-playlist-details>
+                <app-player-panel     [hidden]="appState.selectedTab !== 5"></app-player-panel>
+                <app-settings         [hidden]="appState.selectedTab !== 6"></app-settings>
             </div>
 
             <!--
             *ngIf="isOnPlay"
             -->
-            <app-player-bar *ngIf="isOnPlay && selectedTab !== 5" class="playerBar" [class.toggleBar]="!isOnPlay"></app-player-bar>
+            <app-player-bar *ngIf="appState.showPlayerBar" class="playerBar" [class.toggleBar]="!appState.showPlayerBar"></app-player-bar>
 
         </mat-sidenav-content>
     </mat-sidenav-container>

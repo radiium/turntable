@@ -1,18 +1,5 @@
 import { Video } from './video.model';
 
-/*
-export class Playlist {
-    constructor(
-        public id: string,
-        public name: string,
-        public videolist: Array<Video>) {
-            this.id = id;
-            this.name = name;
-            this.videolist = videolist;
-    }
-}
-*/
-
 export class Playlist {
 
     constructor(

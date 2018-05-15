@@ -94,12 +94,6 @@ export class SearchBarComponent implements OnInit {
             this.YTService.searchVideos(suggest);
             this.dataService.setSelectedTab(2);
         }
-        /*
-        else {
-            // this.dataService.setSearchResults([]);
-            this.dataService.setSearchResultNextPage(null);
-        }
-        */
     }
 
     // Handle keyboard key
@@ -110,14 +104,12 @@ export class SearchBarComponent implements OnInit {
             // ascii of arrow up
             case 38:
                 this.arrowkeyLocation--;
-                console.log(this.suggestsResult[this.arrowkeyLocation]);
                 this.checkArrowKeyLocation();
                 break;
 
             // ascii of arrow down
             case 40:
                 this.arrowkeyLocation++;
-                console.log(this.suggestsResult[this.arrowkeyLocation]);
                 this.checkArrowKeyLocation();
                 break;
 

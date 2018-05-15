@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
 
 import * as _ from 'lodash';
 
-import { Video, Playlist } from 'core/models';
+import { Video, Playlist, AppState } from 'core/models';
 import { PlayerStateService } from 'core/services/player-state.service';
 import { CreatePlaylistDialogComponent } from 'shared/dialogs/create-playlist-dialog/create-playlist-dialog.component';
 import { DeletePlaylistDialogComponent } from 'shared/dialogs/delete-playlist-dialog/delete-playlist-dialog.component';
@@ -29,8 +29,8 @@ export class LibraryComponent implements OnInit {
     playlistsList: Array<Playlist> = [];
     onSelectPL: Playlist;
     onPlayList: Array<Video>;
-    selectedTab: number;
-    displayType: string;
+
+    appState: AppState;
 
     onDisplay: string;
 
@@ -38,23 +38,16 @@ export class LibraryComponent implements OnInit {
     private dataService: DataService,
     private appStateService: AppStateService,
     public playerState: PlayerStateService,
-    public dialog: MatDialog,
-    private appState: AppStateService) {
+    public dialog: MatDialog) {
     }
 
     ngOnInit() {
 
         this.onDisplay = 'playlistList';
 
-        // Get current selected tab
-        this.dataService.selectedTab$.subscribe((data) => {
-            this.selectedTab = data;
-        });
-
-        // Get current display type
-        this.displayType = 'grid';
-        this.dataService.displayType$.subscribe((data) => {
-            this.displayType = data;
+        // App State
+        this.dataService.appState$.subscribe((data) => {
+            this.appState = data;
         });
 
         // Get playlist list

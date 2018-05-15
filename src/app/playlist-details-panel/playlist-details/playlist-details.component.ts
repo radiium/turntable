@@ -4,7 +4,7 @@ import { DragulaService } from 'ng2-dragula/ng2-dragula';
 import * as _ from 'lodash';
 import * as moment from 'moment';
 
-import { Playlist, Video } from 'core/models';
+import { Playlist, Video, AppState } from 'core/models';
 import { DataService } from 'core/services/data.service';
 import { AppStateService } from 'core/services/app-state.service';
 import { PlayerStateService } from 'core/services/player-state.service';
@@ -31,7 +31,7 @@ export class PlaylistDetailsComponent implements OnInit {
     description: string;
     privacyStatus: string;
 
-    selectedTab;
+    appState: AppState;
 
     @ViewChild('pldScrollContainer') set container(scrollContainer: ElementRef) {
         this.dndService.plDetailContainer = scrollContainer;
@@ -63,9 +63,9 @@ export class PlaylistDetailsComponent implements OnInit {
             this.playlistsList = data;
         });
 
-        // Get selected tab
-        this.dataService.selectedTab$.subscribe((data) => {
-            this.selectedTab = data;
+        // App State
+        this.dataService.appState$.subscribe((data) => {
+            this.appState = data;
         });
     }
 

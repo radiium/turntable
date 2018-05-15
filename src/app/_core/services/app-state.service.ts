@@ -14,11 +14,7 @@ export class AppStateService {
     isFirstLoad: boolean;
 
     playlistsList;
-
-    langage = '';
-    theme = '';
-    displayType = '';
-    selectedTab = null;
+    appState: AppState;
 
     constructor(
     private electron: ElectronService,
@@ -37,34 +33,18 @@ export class AppStateService {
             this.storeLocalPlaylists();
         });
 
-        this.dataService.langage$.subscribe((data) => {
-            this.langage = data;
+
+        this.dataService.appState$.subscribe((data) => {
+            this.appState = data;
             this.saveAppState();
         });
 
-        this.dataService.theme$.subscribe((data) => {
-            this.theme = data;
-            this.saveAppState();
-        });
 
-        this.dataService.displayType$.subscribe((data) => {
-            this.displayType = data;
-            this.saveAppState();
-        });
-
-        this.dataService.selectedTab$.subscribe((data) => {
-            this.selectedTab = data;
-            // this.saveAppState();
-        });
-
-        const defaultAppState = new AppState(
-            null, null, null, null,
-        );
     }
 
     loadAppState() {
         if (this.isElectronApp) {
-            console.log('===== loadAppState');
+            // console.log('===== loadAppState');
             this.isFirstLoad = false;
 
             // Retrieve previous user on start up and reload app
@@ -85,18 +65,9 @@ export class AppStateService {
             // Get app state
             this.electron.ipcRenderer.send('send-get-app-state');
             this.electron.ipcRenderer.on('get-app-state', (event, data) => {
-                console.log('get-app-state', data);
+                // console.log('get-app-state', data);
                 if (data && Object.keys(data).length > 0) {
-                    const appState = new AppState(
-                        data.langage,
-                        data.theme,
-                        data.displayType,
-                        data.selectedTab
-                    );
-                    this.dataService.setLangage(appState.langage);
-                    this.dataService.setTheme(appState.theme);
-                    this.dataService.setDisplayType(appState.displayType);
-                    this.dataService.setSelectedTab(appState.selectedTab);
+                    this.dataService.setAppState(data);
                 }
             });
 
@@ -106,22 +77,16 @@ export class AppStateService {
     }
 
     saveAppState() {
-        console.log('===== saveAppState');
+        // console.log('===== saveAppState');
         if (this.isElectronApp && !this.isFirstLoad) {
-            const appState = new AppState(
-                this.langage,
-                this.theme,
-                this.displayType,
-                this.selectedTab
-            );
-            this.electron.ipcRenderer.send('send-save-app-state', appState);
+            this.electron.ipcRenderer.send('send-save-app-state', this.appState);
         }
     }
 
     // Retrieve and store local playlist
     storeLocalPlaylists() {
         if (this.isElectronApp && !this.isFirstLoad) {
-            console.log('===== storeLocalPlaylists');
+            // console.log('===== storeLocalPlaylists');
             const localPlaylists = new Array<Playlist>();
             this.playlistsList.forEach(playlist => {
                 if (playlist.isLocal) {
@@ -134,7 +99,7 @@ export class AppStateService {
 
     loadLocalPlaylist() {
         if (this.isElectronApp) {
-            console.log('===== loadLocalPlaylist');
+            // console.log('===== loadLocalPlaylist');
             this.Electron.ipcRenderer.send('send-get-local-playlists');
             this.Electron.ipcRenderer.on('get-local-playlists', (event, localPlaylist) => {
                 if (localPlaylist) {
@@ -150,7 +115,7 @@ export class AppStateService {
 
     removeLocalPlaylist() {
         if (this.isElectronApp) {
-            console.log('===== removeLocalPlaylist');
+            // console.log('===== removeLocalPlaylist');
             this.Electron.ipcRenderer.send('send-remove-local-playlists');
             const pll = new Array<Playlist>();
             this.playlistsList.forEach(playlist => {

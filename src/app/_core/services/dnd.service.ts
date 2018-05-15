@@ -52,8 +52,8 @@ export class DndService implements OnDestroy {
             this.onPlayList = data;
         });
 
-        this.dataService.selectedTab$.subscribe((data) => {
-            this.selectedTab = data;
+        this.dataService.appState$.subscribe((data) => {
+            this.selectedTab = data.selectedTab;
         });
     }
 

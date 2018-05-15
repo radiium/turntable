@@ -245,16 +245,6 @@ export class PlayerStateService {
         }
     }
 
-
-    /*
-    side: PlayerSide.LEFT,
-        playerId: undefined,
-        video: undefined,
-        isReady: false,
-        state: -1,
-        volume: 100,
-        speed: 1,
-    */
     playOnPlayer(video: Video, side?: PlayerSide) {
         const panelState = this.playerPanelState.getValue();
         const isFirstPlay = panelState.isFirstPlay;

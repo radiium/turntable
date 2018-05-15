@@ -5,7 +5,7 @@ import { ElectronService } from 'ngx-electron';
 import { ConfirmDialogComponent } from 'shared/dialogs/confirm-dialog/confirm-dialog.component';
 import { DataService } from 'core/services/data.service';
 import { AppStateService } from 'core/services/app-state.service';
-import { Playlist } from 'core/models';
+import { Playlist, AppState } from 'core/models';
 
 @Component({
   selector: 'app-settings',
@@ -18,13 +18,13 @@ export class SettingsComponent implements OnInit {
 
     playlistsList;
 
-    langage: String;
+    appState: AppState;
+
     langagesList = [
         { value: 'en', viewValue: 'English' },
         { value: 'fr', viewValue: 'Français' }
     ];
 
-    theme: String;
     themesList = [
         'dark',
         'light'
@@ -41,12 +41,9 @@ export class SettingsComponent implements OnInit {
             this.playlistsList = pll;
         });
 
-        this.dataService.langage$.subscribe((data) => {
-            this.langage = data;
-        });
-
-        this.dataService.theme$.subscribe((data) => {
-            this.theme = data;
+        // App State
+        this.dataService.appState$.subscribe((data) => {
+            this.appState = data;
         });
     }
 

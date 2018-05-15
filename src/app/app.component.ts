@@ -7,7 +7,7 @@ import { OverlayContainer } from '@angular/cdk/overlay';
 import { MatSnackBar } from '@angular/material';
 import * as _ from 'lodash';
 
-import { User, Video, Playlist } from 'core/models';
+import { User, Video, Playlist, AppState } from 'core/models';
 import { AppStateService } from 'core/services/app-state.service';
 import { AuthService } from 'core/services/auth.service';
 import { DataService } from 'core/services/data.service';
@@ -32,19 +32,17 @@ import * as testPlaylist from './test-playlist.json';
 export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
 
     user: User;
-    selectedTab: number;
+    appState: AppState;
     prevSelectedTab: number;
 
     playlistsList: Array<Playlist>;
     onSelectPLID: string;
 
-    displayType: any;
     loading: any = false;
-    theme: any;
 
     @ViewChild('plScrollContainer') scrollContainer: ElementRef;
     isOnDrag: boolean;
-    isOnPlay: boolean;
+    showPlayerBar: boolean;
     scroll: any;
 
     miniNav = false;
@@ -53,7 +51,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     constructor(
     public snackBar: MatSnackBar,
     public  dialog: MatDialog,
-    private appState: AppStateService,
+    private appStateService: AppStateService,
     private dataService: DataService,
     private Electron: ElectronService,
     private authService: AuthService,
@@ -69,21 +67,19 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
             }
         });
 
-        // Selected tab
-        this.dataService.selectedTab$.subscribe((data) => {
-            this.prevSelectedTab = this.selectedTab;
-            this.selectedTab = data;
+        // App state
+        this.appState = new AppState();
+        this.dataService.appState$.subscribe((data) => {
+            this.prevSelectedTab = this.appState.selectedTab;
+            this.appState = data;
+            this.initMatOverlay();
         });
+
 
         // Playlists
         this.playlistsList = new Array<Playlist>();
         this.dataService.playlistsList$.subscribe((data) => {
             this.playlistsList = data;
-        });
-
-        // Playlists display type
-        this.dataService.displayType$.subscribe((data) => {
-            this.displayType = data;
         });
 
         // Get selected playlist
@@ -92,19 +88,9 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
             this.onSelectPLID = pl ? pl.id : '';
         });
 
-        // Loading
-        this.dataService.loading$.subscribe((data) => {
-            this.loading = data;
-        });
-
-        // Theme
-        this.dataService.theme$.subscribe((data) => {
-            this.theme = data;
-            this.initMatOverlay();
-        });
 
         this.dndService.initDnd();
-        this.appState.loadAppState();
+        this.appStateService.loadAppState();
 
         // Load a local playlist for development
         if (isDevMode()) {
@@ -137,9 +123,9 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
             classList.remove(darkTheme);
         }
 
-        if (this.theme === 'dark') {
+        if (this.appState.theme === 'dark') {
             classList.add(darkTheme);
-        } else if (this.theme === 'light') {
+        } else if (this.appState.theme === 'light') {
             classList.add(lightTheme);
         }
     }
@@ -174,6 +160,14 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
         this.dataService.setDisplayType(evt.value);
     }
 
+    setIsMiniSideBar() {
+        this.dataService.setIsMiniSideBar(!this.appState.isMiniSideBar);
+    }
+
+    setShowPlayerBar() {
+        this.dataService.setShowPlayerBar(!this.appState.showPlayerBar);
+    }
+
     refreshYTPlaylists() {
         this.YTService.fetchYoutubePlaylist();
     }
@@ -181,7 +175,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     addPlaylist() {
         const dialogRef = this.dialog.open(CreatePlaylistDialogComponent, {
             height: 'auto',
-            panelClass: 'theme-' + this.theme
+            panelClass: 'theme-' + this.appState.theme
         });
         dialogRef.afterClosed().subscribe(result => {
             if (result) {
@@ -204,9 +198,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
 
     @HostListener('window:resize', ['$event'])
     onResize(event) {
-
     }
-
 
     // Load a local playlist for development
     insertFakeData() {

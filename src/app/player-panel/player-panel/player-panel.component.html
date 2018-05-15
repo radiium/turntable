@@ -172,9 +172,13 @@
             <app-toolbar [height]="'40px'" [margin]="'0 5px 0 0'">
                 <button class="toolbarBtn textBtn btnHover" (click)="isDoublePlayer = !isDoublePlayer">Full Size</button>
             </app-toolbar>
-        </div>
 
-        {{ playerPanelState.playlist | totalduration }} ---- {{ playerPanelState.playlist | totalduration | duration }}
+            <app-toolbar [height]="'40px'" [margin]="'0 5px 0 0'">
+                <button class="toolbarBtn textBtn btnHover">
+                    <mat-icon svgIcon="fullscreen"></mat-icon>
+                </button>
+            </app-toolbar>
+        </div>
 
 
         <!-- Onplay list -->
