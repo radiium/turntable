@@ -145,7 +145,7 @@ export class PlayerPanelComponent implements OnInit {
     }
 
     move(from, to) {
-        if ( to === from ) {
+        if (to === from) {
             return;
         }
 
@@ -199,8 +199,8 @@ export class PlayerPanelComponent implements OnInit {
     }
 
     onNearEnd(side: string) {
-        console.log('=> Player ' + side + ' is near end!');
-        this.playerState.playVideoAuto();
+        // console.log('=> Player ' + side + ' is near end!');
+        this.playerState.playVideoAuto(side);
 
     }
 }

@@ -117,8 +117,10 @@ export class PlayerControlComponent implements OnInit, OnChanges {
         if (changes.playerState && changes.playerState.currentValue) {
 
             if (changes.playerState.currentValue.video) {
+                if (this.videoDuration !== changes.playerState.currentValue.video.duration) {
+                    this.isSendedNearEnd = false;
+                }
                 this.videoDuration = changes.playerState.currentValue.video.duration;
-                this.isSendedNearEnd = false;
             }
 
             if (this.playerState.state === 1) {
@@ -231,6 +233,8 @@ export class PlayerControlComponent implements OnInit, OnChanges {
     }
 
     initTimer() {
+        this.stopTimer();
+
         this.timer$ = timer(0, 1000);
         this.sub = this.timer$.subscribe((t) => {
             const currentTime = this.player.getCurrentTime();

@@ -126,7 +126,7 @@
         </div>
 
 
-        <!-- Player left -->
+        <!-- Player right -->
         <div class="playerWrapper" [hidden]="!isDoublePlayer" [style.width]="!isDoublePlayer ? '0' : ''">
             <app-player [hidden]="!isDoublePlayer"
                 class="player playerRow"
@@ -135,7 +135,7 @@
                 (stateChange)="onStateChangeRight($event)">
             </app-player>
             <app-player-control
-                [side]="'left'"
+                [side]="'right'"
                 [player]="playerRight"
                 [playerState]="playerStateRight"
                 (nearEnd)="onNearEnd($event)"

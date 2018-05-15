@@ -132,6 +132,10 @@ export class PlayerStateService {
         this.setPlayerStateLeft(playerState);
         this.currentPlayerLeft.setVolume(volume);
     }
+    getVolumeLeft() {
+        const playerState = this.playerStateLeft.getValue();
+        return playerState.volume;
+    }
     setSpeedLeft(speed: number) {
         const playerState = this.playerStateLeft.getValue();
         playerState.speed = speed;
@@ -161,6 +165,10 @@ export class PlayerStateService {
         this.setPlayerStateRight(playerState);
         this.currentPlayerRight.setVolume(volume);
     }
+    getVolumeRight() {
+        const playerState = this.playerStateRight.getValue();
+        return playerState.volume;
+    }
     setSpeedRight(speed: number) {
         const playerState = this.playerStateRight.getValue();
         playerState.speed = speed;
@@ -178,10 +186,7 @@ export class PlayerStateService {
     }
 
     playVideo(video: Video, index?: number) {
-        console.log('playVideo');
-
         const panelState = this.playerPanelState.getValue();
-
         let videoToPlay;
         if (index !== undefined) {
             videoToPlay = panelState.playlist[index];
@@ -196,8 +201,8 @@ export class PlayerStateService {
     }
 
 
-    playVideoAuto() {
-        /*
+    playVideoAuto(side) {
+
         const panelState = this.playerPanelState.getValue();
 
         const playlist = panelState.playlist;
@@ -205,81 +210,127 @@ export class PlayerStateService {
         const isRandom = panelState.isRandom;
         const isRepeat = panelState.isRepeat;
 
-        let videoToPlay = null;
+        if (playlist.length > 0) {
 
-        if (isRandom && !isRepeat) {
-            videoToPlay = playlist[Math.floor(Math.random() * playlist.length)];
-            _.remove(playlist, { id: videoToPlay.id });
-            historiclist.unshift(videoToPlay);
+            // Get video to play
+            let videoToPlay = null;
+            if (isRandom && !isRepeat) {
+                videoToPlay = playlist[Math.floor(Math.random() * playlist.length)];
+                _.remove(playlist, { id: videoToPlay.id });
+                historiclist.unshift(videoToPlay);
 
-        } else if (isRandom && isRepeat || !isRandom && isRepeat) {
-            videoToPlay = historiclist[0];
+            } else if (isRandom && isRepeat || !isRandom && isRepeat) {
+                videoToPlay = historiclist[0];
 
-        } else if (!isRandom && !isRepeat) {
-            videoToPlay = playlist[0];
-            _.remove(playlist, { id: videoToPlay.id });
-            historiclist.unshift(videoToPlay);
-        }
-
-        // Update player panel playlist
-        panelState.playlist     = playlist;
-        panelState.historiclist = historiclist;
-        this.setPlayerPanelState(panelState);
-
-        this.playOnPlayer(videoToPlay);
-        */
-
-        console.log('start video right');
-        let count = 0;
-        const timer$ = timer(0, 250);
-        const sub = timer$.subscribe((t) => {
-            count++;
-            console.log('down volume');
-            if (count === 56) {
-                console.log('video left ended');
-                sub.unsubscribe();
+            } else if (!isRandom && !isRepeat) {
+                videoToPlay = playlist[0];
+                _.remove(playlist, { id: videoToPlay.id });
+                historiclist.unshift(videoToPlay);
             }
-        });
+
+            // Update player panel playlist
+            panelState.playlist     = playlist;
+            panelState.historiclist = historiclist;
+            this.setPlayerPanelState(panelState);
+
+
+            // Play video on the oposite player
+            if (side === PlayerSide.LEFT) {
+                this.playOnPlayer(videoToPlay, PlayerSide.RIGHT);
+            } else if (side === PlayerSide.RIGHT) {
+                this.playOnPlayer(videoToPlay, PlayerSide.LEFT);
+            }
+        } else {
+            console.log('...Playlist empty');
+        }
     }
 
 
-    playOnPlayer(video: Video) {
+    /*
+    side: PlayerSide.LEFT,
+        playerId: undefined,
+        video: undefined,
+        isReady: false,
+        state: -1,
+        volume: 100,
+        speed: 1,
+    */
+    playOnPlayer(video: Video, side?: PlayerSide) {
         const panelState = this.playerPanelState.getValue();
-
-        const playerStateLeft  = this.playerStateLeft.getValue();
-        const playerStateright = this.playerStateLeft.getValue();
         const isFirstPlay = panelState.isFirstPlay;
 
-        // debugger
-        const playerLeft = this.getPlayerById(playerStateLeft.playerId);
+        const playerStateLeft  = this.playerStateLeft.getValue();
+        const playerStateRight = this.playerStateRight.getValue();
+        const playerLeft  = this.getPlayerById(playerStateLeft.playerId);
+        const playerRight = this.getPlayerById(playerStateRight.playerId);
 
-        if (playerLeft && playerStateLeft) {
-            playerLeft.cueVideoById(video.id);
-            playerLeft.playVideo();
+        if (playerLeft  && playerStateLeft
+        &&  playerRight && playerStateRight) {
 
-            console.log('PLAYER LEFT => ', playerLeft);
-            console.log('DURATION => ', playerLeft.getDuration());
+            // Auto play
+            if (side) {
 
-            playerStateLeft.video = video;
-            this.setPlayerStateLeft(playerStateLeft);
+                if (side === PlayerSide.RIGHT) {
+                    console.log('AutoPlay at right');
+                    playerStateRight.video = video;
+                    this.setPlayerStateRight(playerStateRight);
+
+                    playerRight.cueVideoById(video.id);
+                    playerRight.playVideo();
+
+                    this.timerPlayer(playerLeft, PlayerSide.LEFT);
+
+                } else if (side === PlayerSide.LEFT) {
+                    console.log('AutoPlay at left');
+                    playerStateLeft.video = video;
+                    this.setPlayerStateLeft(playerStateLeft);
+
+                    playerLeft.cueVideoById(video.id);
+                    playerLeft.playVideo();
+
+                    this.timerPlayer(playerRight, PlayerSide.RIGHT);
+                }
+
+            // Force play
+            } else {
+                // playerStateLeft.state !== 1 &&
+                if (playerStateRight.state === 1) {
+                    playerRight.cueVideoById(video.id);
+                    playerRight.playVideo();
+                    playerStateRight.video = video;
+                    this.setPlayerStateLeft(playerStateRight);
+                } else {
+                    playerLeft.cueVideoById(video.id);
+                    playerLeft.playVideo();
+                    playerStateLeft.video = video;
+                    this.setPlayerStateLeft(playerStateLeft);
+                }
+            }
         }
-        /*
-        // First play
-        if (isFirstPlay && !isLeftOnPlay && !isRightOnPlay) {
+    }
 
+    timerPlayer(player, side: PlayerSide) {
 
-        // All player stopped
-        } else if (!isFirstPlay && !isLeftOnPlay && !isRightOnPlay) {
+        let count = 0;
+        const timer$ = timer(0, 250);
 
+        const sub = timer$.subscribe((t) => {
+            count++;
 
-        // Player left on play
-        } else if (!isFirstPlay && isLeftOnPlay && !isRightOnPlay) {
+            if (side === PlayerSide.LEFT) {
+                this.setVolumeLeft(this.getVolumeLeft() - 0.5);
 
+            } else if (side === PlayerSide.RIGHT) {
+                this.setVolumeRight(this.getVolumeRight() - 0.5);
+            }
 
-        // Player right on play
-        } else if (!isFirstPlay && !isLeftOnPlay && isRightOnPlay) {
-
-        }
-        */
+            if (count === 56) {
+                console.log('=> VIDEO "' + side + '" ENDED');
+                player.stopVideo();
+                this.setVolumeLeft(100);
+                this.setVolumeRight(100);
+                sub.unsubscribe();
+            }
+        });
     }
 }

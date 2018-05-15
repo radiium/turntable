@@ -15,9 +15,6 @@ export class TotalDurationPipe implements PipeTransform {
             return totalDuration += video.duration;
         });
 
-        if (args) {
-            console.log(totalDuration, videolist)
-        }
         return totalDuration;
     }
 }

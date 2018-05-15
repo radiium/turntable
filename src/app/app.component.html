@@ -207,7 +207,7 @@
             <!--
             *ngIf="isOnPlay"
             -->
-            <app-player-bar *ngIf="isOnPlay" class="playerBar" [class.toggleBar]="!isOnPlay"></app-player-bar>
+            <app-player-bar *ngIf="isOnPlay && selectedTab !== 5" class="playerBar" [class.toggleBar]="!isOnPlay"></app-player-bar>
 
         </mat-sidenav-content>
     </mat-sidenav-container>
