@@ -11,7 +11,13 @@ export class TotalDurationPipe implements PipeTransform {
         }
 
         let totalDuration = 0;
-        _.each(videolist, (video) => totalDuration += video.duration);
+        _.each(videolist, (video) => {
+            return totalDuration += video.duration;
+        });
+
+        if (args) {
+            console.log(totalDuration, videolist)
+        }
         return totalDuration;
     }
 }

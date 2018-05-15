@@ -91,7 +91,7 @@ export class PlayerStateService {
             data = [data];
         }
         this.playerPanelState.getValue().playlist.push(..._.cloneDeep(data));
-        this.setPlayerPanelState(this.playerPanelState.getValue());
+        this.setPlayerPanelState(_.cloneDeep(this.playerPanelState.getValue()));
         this.dataService.setSelectedTab(5);
     }
 

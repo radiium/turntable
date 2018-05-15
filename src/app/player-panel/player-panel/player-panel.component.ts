@@ -120,7 +120,7 @@ export class PlayerPanelComponent implements OnInit {
     // Playlist control
     deleteVideo(video: Video, index: number) {
         this.playerPanelState.playlist.splice(index, 1);
-        this.playerState.setPlayerPanelState(this.playerPanelState);
+        this.playerState.setPlayerPanelState(_.cloneDeep(this.playerPanelState));
     }
 
     moveToTop(index: number) {
@@ -157,7 +157,7 @@ export class PlayerPanelComponent implements OnInit {
         }
 
         this.playerPanelState.playlist[to] = target;
-        this.dataService.setOnPlayList(this.playerPanelState.playlist);
+        this.playerState.setPlayerPanelState(_.cloneDeep(this.playerPanelState));
     }
 
     // ------------------------------------------------------------------------
