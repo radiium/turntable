@@ -1,3 +1,12 @@
+## v 1.1.0-beta (2017/12/18)
+
+### Updates
+* Updated to Angular 6 and rxjs 6
+* Change language: french or english
+* Theme design and icons
+* Navigation
+* Fix some bugs
+
 ## v 1.0.0-beta (2017/12/18)
 
 ### Updates
