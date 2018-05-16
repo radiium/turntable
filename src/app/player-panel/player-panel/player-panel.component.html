@@ -172,13 +172,15 @@
                 <app-toolbar [height]="'40px'" [margin]="'0 5px 0 0'">
                     <button class="toolbarBtn textBtn btnHover" (click)="appState.multiPlayer = !appState.multiPlayer">Full Size</button>
                 </app-toolbar>
+
+                Set player on fullscreen
+                <app-toolbar [height]="'40px'" [margin]="'0 5px 0 0'">
+                    <button class="toolbarBtn textBtn btnHover" (click)="setFulscreenPlayer()">
+                        <mat-icon svgIcon="fullscreen"></mat-icon>
+                    </button>
+                </app-toolbar>
             -->
 
-            <app-toolbar [height]="'40px'" [margin]="'0 5px 0 0'">
-                <button class="toolbarBtn textBtn btnHover" (click)="setFulscreenPlayer()">
-                    <mat-icon svgIcon="fullscreen"></mat-icon>
-                </button>
-            </app-toolbar>
         </div>
 
 
