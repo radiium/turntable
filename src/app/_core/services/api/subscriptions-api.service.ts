@@ -7,9 +7,9 @@ import { Observable } from 'rxjs';
 import { PUBLIC_KEY } from './public-key';
 
 @Injectable()
-export class ChannelsApiService {
+export class SubscriptionsApiService {
 
-    private ENDPOINT = 'https://www.googleapis.com/youtube/v3/channels';
+    private ENDPOINT = 'https://www.googleapis.com/youtube/v3/subscriptions';
     private maxResult = 50;
 
     constructor(
@@ -19,12 +19,11 @@ export class ChannelsApiService {
 
     // ------------------------------------------------------------------------
     // Get all playlist of user
-    getMyChannelId(userName): Observable<any> {
+    getMySubscriptions(): Observable<any> {
         const queryUrl =
             this.ENDPOINT +
-            '?key=' + PUBLIC_KEY +
-            'forUsername=' + userName +
-            '&part=id';
+            '?mine=true' +
+            '&part=snippet,contentDetails,subscriberSnippet,id';
 
             return this._http.get<any>(queryUrl, this.getHeaders());
     }

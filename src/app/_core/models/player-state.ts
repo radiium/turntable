@@ -1,5 +1,4 @@
-import { PlaylistItem } from './playlist-item.model';
-import { PlayerSide } from './player-side';
+import { PlaylistItem, PlayerSide } from './';
 
 export interface PlayerState {
     side: PlayerSide;

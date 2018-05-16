@@ -21,6 +21,8 @@ import { User,
          Playlist,
          SearchResults } from 'core/models';
 import { VideosApiService,
+         ChannelsApiService,
+         SubscriptionsApiService,
          PlaylistsApiService,
          PlaylistItemsApiService,
          SearchApiService,
@@ -31,6 +33,7 @@ import { DataService } from 'core/services/data.service';
 @Injectable()
 export class YoutubeService {
 
+    user: User;
     playlistList: Array<Playlist>;
     searchResults: SearchResults = {
         query: '',
@@ -42,6 +45,8 @@ export class YoutubeService {
     constructor(
     private playlistsService: PlaylistsApiService,
     private playlistItemsService: PlaylistItemsApiService,
+    private channelsApiService: ChannelsApiService,
+    private subsApiService: SubscriptionsApiService,
     private dataService: DataService,
     private searchService: SearchApiService,
     private videosService: VideosApiService,
@@ -54,6 +59,10 @@ export class YoutubeService {
 
         this.dataService.searchResults$.subscribe((data) => {
             this.searchResults = data;
+        });
+
+        this.dataService.user$.subscribe((data) => {
+            this.user = data;
         });
     }
 
@@ -98,7 +107,7 @@ export class YoutubeService {
 
     // Fetch and load user playlist(s) and his video(s)
     // Into playlistslist Observable
-    fetchYoutubePlaylist() {
+    fetchYoutubePlaylists() {
 
         this.dataService.setLoading(true);
 
@@ -114,7 +123,10 @@ export class YoutubeService {
                         this.dataService.setPlaylistsList(this.playlistList);
                     },
                     (err) => console.log('Something went wrong:', err),
-                    () => this.dataService.setLoading(false)
+                    () => {
+                        this.dataService.setLoading(false);
+                        // this.fetchYoutubeSubscriptions();
+                    }
                 );
             },
             (err) => console.log('Something went wrong:', err),
@@ -180,11 +192,25 @@ export class YoutubeService {
             );
 
             aRequest.push(req);
-
         });
 
         return aRequest;
     }
+
+    fetchYoutubeSubscriptions() {
+        this.channelsApiService.getMyChannelId(this.user.name).subscribe(data => {
+            console.log('getMyChannelId', data);
+        });
+
+        this.subsApiService.getMySubscriptions().subscribe(data => {
+            console.log('getMySubscriptions', data);
+        });
+    }
+
+
+
+    // UTILS
+
 
 
     // Get all video id from an array of playlist items

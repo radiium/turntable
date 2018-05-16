@@ -1,18 +1,20 @@
 <div id="libraryContainer" class="contentPanel">
 
     <app-toolbar [height]="'40px'" [margin]="'0 0 0 2px'">
-        <button
-            class="toolbarBtn textBtn btnHover"
-            (click)="onDisplay = 'playlistList'"
-            [class.activeUnderLine]="onDisplay === 'playlistList'">
-            <span>Playlists</span>
-        </button>
-        <button
-            class="toolbarBtn textBtn btnHover"
-            (click)="onDisplay = 'subscriptionList'"
-            [class.activeUnderLine]="onDisplay === 'subscriptionList'">
-            <span>subscription</span>
-        </button>
+        <!--
+            <button
+                class="toolbarBtn textBtn btnHover"
+                (click)="onDisplay = 'playlistList'"
+                [class.activeUnderLine]="onDisplay === 'playlistList'">
+                <span>Playlists</span>
+            </button>
+            <button
+                class="toolbarBtn textBtn btnHover"
+                (click)="onDisplay = 'subscriptionList'"
+                [class.activeUnderLine]="onDisplay === 'subscriptionList'">
+                <span>subscription</span>
+            </button>
+        -->
         <div class="flexSpacer"></div>
 
         <!-- Display playlists type -->
@@ -30,9 +32,12 @@
     <div class="spacer"></div>
 
 
-    <!-- Playlists list -->
-    <div id="contentItemBox" [hidden]="onDisplay !== 'playlistList'">
+    <!-- Playlists list
+    [hidden]="onDisplay !== 'playlistList'"
+    -->
+    <div id="contentItemBox">
 
+        <!-- Display GRID -->
         <div *ngIf="appState.displayType === 'grid'" class="plGrid">
             <div *ngFor="let pl of playlistsList; let i = index" class="plItem">
 
@@ -94,7 +99,7 @@
 
         </div>
 
-        <!-- Display list -->
+        <!-- Display LIST -->
         <div *ngIf="appState.displayType === 'list'" class="plList">
 
             <div *ngFor="let pl of playlistsList; let i = index" class="plListItem">
@@ -205,9 +210,10 @@
     </div>
 
 
-    <!-- Subscription list -->
-    <div id="contentItemBox" [hidden]="onDisplay !== 'playlistList'">
-        Hello subscription!!
-    </div>
+    <!-- Subscription list
+        <div id="contentItemBox" [hidden]="onDisplay !== 'playlistList'">
+            Hello subscription!!
+        </div>
+    -->
 
 </div>

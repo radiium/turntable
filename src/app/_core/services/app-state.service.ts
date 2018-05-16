@@ -56,7 +56,7 @@ export class AppStateService {
                         if (!resp['error']) {
                             this.dataService.setUser(user);
                             this.authService.storeToken(user.token);
-                            this.YTService.fetchYoutubePlaylist();
+                            this.YTService.fetchYoutubePlaylists();
                         }
                     });
                 }

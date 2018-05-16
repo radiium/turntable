@@ -5,6 +5,16 @@
         <input class="search" type="search" placeholder="Search videos..."
         (focus)="onFocus()"[formControl]="search">
         <fa class="searchIco" [name]="'search'" [size]="1" (click)="searchVideos(search.value)"></fa>
+
+        <!-- Search box setting
+            <button class="toolbarBtn btnHover" [matMenuTriggerFor]="menu" xPosition="'before'" yPosition="'above'">
+                <fa [name]="'sliders'" [size]="2"></fa>
+            </button>
+            <mat-menu #menu="matMenu">
+                <button mat-menu-item>Play</button>
+                <button mat-menu-item>Add to player list</button>
+            </mat-menu>
+        -->
     </div>
 
     <!-- Suggests box -->

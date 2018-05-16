@@ -25,14 +25,9 @@
         <span class="title">Turntable</span>
         </div>
 
-        <!-- Nav back button -->
-        <button (click)="onNavBack()" class="sidenavBtn returnBtn"
-        [disabled]="!prevSelectedTab" [class.btnHover]="prevSelectedTab" [class.disabled]="!prevSelectedTab">
-        <fa class="sidenavBtnIco" [name]="'angle-left'" [size]="5"></fa>
-        </button>
-
         <!-- Searchbar -->
         <app-search-bar></app-search-bar>
+
         <div class="flexSpacer"></div>
 
         <button (click)="setShowPlayerBar()">playerbar</button>

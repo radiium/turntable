@@ -1,5 +1,5 @@
 
-import { PlaylistItem } from './playlist-item.model';
+import { PlaylistItem } from './';
 
 export interface PlayerPanelState {
     isFirstPlay: boolean;

@@ -11,10 +11,12 @@ import { HttpClientService } from 'core/services/http/http-client.service';
 import { YoutubeService } from 'core/services/youtube.service';
 import { AuthService } from 'core/services/auth.service';
 import { PlaylistItemsApiService,
+         ChannelsApiService,
          PlaylistsApiService,
          VideosApiService,
          SearchApiService,
          SuggestApiService,
+         SubscriptionsApiService,
          UserInfosApiService } from 'core/services/api';
 
 // Others service
@@ -48,12 +50,14 @@ import { TimerService } from 'core/services/timer.service';
         // Youtube api service
         YoutubeService,
         AuthService,
+        ChannelsApiService,
         PlaylistItemsApiService,
         PlaylistsApiService,
         VideosApiService,
         SearchApiService,
         SuggestApiService,
         UserInfosApiService,
+        SubscriptionsApiService,
 
         // Others service
         PlayerStateService,

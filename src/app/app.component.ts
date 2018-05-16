@@ -33,7 +33,6 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
 
     user: User;
     appState: AppState;
-    prevSelectedTab: number;
 
     playlistsList: Array<Playlist>;
     onSelectPLID: string;
@@ -63,14 +62,13 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
         this.dataService.user$.subscribe((user) => {
             this.user = user;
             if (user !== null) {
-                this.YTService.fetchYoutubePlaylist();
+                this.YTService.fetchYoutubePlaylists();
             }
         });
 
         // App state
         this.appState = new AppState();
         this.dataService.appState$.subscribe((data) => {
-            this.prevSelectedTab = this.appState.selectedTab;
             this.appState = data;
             this.initMatOverlay();
         });
@@ -142,13 +140,8 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
         }
     }
 
-    onSelectTab(index) {
+    onSelectTab(index: number) {
         this.dataService.setSelectedTab(index);
-    }
-
-    onNavBack() {
-        this.dataService.setSelectedTab(this.prevSelectedTab);
-        this.prevSelectedTab = null;
     }
 
     selectPlaylist(pl: Playlist) {
@@ -165,7 +158,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     refreshYTPlaylists() {
-        this.YTService.fetchYoutubePlaylist();
+        this.YTService.fetchYoutubePlaylists();
     }
 
     addPlaylist() {
@@ -193,7 +186,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     @HostListener('window:resize', ['$event'])
-    onResize(event) {
+    onResize(event: Event) {
     }
 
     // Load a local playlist for development
