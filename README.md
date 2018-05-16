@@ -28,7 +28,7 @@
 
 ## Made with
 
-- [angular 6](https://angular.io/) and ![angular-cli](https://github.com/angular/angular-cli)
+- [angular 6](https://angular.io/) and [angular-cli](https://github.com/angular/angular-cli)
 - [angular material](https://material.angular.io/)
 - [ng2-youtube-player](https://github.com/orizens/ng2-youtube-player)
 - [ng2-dragula](https://github.com/valor-software/ng2-dragula)
