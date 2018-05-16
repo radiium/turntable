@@ -43,4 +43,4 @@
 
 ## License
 
-![MIT](LICENCE.md)
+[MIT](LICENCE.md)
