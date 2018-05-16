@@ -5,7 +5,7 @@ import { Observable ,  Subscription ,  Subject } from 'rxjs';
 import { EmptyObservable } from 'rxjs/observable/EmptyObservable';
 import * as _ from 'lodash';
 
-import { PlaylistItem, Playlist, PlayerState, PlayerPanelState } from 'core/models';
+import { PlaylistItem, Playlist, PlayerState, PlayerPanelState, AppState } from 'core/models';
 import { PlayerStateService } from 'core/services/player-state.service';
 import { DataService } from 'core/services/data.service';
 import { DndService } from 'core/services/dnd.service';
@@ -36,6 +36,7 @@ export class PlayerPanelComponent implements OnInit {
     // Cross fader controls
     crossFaderValue: number;
 
+    appState: AppState;
 
     constructor(
     // private cd: ChangeDetectorRef,
@@ -70,6 +71,10 @@ export class PlayerPanelComponent implements OnInit {
         });
         this.playerState.playerRight$.subscribe((data) => {
             this.playerRight = data;
+        });
+
+        this.dataService.appState$.subscribe((data) => {
+            this.appState = data;
         });
     }
 
@@ -201,6 +206,9 @@ export class PlayerPanelComponent implements OnInit {
     onNearEnd(side: string) {
         // console.log('=> Player ' + side + ' is near end!');
         this.playerState.playVideoAuto(side);
+    }
+
+    setFulscreenPlayer() {
 
     }
 }

@@ -68,4 +68,8 @@ export class SettingsComponent implements OnInit {
     onThemeChange(event) {
         this.dataService.setTheme(event.value);
     }
+
+    onMultiPlayerChange(event) {
+        this.dataService.setMultiPlayer(event.value);
+    }
 }

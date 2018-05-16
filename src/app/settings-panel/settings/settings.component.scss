@@ -48,6 +48,24 @@
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
+
+            .tabItemCol {
+                padding: 1.25em 0;
+                align-self: flex-start;
+                display: flex;
+                flex-direction: column;
+                label {
+                    margin-bottom: 10px;
+                }
+                .radioBtn {
+                    display: flex;
+                    flex-direction: column;
+                    .mat-radio-button {
+                        margin-bottom: 5px;
+                    }
+                }
+            }
+
             .tabItem {
                 align-self: flex-start;
                 display: flex;
@@ -66,15 +84,18 @@
             }
             .tabRow {
                 padding: 1.25em 0;
+                display: flex;
+                align-items: center;
+
+                .tabRowLabel {
+                    width: 170px;
+                }
                 .tabContentBtn {
                     box-shadow: none;
                     @include themify($themes) {
                         background-color: themed('grayDark');
                     }
                 }
-            }
-            .mat-input-container {
-
             }
         }
     }

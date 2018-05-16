@@ -1,13 +1,15 @@
 <div id="settingsContainer" class="tabContentCpnt">
 
     <div class="tabNav">
-        <button class="tabBtn" (click)="selTabSetting = 1" [class.activ]="selTabSetting === 1">General</button>
-        <button class="tabBtn" (click)="selTabSetting = 2" [class.activ]="selTabSetting === 2">Back up</button>
+            <button class="tabBtn" (click)="selTabSetting = 1" [class.activ]="selTabSetting === 1">General</button>
+            <button class="tabBtn" (click)="selTabSetting = 2" [class.activ]="selTabSetting === 2">Player</button>
+            <button class="tabBtn" (click)="selTabSetting = 3" [class.activ]="selTabSetting === 3">Back up</button>
     </div>
 
 
     <div class="tabContainer">
 
+        <!-- General Setting -->
         <div *ngIf="selTabSetting === 1" class="tabContent">
 
             <div class="tabItem">
@@ -18,8 +20,8 @@
                     </mat-option>
                     </mat-select>
                 </mat-form-field>
-                <span class="flagIcon" *ngIf="langage">
-                    <img [src]="'assets/icons/' + langage + '-flag.png'" alt="">
+                <span class="flagIcon" *ngIf="appState.langage">
+                    <img [src]="'assets/icons/' + appState.langage + '-flag.png'" alt="">
                 </span>
             </div>
 
@@ -31,36 +33,51 @@
                     </mat-option>
                     </mat-select>
                 </mat-form-field>
-                <span class="flagIcon" *ngIf="theme">
-                    <fa *ngIf="theme === 'light'" [name]="'sun-o'"  [size]="2"></fa>
-                    <fa *ngIf="theme === 'dark'"  [name]="'moon-o'" [size]="2"></fa>
+                <span class="flagIcon" *ngIf="appState.theme">
+                    <fa *ngIf="appState.theme === 'light'" [name]="'sun-o'"  [size]="2"></fa>
+                    <fa *ngIf="appState.theme === 'dark'"  [name]="'moon-o'" [size]="2"></fa>
                 </span>
             </div>
-
-            <div class="tabItem">
-                <label>Number of players</label>
-                <mat-radio-group>
-                    <mat-radio-button value="1">Single</mat-radio-button>
-                    <mat-radio-button value="2">Double</mat-radio-button>
-                </mat-radio-group>
-            </div>
-
         </div>
 
+        <!-- Player Setting -->
         <div *ngIf="selTabSetting === 2" class="tabContent">
 
+            <label>Disabled... coming soon!</label>
+
+            <div class="tabItemCol">
+                <label >Number of YT players</label>
+                <mat-radio-group class="radioBtn" [(ngModel)]="appState.multiPlayer" (change)="onMultiPlayerChange($event)" disabled>
+                    <mat-radio-button [value]="false" color="warn">Single</mat-radio-button>
+                    <mat-radio-button [value]="true"  color="warn">Double</mat-radio-button>
+                </mat-radio-group>
+            </div>
+        </div>
+
+        <!-- backup Setting -->
+        <div *ngIf="selTabSetting === 3" class="tabContent">
+
+            <label>Disabled... coming soon!</label>
+
             <div class="tabItem tabRow">
-            <button class="tabContentBtn" mat-raised-button disabled>
-            <fa [name]="'external-link'" [size]="2"></fa>
-            Export all playlist
-            </button>
+                <label class="tabRowLabel">Export playlists</label>
+                <button class="tabContentBtn" mat-raised-button disabled>
+                <mat-icon svgIcon="database-export"></mat-icon>
+                </button>
             </div>
 
             <div class="tabItem tabRow">
-            <button class="tabContentBtn" mat-raised-button (click)="removeLocalPlaylist()" disabled>
-            <fa [name]="'trash'" [size]="1"></fa>
-            Remove local playlist
-            </button>
+                <label class="tabRowLabel">Import playlists</label>
+                <button class="tabContentBtn" mat-raised-button disabled>
+                <mat-icon svgIcon="database-import"></mat-icon>
+                </button>
+            </div>
+
+            <div class="tabItem tabRow">
+                <label class="tabRowLabel">Remove local playlist</label>
+                <button class="tabContentBtn" mat-raised-button (click)="removeLocalPlaylist()" disabled>
+                <mat-icon svgIcon="delete-sweep"></mat-icon>
+                </button>
             </div>
 
         </div>

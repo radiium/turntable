@@ -6,7 +6,8 @@ export class AppState {
     public selectedTab?: number,
     public showPlayerBar?: boolean,
     public loading?: boolean,
-    public isMiniSideBar?: boolean
+    public isMiniSideBar?: boolean,
+    public multiPlayer?: boolean
     ) {
         this.langage       = langage       || 'en';
         this.theme         = theme         || 'dark';
@@ -15,5 +16,6 @@ export class AppState {
         this.showPlayerBar = showPlayerBar || false;
         this.loading       = loading       || false;
         this.isMiniSideBar = isMiniSideBar || false;
+        this.multiPlayer   = multiPlayer   || true;
     }
 }

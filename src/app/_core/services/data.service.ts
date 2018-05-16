@@ -76,6 +76,7 @@ export class DataService {
     setShowPlayerBar(data) { this.setAppStateKey('showPlayerBar', data); }
     setLoading(data)       { this.setAppStateKey('loading', data); }
     setIsMiniSideBar(data) { this.setAppStateKey('isMiniSideBar', data); }
+    setMultiPlayer(data)   { this.setAppStateKey('multiPlayer', data); }
     setAppStateKey(key: string, value: any) {
         const appState = this.appState.getValue();
         appState[key] = value;

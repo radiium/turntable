@@ -1,7 +1,9 @@
 #playerPanelContainer {
+    margin-left: 2px;
+    margin-right: 2px;
 
     .playerContainer {
-        width: 100%;
+        width: calc(100% - 4px);
         height: 244px;
         margin-bottom: 5px;
         display: flex;
@@ -41,6 +43,7 @@
 
             &.fullSize {
                 width: auto;
+                margin: 0 0 0 2px;
             }
 
             .controlBox {
