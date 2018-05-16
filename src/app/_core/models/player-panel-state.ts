@@ -1,10 +1,10 @@
 
-import { Video } from './video.model';
+import { PlaylistItem } from './playlist-item.model';
 
 export interface PlayerPanelState {
     isFirstPlay: boolean;
     isRandom: boolean;
     isRepeat: boolean;
-    playlist: Array<Video>;
-    historiclist: Array<Video>;
+    playlist: Array<PlaylistItem>;
+    historiclist: Array<PlaylistItem>;
 }

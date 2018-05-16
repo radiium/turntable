@@ -16,7 +16,7 @@ import * as moment from 'moment';
 import * as _ from 'lodash';
 
 import { User,
-         Video,
+         PlaylistItem,
          Suggests,
          Playlist,
          SearchResults } from 'core/models';
@@ -212,7 +212,7 @@ export class YoutubeService {
     }
 
     // Parse and convert playlist object from YouTube api to app playlist object
-    parsePlaylist(playlist: any, videolist?: Video[]) {
+    parsePlaylist(playlist: any, videolist?: PlaylistItem[]) {
         return new Playlist(
             playlist.id,
             playlist.snippet.localized.title,
@@ -229,7 +229,7 @@ export class YoutubeService {
 
     // Parse and convert video object from YouTube api to app video object
     parseVideo(video: any) {
-        return new Video(
+        return new PlaylistItem(
             video.id,
             _.deburr(video.snippet.localized.title),
             _.deburr(video.snippet.localized.description),

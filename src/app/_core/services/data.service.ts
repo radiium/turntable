@@ -3,7 +3,7 @@ import { Subject ,  BehaviorSubject } from 'rxjs';
 import { ElectronService } from 'ngx-electron';
 import * as _ from 'lodash';
 
-import { User, Playlist, Video, Suggests, SearchResults, AppState } from 'core/models';
+import { User, Playlist, PlaylistItem, Suggests, SearchResults, AppState } from 'core/models';
 
 @Injectable()
 export class DataService {
@@ -50,12 +50,12 @@ export class DataService {
 
 
     // On play videolist
-    private onPlayList  = new Subject<Array<Video>>();
+    private onPlayList  = new Subject<Array<PlaylistItem>>();
     public  onPlayList$ = this.onPlayList.asObservable();
 
 
     // On play historic videolist
-    private historicList  = new Subject<Array<Video>>();
+    private historicList  = new Subject<Array<PlaylistItem>>();
     public  historicList$ = this.historicList.asObservable();
 
 

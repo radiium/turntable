@@ -7,7 +7,7 @@ import { OverlayContainer } from '@angular/cdk/overlay';
 import { MatSnackBar } from '@angular/material';
 import * as _ from 'lodash';
 
-import { User, Video, Playlist, AppState } from 'core/models';
+import { User, PlaylistItem, Playlist, AppState } from 'core/models';
 import { AppStateService } from 'core/services/app-state.service';
 import { AuthService } from 'core/services/auth.service';
 import { DataService } from 'core/services/data.service';
@@ -179,7 +179,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
                 const title = result.name;
                 const privacyStatus = 'private';
 
-                const videoList = new Array<Video>();
+                const videoList = new Array<PlaylistItem>();
                 const pl = new Playlist(
                     id, title, '', '', 0, 0, '',
                     privacyStatus, true,
@@ -206,9 +206,9 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
         this.playlistsList = <Playlist[]>arr;
         */
 
-        const videoList = new Array<Video>();
+        const videoList = new Array<PlaylistItem>();
         testPlaylist['testPlaylist']['videolist'].forEach(el => {
-            const video = new Video(
+            const video = new PlaylistItem(
                 el['id'],
                 el['title'],
                 el['description'],

@@ -1,4 +1,4 @@
-import { Video } from './';
+import { PlaylistItem } from './';
 
 export class Playlist {
 
@@ -12,7 +12,7 @@ export class Playlist {
         public publishedAt: string,
         public privacyStatus: string,
         public isLocal: boolean,
-        public videolist?: Array<Video>) {
+        public videolist?: Array<PlaylistItem>) {
             this.id            = id;
             this.title         = title;
             this.description   = description;

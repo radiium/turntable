@@ -10,7 +10,7 @@ import * as _ from 'lodash';
 import { UtilsService } from 'core/services/utils.service';
 import { DataService } from 'core/services/data.service';
 import { YoutubePlayerService } from 'shared/modules/youtube-player/youtube-player.service';
-import { Video, Playlist, Suggests,
+import { PlaylistItem, Playlist, Suggests,
     PlayerPanelState, PlayerState,
     PlayerSide } from 'core/models';
 
@@ -22,8 +22,8 @@ export class PlayerStateService {
         isFirstPlay: true,
         isRandom: false,
         isRepeat: false,
-        playlist: new Array<Video>(),
-        historiclist: new Array<Video>()
+        playlist: new Array<PlaylistItem>(),
+        historiclist: new Array<PlaylistItem>()
     };
     private playerPanelState  = new BehaviorSubject<PlayerPanelState>(this.playerPLStateDefault);
     public  playerPanelState$ = this.playerPanelState.asObservable();
@@ -80,7 +80,7 @@ export class PlayerStateService {
         this.playerPanelState.next(data);
     }
 
-    setPlaylist(videoList: Array<Video>) {
+    setPlaylist(videoList: Array<PlaylistItem>) {
         this.playerPanelState.getValue().playlist = _.cloneDeep(videoList);
         this.setPlayerPanelState(this.playerPanelState.getValue());
         this.dataService.setSelectedTab(5);
@@ -95,7 +95,7 @@ export class PlayerStateService {
         this.dataService.setSelectedTab(5);
     }
 
-    setHistoriclist(data: Array<Video>) {
+    setHistoriclist(data: Array<PlaylistItem>) {
         this.playerPanelState.getValue().historiclist = _.cloneDeep(data);
         this.setPlayerPanelState(this.playerPanelState.getValue());
     }
@@ -185,7 +185,7 @@ export class PlayerStateService {
         return false;
     }
 
-    playVideo(video: Video, index?: number) {
+    playVideo(video: PlaylistItem, index?: number) {
         const panelState = this.playerPanelState.getValue();
         let videoToPlay;
         if (index !== undefined) {
@@ -245,7 +245,7 @@ export class PlayerStateService {
         }
     }
 
-    playOnPlayer(video: Video, side?: PlayerSide) {
+    playOnPlayer(video: PlaylistItem, side?: PlayerSide) {
         const panelState = this.playerPanelState.getValue();
         const isFirstPlay = panelState.isFirstPlay;
 

@@ -4,7 +4,7 @@ import { Component, OnInit, Input, Output,
     ChangeDetectorRef, ContentChild, TemplateRef } from '@angular/core';
 
 import * as _ from 'lodash';
-import { Video } from 'core/models';
+import { PlaylistItem } from 'core/models';
 import { PlayerStateService } from 'core/services/player-state.service';
 
 @Component({
@@ -15,7 +15,7 @@ import { PlayerStateService } from 'core/services/player-state.service';
 })
 export class VideoListComponent implements OnInit, OnChanges {
 
-    @Input() videoList: Array<Video>;
+    @Input() videoList: Array<PlaylistItem>;
 
     @Input() dragBagName: String;
     @Input() useDragModel: boolean;
@@ -45,7 +45,7 @@ export class VideoListComponent implements OnInit, OnChanges {
         }
     }
 
-    playVideo(video: Video, index: number) {
+    playVideo(video: PlaylistItem, index: number) {
         if (this.dragBagName !== 'playerListBag') {
             index = undefined;
         }

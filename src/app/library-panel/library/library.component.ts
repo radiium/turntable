@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
 
 import * as _ from 'lodash';
 
-import { Video, Playlist, AppState } from 'core/models';
+import { PlaylistItem, Playlist, AppState } from 'core/models';
 import { PlayerStateService } from 'core/services/player-state.service';
 import { CreatePlaylistDialogComponent } from 'shared/dialogs/create-playlist-dialog/create-playlist-dialog.component';
 import { DeletePlaylistDialogComponent } from 'shared/dialogs/delete-playlist-dialog/delete-playlist-dialog.component';
@@ -28,7 +28,7 @@ export class LibraryComponent implements OnInit {
 
     playlistsList: Array<Playlist> = [];
     onSelectPL: Playlist;
-    onPlayList: Array<Video>;
+    onPlayList: Array<PlaylistItem>;
 
     appState: AppState;
 

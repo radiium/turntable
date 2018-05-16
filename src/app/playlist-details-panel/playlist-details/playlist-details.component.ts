@@ -4,7 +4,7 @@ import { DragulaService } from 'ng2-dragula/ng2-dragula';
 import * as _ from 'lodash';
 import * as moment from 'moment';
 
-import { Playlist, Video, AppState } from 'core/models';
+import { Playlist, PlaylistItem, AppState } from 'core/models';
 import { DataService } from 'core/services/data.service';
 import { AppStateService } from 'core/services/app-state.service';
 import { PlayerStateService } from 'core/services/player-state.service';
@@ -23,7 +23,7 @@ export class PlaylistDetailsComponent implements OnInit {
 
     playlist: Playlist;
     playlistsList: Array<Playlist>;
-    onPlayList: Array<Video>;
+    onPlayList: Array<PlaylistItem>;
 
     onEdit: boolean;
 
@@ -112,7 +112,7 @@ export class PlaylistDetailsComponent implements OnInit {
         });
     }
 
-    deleteVideo(video: Video, index: number) {
+    deleteVideo(video: PlaylistItem, index: number) {
         const dialogRef = this.dialog.open(ConfirmDialogComponent, {
             data: { title: 'Delete \'' + video.title + '\'?' }
         });
@@ -140,14 +140,14 @@ export class PlaylistDetailsComponent implements OnInit {
         }
     }
 
-    playVideo(video: Video) {
+    playVideo(video: PlaylistItem) {
         this.playerState.playVideo(video);
     }
-    addToQueue(video: Video) {
+    addToQueue(video: PlaylistItem) {
         this.playerState.addToPlaylist(video);
     }
 
-    addToPlaylist(video: Video) {
+    addToPlaylist(video: PlaylistItem) {
         const plList = _.filter(this.playlistsList, (pl) => {
             return pl.id !== this.playlist.id;
         });

@@ -7,7 +7,7 @@ import { DataService } from 'core/services/data.service';
 import { PlayerStateService } from 'core/services/player-state.service';
 import { User,
          Playlist,
-         Video,
+         PlaylistItem,
          Suggests,
          SearchResults,
          PlayerPanelState } from 'core/models';
@@ -30,8 +30,8 @@ export class DndService implements OnDestroy {
 
     playlistsList: Array<Playlist>;
     searchResults: SearchResults;
-    onPlayList: Array<Video>;
-    historicList: Array<Video>;
+    onPlayList: Array<PlaylistItem>;
+    historicList: Array<PlaylistItem>;
     selectedTab: number;
 
     plPanelState: PlayerPanelState;
@@ -193,13 +193,13 @@ export class DndService implements OnDestroy {
             */
         } else if (bagName === this.srBag) {
 
-            let video: Video;
+            let video: PlaylistItem;
             let plSourceIndex: number;
             let plTargetIndex: number;
 
             // Video to drop from searchresults
             if (el.dataset.from === 'search') {
-                video = (<Video>_.find(_.union.apply(null, this.searchResults.results), {id: el.dataset.vid}));
+                video = (<PlaylistItem>_.find(_.union.apply(null, this.searchResults.results), {id: el.dataset.vid}));
 
             // Video to drop from historicList
             } else if (el.dataset.from === 'historic') {

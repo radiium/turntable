@@ -1,5 +1,5 @@
 export * from './playlist.model';
-export * from './video.model';
+export * from './playlist-item.model';
 export * from './suggests.model';
 export * from './user.model';
 export * from './app-state.model';

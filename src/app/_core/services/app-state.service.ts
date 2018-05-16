@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { ElectronService } from 'ngx-electron';
 
-import { User, Playlist, Video, AppState } from '../models';
+import { User, Playlist, PlaylistItem, AppState } from '../models';
 import { AuthService } from 'core/services/auth.service';
 import { DataService } from 'core/services/data.service';
 import { YoutubeService } from 'core/services/youtube.service';
@@ -145,11 +145,11 @@ export class AppStateService {
         return playlist;
     }
 
-    fillVideoList(videoList: Array<Video>) {
-        const newVideoList = new Array<Video>();
+    fillVideoList(videoList: Array<PlaylistItem>) {
+        const newVideoList = new Array<PlaylistItem>();
         if (videoList || videoList.length > 0) {
             videoList.forEach(video => {
-                const newVideo = new Video(
+                const newVideo = new PlaylistItem(
                     video.id,
                     video.title,
                     video.description,

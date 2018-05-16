@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { empty } from 'rxjs/observable/empty';
+
 import { PUBLIC_KEY } from './public-key';
 import { HttpClientService } from 'core/services/http/http-client.service';
 
@@ -12,16 +13,15 @@ export class PlaylistItemsApiService {
     private maxResult = 50;
 
     constructor(
-    private _http: HttpClientService
-    ) { }
+    private _http: HttpClientService) { }
 
     // ------------------------------------------------------------------------
     // Get playlist items
     getPlaylistItems(playlistId: string, pageToken: string) {
 
         if (typeof pageToken === 'undefined') {
-            // return empty();
-            return Observable.empty();
+            return empty();
+            // return Observable.empty();
         }
 
         let queryUrl =

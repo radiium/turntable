@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { Video, Playlist } from 'core/models';
+import { PlaylistItem, Playlist } from 'core/models';
 
 
 @Injectable()
@@ -10,8 +10,8 @@ export class UtilsService {
     constructor() {}
 
     // Copy Playlist
-    copyPlaylist(playlist: Playlist, videolist?: Array<Video>) {
-        let vl = new Array<Video>();
+    copyPlaylist(playlist: Playlist, videolist?: Array<PlaylistItem>) {
+        let vl = new Array<PlaylistItem>();
         if (videolist) {
             vl = videolist.slice();
         } else {
@@ -32,7 +32,7 @@ export class UtilsService {
         return pl;
     }
 
-    isVideolistEqual(videolist1: Array<Video>, videolist2: Array<Video>) {
+    isVideolistEqual(videolist1: Array<PlaylistItem>, videolist2: Array<PlaylistItem>) {
         if (!videolist1 || !videolist2) {
             return false;
         }

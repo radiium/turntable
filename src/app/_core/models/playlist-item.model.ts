@@ -1,4 +1,4 @@
-export class Video {
+export class PlaylistItem {
     constructor(
         public id: string,
         public title: string,

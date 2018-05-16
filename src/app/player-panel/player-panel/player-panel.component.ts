@@ -5,7 +5,7 @@ import { Observable ,  Subscription ,  Subject } from 'rxjs';
 import { EmptyObservable } from 'rxjs/observable/EmptyObservable';
 import * as _ from 'lodash';
 
-import { Video, Playlist, PlayerState, PlayerPanelState } from 'core/models';
+import { PlaylistItem, Playlist, PlayerState, PlayerPanelState } from 'core/models';
 import { PlayerStateService } from 'core/services/player-state.service';
 import { DataService } from 'core/services/data.service';
 import { DndService } from 'core/services/dnd.service';
@@ -118,7 +118,7 @@ export class PlayerPanelComponent implements OnInit {
 
     // ------------------------------------------------------------------------
     // Playlist control
-    deleteVideo(video: Video, index: number) {
+    deleteVideo(video: PlaylistItem, index: number) {
         this.playerPanelState.playlist.splice(index, 1);
         this.playerState.setPlayerPanelState(_.cloneDeep(this.playerPanelState));
     }
@@ -184,7 +184,7 @@ export class PlayerPanelComponent implements OnInit {
         this.playerState.setVolumeRight(valRight);
     }
 
-    playVideo(video: Video, index: number) {
+    playVideo(video: PlaylistItem, index: number) {
         this.playerState.playVideo(video, index);
     }
 

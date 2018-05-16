@@ -3,7 +3,7 @@ import { FormControl } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import * as _ from 'lodash';
 
-import { Playlist, Video, SearchResults } from 'core/models';
+import { Playlist, PlaylistItem, SearchResults } from 'core/models';
 import { DataService } from 'core/services/data.service';
 import { YoutubeService } from 'core/services/youtube.service';
 import { PlayerStateService } from 'core/services/player-state.service';
@@ -19,8 +19,8 @@ export class SearchResultsComponent implements OnInit {
     formControl = new FormControl();
 
     searchResults: SearchResults;
-    onPlayList: Array<Video>;
-    videoList: Array<Video>;
+    onPlayList: Array<PlaylistItem>;
+    videoList: Array<PlaylistItem>;
     playlistList: Array<Playlist>;
     hasNextPage: boolean;
     loadNextPage: boolean;
@@ -31,7 +31,7 @@ export class SearchResultsComponent implements OnInit {
     private YTService: YoutubeService,
     private playerState: PlayerStateService,
     public dialog: MatDialog) {
-        this.videoList = new Array<Video>();
+        this.videoList = new Array<PlaylistItem>();
         this.dataService.searchResults$.subscribe((data) => {
             if (data.results.length === 1) {
                 this.videoList = data.results[0];
@@ -68,7 +68,7 @@ export class SearchResultsComponent implements OnInit {
         );
     }
 
-    addToPlaylist(video: Video) {
+    addToPlaylist(video: PlaylistItem) {
         if (video && this.playlistList && this.playlistList.length > 0) {
             const dialogRef = this.dialog.open(SelectPlaylistDialogComponent, {
                 height: 'auto',
@@ -88,10 +88,10 @@ export class SearchResultsComponent implements OnInit {
         }
     }
 
-    playVideo(video: Video) {
+    playVideo(video: PlaylistItem) {
         this.playerState.playVideo(video);
     }
-    addToQueue(video: Video) {
+    addToQueue(video: PlaylistItem) {
         this.playerState.addToPlaylist(video);
     }
 

@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core';
 
-import { Video } from 'core/models';
+import { PlaylistItem } from 'core/models';
 
 @Component({
     selector: 'app-video-list-item',
@@ -11,8 +11,8 @@ import { Video } from 'core/models';
 export class VideoListItemComponent implements OnInit {
 
     @Input() movable: boolean;
-    @Input() video: Video;
-    @Input() index: Video;
+    @Input() video: PlaylistItem;
+    @Input() index: PlaylistItem;
     @Input() height: string;
 
     imgHeight: string;
