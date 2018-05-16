@@ -2,7 +2,7 @@
 
     <app-toolbar [height]="'40px'" [margin]="'0 0 0 2px'" [padding]="'0 0 0 15px'">
         <div class="name noOverflow">{{ playlist?.title }}</div>
-        <div class="length noOverflow">{{ playlist?.videolist?.length }} track<span *ngIf="playlist.videolist.length >1">s</span></div>
+        <div class="length noOverflow">{{ playlist?.videolist?.length }} <span [translate]="'track'"></span><span *ngIf="playlist.videolist.length >1">s</span></div>
         <div class="duration noOverflow">{{ playlist?.videolist | totalduration | duration }}</div>
 
         <div class="flexSpacer"></div>
@@ -16,25 +16,25 @@
             <!-- Play -->
             <button mat-menu-item (click)="playPlaylist()">
                 <mat-icon svgIcon="playlist-play"></mat-icon>
-                <span>Play all</span>
+                <span [translate]="'playAll'"></span>
             </button>
 
             <!-- Add to current -->
             <button mat-menu-item (click)="addToCurrentPlaylist()">
                 <mat-icon svgIcon="playlist-plus"></mat-icon>
-                <span>Add to player list</span>
+                <span [translate]="'addToPlay'"></span>
             </button>
 
             <!-- Edit -->
             <button mat-menu-item (click)="editPlaylist()">
                 <mat-icon svgIcon="pencil"></mat-icon>
-                <span>Edit infos</span>
+                <span [translate]="'editInfos'"></span>
             </button>
 
             <!-- Remove -->
             <button mat-menu-item (click)="deletePlaylist()" >
                 <mat-icon svgIcon="delete-forever"></mat-icon>
-                <span>Delete</span>
+                <span [translate]="'delete'"></span>
             </button>
         </mat-menu>
     </app-toolbar>
@@ -63,17 +63,17 @@
                 <mat-menu #menuDetail="matMenu">
                     <button mat-menu-item (click)="playVideo(video)">
                         <mat-icon svgIcon="play-circle-outline"></mat-icon>
-                        <span>Play</span>
+                        <span [translate]="'play'"></span>
                     </button>
                     <button mat-menu-item (click)="addToQueue(video)">
                         <mat-icon svgIcon="playlist-plus"></mat-icon>
-                        <span>Add to player list</span>
+                        <span [translate]="'addToPlay'"></span>
                     </button>
                     <button mat-menu-item (click)="addToPlaylist(video)"
                         [disabled]="!playlistList && playlistsList?.length < 2"
                         [class.disabled]="!playlistList && playlistsList?.length < 2">
                         <mat-icon svgIcon="library-plus"></mat-icon>
-                        <span>Copy to playlist(s)</span>
+                        <span [translate]="'copyToPl'"></span>
                     </button>
                 </mat-menu>
 

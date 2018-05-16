@@ -1,0 +1,62 @@
+{
+    "noResultFound": "Aucun résultat trouvé :(",
+    "noResult": "Aucun résultat...",
+    "since": "Depuis",
+    "suggestions": "suggestions!!",
+    "play": "Lire",
+    "addToPlay": "Ajouter à la liste du lecteur",
+    "addToPl": "Ajouter à playlist(s)",
+    "loadMore": "Charger plus",
+    "track": "piste",
+    "playAll": "Lire tous",
+    "showDetail": "Voir détails",
+    "delete": "Supprimer",
+    "editInfos": "Editer infos",
+    "copyToPl": "Copier dans une playlist(s)",
+    "pl": "Playlist",
+    "historic": "Historique",
+    "disabledCS": "Désactivé... Bientôt disponible!",
+    "nbrOfPlayer": "Nombre de lecteur YT",
+    "single": "Simple",
+    "double": "Double",
+    "exportPl": "Exporter playlists",
+    "importPl": "Importer playlists",
+    "removeLocalPl": "Supprimer les playlists locale",
+    "playerbar": "playerbar",
+    "signOut": "Se déconnecter",
+    "signIn": "Se connecter",
+    "settings": "Paramètres",
+    "library": "Bibliothèque",
+    "nav": "Navigation",
+    "home": "Home",
+    "player": "Lecteur",
+    "pls": "Playlists",
+    "addPl": "Nouvelle playlist",
+    "search": "Rechercher...",
+
+    "dialog": {
+        "createPl": "",
+        "delPl": "",
+        "editPl": "",
+        "selectPl": "",
+        "confirm": ""
+    },
+
+    "btn": {
+        "createPlBtn": "",
+        "editPlBtn": "",
+        "delPlBtn": "",
+        "selectPlBtn": "",
+        "ok": "",
+        "cancel": ""
+    },
+
+    "tabs": {
+        "home": "",
+        "settings": "",
+        "search": "",
+        "detail": "",
+        "lib": "",
+        "player": ""
+    }
+}

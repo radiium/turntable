@@ -153,18 +153,18 @@
                     class="toolbarBtn textBtn btnHover"
                     (click)="onDisplayPl = 'playlist'"
                     [class.activeUnderLine]="onDisplayPl === 'playlist'">
-                    Playlist
+                    <span  [translate]="'pl'"></span>
                 </button>
                 <button
                     class="toolbarBtn textBtn btnHover"
                     (click)="onDisplayPl = 'historic'"
                     [class.activeUnderLine]="onDisplayPl === 'historic'">
-                    Historic
+                    <span  [translate]="'historic'"></span>
                 </button>
             </app-toolbar>
 
             <app-toolbar [height]="'40px'" [margin]="'0 5px 0 0'" [padding]="'0 10px 0 10px'">
-                <div *ngIf="playerPanelState.playlist" class="length noOverflow">{{ playerPanelState.playlist.length }} track<span *ngIf="playerPanelState.playlist.length >1">s</span></div>
+                <div *ngIf="playerPanelState.playlist" class="length noOverflow">{{ playerPanelState.playlist.length }} <span [translate]="'track'"></span><span *ngIf="playerPanelState.playlist.length >1">s</span></div>
                 <div *ngIf="playerPanelState.playlist" class="duration noOverflow">{{ playerPanelState.playlist | totalduration: 'test' | duration }}</div>
             </app-toolbar>
 

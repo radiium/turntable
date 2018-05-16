@@ -10,7 +10,7 @@
 
     <div class="srInfos itemBox">
         <div class="srTitle itemText">{{ index }} - {{ video?.title }}</div>
-        <div class="srDesc itemText">{{ video?.channelTitle }} - since {{ video?.publishedAt | date:'mediumDate' }} - {{ video?.duration | duration }}</div>
+        <div class="srDesc itemText">{{ video?.channelTitle }} - <span [translate]="'since'"></span> {{ video?.publishedAt | date:'mediumDate' }} - {{ video?.duration | duration }}</div>
         <div class="duration">{{ video?.duration | duration }}</div>
         <div class="flexSpacer"></div>
 
@@ -27,7 +27,7 @@
                 <ng-content select="video-list-item-buttons-menu"></ng-content>
 
                 <button mat-menu-item>Play</button>
-                <button mat-menu-item>Add to player list</button>
+                <button mat-menu-item [translate]="'addToPlay'"></button>
             </mat-menu>
             <ng-content select="video-list-item-buttons"></ng-content>
             -->

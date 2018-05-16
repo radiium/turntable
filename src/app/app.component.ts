@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { ElectronService } from 'ngx-electron';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { MatSnackBar } from '@angular/material';
+import { TranslateService } from '@ngx-translate/core';
 import * as _ from 'lodash';
 
 import { User, PlaylistItem, Playlist, AppState } from 'core/models';
@@ -56,7 +57,10 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     private authService: AuthService,
     private YTService: YoutubeService,
     private overlayContainer: OverlayContainer,
-    private dndService: DndService) {
+    private dndService: DndService,
+    private translate: TranslateService) {
+
+        translate.setDefaultLang('en');
 
         // User
         this.dataService.user$.subscribe((user) => {
@@ -71,6 +75,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
         this.dataService.appState$.subscribe((data) => {
             this.appState = data;
             this.initMatOverlay();
+            translate.use(this.appState.langage);
         });
 
 

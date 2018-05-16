@@ -45,7 +45,7 @@
             <!-- Video infos -->
             <div class="srInfos itemBox">
                 <div class="srTitle itemText">{{ i + 1 }} - {{ video?.title }}</div>
-                <div class="srDesc itemText">{{ video?.channelTitle }} - since {{ video?.publishedAt | date:'mediumDate' }} - {{ video?.duration | duration }}</div>
+                <div class="srDesc itemText">{{ video?.channelTitle }} - <span  [translate]="'since'"></span> {{ video?.publishedAt | date:'mediumDate' }} - {{ video?.duration | duration }}</div>
                 <div class="duration">{{ video?.duration | duration }}</div>
                 <div class="flexSpacer"></div>
             </div>
@@ -88,7 +88,7 @@
             <!-- Video infos -->
             <div class="srInfos itemBox">
                 <div class="srTitle itemText">{{ i + 1 }} - {{ video?.title }}</div>
-                <div class="srDesc itemText">{{ video?.channelTitle }} - since {{ video?.publishedAt | date:'mediumDate' }} - {{ video?.duration | duration }}</div>
+                <div class="srDesc itemText">{{ video?.channelTitle }} - <span  [translate]="'since'"></span> {{ video?.publishedAt | date:'mediumDate' }} - {{ video?.duration | duration }}</div>
                 <div class="duration">{{ video?.duration | duration }}</div>
                 <div class="flexSpacer"></div>
             </div>

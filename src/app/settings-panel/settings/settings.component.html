@@ -1,9 +1,9 @@
 <div id="settingsContainer" class="tabContentCpnt">
 
     <div class="tabNav">
-            <button class="tabBtn" (click)="selTabSetting = 1" [class.activ]="selTabSetting === 1">General</button>
-            <button class="tabBtn" (click)="selTabSetting = 2" [class.activ]="selTabSetting === 2">Player</button>
-            <button class="tabBtn" (click)="selTabSetting = 3" [class.activ]="selTabSetting === 3">Back up</button>
+        <button class="tabBtn" (click)="selTabSetting = 1" [class.activ]="selTabSetting === 1">General</button>
+        <button class="tabBtn" (click)="selTabSetting = 2" [class.activ]="selTabSetting === 2">Player</button>
+        <button class="tabBtn" (click)="selTabSetting = 3" [class.activ]="selTabSetting === 3">Back up</button>
     </div>
 
 
@@ -14,10 +14,10 @@
 
             <div class="tabItem">
                 <mat-form-field>
-                    <mat-select [panelClass]="'theme-' + appState.theme" placeholder="Langage" [(ngModel)]="appState.langage" (change)="onLangageChange($event)">
-                    <mat-option *ngFor="let langage of langagesList" [value]="langage.value">
-                    {{langage.viewValue}}
-                    </mat-option>
+                    <mat-select [panelClass]="'theme-' + appState.theme" placeholder="Langage"
+                        [(ngModel)]="appState.langage"
+                        (ngModelChange)="onLangageChange($event)">
+                        <mat-option *ngFor="let langage of langagesList" [value]="langage.value">{{langage.viewValue}}</mat-option>
                     </mat-select>
                 </mat-form-field>
                 <span class="flagIcon" *ngIf="appState.langage">
@@ -27,10 +27,10 @@
 
             <div class="tabItem">
                 <mat-form-field>
-                    <mat-select [panelClass]="'theme-' + appState.theme" placeholder="Theme" [(ngModel)]="appState.theme" (change)="onThemeChange($event)">
-                    <mat-option *ngFor="let theme of themesList" [value]="theme">
-                    {{theme}}
-                    </mat-option>
+                    <mat-select [panelClass]="'theme-' + appState.theme" placeholder="Theme"
+                        [(ngModel)]="appState.theme"
+                        (change)="onThemeChange($event)">
+                        <mat-option *ngFor="let theme of themesList" [value]="theme">{{theme}}</mat-option>
                     </mat-select>
                 </mat-form-field>
                 <span class="flagIcon" *ngIf="appState.theme">
@@ -43,13 +43,13 @@
         <!-- Player Setting -->
         <div *ngIf="selTabSetting === 2" class="tabContent">
 
-            <label>Disabled... coming soon!</label>
+            <label [translate]="'disabledCS'"></label>
 
             <div class="tabItemCol">
-                <label >Number of YT players</label>
+                <label [translate]="'nbrOfPlayer'"></label>
                 <mat-radio-group class="radioBtn" [(ngModel)]="appState.multiPlayer" (change)="onMultiPlayerChange($event)" disabled>
-                    <mat-radio-button [value]="false" color="warn">Single</mat-radio-button>
-                    <mat-radio-button [value]="true"  color="warn">Double</mat-radio-button>
+                    <mat-radio-button [value]="false" color="warn"  [translate]="'single'"></mat-radio-button>
+                    <mat-radio-button [value]="true"  color="warn"  [translate]="'double'"></mat-radio-button>
                 </mat-radio-group>
             </div>
         </div>
@@ -57,24 +57,24 @@
         <!-- backup Setting -->
         <div *ngIf="selTabSetting === 3" class="tabContent">
 
-            <label>Disabled... coming soon!</label>
+            <label [translate]="'disabledCS'"></label>
 
             <div class="tabItem tabRow">
-                <label class="tabRowLabel">Export playlists</label>
+                <label class="tabRowLabel" [translate]="'exportPl'"></label>
                 <button class="tabContentBtn" mat-raised-button disabled>
                 <mat-icon svgIcon="database-export"></mat-icon>
                 </button>
             </div>
 
             <div class="tabItem tabRow">
-                <label class="tabRowLabel">Import playlists</label>
+                <label class="tabRowLabel" [translate]="'importPl'"></label>
                 <button class="tabContentBtn" mat-raised-button disabled>
                 <mat-icon svgIcon="database-import"></mat-icon>
                 </button>
             </div>
 
             <div class="tabItem tabRow">
-                <label class="tabRowLabel">Remove local playlist</label>
+                <label class="tabRowLabel" [translate]="'removeLocalPl'"></label>
                 <button class="tabContentBtn" mat-raised-button (click)="removeLocalPlaylist()" disabled>
                 <mat-icon svgIcon="delete-sweep"></mat-icon>
                 </button>

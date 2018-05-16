@@ -21,15 +21,15 @@
                 <mat-menu #menuSearch="matMenu">
                     <button mat-menu-item (click)="playVideo(video)">
                         <mat-icon svgIcon="play-circle-outline"></mat-icon>
-                        <span>Play</span>
+                        <span [translate]="'play'">Play</span>
                     </button>
                     <button mat-menu-item (click)="addToQueue(video)">
                         <mat-icon svgIcon="playlist-plus"></mat-icon>
-                        <span>Add to player list</span>
+                        <span [translate]="'addToPlay'"></span>
                     </button>
                     <button mat-menu-item (click)="addToPlaylist(video)" [disabled]="!playlistList" [class.disabled]="!playlistList">
                         <mat-icon svgIcon="library-plus"></mat-icon>
-                        <span>Add to playlist(s)</span>
+                        <span [translate]="'addToPl'"></span>
                     </button>
                 </mat-menu>
 
@@ -48,15 +48,13 @@
                     </div>
                     <div mat-line *ngIf="!loadNextPage" class="loadLineItem" (click)="loadMore()">
                         <span><fa class="loadLineItemIco" [name]="'ellipsis-h'" [size]="1"></fa></span>
-                        <span class="loadLineItemLabel">Load more</span>
+                        <span class="loadLineItemLabel" [translate]="'loadMore'"></span>
                     </div>
                 </div>
             </ng-template>
         </app-video-list>
     </div>
 
-    <div *ngIf="!videoList || videoList.length === 0">
-        No result...
-    </div>
+    <div *ngIf="!videoList || videoList.length === 0" [translate]="'noResult'"></div>
 
 </div>

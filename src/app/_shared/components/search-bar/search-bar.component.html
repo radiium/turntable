@@ -2,7 +2,7 @@
 
     <!-- Search box -->
     <div id="searchBox">
-        <input class="search" type="search" placeholder="Search videos..."
+        <input class="search" type="search" placeholder="{{ 'search' | translate }}"
         (focus)="onFocus()"[formControl]="search">
         <fa class="searchIco" [name]="'search'" [size]="1" (click)="searchVideos(search.value)"></fa>
 
@@ -12,7 +12,7 @@
             </button>
             <mat-menu #menu="matMenu">
                 <button mat-menu-item>Play</button>
-                <button mat-menu-item>Add to player list</button>
+                <button mat-menu-item [translate]="'addToPlay'"></button>
             </mat-menu>
         -->
     </div>
@@ -29,7 +29,7 @@
 
     <!-- Suggests box  empty-->
     <div class="suggestsBox" *ngIf="suggestsBox && suggestsResult?.length < 1">
-        <hr><p>No results found :(</p>
+        <hr><p [translate]="'noResultFound'"></p>
     </div>
 
 </div>

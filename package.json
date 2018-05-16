@@ -62,6 +62,7 @@
     "@mdi/font": "^2.3.54",
     "@ng-bootstrap/ng-bootstrap": "^2.0.0",
     "@ngx-translate/core": "^10.0.1",
+    "@ngx-translate/http-loader": "^3.0.1",
     "@types/lodash": "^4.14.108",
     "angular2-fontawesome": "^5.2.1",
     "angular2-uuid": "^1.1.1",

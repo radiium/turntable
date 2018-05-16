@@ -56,7 +56,7 @@
                     <div class="boxThumbHoverContent">
                         <div class="numberTrack">
                             <div class="lightColor">{{ pl.videolist.length }}</div>
-                            <div class="track lightColor">track<span *ngIf="pl.videolist.length > 1">s</span></div>
+                            <div class="track lightColor"><span [translate]="'track'"></span><span *ngIf="pl.videolist.length > 1">s</span></div>
                         </div>
 
                         <button [matMenuTriggerFor]="menu" class="menuBtn">
@@ -67,25 +67,25 @@
                             <!-- Play -->
                             <button mat-menu-item (click)="playPlaylist(pl)">
                                 <mat-icon svgIcon="playlist-play"></mat-icon>
-                                <span>Play all</span>
+                                <span [translate]="'playAll'"></span>
                             </button>
 
                             <!-- Add to current -->
                             <button mat-menu-item (click)="addToCurrentPlaylist(pl)">
                                 <mat-icon svgIcon="playlist-plus"></mat-icon>
-                                <span>Add to player list</span>
+                                <span [translate]="'addToPlay'"></span>
                             </button>
 
                             <!-- Show -->
                             <button mat-menu-item (click)="showPlaylist(pl)">
                                 <mat-icon svgIcon="eye-outline"></mat-icon>
-                                <span>Show details</span>
+                                <span  [translate]="'showDetail'"></span>
                             </button>
 
                             <!-- Remove -->
                             <button mat-menu-item (click)="deletePlaylist(pl)" >
                                 <mat-icon svgIcon="delete-forever"></mat-icon>
-                                <span>Delete</span>
+                                <span  [translate]="'delete'"></span>
                             </button>
                         </mat-menu>
 
@@ -111,7 +111,7 @@
 
                 <div class="counterBox">
                     <div class="">{{ pl.videolist.length }}</div>
-                    <div>track<span *ngIf="pl.videolist.length > 1">s</span></div>
+                    <div><span [translate]="'track'"></span><span *ngIf="pl.videolist.length > 1">s</span></div>
                 </div>
 
                 <div class="infosBox flexSpacer">
@@ -128,25 +128,25 @@
                         <!-- Play -->
                         <button mat-menu-item (click)="playPlaylist(pl)">
                             <mat-icon svgIcon="playlist-play"></mat-icon>
-                            <span>Play all</span>
+                            <span  [translate]="'playAll'"></span>
                         </button>
 
                         <!-- Add to current -->
                         <button mat-menu-item (click)="addToCurrentPlaylist(pl)">
                             <mat-icon svgIcon="playlist-plus"></mat-icon>
-                            <span>Add to player list</span>
+                            <span [translate]="'addToPlay'"></span>
                         </button>
 
                         <!-- Show -->
                         <button mat-menu-item (click)="showPlaylist(pl)">
                             <mat-icon svgIcon="eye-outline"></mat-icon>
-                            <span>Show details</span>
+                            <span  [translate]="'showDetail'"></span>
                         </button>
 
                         <!-- Remove -->
                         <button mat-menu-item (click)="deletePlaylist(pl)" >
                             <mat-icon svgIcon="delete-forever"></mat-icon>
-                            <span>Delete</span>
+                            <span  [translate]="'delete'"></span>
                         </button>
                     </mat-menu>
                 </div>
@@ -187,7 +187,7 @@
                         <!-- Add to current --
                         <button mat-menu-item (click)="addToCurrentPlaylist(pl)">
                             <mat-icon svgIcon="playlist-plus"></mat-icon>
-                            <span>Add to player list</span>
+                            <span [translate]="'addToPlay'"></span>
                         </button>
 
                         <!-- Show --

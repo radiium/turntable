@@ -30,7 +30,7 @@
 
         <div class="flexSpacer"></div>
 
-        <button (click)="setShowPlayerBar()">playerbar</button>
+        <button (click)="setShowPlayerBar()"  [translate]="'playerbar'"></button>
 
         <div *ngIf="user" class="toolbarBtn userImg">
             <img src="{{ user.img }}" alt="">
@@ -46,15 +46,15 @@
         <mat-menu #menu="matMenu" yPosition="below" xPosition="after" [overlapTrigger]="false" class="menuBox">
             <button *ngIf="user" (click)="signout()" class="menuItem btnHover">
                 <fa class="menuItemIco" [name]="'sign-out'" [size]="2"></fa>
-                <span class="menuItemLabel">Sign out</span>
+                <span class="menuItemLabel"  [translate]="'signOut'"></span>
             </button>
             <button *ngIf="!user" (click)="signin()" class="menuItem btnHover">
                 <fa class="menuItemIco" [name]="'sign-in'" [size]="2"></fa>
-                <span class="menuItemLabel">Sign in</span>
+                <span class="menuItemLabel"  [translate]="'signIn'"></span>
             </button>
             <button (click)="onSelectTab(6)" class="menuItem btnHover">
                 <fa class="menuItemIco" [name]="'cog'" [size]="2"></fa>
-                <span class="menuItemLabel">Settings</span>
+                <span class="menuItemLabel"  [translate]="'settings'"></span>
             </button>
         </mat-menu>
     </mat-toolbar>
@@ -71,7 +71,7 @@
             </button>
             <button class="sidenavBtn btnHover" (click)="onSelectTab(3)" [class.activ]="appState.selectedTab === 3">
                 <fa class="sidenavBtnIco" [name]="'th-list'" [size]="1"></fa>
-                <span class="sidenavBtnLabel">Library</span>
+                <span class="sidenavBtnLabel"  [translate]="'library'"></span>
             </button>
             <button class="sidenavBtn btnHover" (click)="onSelectTab(5)" [class.activ]="appState.selectedTab === 5">
                 <fa class="sidenavBtnIco" [name]="'play-circle'" [size]="1"></fa>
@@ -93,26 +93,26 @@
             -->
                 <!-- Navigation -->
                 <div class="flexItem sectionLabel">
-                    <span>Navigation</span>
+                    <span  [translate]="'nav'"></span>
                 </div>
                 <div class="flexItem">
                     <button class="sidenavBtn btnHover" (click)="onSelectTab(1)" [class.activ]="appState.selectedTab === 1 || selectedTab === 2">
                         <fa class="sidenavBtnIco" [name]="'home'" [size]="1"></fa>
-                        <span class="sidenavBtnLabel">Home</span>
+                        <span class="sidenavBtnLabel"  [translate]="'home'"></span>
                     </button>
                     <button class="sidenavBtn btnHover" (click)="onSelectTab(3)" [class.activ]="appState.selectedTab === 3">
                         <fa class="sidenavBtnIco" [name]="'th-list'" [size]="1"></fa>
-                        <span class="sidenavBtnLabel">Library</span>
+                        <span class="sidenavBtnLabel"  [translate]="'library'"></span>
                     </button>
                     <button class="sidenavBtn btnHover" (click)="onSelectTab(5)" [class.activ]="appState.selectedTab === 5">
                         <fa class="sidenavBtnIco" [name]="'play-circle'" [size]="1"></fa>
-                        <span class="sidenavBtnLabel">Player</span>
+                        <span class="sidenavBtnLabel"  [translate]="'player'"></span>
                     </button>
                 </div>
 
                 <!-- Playlists list -->
                 <div class="flexItem sectionLabel">
-                    <span>Playlists</span>
+                    <span  [translate]="'pl'"></span>
                     <div class="flexSpacer"></div>
                     <button *ngIf="user" mat-menu-item (click)="refreshYTPlaylists()" [class.rotate]="appState.loading" class="refreshBtn btnHover">
                     <fa class="refreshBtnIco" [name]="'refresh'" [size]="1"></fa>
@@ -141,7 +141,7 @@
                 <div class="flexItem">
                     <button class="sidenavBtn btnHover addBtn" (click)="addPlaylist()">
                         <fa class="sidenavBtnIco" [name]="'plus'" [size]="1"></fa>
-                        <span class="sidenavBtnLabel">Add playlist</span>
+                        <span class="sidenavBtnLabel"  [translate]="'addPl'"></span>
                     </button>
                 </div>
             <!--
