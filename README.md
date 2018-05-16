@@ -1,7 +1,7 @@
-# turntable
+# Turntable
 
 > A simple youtube dj app made with Electron (in progress)
-> Current version: 1.1.0-beta
+> Current version: 1.1.0-beta  
 > (/!\ warning: big redesign, partially working)
 
 ## Features:
