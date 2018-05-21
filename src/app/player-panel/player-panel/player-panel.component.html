@@ -79,7 +79,8 @@
 
                 <!-- Right speed/volume control -->
                 <div class="rangeSliderBox" *ngIf="appState?.multiPlayer">
-                    <app-range-slider [hidden]="!appState?.multiPlayer"
+                    <app-range-slider
+                        [hidden]="!appState?.multiPlayer"
                         [name]="'vol_right'"
                         [min]="0"
                         [max]="100"
@@ -87,7 +88,8 @@
                         [value]="playerStateRight?.volume"
                         (valueChange)="onVolumeChangeRight($event)">
                     </app-range-slider>
-                    <app-range-slider [hidden]="!appState?.multiPlayer"
+                    <app-range-slider
+                        [hidden]="!appState?.multiPlayer"
                         [name]="'speed_right'"
                         [step]="0.25"
                         [min]="0.5"

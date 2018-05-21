@@ -185,12 +185,12 @@
 
             <!-- Content -->
             <div class="content flexSpacer" [class.withPlayerBar]="appState.showPlayerBar">
-                <app-home             [hidden]="appState.selectedTab !== 1"></app-home>
-                <app-search-results   [hidden]="appState.selectedTab !== 2"></app-search-results>
-                <app-library          [hidden]="appState.selectedTab !== 3"></app-library>
-                <app-playlist-details [hidden]="appState.selectedTab !== 4"></app-playlist-details>
-                <app-player-panel     [hidden]="appState.selectedTab !== 5"></app-player-panel>
-                <app-settings         [hidden]="appState.selectedTab !== 6"></app-settings>
+                <app-home             class="tabContent" [style.zIndex]="appState.selectedTab === 1 ? 1 : 0"></app-home>
+                <app-search-results   class="tabContent" [style.zIndex]="appState.selectedTab === 2 ? 1 : 0"></app-search-results>
+                <app-library          class="tabContent" [style.zIndex]="appState.selectedTab === 3 ? 1 : 0"></app-library>
+                <app-playlist-details class="tabContent" [style.zIndex]="appState.selectedTab === 4 ? 1 : 0"></app-playlist-details>
+                <app-player-panel     class="tabContent" [style.zIndex]="appState.selectedTab === 5 ? 1 : 0"></app-player-panel>
+                <app-settings         class="tabContent" [style.zIndex]="appState.selectedTab === 6 ? 1 : 0"></app-settings>
             </div>
 
             <!--

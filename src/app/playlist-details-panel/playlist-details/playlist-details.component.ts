@@ -83,8 +83,11 @@ export class PlaylistDetailsComponent implements OnInit {
             this.playlistsList = data;
             if (this.playlist) {
                 this.playlist = _.find(this.playlistsList, { id: this.playlist.id });
+            } else if (!this.playlist && this.playlistsList.length > 0) {
+                this.playlist = this.playlistsList[0];
+                this.videoList = this.playlist.videolist;
             }
-            this.cdRef.markForCheck();
+            this.cdRef.detectChanges();
         });
 
         // App State

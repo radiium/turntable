@@ -53,11 +53,12 @@
                 flex-wrap: nowrap;
 
                 .rangeSliderBox {
-                    width: 60px;
+                    width: 46px;
                     height: 100%;
                     display: flex;
                     flex-direction: row;
                     flex-wrap: nowrap;
+                    justify-content: space-between;
                 }
 
                 .centerBox {
