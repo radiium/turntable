@@ -32,6 +32,8 @@ import {
     MatTooltipModule,
     MatBadgeModule
 } from '@angular/material';
+import { OverlayModule } from '@angular/cdk/overlay';
+
 
 @NgModule({
     imports: [
@@ -66,7 +68,8 @@ import {
         MatTabsModule,
         MatToolbarModule,
         MatTooltipModule,
-        MatBadgeModule
+        MatBadgeModule,
+        OverlayModule
     ],
     declarations: []
 })

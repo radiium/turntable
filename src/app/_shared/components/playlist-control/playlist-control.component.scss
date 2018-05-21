@@ -1,0 +1,19 @@
+// Button
+.sidenavBtn {
+    height: 40px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    .sidenavBtnLabel {
+        font-size: 1rem;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        align-self: center;
+    }
+    .sidenavBtnIco {
+        // margin-left: 10px;
+        margin-right: 10px;
+        min-width: 40px;
+        align-self: center;
+    }
+}

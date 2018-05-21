@@ -447,7 +447,18 @@ iframe {
     }
 }
 
+.customMenu {
+    box-shadow: 0px 0px 18px -4px rgba(0,0,0,0.75);
 
+    &.theme-dark {
+        background-color: getValue('dark', 'primary') !important;
+        color: getValue('dark', 'primaryFont') !important;
+    }
+    &.theme-light {
+        background-color: getValue('light', 'primary') !important;
+        color: getValue('light', 'primaryFont') !important;
+    }
+}
 
 /****************************
 

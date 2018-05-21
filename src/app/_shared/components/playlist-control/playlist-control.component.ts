@@ -1,4 +1,4 @@
-import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 import { PlaylistService } from 'core/services/playlist.service';
 import { Playlist } from 'core/models';
@@ -7,7 +7,6 @@ import { Playlist } from 'core/models';
     selector: 'app-playlist-control',
     templateUrl: './playlist-control.component.html',
     styleUrls: ['./playlist-control.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PlaylistControlComponent {
 
@@ -27,7 +26,7 @@ export class PlaylistControlComponent {
     }
 
     showPlaylist() {
-        this.plSrv.showPlaylist(this.playlist)
+        this.plSrv.showPlaylist(this.playlist);
     }
 
     editPlaylist() {

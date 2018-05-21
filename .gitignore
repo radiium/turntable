@@ -6,6 +6,8 @@
 /out-tsc
 /build/psd
 
+/trash
+
 # dependencies
 /node_modules
 
