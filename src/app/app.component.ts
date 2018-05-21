@@ -14,10 +14,7 @@ import { AuthService } from 'core/services/auth.service';
 import { DataService } from 'core/services/data.service';
 import { YoutubeService } from 'core/services/youtube.service';
 import { DndService } from 'core/services/dnd.service';
-
-import { UUID } from 'angular2-uuid';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { CreatePlaylistDialogComponent } from 'shared/dialogs/create-playlist-dialog/create-playlist-dialog.component';
+import { PlaylistService } from 'core/services/playlist.service';
 
 import * as testPlaylist from './test-playlist.json';
 
@@ -49,8 +46,8 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
 
     constructor(
     public snackBar: MatSnackBar,
-    public  dialog: MatDialog,
     private appStateService: AppStateService,
+    private plSrv: PlaylistService,
     private dataService: DataService,
     private Electron: ElectronService,
     private authService: AuthService,
@@ -77,7 +74,6 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
             translate.use(this.appState.langage);
         });
 
-
         // Playlists
         this.playlistsList = new Array<Playlist>();
         this.dataService.playlistsList$.subscribe((data) => {
@@ -89,7 +85,6 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
         this.dataService.onSelectPL$.subscribe((pl: any) => {
             this.onSelectPLID = pl ? pl.id : '';
         });
-
 
         this.dndService.initDnd();
         this.appStateService.loadAppState();
@@ -161,32 +156,9 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     addPlaylist() {
-        const dialogRef = this.dialog.open(CreatePlaylistDialogComponent, {
-            height: 'auto',
-            panelClass: 'theme-' + this.appState.theme
-        });
-        dialogRef.afterClosed().subscribe(result => {
-            if (result) {
-                const id = UUID.UUID();
-                const title = result.name;
-                const privacyStatus = 'private';
-
-                const videoList = new Array<PlaylistItem>();
-                const pl = new Playlist(
-                    id, title, '', '', 0, 0, '',
-                    privacyStatus, true,
-                    videoList
-                );
-
-                this.playlistsList.push(pl);
-                this.dataService.setPlaylistsList(this.playlistsList);
-            }
-        });
+        this.plSrv.createPlaylist()
     }
 
-    @HostListener('window:resize', ['$event'])
-    onResize(event: Event) {
-    }
 
     // Load a local playlist for development
     insertFakeData() {

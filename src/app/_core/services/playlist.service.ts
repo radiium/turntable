@@ -6,6 +6,7 @@ import { Observable,
          timer } from 'rxjs';
 import * as _ from 'lodash';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { UUID } from 'angular2-uuid';
 
 
 import { CreatePlaylistDialogComponent } from 'shared/dialogs/create-playlist-dialog/create-playlist-dialog.component';
@@ -20,11 +21,13 @@ import { PlaylistItem,
          Suggests,
          PlayerPanelState,
          PlayerState,
-         PlayerSide } from 'core/models';
+         PlayerSide,
+         AppState } from 'core/models';
 
 @Injectable()
 export class PlaylistService {
 
+    appState: AppState;
     playlistsList: Playlist[];
 
     constructor(
@@ -32,6 +35,10 @@ export class PlaylistService {
     private playerState: PlayerStateService,
     public dialog: MatDialog
     ) {
+        this.data.appState$.subscribe(appState => {
+            this.appState = appState;
+        });
+
         this.data.playlistsList$.subscribe(datalist => {
             this.playlistsList = datalist;
         });
@@ -46,6 +53,7 @@ export class PlaylistService {
 
     deletePlaylist(playlist: Playlist): void {
         const dialogRef = this.dialog.open(DeletePlaylistDialogComponent, {
+            panelClass: 'theme-' + this.appState.theme,
             data: { title: playlist.title }
         });
         dialogRef.afterClosed().subscribe(delPl => {
@@ -62,6 +70,7 @@ export class PlaylistService {
         const dialogRef = this.dialog.open(EditPlaylistDialogComponent, {
             height: 'auto',
             width: '300px',
+            panelClass: 'theme-' + this.appState.theme,
             data: { playlist: playlist }
         });
         dialogRef.afterClosed().subscribe(result => {
@@ -80,6 +89,30 @@ export class PlaylistService {
     showPlaylist(playlist: Playlist) {
         this.data.setOnSelectPL(playlist.id);
         this.data.setSelectedTab(4);
+    }
+
+    createPlaylist() {
+        const dialogRef = this.dialog.open(CreatePlaylistDialogComponent, {
+            height: 'auto',
+            panelClass: 'theme-' + this.appState.theme
+        });
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                const id = UUID.UUID();
+                const title = result.name;
+                const privacyStatus = 'private';
+
+                const videoList = new Array<PlaylistItem>();
+                const pl = new Playlist(
+                    id, title, '', '', 0, 0, '',
+                    privacyStatus, true,
+                    videoList
+                );
+
+                this.playlistsList.push(pl);
+                this.data.setPlaylistsList(this.playlistsList);
+            }
+        });
     }
 
     getPlaylist(plId: string): Playlist {
