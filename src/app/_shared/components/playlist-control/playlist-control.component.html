@@ -1,0 +1,29 @@
+<!-- Set player list -->
+<button mat-menu-item (click)="setPlayerPlaylist()">
+    <mat-icon svgIcon="playlist-play"></mat-icon>
+    <span [translate]="'playAll'"></span>
+</button>
+
+<!-- Add to player list -->
+<button mat-menu-item (click)="addToPlayerPlaylist()">
+    <mat-icon svgIcon="playlist-plus"></mat-icon>
+    <span [translate]="'addToPlay'"></span>
+</button>
+
+<!-- Show playlist details -->
+<button mat-menu-item (click)="showPlaylist()" *ngIf="show">
+    <mat-icon svgIcon="eye-outline"></mat-icon>
+    <span  [translate]="'showDetail'"></span>
+</button>
+
+<!-- Edit playlit infos -->
+<button mat-menu-item (click)="editPlaylist()">
+    <mat-icon svgIcon="pencil"></mat-icon>
+    <span  [translate]="'editInfos'"></span>
+</button>
+
+<!-- Remove playlist -->
+<button mat-menu-item (click)="deletePlaylist()" >
+    <mat-icon svgIcon="delete-forever"></mat-icon>
+    <span  [translate]="'delete'"></span>
+</button>

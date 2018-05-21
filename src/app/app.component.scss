@@ -75,6 +75,11 @@
     // Sidenav
     .appSidenav {
 
+        .sidenavCont {
+            height: 100%;
+            max-height: 100%;
+        }
+
         width: 250px;
         display: flex;
         flex-direction: column;
@@ -90,9 +95,10 @@
         .flexItem {
             width: 100%;
             height: auto;
-            &.sidenavScroll {
-                overflow-x: hidden;
-                overflow-y: auto;
+            &.sidenavPlBtnList {
+                // height: 100%;
+                height: calc(100% - 45px - 45px - 40px - 40px - 40px - 40px);
+                overflow: hidden;
             }
             &.sectionLabel {
                 font-size: 0.8rem;

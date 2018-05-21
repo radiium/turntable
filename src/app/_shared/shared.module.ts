@@ -17,8 +17,9 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 import { CustomMaterialModule } from './modules/material/custom-material.module';
 import { YoutubePlayerModule } from './modules/youtube-player/youtube-player.module';
+import { DndListModule } from './modules/dnd/dnd.module';
+// import { NgxDnDModule } from '@swimlane/ngx-dnd';
 
-// import { EditPlaylistModule } from './modules/edit-playlist/edit-playlist.module';
 
 import { SearchBarComponent } from './components/search-bar/search-bar.component';
 
@@ -32,6 +33,7 @@ import { SelectPlaylistDialogComponent } from './dialogs/select-playlist-dialog/
 // Directives
 import { ClickOutsideDirective } from './directives/click-outside.directive';
 import { TooltipDirective } from './directives/tooltip.directive';
+import { NgLoopDirective } from 'shared/directives/ng-loop.directive';
 
 // pipes
 import { DurationPipe } from './pipes/duration.pipe';
@@ -41,6 +43,9 @@ import { VideoListItemComponent } from './components/video-list-item/video-list-
 import { PlayerBarComponent } from './components/player-bar/player-bar.component';
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
 import { VideoListComponent } from './components/video-list/video-list.component';
+import { PlaylistButtonListComponent } from './components/playlist-button-list/playlist-button-list.component';
+import { ContextMenuComponent } from './components/context-menu/context-menu.component';
+import { PlaylistControlComponent } from './components/playlist-control/playlist-control.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -58,6 +63,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     declarations: [
         ClickOutsideDirective,
         TooltipDirective,
+        NgLoopDirective,
         DurationPipe,
         TotalDurationPipe,
         FilterPlaylistsPipe,
@@ -71,7 +77,10 @@ export function HttpLoaderFactory(http: HttpClient) {
         VideoListItemComponent,
         PlayerBarComponent,
         ToolbarComponent,
-        VideoListComponent
+        VideoListComponent,
+        PlaylistButtonListComponent,
+        ContextMenuComponent,
+        PlaylistControlComponent
     ],
     imports: [
         CommonModule,
@@ -87,7 +96,7 @@ export function HttpLoaderFactory(http: HttpClient) {
         NgxElectronModule,
         MatIconModule,
         YoutubePlayerModule,
-        // EditPlaylistModule,
+        DndListModule,
         CustomMaterialModule,
         TranslateModule.forRoot({
             loader: {
@@ -109,8 +118,10 @@ export function HttpLoaderFactory(http: HttpClient) {
         NgxElectronModule,
         MatIconModule,
         YoutubePlayerModule,
+        DndListModule,
         ClickOutsideDirective,
         TooltipDirective,
+        NgLoopDirective,
         DurationPipe,
         TotalDurationPipe,
         FilterPlaylistsPipe,
@@ -120,7 +131,10 @@ export function HttpLoaderFactory(http: HttpClient) {
         VideoListItemComponent,
         PlayerBarComponent,
         ToolbarComponent,
-        VideoListComponent
+        VideoListComponent,
+        PlaylistButtonListComponent,
+        ContextMenuComponent,
+        PlaylistControlComponent
     ],
     providers: [],
 })

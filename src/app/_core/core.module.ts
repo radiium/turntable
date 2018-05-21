@@ -28,6 +28,7 @@ import { AppStateService } from 'core/services/app-state.service';
 import { DataService } from 'core/services/data.service';
 import { DndService } from 'core/services/dnd.service';
 import { TimerService } from 'core/services/timer.service';
+import { PlaylistService } from 'core/services/playlist.service';
 
 @NgModule({
     imports: [],
@@ -62,7 +63,8 @@ import { TimerService } from 'core/services/timer.service';
         // Others service
         PlayerStateService,
         UtilsService,
-        OnlineService
+        OnlineService,
+        PlaylistService
     ]
 })
 export class CoreModule { }

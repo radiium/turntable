@@ -40,7 +40,6 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
 
     loading: any = false;
 
-    @ViewChild('plScrollContainer') scrollContainer: ElementRef;
     isOnDrag: boolean;
     showPlayerBar: boolean;
     scroll: any;
@@ -94,11 +93,6 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
 
         this.dndService.initDnd();
         this.appStateService.loadAppState();
-
-        // Load a local playlist for development
-        if (isDevMode()) {
-            // this.insertFakeData();
-        }
     }
 
     ngOnInit() {
@@ -108,7 +102,12 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     ngAfterViewInit() {
-        this.dndService.plButtonContainer = this.scrollContainer;
+        // Load a local playlist for development
+        if (isDevMode()) {
+            setTimeout(() => {
+                this.insertFakeData();
+            });
+        }
     }
 
     ngOnDestroy() {
@@ -147,11 +146,6 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
 
     onSelectTab(index: number) {
         this.dataService.setSelectedTab(index);
-    }
-
-    selectPlaylist(pl: Playlist) {
-        this.dataService.setOnSelectPL(pl);
-        this.dataService.setSelectedTab(4);
     }
 
     setIsMiniSideBar() {
@@ -215,18 +209,10 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
                 el['channelTitle'],
                 el['publishedAt']
             );
-            videoList.push(video);
-            videoList.push(video);
-            videoList.push(video);
-            videoList.push(video);
-            videoList.push(video);
-            videoList.push(video);
-            videoList.push(video);
-            videoList.push(video);
-            videoList.push(video);
-            videoList.push(video);
-            videoList.push(video);
-            videoList.push(video);
+
+            for (let i = 0; i < 40; i++) {
+                videoList.push(video);
+            }
         });
         const datas = new Playlist(
             testPlaylist['testPlaylist']['id'],

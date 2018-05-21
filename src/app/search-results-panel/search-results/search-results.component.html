@@ -4,13 +4,8 @@
 
         <!-- Video list -->
         <app-video-list
-            [draggable]="true"
             [videoList]="videoList"
-            [displayType]="'list'"
-            [dragBagName]="'searchResultsBag'"
-            [attrCopy]="true"
-            [attrAcceptDrop]="false"
-            [attrFrom]="'search'">
+            [config]="videoListConfig">
 
             <!-- Item control buttons -->
             <ng-template #itemControl let-video="video" let-index="index">

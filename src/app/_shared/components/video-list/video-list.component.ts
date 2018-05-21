@@ -1,52 +1,63 @@
-import { Component, OnInit, Input, Output,
-    OnChanges, SimpleChanges,
-    ChangeDetectionStrategy,
-    ChangeDetectorRef, ContentChild, TemplateRef } from '@angular/core';
-
+import { Component, Input, Output, OnChanges, SimpleChanges,
+    ViewChild, ContentChild, TemplateRef, ElementRef,
+    ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import * as _ from 'lodash';
-import { PlaylistItem } from 'core/models';
+
+import { PlaylistItem, VideoListConfig } from 'core/models';
 import { PlayerStateService } from 'core/services/player-state.service';
+import { DndService } from 'core/services/dnd.service';
+import { DataService } from 'core/services/data.service';
 
 @Component({
     selector: 'app-video-list',
     templateUrl: './video-list.component.html',
     styleUrls: ['./video-list.component.scss'],
-    // changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class VideoListComponent implements OnInit, OnChanges {
+export class VideoListComponent implements OnChanges {
 
-    @Input() videoList: Array<PlaylistItem>;
+    @Input() videoList: PlaylistItem[];
+    @Input() config: VideoListConfig;
 
-    @Input() dragBagName: String;
-    @Input() useDragModel: boolean;
-    @Input() draggable: boolean;
-    @Input() displayType: String;
-    @Input() showShadow: boolean;
-
-    @Input() attrCopy: boolean;
-    @Input() attrAcceptDrop: boolean;
-    @Input() attrPlaylistId: string;
-    @Input() attrFrom: string;
-
+    @ViewChild('listRef') listRef: ElementRef;
     @ContentChild('itemControl') itemControlTmpl: TemplateRef<any>;
     @ContentChild('footer') footerTmpl: TemplateRef<any>;
 
+
     constructor(
-    private cdRef: ChangeDetectorRef,
-    private playerState: PlayerStateService) {
+    private data: DataService,
+    private playerState: PlayerStateService,
+    private cdRef: ChangeDetectorRef) {
     }
 
-    ngOnInit() {
+    // Update index (text and dataset)
+    reIndexItems() {
+        if (this.config.attr.from !== 'search') {
+            const elements = this.listRef.nativeElement.children;
+            const len = elements.length;
+            for (let i = 0; i < len; i++) {
+                const el = elements[i];
+                el.getElementsByClassName('itemIndex')[0].innerHTML = i + 1;
+                el.dataset.index = i + '';
+            }
+        }
     }
 
     ngOnChanges(changes: SimpleChanges) {
-        if (changes.videoList.currentValue) {
+
+        if (changes.videoList && changes.videoList.currentValue) {
+            this.cdRef.detectChanges();
+            this.reIndexItems();
+        }
+
+        if (changes.config && changes.config.currentValue) {
+            this.config = changes.config.currentValue;
             this.cdRef.detectChanges();
         }
     }
 
     playVideo(video: PlaylistItem, index: number) {
-        if (this.dragBagName !== 'playerListBag') {
+        if (this.config.dragBagName !== 'playerListBag') {
             index = undefined;
         }
         this.playerState.playVideo(video, index);

@@ -2,7 +2,7 @@
 
     <app-toolbar [height]="'40px'" [margin]="'0 0 0 2px'" [padding]="'0 0 0 15px'">
         <div class="name noOverflow">{{ playlist?.title }}</div>
-        <div class="length noOverflow">{{ playlist?.videolist?.length }} <span [translate]="'track'"></span><span *ngIf="playlist.videolist.length >1">s</span></div>
+        <div class="length noOverflow">{{ playlist?.videolist?.length }} <span [translate]="'track'"></span><span *ngIf="playlist?.videolist?.length >1">s</span></div>
         <div class="duration noOverflow">{{ playlist?.videolist | totalduration | duration }}</div>
 
         <div class="flexSpacer"></div>
@@ -12,47 +12,20 @@
         </button>
 
         <mat-menu #menu="matMenu" overlapTrigger="false">
-
-            <!-- Play -->
-            <button mat-menu-item (click)="playPlaylist()">
-                <mat-icon svgIcon="playlist-play"></mat-icon>
-                <span [translate]="'playAll'"></span>
-            </button>
-
-            <!-- Add to current -->
-            <button mat-menu-item (click)="addToCurrentPlaylist()">
-                <mat-icon svgIcon="playlist-plus"></mat-icon>
-                <span [translate]="'addToPlay'"></span>
-            </button>
-
-            <!-- Edit -->
-            <button mat-menu-item (click)="editPlaylist()">
-                <mat-icon svgIcon="pencil"></mat-icon>
-                <span [translate]="'editInfos'"></span>
-            </button>
-
-            <!-- Remove -->
-            <button mat-menu-item (click)="deletePlaylist()" >
-                <mat-icon svgIcon="delete-forever"></mat-icon>
-                <span [translate]="'delete'"></span>
-            </button>
+            <app-playlist-control [playlist]="playlist" [show]="false"></app-playlist-control>
         </mat-menu>
     </app-toolbar>
 
     <div class="spacer"></div>
 
     <div class="scrollContainer plScrollContainer" #pldScrollContainer>
+
         <!-- Video list -->
         <app-video-list
-            [draggable]="true"
-            [videoList]="playlist.videolist"
-            [displayType]="'list'"
-            [dragBagName]="'searchResultsBag'"
-            [attrCopy]="false"
-            [attrAcceptDrop]="true"
-            [attrPlaylistId]="playlist.id"
-            [attrFrom]="'detail'"
-            [showShadow]="true">
+            *ngFor="let pl of playlistsList; let i = index; trackBy: trackByFn"
+            [hidden]="pl.id !== playlist.id"
+            [videoList]="pl.videolist"
+            [config]="getConfig(pl.id)">
 
             <!-- Item control buttons -->
             <ng-template #itemControl let-video="video" let-index="index">

@@ -15,7 +15,7 @@ import { ElectronService } from 'ngx-electron';
   selector: 'app-player-panel',
   templateUrl: './player-panel.component.html',
   styleUrls: ['./player-panel.component.scss'],
-  // changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PlayerPanelComponent implements OnInit {
 
@@ -38,8 +38,35 @@ export class PlayerPanelComponent implements OnInit {
 
     appState: AppState;
 
+
+    playListConfig = {
+        draggable: true,
+        displayType: 'list',
+        dragBagName: 'videolistBag',
+        showShadow: true,
+        attr: {
+            copy: false,
+            acceptDrop: true,
+            playlistId: undefined,
+            from: 'onplay'
+        }
+    };
+
+    historicListConfig = {
+        draggable: true,
+        displayType: 'list',
+        dragBagName: 'videolistBag',
+        // showShadow: true,
+        attr: {
+            copy: true,
+            acceptDrop: false,
+            playlistId: undefined,
+            from: 'historic'
+        }
+    };
+
     constructor(
-    // private cd: ChangeDetectorRef,
+    private cd: ChangeDetectorRef,
     private appRef: ApplicationRef,
     private dndService: DndService,
     private dataService: DataService,
@@ -54,27 +81,32 @@ export class PlayerPanelComponent implements OnInit {
         this.playerState.playerPanelState$.subscribe((data) => {
             this.playerPanelState = data;
             // this.appRef.tick();
-            // this.cd.markForCheck();
+            this.cd.markForCheck();
         });
 
         // Get player and player state left
         this.playerState.playerStateLeft$.subscribe((data) => {
             this.playerStateLeft = data;
+            this.cd.markForCheck();
         });
         this.playerState.playerLeft$.subscribe((data) => {
             this.playerLeft = data;
+            this.cd.markForCheck();
         });
 
         // Get player and player state right
         this.playerState.playerStateRight$.subscribe((data) => {
             this.playerStateRight = data;
+            this.cd.markForCheck();
         });
         this.playerState.playerRight$.subscribe((data) => {
             this.playerRight = data;
+            this.cd.markForCheck();
         });
 
         this.dataService.appState$.subscribe((data) => {
             this.appState = data;
+            this.cd.markForCheck();
         });
     }
 

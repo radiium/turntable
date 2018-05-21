@@ -1,0 +1,46 @@
+<div class="plBtnListContainer" #scrollContainer>
+    <div class="scrollContainer">
+        <button
+            #plBtnList
+            [id]="pl.id"
+            class="sidenavBtn btnHover dropZone"
+            *ngFor="let pl of playlistsList; let i = index; trackBy: trackByFn;"
+            [class.activ]="appState.selectedTab === 4 && pl.id === onSelectPL"
+            [dragula]="'videolistBag'"
+            [attr.data-acceptdrop]="true"
+            [attr.data-hideshadow]="true"
+            [attr.data-plid]="pl.id"
+            (click)="selectPlaylist(pl.id)"
+            (contextmenu)="openContextMenu($event)">
+            <fa class="sidenavBtnIco" [name]="'folder-open-o'" [size]="1"></fa>
+            <span class="sidenavBtnLabel noOverflow">{{ pl.title }}</span>
+        </button>
+
+        <span [matMenuTriggerFor]="contextMenu"></span>
+        <mat-menu #contextMenu="matMenu">
+            <!-- Play -->
+            <button mat-menu-item (click)="playPlaylist()">
+                <mat-icon svgIcon="playlist-play"></mat-icon>
+                <span [translate]="'playAll'"></span>
+            </button>
+
+            <!-- Add to current -->
+            <button mat-menu-item (click)="addToCurrentPlaylist()">
+                <mat-icon svgIcon="playlist-plus"></mat-icon>
+                <span [translate]="'addToPlay'"></span>
+            </button>
+
+            <!-- Edit -->
+            <button mat-menu-item (click)="editPlaylist()">
+                <mat-icon svgIcon="pencil"></mat-icon>
+                <span [translate]="'editInfos'"></span>
+            </button>
+
+            <!-- Remove -->
+            <button mat-menu-item (click)="deletePlaylist()" >
+                <mat-icon svgIcon="delete-forever"></mat-icon>
+                <span [translate]="'delete'"></span>
+            </button>
+        </mat-menu>
+    </div>
+</div>

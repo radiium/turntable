@@ -190,13 +190,8 @@
             #playerListScrollContainer >
 
             <app-video-list
-                [dragBagName]="'playerListBag'"
-                [useDragModel]="true"
-                [draggable]="true"
                 [videoList]="playerPanelState.playlist"
-                [displayType]="'list'"
-                [attrFrom]="'onplay'"
-                [showShadow]="true">
+                [config]="playListConfig">
 
                 <!-- Item control buttons -->
                 <ng-template #itemControl let-video="video" let-index="index">
@@ -247,16 +242,13 @@
         </div>
 
 
-        <!-- Historic list -->
+        <!-- Historic list
+        -->
         <div [hidden]="onDisplayPl !== 'historic'" class="scrollContainer plPlayerList" #plPlayerList >
             <app-video-list
                 [videoList]="playerPanelState.historiclist"
-                [displayType]="'list'"
-                [draggable]="true"
-                [dragBagName]="'searchResultsBag'"
-                [attrCopy]="true"
-                [attrAcceptDrop]="false"
-                [attrFrom]="'historic'">
+                [config]="historicListConfig">
+
                 <ng-template #itemControl let-video="video" let-index="index">
                 </ng-template>
             </app-video-list>

@@ -1,32 +1,30 @@
 <div class="appListContainer">
 
-    <!-- Video list
-        *ngIf="displayType === 'list' && dragBagName"
-    -->
+    <!-- Video list -->
     <div
-        *ngIf="dragBagName"
+        #listRef
+        *ngIf="config && config.dragBagName"
         class="appList"
-        [ngClass]="attrFrom"
-        [dragula]="dragBagName"
-        [dragulaModel]="useDragModel ? videoList : null"
-        [attr.data-plid]="attrPlaylistId"
-        [attr.data-acceptdrop]="attrAcceptDrop"
-        [attr.data-copy]="attrCopy">
+        [ngClass]="config.attr.from"
+        [dragula]="config.dragBagName"
+        [attr.data-plid]="config.attr.playlistId"
+        [attr.data-acceptdrop]="config.attr.acceptDrop"
+        [attr.data-copy]="config.attr.copy">
 
         <!-- Video list item -->
         <div
+            *ngFor="let video of videoList; let i = index; trackBy: trackByFn"
             id="{{ 'onPlayItem-' + i }}"
             class="appListItem"
-            [class.showShadow]="showShadow"
-            [class.hideShadow]="!showShadow"
-            *ngFor="let video of videoList; let i = index; trackBy: trackByFn;"
-            [attr.data-from]="attrFrom"
+            [class.showShadow]="config.showShadow"
+            [class.hideShadow]="!config.showShadow"
+            [attr.data-from]="config.attr.from"
             [attr.data-vid]="video.id"
-            [attr.data-plid]="attrPlaylistId"
+            [attr.data-plid]="config.attr.playlistId"
             [attr.data-index]="i">
 
-            <!-- Drag handle -->
-            <div *ngIf="draggable"class="handle btnHovered itemBox">
+            <!-- Drag handle  ngxDragHandle -->
+            <div *ngIf="config.draggable" class="handle btnHovered itemBox">
                 <i fa [name]="'ellipsis-v'" [size]="1" class="handle"></i>
             </div>
 
@@ -44,50 +42,7 @@
 
             <!-- Video infos -->
             <div class="srInfos itemBox">
-                <div class="srTitle itemText">{{ i + 1 }} - {{ video?.title }}</div>
-                <div class="srDesc itemText">{{ video?.channelTitle }} - <span  [translate]="'since'"></span> {{ video?.publishedAt | date:'mediumDate' }} - {{ video?.duration | duration }}</div>
-                <div class="duration">{{ video?.duration | duration }}</div>
-                <div class="flexSpacer"></div>
-            </div>
-
-            <div class="flexSpacer"></div>
-
-            <!-- Video control buttons
-            , context: { $implicit: video, index: i }
-            -->
-            <div class="controlBox itemBox">
-                <ng-container
-                [ngTemplateOutlet]="itemControlTmpl"
-                [ngTemplateOutletContext]="{ video: video, index: i }"
-               >
-            </ng-container>
-            </div>
-        </div>
-
-        <ng-container *ngTemplateOutlet="footerTmpl,context: { $implicit: footer }"></ng-container>
-    </div>
-
-
-
-
-
-    <div *ngIf="!dragBagName" class="appList">
-
-        <!-- Video list item -->
-        <div
-            id="{{ 'onPlayItem-' + (i + 1)}}" class="appListItem"
-            *ngFor="let video of videoList; let i = index; trackBy: trackByFn;">
-
-            <!-- Video thumbnail -->
-            <div class="srThumb itemBox">
-                <img draggable="false" [src]="video?.thumbUrl" alt=""
-                [style.height]="imgHeight"
-                [style.minWidth]="imgWidth">
-            </div>
-
-            <!-- Video infos -->
-            <div class="srInfos itemBox">
-                <div class="srTitle itemText">{{ i + 1 }} - {{ video?.title }}</div>
+                <div class="srTitle itemText"><span class="itemIndex">{{ i + 1 }}</span> - {{ video?.title }}</div>
                 <div class="srDesc itemText">{{ video?.channelTitle }} - <span  [translate]="'since'"></span> {{ video?.publishedAt | date:'mediumDate' }} - {{ video?.duration | duration }}</div>
                 <div class="duration">{{ video?.duration | duration }}</div>
                 <div class="flexSpacer"></div>
@@ -104,8 +59,50 @@
             </div>
         </div>
 
+        <!-- Footer of the list (For load more button in search list) -->
+        <ng-container *ngTemplateOutlet="footerTmpl, context: { $implicit: footer }"></ng-container>
+    </div>
+
+
+
+
+<!--
+    <div *ngIf="!dragBagName" class="appList">
+
+        <!-- Video list item --
+        <div
+            id="{{ 'onPlayItem-' + (i + 1)}}" class="appListItem"
+            *ngFor="let video of videoList; let i = index; trackBy: trackByFn;">
+
+            <!-- Video thumbnail --
+            <div class="srThumb itemBox">
+                <img draggable="false" [src]="video?.thumbUrl" alt=""
+                [style.height]="imgHeight"
+                [style.minWidth]="imgWidth">
+            </div>
+
+            <!-- Video infos --
+            <div class="srInfos itemBox">
+                <div class="srTitle itemText">{{ i + 1 }} - {{ video?.title }}</div>
+                <div class="srDesc itemText">{{ video?.channelTitle }} - <span  [translate]="'since'"></span> {{ video?.publishedAt | date:'mediumDate' }} - {{ video?.duration | duration }}</div>
+                <div class="duration">{{ video?.duration | duration }}</div>
+                <div class="flexSpacer"></div>
+            </div>
+
+            <div class="flexSpacer"></div>
+
+            <!-- Video control buttons --
+            <div class="controlBox itemBox">
+                <ng-container
+                    [ngTemplateOutlet]="itemControlTmpl"
+                    [ngTemplateOutletContext]="{ video: video, index: i }">
+                </ng-container>
+            </div>
+        </div>
+
         <ng-container *ngTemplateOutlet="footerTmpl,context: { $implicit: footer }"></ng-container>
     </div>
+-->
     <!--
     <div class="" *ngIf="displayType === 'miniList'">
     </div>

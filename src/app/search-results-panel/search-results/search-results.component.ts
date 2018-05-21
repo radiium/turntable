@@ -26,6 +26,19 @@ export class SearchResultsComponent implements OnInit {
     loadNextPage: boolean;
     enableDrag: boolean;
 
+    videoListConfig = {
+        draggable: true,
+        displayType: 'list',
+        dragBagName: 'videolistBag',
+        showShadow: false,
+        attr: {
+            copy: true,
+            acceptDrop: false,
+            playlistId: undefined,
+            from: 'search'
+        }
+    }
+
     constructor(
     private dataService: DataService,
     private YTService: YoutubeService,

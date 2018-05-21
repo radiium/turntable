@@ -15,7 +15,7 @@ export class DataService {
 
 
     // App state
-    private appState  = new BehaviorSubject<any>(new AppState());
+    private appState  = new BehaviorSubject<AppState>(new AppState());
     public  appState$ = this.appState.asObservable();
 
 
@@ -45,14 +45,13 @@ export class DataService {
 
 
     // Selected playlist
-    private onSelectPL  = new Subject<Playlist>();
+    private onSelectPL  = new Subject<string>();
     public  onSelectPL$ = this.onSelectPL.asObservable();
 
 
     // On play videolist
     private onPlayList  = new Subject<Array<PlaylistItem>>();
     public  onPlayList$ = this.onPlayList.asObservable();
-
 
     // On play historic videolist
     private historicList  = new Subject<Array<PlaylistItem>>();
@@ -104,7 +103,7 @@ export class DataService {
     }
 
     setOnPlayList(data) {
-        this.onPlayList.next(_.cloneDeep(data));
+        this.onPlayList.next(data);
     }
 
     setHistoricList(data) {

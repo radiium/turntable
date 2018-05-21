@@ -1,23 +1,10 @@
 <div id="libraryContainer" class="contentPanel">
 
     <app-toolbar [height]="'40px'" [margin]="'0 0 0 2px'">
-        <!--
-            <button
-                class="toolbarBtn textBtn btnHover"
-                (click)="onDisplay = 'playlistList'"
-                [class.activeUnderLine]="onDisplay === 'playlistList'">
-                <span>Playlists</span>
-            </button>
-            <button
-                class="toolbarBtn textBtn btnHover"
-                (click)="onDisplay = 'subscriptionList'"
-                [class.activeUnderLine]="onDisplay === 'subscriptionList'">
-                <span>subscription</span>
-            </button>
-        -->
+
         <div class="flexSpacer"></div>
 
-        <!-- Display playlists type -->
+        <!-- Display grid/list -->
         <mat-button-toggle-group class="displayTypeBtn" *ngIf="appState.selectedTab === 3" #group="matButtonToggleGroup"
             [ngModel]="appState.displayType" (change)="changeDisplayType($event)">
             <mat-button-toggle value="grid"  checked="appState.displayType.value === 'grid'">
@@ -32,9 +19,7 @@
     <div class="spacer"></div>
 
 
-    <!-- Playlists list
-    [hidden]="onDisplay !== 'playlistList'"
-    -->
+    <!-- Playlists list -->
     <div id="contentItemBox">
 
         <!-- Display GRID -->
@@ -64,29 +49,7 @@
                         </button>
 
                         <mat-menu #menu="matMenu">
-                            <!-- Play -->
-                            <button mat-menu-item (click)="playPlaylist(pl)">
-                                <mat-icon svgIcon="playlist-play"></mat-icon>
-                                <span [translate]="'playAll'"></span>
-                            </button>
-
-                            <!-- Add to current -->
-                            <button mat-menu-item (click)="addToCurrentPlaylist(pl)">
-                                <mat-icon svgIcon="playlist-plus"></mat-icon>
-                                <span [translate]="'addToPlay'"></span>
-                            </button>
-
-                            <!-- Show -->
-                            <button mat-menu-item (click)="showPlaylist(pl)">
-                                <mat-icon svgIcon="eye-outline"></mat-icon>
-                                <span  [translate]="'showDetail'"></span>
-                            </button>
-
-                            <!-- Remove -->
-                            <button mat-menu-item (click)="deletePlaylist(pl)" >
-                                <mat-icon svgIcon="delete-forever"></mat-icon>
-                                <span  [translate]="'delete'"></span>
-                            </button>
+                            <app-playlist-control [playlist]="pl" [show]="true"></app-playlist-control>
                         </mat-menu>
 
                     </div>
@@ -96,7 +59,6 @@
                     <div class="plName noOverflow" (click)="showPlaylist(pl)">{{ pl.title }}</div>
                 </div>
             </div>
-
         </div>
 
         <!-- Display LIST -->
@@ -125,95 +87,10 @@
                     </button>
 
                     <mat-menu #menu="matMenu">
-                        <!-- Play -->
-                        <button mat-menu-item (click)="playPlaylist(pl)">
-                            <mat-icon svgIcon="playlist-play"></mat-icon>
-                            <span  [translate]="'playAll'"></span>
-                        </button>
-
-                        <!-- Add to current -->
-                        <button mat-menu-item (click)="addToCurrentPlaylist(pl)">
-                            <mat-icon svgIcon="playlist-plus"></mat-icon>
-                            <span [translate]="'addToPlay'"></span>
-                        </button>
-
-                        <!-- Show -->
-                        <button mat-menu-item (click)="showPlaylist(pl)">
-                            <mat-icon svgIcon="eye-outline"></mat-icon>
-                            <span  [translate]="'showDetail'"></span>
-                        </button>
-
-                        <!-- Remove -->
-                        <button mat-menu-item (click)="deletePlaylist(pl)" >
-                            <mat-icon svgIcon="delete-forever"></mat-icon>
-                            <span  [translate]="'delete'"></span>
-                        </button>
+                        <app-playlist-control [playlist]="pl" [show]="true"></app-playlist-control>
                     </mat-menu>
                 </div>
             </div>
         </div>
-
-        <!-- Display list
-        <mat-list *ngIf="appState.displayType === 'list'" role="list">
-
-        <mat-list-item class="listItemRow row" role="listitem" *ngFor="let pl of playlistsList; let i = index">
-            <div class="rowBorder" [class.local]="pl.isLocal" [class.notlocal]="!pl.isLocal"></div>
-            <div class="thumbBox">
-                <div *ngIf="pl.thumbUrl === ''" class=""><img src="assets/images/pochette.png" alt=""></div>
-                <div *ngIf="pl.thumbUrl !== ''" class=""><img src="{{ pl.thumbUrl }}" alt=""></div>
-            </div>
-
-            <div class="contentBox">
-                <div class="infosBox flexSpacer">
-                    <div class="infosBoxTitle">{{ pl.title }}</div>
-                    <div class="" *ngIf="pl.description">{{ pl.description }}</div>
-                    <div class="">{{ pl.videolist.length }} video<span *ngIf="pl.videolist.length > 1">s</span></div>
-                </div>
-
-                <span class="spacerToolbar"></span>
-
-                <div class="ctrlBox">
-                    <button [matMenuTriggerFor]="menu" class="menuBtn">
-                        <fa class="menuBtnIco" [name]="'bars'" [size]="2"></fa>
-                    </button>
-
-                    <mat-menu #menu="matMenu">
-                        <!-- Play --
-                        <button mat-menu-item (click)="playPlaylist(pl)">
-                            <mat-icon svgIcon="playlist-play"></mat-icon>
-                            <span>Play all</span>
-                        </button>
-
-                        <!-- Add to current --
-                        <button mat-menu-item (click)="addToCurrentPlaylist(pl)">
-                            <mat-icon svgIcon="playlist-plus"></mat-icon>
-                            <span [translate]="'addToPlay'"></span>
-                        </button>
-
-                        <!-- Show --
-                        <button mat-menu-item (click)="showPlaylist(pl)">
-                            <mat-icon svgIcon="eye-outline"></mat-icon>
-                            <span>Show details</span>
-                        </button>
-
-                        <!-- Remove --
-                        <button mat-menu-item (click)="deletePlaylist(pl)" >
-                            <mat-icon svgIcon="delete-forever"></mat-icon>
-                            <span>Delete</span>
-                        </button>
-                    </mat-menu>
-                </div>
-            </div>
-        </mat-list-item>
-    </mat-list>
-    -->
     </div>
-
-
-    <!-- Subscription list
-        <div id="contentItemBox" [hidden]="onDisplay !== 'playlistList'">
-            Hello subscription!!
-        </div>
-    -->
-
 </div>

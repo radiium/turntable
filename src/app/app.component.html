@@ -63,8 +63,8 @@
 
     <mat-sidenav-container class="appContainer flexSpacer" autosize>
 
-        <!-- Sidenav mini -->
-        <mat-sidenav  *ngIf="appState.isMiniSideBar" #sidenav [mode]="'side'" opened="true" class="appSidenav miniNav">
+        <!-- Sidenav mini --
+        <mat-sidenav [hidden]="!appState.isMiniSideBar" #sidenav [mode]="'side'" opened="true" class="appSidenav miniNav">
             <div class="flexItem sectionLabel"></div>
             <button class="sidenavBtn btnHover" (click)="onSelectTab(1)" [class.activ]="appState.selectedTab === 1 || selectedTab === 2">
                 <fa class="sidenavBtnIco" [name]="'home'" [size]="1"></fa>
@@ -83,20 +83,20 @@
                 <fa class="sidenavBtnIco" [name]="'plus'" [size]="1"></fa>
             </button>
         </mat-sidenav>
+        -->
 
 
         <!-- Sidenav normal -->
-        <mat-sidenav *ngIf="!appState.isMiniSideBar" #sidenav [mode]="'side'" opened="true" class="appSidenav" [class.miniNav]="appState.isMiniSideBar">
+        <mat-sidenav  #sidenav [mode]="'side'"
+            opened="true" class="appSidenav" [class.miniNav]="appState.isMiniSideBar">
 
-            <!--
-            <div *ngIf="!appState.isMiniSideBar">
-            -->
+            <div class="sidenavCont" [hidden]="appState.isMiniSideBar">
                 <!-- Navigation -->
                 <div class="flexItem sectionLabel">
                     <span  [translate]="'nav'"></span>
                 </div>
                 <div class="flexItem">
-                    <button class="sidenavBtn btnHover" (click)="onSelectTab(1)" [class.activ]="appState.selectedTab === 1 || selectedTab === 2">
+                    <button class="sidenavBtn btnHover" (click)="onSelectTab(1)" [class.activ]="appState.selectedTab === 1 || appState.selectedTab === 2">
                         <fa class="sidenavBtnIco" [name]="'home'" [size]="1"></fa>
                         <span class="sidenavBtnLabel"  [translate]="'home'"></span>
                     </button>
@@ -118,22 +118,7 @@
                     <fa class="refreshBtnIco" [name]="'refresh'" [size]="1"></fa>
                     </button>
                 </div>
-                <div class="flexItem sidenavScroll" #plScrollContainer>
-                    <div class="flexItem">
-
-                        <!-- Playlist list item button -->
-                        <button class="sidenavBtn btnHover plDrop" *ngFor="let pl of playlistsList"
-                            [class.activ]="appState.selectedTab === 4 && pl.id === onSelectPLID"
-                            [dragula]="'searchResultsBag'"
-                            [attr.data-acceptdrop]="true"
-                            [attr.data-hideshadow]="true"
-                            [attr.data-plid]="pl.id"
-                            (click)="selectPlaylist(pl)">
-                            <fa class="sidenavBtnIco" [name]="'folder-open-o'" [size]="1"></fa>
-                            <span class="sidenavBtnLabel noOverflow">{{ pl.title }}</span>
-                        </button>
-                    </div>
-                </div>
+                <app-playlist-button-list class="flexItem sidenavPlBtnList"></app-playlist-button-list>
 
                 <div class="flexSpacer"></div>
 
@@ -144,8 +129,28 @@
                         <span class="sidenavBtnLabel"  [translate]="'addPl'"></span>
                     </button>
                 </div>
-            <!--
             </div>
+
+
+            <div class="sidenavCont" [hidden]="!appState.isMiniSideBar">
+                <div class="flexItem sectionLabel"></div>
+                <button class="sidenavBtn btnHover" (click)="onSelectTab(1)" [class.activ]="appState.selectedTab === 1 || appState.selectedTab === 2">
+                    <fa class="sidenavBtnIco" [name]="'home'" [size]="1"></fa>
+                </button>
+                <button class="sidenavBtn btnHover" (click)="onSelectTab(3)" [class.activ]="appState.selectedTab === 3">
+                    <fa class="sidenavBtnIco" [name]="'th-list'" [size]="1"></fa>
+                </button>
+                <button class="sidenavBtn btnHover" (click)="onSelectTab(5)" [class.activ]="appState.selectedTab === 5">
+                    <fa class="sidenavBtnIco" [name]="'play-circle'" [size]="1"></fa>
+                </button>
+
+                <div class="flexSpacer"></div>
+
+                <button class="sidenavBtn btnHover addBtn" (click)="addPlaylist()">
+                    <fa class="sidenavBtnIco" [name]="'plus'" [size]="1"></fa>
+                </button>
+            </div>
+            <!--
 
             <div *ngIf="appState.isMiniSideBar">
                 <div class="flexItem sectionLabel"><span></span></div>

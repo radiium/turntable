@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, ApplicationRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, ApplicationRef, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { DragulaService } from 'ng2-dragula/ng2-dragula';
 import * as _ from 'lodash';
@@ -8,6 +8,7 @@ import { Playlist, PlaylistItem, AppState } from 'core/models';
 import { DataService } from 'core/services/data.service';
 import { AppStateService } from 'core/services/app-state.service';
 import { PlayerStateService } from 'core/services/player-state.service';
+import { PlaylistService } from 'core/services/playlist.service';
 import { DndService } from 'core/services/dnd.service';
 import { ConfirmDialogComponent } from 'shared/dialogs/confirm-dialog/confirm-dialog.component';
 import { EditPlaylistDialogComponent } from 'shared/dialogs/edit-playlist-dialog/edit-playlist-dialog.component';
@@ -17,14 +18,15 @@ import { SelectPlaylistDialogComponent } from 'shared/dialogs/select-playlist-di
 @Component({
     selector: 'app-playlist-details',
     templateUrl: './playlist-details.component.html',
-    styleUrls: ['./playlist-details.component.scss']
+    styleUrls: ['./playlist-details.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PlaylistDetailsComponent implements OnInit {
 
     playlist: Playlist;
-    playlistsList: Array<Playlist>;
-    onPlayList: Array<PlaylistItem>;
-
+    playlistsList: Playlist[];
+    onPlayList: PlaylistItem[];
+    videoList: PlaylistItem[];
     onEdit: boolean;
 
     title: string;
@@ -33,17 +35,31 @@ export class PlaylistDetailsComponent implements OnInit {
 
     appState: AppState;
 
-    @ViewChild('pldScrollContainer') set container(scrollContainer: ElementRef) {
-        this.dndService.plDetailContainer = scrollContainer;
+    videoListConfig = {
+        draggable: true,
+        displayType: 'list',
+        dragBagName: 'videolistBag',
+        showShadow: true,
+        attr: {
+            copy: false,
+            acceptDrop: true,
+            playlistId: '',
+            from: 'detail'
+        }
+    };
 
+    @ViewChild('pldScrollContainer') set container(scrollContainer: ElementRef) {
+        this.dnd.plDetailContainer = scrollContainer;
     }
 
     constructor(
+    private cdRef: ChangeDetectorRef,
     private appRef: ApplicationRef,
     private dataService: DataService,
     private appStateService: AppStateService,
     private playerState: PlayerStateService,
-    private dndService: DndService,
+    private dnd: DndService,
+    public plSrv: PlaylistService,
     public dialog: MatDialog) {
 
         this.onEdit = false;
@@ -53,63 +69,32 @@ export class PlaylistDetailsComponent implements OnInit {
 
         // Get selected playlist
         this.dataService.onSelectPL$.subscribe((data) => {
-            this.playlist = data;
+            console.log('=> onSelectPL', data);
+            this.playlist = _.find(this.playlistsList, { id: data });
+            this.videoList = this.playlist.videolist;
             this.updateState(false);
-            this.appRef.tick();
+            this.cdRef.markForCheck();
+            // this.appRef.tick();
         });
 
         // Get playlist list
         this.dataService.playlistsList$.subscribe((data) => {
+            console.log('=> playlistsList');
             this.playlistsList = data;
+            if (this.playlist) {
+                this.playlist = _.find(this.playlistsList, { id: this.playlist.id });
+            }
+            this.cdRef.markForCheck();
         });
 
         // App State
         this.dataService.appState$.subscribe((data) => {
             this.appState = data;
+            this.cdRef.markForCheck();
         });
     }
 
     ngOnInit() {
-    }
-
-    editPlaylist() {
-        const dialogRef = this.dialog.open(EditPlaylistDialogComponent, {
-            height: 'auto',
-            width: '300px',
-            data: { playlist: this.playlist }
-        });
-        dialogRef.afterClosed().subscribe(result => {
-            if (result) {
-                let selectedPL;
-                const newPLList = _.each(this.playlistsList, (pl) => {
-                    if (pl.id === this.playlist.id) {
-                        pl.title = result.title;
-                        pl.description = result.description;
-                        pl.privacyStatus = result.privacyStatus;
-                        selectedPL = pl;
-                    }
-                });
-                this.dataService.setPlaylistsList(newPLList);
-                this.dataService.setOnSelectPL(selectedPL);
-                this.updateState(false);
-            }
-        });
-    }
-
-    deletePlaylist() {
-        const dialogRef = this.dialog.open(DeletePlaylistDialogComponent, {
-            data: { title: this.playlist.title }
-        });
-        dialogRef.afterClosed().subscribe(delPl => {
-            if (delPl) {
-                const newPl = _.filter(this.playlistsList, (pl) => {
-                    return pl.id !== this.playlist.id;
-                });
-                this.dataService.setPlaylistsList(newPl);
-                this.dataService.setOnSelectPL(null);
-                this.dataService.setSelectedTab(3);
-            }
-        });
     }
 
     deleteVideo(video: PlaylistItem, index: number) {
@@ -137,6 +122,8 @@ export class PlaylistDetailsComponent implements OnInit {
             this.title = this.playlist.title;
             this.description = this.playlist.description;
             this.privacyStatus = this.playlist.privacyStatus;
+            // this.videoListConfig.attr.playlistId = this.playlist.id;
+            // this.cdRef.markForCheck();
         }
     }
 
@@ -170,18 +157,23 @@ export class PlaylistDetailsComponent implements OnInit {
         }
     }
 
-    // Set current playlist
-    playPlaylist() {
-        this.playerState.setPlaylist(this.playlist.videolist);
-    }
-
-    // Add to current playlist
-    addToCurrentPlaylist() {
-        this.playerState.addToPlaylist(this.playlist.videolist);
+    getConfig(plId) {
+        return {
+            draggable: true,
+            displayType: 'list',
+            dragBagName: 'videolistBag',
+            showShadow: true,
+            attr: {
+                copy: false,
+                acceptDrop: true,
+                playlistId: plId,
+                from: 'detail'
+            }
+        }
     }
 
     // ------------------------------------------------------------------------
-    // Track onPlay list item in ngFor
+    // Track item in ngFor
     trackByFn(index: number, item: any) {
         return item.id; // index;
     }
