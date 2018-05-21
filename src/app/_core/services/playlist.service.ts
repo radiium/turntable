@@ -32,9 +32,9 @@ export class PlaylistService {
     private playerState: PlayerStateService,
     public dialog: MatDialog
     ) {
-        this.data.playlistsList$.subscribe(data => {
-            this.playlistsList = data;
-        })
+        this.data.playlistsList$.subscribe(datalist => {
+            this.playlistsList = datalist;
+        });
     }
 
     setPlayerPlaylist(playlist: Playlist) {
@@ -83,6 +83,6 @@ export class PlaylistService {
     }
 
     getPlaylist(plId: string): Playlist {
-        return _.find(this.playlistsList, { id: plId})
+        return _.find(this.playlistsList, { id: plId});
     }
 }

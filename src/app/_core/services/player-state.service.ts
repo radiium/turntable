@@ -97,7 +97,12 @@ export class PlayerStateService {
 
     setHistoriclist(data: Array<PlaylistItem>) {
         this.playerPanelState.getValue().historiclist = _.cloneDeep(data);
-        this.setPlayerPanelState(this.playerPanelState.getValue());
+        this.setPlayerPanelState(_.cloneDeep(this.playerPanelState.getValue()));
+    }
+
+    setOnPlaylist(data: Array<PlaylistItem>) {
+        this.playerPanelState.getValue().playlist = _.cloneDeep(data);
+        this.setPlayerPanelState(_.cloneDeep(this.playerPanelState.getValue()));
     }
 
     setRandom(isRandom: boolean) {
@@ -196,7 +201,9 @@ export class PlayerStateService {
         }
 
         panelState.historiclist.unshift(videoToPlay);
-        this.setPlayerPanelState(panelState);
+
+        this.setHistoriclist(panelState.historiclist);
+        // this.setPlayerPanelState(panelState);
         this.playOnPlayer(videoToPlay);
     }
 

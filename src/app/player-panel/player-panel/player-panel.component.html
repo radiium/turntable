@@ -4,7 +4,7 @@
     <div class="playerContainer">
 
         <!-- Left Player -->
-        <div class="playerWrapper" [class.fullSize]="!appState.multiPlayer">
+        <div class="playerWrapper" [class.fullSize]="!appState?.multiPlayer">
             <app-player
                 class="player playerRow"
                 [side]="'left'"
@@ -20,7 +20,7 @@
         </div>
 
         <!-- Crossfader -->
-        <div class="centerPanelWrapper" [class.fullSize]="!appState.multiPlayer">
+        <div class="centerPanelWrapper" [class.fullSize]="!appState?.multiPlayer">
 
             <div class="controlBox playerRow">
 
@@ -31,7 +31,7 @@
                         [step]="0.25"
                         [min]="0.5"
                         [max]="2"
-                        [value]="playerStateLeft.speed"
+                        [value]="playerStateLeft?.speed"
                         (valueChange)="onSpeedChangeLeft($event)">
                     </app-range-slider>
                     <app-range-slider
@@ -39,17 +39,17 @@
                         [min]="0"
                         [max]="100"
                         [step]="1"
-                        [value]="playerStateLeft.volume"
+                        [value]="playerStateLeft?.volume"
                         (valueChange)="onVolumeChangeLeft($event)">
                     </app-range-slider>
                 </div>
 
-                <div class="centerBox flexSpacer" *ngIf="appState.multiPlayer">
+                <div class="centerBox flexSpacer" *ngIf="appState?.multiPlayer">
                     <div class="flexSpacer">
                     </div>
 
                     <!-- Crossfader -->
-                    <div id="crossfaderBox" class="line-border" *ngIf="appState.multiPlayer">
+                    <div id="crossfaderBox" class="line-border" *ngIf="appState?.multiPlayer">
                         <div class="hori-ticks">
                             <div class="item"></div>
                             <div class="item"></div>
@@ -78,21 +78,21 @@
                 </div>
 
                 <!-- Right speed/volume control -->
-                <div class="rangeSliderBox" *ngIf="appState.multiPlayer">
-                    <app-range-slider [hidden]="!appState.multiPlayer"
+                <div class="rangeSliderBox" *ngIf="appState?.multiPlayer">
+                    <app-range-slider [hidden]="!appState?.multiPlayer"
                         [name]="'vol_right'"
                         [min]="0"
                         [max]="100"
                         [step]="1"
-                        [value]="playerStateRight.volume"
+                        [value]="playerStateRight?.volume"
                         (valueChange)="onVolumeChangeRight($event)">
                     </app-range-slider>
-                    <app-range-slider [hidden]="!appState.multiPlayer"
+                    <app-range-slider [hidden]="!appState?.multiPlayer"
                         [name]="'speed_right'"
                         [step]="0.25"
                         [min]="0.5"
                         [max]="2"
-                        [value]="playerStateRight.speed"
+                        [value]="playerStateRight?.speed"
                         (valueChange)="onSpeedChangeRight($event)">
                     </app-range-slider>
                 </div>
@@ -104,7 +104,7 @@
                 <button
                     *ngIf="true"
                     class="toolbarBtn playerBtn btnHover"
-                    [class.enabledBtn]="playerPanelState.isRandom"
+                    [class.enabledBtn]="playerPanelState?.isRandom"
                     (click)="onRandom()">
                     <fa class="playerBarBtnIco" [name]="'random'" [size]="2"></fa>
                 </button>
@@ -113,7 +113,7 @@
                 <button
                     *ngIf="true"
                     class="toolbarBtn playerBtn btnHover"
-                    [class.enabledBtn]="playerPanelState.isRepeat"
+                    [class.enabledBtn]="playerPanelState?.isRepeat"
                     (click)="onRepeat()">
                     <fa class="playerBarBtnIco" [name]="'retweet'" [size]="2"></fa>
                 </button>
@@ -124,10 +124,10 @@
 
 
         <!-- Player right -->
-        <div class="playerWrapper" [hidden]="!appState.multiPlayer"
-            [style.height]="!appState.multiPlayer ? '0' : ''"
-            [style.width]="!appState.multiPlayer ? '0' : ''">
-        <app-player [hidden]="!appState.multiPlayer"
+        <div class="playerWrapper" [hidden]="!appState?.multiPlayer"
+            [style.height]="!appState?.multiPlayer ? '0' : ''"
+            [style.width]="!appState?.multiPlayer ? '0' : ''">
+        <app-player [hidden]="!appState?.multiPlayer"
                 class="player playerRow"
                 [side]="'right'"
                 (playerReady)="savePlayerRight($event)"
@@ -138,7 +138,7 @@
                 [player]="playerRight"
                 [playerState]="playerStateRight"
                 (nearEnd)="onNearEnd($event)"
-                [hidden]="!appState.multiPlayer">
+                [hidden]="!appState?.multiPlayer">
             </app-player-control>
         </div>
     </div>
@@ -164,13 +164,13 @@
             </app-toolbar>
 
             <app-toolbar [height]="'40px'" [margin]="'0 5px 0 0'" [padding]="'0 10px 0 10px'">
-                <div *ngIf="playerPanelState.playlist" class="length noOverflow">{{ playerPanelState.playlist.length }} <span [translate]="'track'"></span><span *ngIf="playerPanelState.playlist.length >1">s</span></div>
-                <div *ngIf="playerPanelState.playlist" class="duration noOverflow">{{ playerPanelState.playlist | totalduration: 'test' | duration }}</div>
+                <div *ngIf="playerPanelState?.playlist" class="length noOverflow">{{ playerPanelState?.playlist.length }} <span [translate]="'track'"></span><span *ngIf="playerPanelState?.playlist.length >1">s</span></div>
+                <div *ngIf="playerPanelState?.playlist" class="duration noOverflow">{{ playerPanelState?.playlist | totalduration: 'test' | duration }}</div>
             </app-toolbar>
 
             <!-- Toggle single/multi player
                 <app-toolbar [height]="'40px'" [margin]="'0 5px 0 0'">
-                    <button class="toolbarBtn textBtn btnHover" (click)="appState.multiPlayer = !appState.multiPlayer">Full Size</button>
+                    <button class="toolbarBtn textBtn btnHover" (click)="appState?.multiPlayer = !appState?.multiPlayer">Full Size</button>
                 </app-toolbar>
 
                 Set player on fullscreen
@@ -190,7 +190,8 @@
             #playerListScrollContainer >
 
             <app-video-list
-                [videoList]="playerPanelState.playlist"
+                [videoList]="playerPanelState?.playlist"
+                (videoListOut)="onVideolistChange($event)"
                 [config]="playListConfig">
 
                 <!-- Item control buttons -->
@@ -198,55 +199,18 @@
                     <button class="toolbarBtn btnHover" (click)="playVideo(video, index)">
                         <fa [name]="'play'" [size]="2"></fa>
                     </button>
-
-                    <button *ngIf="playerPanelState.playlist.length > 1" class="toolbarBtn btnHover"
-                        [matMenuTriggerFor]="menu" xPosition="'before'" yPosition="'above'">
-                        <fa [name]="'sort'" [size]="2"></fa>
+                    <button class="toolbarBtn btnHover" (click)="deleteVideo(video, index)">
+                        <fa [name]="'trash-o'" [size]="2"></fa>
                     </button>
-                    <mat-menu #menu="matMenu">
-                        <div class="inlineBtn">
-                            <button class="toolbarBtn iconMenuBtn btnHover"
-                                (click)="moveToTop(index)"
-                                [disabled]="index === 0"
-                                [class.disabled]="index === 0">
-                                <fa [name]="'angle-double-up'" [size]="2"></fa>
-                            </button>
-                            <button class="toolbarBtn iconMenuBtn btnHover"
-                                (click)="up(index)"
-                                [disabled]="i === 0"
-                                [class.disabled]="index === 0">
-                                <fa [name]="'angle-up'" [size]="2"></fa>
-                            </button>
-                        </div>
-                        <div class="inlineBtn">
-                            <button class="toolbarBtn iconMenuBtn btnHover"
-                                (click)="down(index)"
-                                [disabled]="index === (playerPanelState.playlist.length - 1)"
-                                [class.disabled]="index === (playerPanelState.playlist.length - 1)">
-                                <fa [name]="'angle-down'" [size]="2"></fa>
-                            </button>
-                            <button class="toolbarBtn iconMenuBtn btnHover"
-                                (click)="moveToBottom(index)"
-                                [disabled]="index === (playerPanelState.playlist.length - 1)"
-                                [class.disabled]="index === (playerPanelState.playlist.length - 1)">
-                                <fa [name]="'angle-double-down'" [size]="2"></fa>
-                            </button>
-                        </div>
-                        </mat-menu>
-
-                        <button class="toolbarBtn btnHover" (click)="deleteVideo(video, index)">
-                            <fa [name]="'trash-o'" [size]="2"></fa>
-                        </button>
                 </ng-template>
             </app-video-list>
         </div>
 
 
-        <!-- Historic list
-        -->
-        <div [hidden]="onDisplayPl !== 'historic'" class="scrollContainer plPlayerList" #plPlayerList >
+        <!-- Historic list -->
+        <div [hidden]="onDisplayPl !== 'historic'" class="scrollContainer plPlayerList" #plPlayerList>
             <app-video-list
-                [videoList]="playerPanelState.historiclist"
+                [videoList]="playerPanelState?.historiclist"
                 [config]="historicListConfig">
 
                 <ng-template #itemControl let-video="video" let-index="index">

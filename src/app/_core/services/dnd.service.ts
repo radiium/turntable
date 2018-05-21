@@ -115,8 +115,8 @@ export class DndService implements OnDestroy {
 
             // Datas subscription
             this.playerState.playerPanelState$.subscribe((data) => {
-                this.historicList = data.historiclist
-                this.onPlayList = data.playlist
+                this.historicList = data.historiclist;
+                this.onPlayList = data.playlist;
             }),
             this.data.playlistsList$.subscribe((data) => this.playlistsList = data),
             this.data.searchResults$.subscribe((data) => this.searchResults = data),
@@ -177,9 +177,14 @@ export class DndService implements OnDestroy {
         document.onmousemove = (e) => {
             let event = e || window.event;
             let mouseY = event['pageY'];
-            let scrollTop = document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop; // document.documentElement.scrollTop is undefined on the Edge browser
-            let scrollBottom = scrollTop + window.innerHeight;
-            let elementHeight = value[1].offsetHeight; // this is to get the height of the dragged element
+            let scrollTop = document.documentElement.scrollTop
+                ? document.documentElement.scrollTop
+                // document.documentElement.scrollTop is undefined on the Edge browser
+                let scrollBottom = scrollTop + window.innerHeight;
+                : document.body.scrollTop;
+
+            // this is to get the height of the dragged element
+            let elementHeight = value[1].offsetHeight;
 
             if (mouseY - elementHeight / 2 < scrollTop) {
                 window.scrollBy(0, -15);
@@ -261,7 +266,6 @@ export class DndService implements OnDestroy {
         if (bagName === this.playerBag) {
 
         } else if (bagName === this.vlBag) {
-            console.log('onDrop')
             let video: PlaylistItem;
             let plSourceIndex: number;
             let plTargetIndex: number;
@@ -302,20 +306,33 @@ export class DndService implements OnDestroy {
 
                 const nodes = Array.prototype.slice.call(target.children);
                 const elIdx = nodes.indexOf(el);
-                this.move(parseInt(el.dataset.index), elIdx, videoList);
+                this.move(parseInt(el.dataset.index, 10), elIdx, videoList);
                 this.playlistsList[plTargetIndex].videolist = _.cloneDeep(videoList);
 
-                console.log('this.playlistsList[plTargetIndex]', this.playlistsList[plTargetIndex])
-                // this.data.setOnSelectPL(this.playlistsList[plTargetIndex].id);
+                // Replace dropped element by the original element
+                el.classList.add('dropped');
+                if (this.currentEl) {
+                    el.parentNode.replaceChild(this.currentEl, el);
+                }
+
+
+            } else if (target.classList.contains('onplay') && target === source) {
+                const nodes = Array.prototype.slice.call(target.children);
+                const elIdx = nodes.indexOf(el);
+                this.move(parseInt(el.dataset.index, 10), elIdx, this.onPlayList);
 
                 // Replace dropped element by the original element
-                el.classList.add('dropped')
+                el.classList.add('dropped');
                 if (this.currentEl) {
                     el.parentNode.replaceChild(this.currentEl, el);
                 }
             }
 
-            this.data.setPlaylistsList(this.playlistsList);
+            if (target.classList.contains('onplay')) {
+                this.playerState.setOnPlaylist(this.onPlayList);
+            } else {
+                this.data.setPlaylistsList(this.playlistsList);
+            }
         }
     }
 
@@ -373,10 +390,8 @@ export class DndService implements OnDestroy {
     }
 
     move(fromIndex, toIndex, arr) {
-        var element = arr[fromIndex];
+        const element = arr[fromIndex];
         arr.splice(fromIndex, 1);
         arr.splice(toIndex, 0, element);
     }
-
-
 }

@@ -13,6 +13,7 @@
 
         <!-- Video list item -->
         <div
+            #test
             *ngFor="let video of videoList; let i = index; trackBy: trackByFn"
             id="{{ 'onPlayItem-' + i }}"
             class="appListItem"
@@ -52,6 +53,44 @@
 
             <!-- Video control buttons -->
             <div class="controlBox itemBox">
+
+                <div *ngIf="config.attr.acceptDrop">
+                    <button *ngIf="videoList.length > 1" class="toolbarBtn btnHover"
+                        [matMenuTriggerFor]="menuOrder" xPosition="'before'" yPosition="'above'">
+                        <fa [name]="'sort'" [size]="2"></fa>
+                    </button>
+                    <mat-menu #menuOrder="matMenu">
+                        <div class="inlineBtn">
+                            <button class="toolbarBtn iconMenuBtn btnHover"
+                                (click)="moveToTop(i, test)"
+                                [disabled]="i === 0"
+                                [class.disabled]="i === 0">
+                                <fa [name]="'angle-double-up'" [size]="2"></fa>
+                            </button>
+                            <button class="toolbarBtn iconMenuBtn btnHover"
+                                (click)="up(i, test)"
+                                [disabled]="i === 0"
+                                [class.disabled]="i === 0">
+                                <fa [name]="'angle-up'" [size]="2"></fa>
+                            </button>
+                        </div>
+                        <div class="inlineBtn">
+                            <button class="toolbarBtn iconMenuBtn btnHover"
+                                (click)="down(i, test)"
+                                [disabled]="i === (videoList.length - 1)"
+                                [class.disabled]="i === (videoList.length - 1)">
+                                <fa [name]="'angle-down'" [size]="2"></fa>
+                            </button>
+                            <button class="toolbarBtn iconMenuBtn btnHover"
+                                (click)="moveToBottom(i, test)"
+                                [disabled]="i === (videoList.length - 1)"
+                                [class.disabled]="i === (videoList.length - 1)">
+                                <fa [name]="'angle-double-down'" [size]="2"></fa>
+                            </button>
+                        </div>
+                    </mat-menu>
+                </div>
+
                 <ng-container
                     [ngTemplateOutlet]="itemControlTmpl"
                     [ngTemplateOutletContext]="{ video: video, index: i }">

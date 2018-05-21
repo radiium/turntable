@@ -37,7 +37,7 @@ export class SearchResultsComponent implements OnInit {
             playlistId: undefined,
             from: 'search'
         }
-    }
+    };
 
     constructor(
     private dataService: DataService,

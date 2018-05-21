@@ -1,6 +1,6 @@
 import { Component, Input, Output, OnChanges, SimpleChanges,
     ViewChild, ContentChild, TemplateRef, ElementRef,
-    ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+    ChangeDetectionStrategy, ChangeDetectorRef, EventEmitter } from '@angular/core';
 import * as _ from 'lodash';
 
 import { PlaylistItem, VideoListConfig } from 'core/models';
@@ -19,6 +19,7 @@ export class VideoListComponent implements OnChanges {
     @Input() videoList: PlaylistItem[];
     @Input() config: VideoListConfig;
 
+    @Output() videoListOut = new EventEmitter();
     @ViewChild('listRef') listRef: ElementRef;
     @ContentChild('itemControl') itemControlTmpl: TemplateRef<any>;
     @ContentChild('footer') footerTmpl: TemplateRef<any>;
@@ -44,7 +45,6 @@ export class VideoListComponent implements OnChanges {
     }
 
     ngOnChanges(changes: SimpleChanges) {
-
         if (changes.videoList && changes.videoList.currentValue) {
             this.cdRef.detectChanges();
             this.reIndexItems();
@@ -61,6 +61,40 @@ export class VideoListComponent implements OnChanges {
             index = undefined;
         }
         this.playerState.playVideo(video, index);
+    }
+
+
+    moveToTop(index: number, event) {
+        this.move(index, 0);
+    }
+    up(index: number, event) {
+        this.move(index, index - 1);
+    }
+    down(index: number, event) {
+        this.move(index, index + 1);
+    }
+    moveToBottom(index: number, event) {
+        this.move(index, this.videoList.length - 1);
+    }
+
+    move(from, to) {
+        if (to === from) {
+            return;
+        }
+
+        const target = this.videoList[from];
+        const increment = to < from ? -1 : 1;
+
+        for (let k = from; k !== to; k += increment) {
+            this.videoList[k] = this.videoList[k + increment];
+        }
+
+        this.videoList[to] = target;
+
+        setTimeout(() => {
+            this.listRef.nativeElement.children[to].scrollIntoView({behavior: 'auto'});
+        });
+        this.videoListOut.emit(this.videoList);
     }
 
     // ------------------------------------------------------------------------

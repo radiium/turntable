@@ -22,7 +22,7 @@ export class ContextMenuComponent implements OnInit {
     constructor(
     private data: DataService,
     private renderer: Renderer2) {
-        this.data.appState$.subscribe(data => this.theme = data.theme);
+        this.data.appState$.subscribe(appState => this.theme = appState.theme);
         this.body = document.querySelectorAll('body')[0];
     }
 
@@ -43,7 +43,7 @@ export class ContextMenuComponent implements OnInit {
 
         // Show overlay
         this.renderer.appendChild(this.body, this.overlay);
-        this.renderer.setAttribute(this.overlay, 'id', 'customOverlay')
+        this.renderer.setAttribute(this.overlay, 'id', 'customOverlay');
         this.overlay.style.position = 'absolute';
         this.overlay.style.top = '0';
         this.overlay.style.left = '0';

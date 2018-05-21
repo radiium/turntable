@@ -38,7 +38,6 @@ export class PlayerPanelComponent implements OnInit {
 
     appState: AppState;
 
-
     playListConfig = {
         draggable: true,
         displayType: 'list',
@@ -80,8 +79,9 @@ export class PlayerPanelComponent implements OnInit {
     ngOnInit() {
         this.playerState.playerPanelState$.subscribe((data) => {
             this.playerPanelState = data;
+            this.cd.detectChanges();
+            // this.cd.markForCheck();
             // this.appRef.tick();
-            this.cd.markForCheck();
         });
 
         // Get player and player state left
@@ -160,40 +160,8 @@ export class PlayerPanelComponent implements OnInit {
         this.playerState.setPlayerPanelState(_.cloneDeep(this.playerPanelState));
     }
 
-    moveToTop(index: number) {
-        this.move(index, 0);
-        (<HTMLInputElement>document.getElementById('onPlayItem-' + 0)).scrollIntoView({behavior: 'smooth'});
-    }
-
-    up(index: number, el) {
-        this.move(index, index - 1);
-        (<HTMLInputElement>document.getElementById('onPlayItem-' + (index - 1))).scrollIntoView({behavior: 'smooth'});
-    }
-
-    down(index: number, el) {
-        this.move(index, index + 1);
-        (<HTMLInputElement>document.getElementById('onPlayItem-' + (index + 1))).scrollIntoView({behavior: 'smooth'});
-    }
-
-    moveToBottom(index: number, el) {
-        this.move(index, this.playerPanelState.playlist.length - 1);
-        (<HTMLInputElement>document.getElementById('onPlayItem-' + (this.playerPanelState.playlist.length - 1)))
-            .scrollIntoView({behavior: 'smooth'});
-    }
-
-    move(from, to) {
-        if (to === from) {
-            return;
-        }
-
-        const target = this.playerPanelState.playlist[from];
-        const increment = to < from ? -1 : 1;
-
-        for (let k = from; k !== to; k += increment) {
-            this.playerPanelState.playlist[k] = this.playerPanelState.playlist[k + increment];
-        }
-
-        this.playerPanelState.playlist[to] = target;
+    onVideolistChange(event) {
+        this.playerPanelState.playlist = event;
         this.playerState.setPlayerPanelState(_.cloneDeep(this.playerPanelState));
     }
 

@@ -1,8 +1,8 @@
 <div class="plBtnListContainer" #scrollContainer>
     <div class="scrollContainer">
 
+        <app-context-menu *ngFor="let pl of playlistsList; let i = index; trackBy: trackByFn;">
 
-        <app-context-menu #plBtnList *ngFor="let pl of playlistsList; let i = index; trackBy: trackByFn;">
             <div content>
                 <button
                     [id]="pl.id"
@@ -12,14 +12,17 @@
                     [attr.data-acceptdrop]="true"
                     [attr.data-hideshadow]="true"
                     [attr.data-plid]="pl.id"
-                    (click)="selectPlaylist(pl.id)">
+                    (click)="selectPlaylist(pl)">
                     <fa class="sidenavBtnIco" [name]="'folder-open-o'" [size]="1"></fa>
                     <span class="sidenavBtnLabel noOverflow">{{ pl.title }}</span>
                 </button>
             </div>
+
             <div menu>
                 <app-playlist-control [playlist]="pl" [show]="true"></app-playlist-control>
             </div>
+
         </app-context-menu>
+
     </div>
 </div>

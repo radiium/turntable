@@ -48,6 +48,8 @@ export class PlaylistDetailsComponent implements OnInit {
         }
     };
 
+
+    @ViewChild('itemControl') itemControl;
     @ViewChild('pldScrollContainer') set container(scrollContainer: ElementRef) {
         this.dnd.plDetailContainer = scrollContainer;
     }
@@ -69,7 +71,6 @@ export class PlaylistDetailsComponent implements OnInit {
 
         // Get selected playlist
         this.dataService.onSelectPL$.subscribe((data) => {
-            console.log('=> onSelectPL', data);
             this.playlist = _.find(this.playlistsList, { id: data });
             this.videoList = this.playlist.videolist;
             this.updateState(false);
@@ -79,7 +80,6 @@ export class PlaylistDetailsComponent implements OnInit {
 
         // Get playlist list
         this.dataService.playlistsList$.subscribe((data) => {
-            console.log('=> playlistsList');
             this.playlistsList = data;
             if (this.playlist) {
                 this.playlist = _.find(this.playlistsList, { id: this.playlist.id });
@@ -169,7 +169,17 @@ export class PlaylistDetailsComponent implements OnInit {
                 playlistId: plId,
                 from: 'detail'
             }
-        }
+        };
+    }
+
+
+    onVideolistChange(event) {
+        _.each(this.playlistsList, pl => {
+            if (pl.id === this.playlist.id) {
+                pl.videolist = event;
+            }
+        });
+        this.dataService.setPlaylistsList(this.playlistsList);
     }
 
     // ------------------------------------------------------------------------

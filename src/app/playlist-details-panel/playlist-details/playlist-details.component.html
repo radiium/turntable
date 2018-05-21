@@ -25,6 +25,7 @@
             *ngFor="let pl of playlistsList; let i = index; trackBy: trackByFn"
             [hidden]="pl.id !== playlist.id"
             [videoList]="pl.videolist"
+            (videoListOut)="onVideolistChange($event)"
             [config]="getConfig(pl.id)">
 
             <!-- Item control buttons -->

@@ -9,6 +9,5 @@ export interface VideoListConfig {
         acceptDrop: boolean;
         playlistId: string;
         from: string;
-    }
-
+    };
 }
