@@ -57,8 +57,6 @@ export class YoutubeService {
     private suggestService: SuggestApiService
     ) {
 
-        this.isElectronApp = this.electron.isElectronApp;
-
         this.playlistList = [];
         this.dataSrv.playlistsList$.subscribe((data) => {
             this.playlistList = data;

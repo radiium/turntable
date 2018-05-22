@@ -22,6 +22,8 @@ import { PlaylistItem,
          PlayerState,
          PlayerSide,
          AppState } from 'core/models';
+import { ElectronService } from 'ngx-electron';
+import { DownloadDialogComponent } from 'shared/dialogs/download-dialog/download-dialog.component';
 
 @Injectable()
 export class PlaylistItemService {
@@ -29,14 +31,18 @@ export class PlaylistItemService {
     appState: AppState;
     playlistsList: Playlist[];
     playerPanelState: PlayerPanelState;
+    isElectronApp: boolean;
 
     constructor(
-
+    private electron: ElectronService,
     private dataSrv: DataService,
     private ytSrv: YoutubeService,
     private playerState: PlayerStateService,
     public dialog: MatDialog
     ) {
+
+        this.isElectronApp = this.electron.isElectronApp;
+
         this.dataSrv.appState$.subscribe(appState => {
             this.appState = appState;
         });
@@ -80,7 +86,23 @@ export class PlaylistItemService {
     }
 
     download(video: PlaylistItem) {
-        this.ytSrv.downloadVideo(video);
+        // this.ytSrv.downloadVideo(video);
+
+        if (this.isElectronApp) {
+
+            const dialogRef = this.dialog.open(DownloadDialogComponent, {
+                height: '300px',
+                width: '500px',
+                disableClose: true,
+                data: { video: video }
+            });
+            dialogRef.afterClosed().subscribe(resp => {
+                console.log('CLOSE DownloadDialog');
+            });
+
+            this.electron.ipcRenderer.send('send-convert-video-to-mp3', video);
+
+        }
     }
 
     deleteVideo(video: PlaylistItem, index: number, plId: string) {

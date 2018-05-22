@@ -22,6 +22,7 @@ import { YoutubePlayerModule } from './modules/youtube-player/youtube-player.mod
 import { SearchBarComponent } from './components/search-bar/search-bar.component';
 
 // Components
+import { DownloadDialogComponent } from './dialogs/download-dialog/download-dialog.component';
 import { ConfirmDialogComponent } from './dialogs/confirm-dialog/confirm-dialog.component';
 import { CreatePlaylistDialogComponent } from './dialogs/create-playlist-dialog/create-playlist-dialog.component';
 import { DeletePlaylistDialogComponent } from './dialogs/delete-playlist-dialog/delete-playlist-dialog.component';
@@ -51,6 +52,7 @@ export function HttpLoaderFactory(http: HttpClient) {
 
 @NgModule({
     entryComponents: [
+        DownloadDialogComponent,
         ConfirmDialogComponent,
         CreatePlaylistDialogComponent,
         DeletePlaylistDialogComponent,
@@ -64,6 +66,7 @@ export function HttpLoaderFactory(http: HttpClient) {
         DurationPipe,
         TotalDurationPipe,
         FilterPlaylistsPipe,
+        DownloadDialogComponent,
         ConfirmDialogComponent,
         CreatePlaylistDialogComponent,
         DeletePlaylistDialogComponent,

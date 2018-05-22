@@ -112,13 +112,12 @@ app.on('activate', () => {
 
 // Clear cahe and cookie session before quit
 app.on('before-quit', () => {
-    // if (process.env.NODE_ENV !== 'development') {
+    if (process.env.NODE_ENV !== 'development') {
         mainWindow.webContents.session.clearStorageData();
-    // }
+    }
 
     storage.remove('user', (error) => {
         if (error) { throw error; }
-        console.log('user removed');
     });
 });
 
@@ -128,20 +127,16 @@ app.on('before-quit', () => {
 
 // Store user at signin
 ipcMain.on('save-user', (event, user) => {
-    console.log('saveUser', user)
     storage.set('user', user, (error) => {
         if (error) { throw error; }
-        console.log('user saved');
     });
 
 });
 
 // Remove user from storage at signout
 ipcMain.on('remove-user', (event, user) => {
-    console.log('rmUser', user)
     storage.remove('user', (error) => {
         if (error) { throw error; }
-        console.log('user removed');
     });
 });
 
@@ -149,7 +144,6 @@ ipcMain.on('remove-user', (event, user) => {
 ipcMain.on('send-get-user', (event, arg) => {
     storage.get('user', (err, data) => {
         if (err) { throw err; }
-        console.log('sendGetUser', data)
         event.sender.send('get-user', data);
     });
 });
@@ -161,32 +155,23 @@ ipcMain.on('send-get-user', (event, arg) => {
 
 // Store local playlist
 ipcMain.on('send-save-local-playlists', (event, localPlaylists) => {
-    console.log('=> send-save-local-playlists');
-
     storage.set('localPlaylists', localPlaylists, (error) => {
         if (error) { throw error; }
-        console.log('- localPlaylists saved');
     });
 });
 
 // Get local playlist from storage
 ipcMain.on('send-get-local-playlists', (event) => {
-    console.log('=> send-get-local-playlists');
-
     storage.get('localPlaylists', (err, localPlaylists) => {
         if (err) { throw err; }
-        console.log('- localPlaylists sended');
         event.sender.send('get-local-playlists', localPlaylists);
     });
 });
 
 // Remove user from storage at signout
 ipcMain.on('send-remove-local-playlists', (event) => {
-    console.log('=> send-remove-local-playlists');
-
     storage.remove('localPlaylists', (error) => {
         if (error) { throw error; }
-        console.log('- localPlaylists removed');
     });
 });
 
@@ -224,18 +209,15 @@ ipcMain.on('send-get-app-state', (event, arg) => {
 // Convert video to mp3
 ipcMain.on('send-convert-video-to-mp3', (event, arg) => {
     const url = 'http://www.youtube.com/watch?v=' + arg.id;
-
+const dlPath = path.resolve(app.getPath('downloads'), arg.title + '.mp3');
     dialog.showSaveDialog({
-        defaultPath: '/Users/amigamac/Downloads/' + arg.title + '.mp3',
+        defaultPath: dlPath || '',
     }, (fileName) => {
 
         console.log('showSaveDialog', fileName);
         if (fileName === undefined) return;
         let starttime;
         const mp3 = ytdl(url, { filter: 'audioonly' });
-
-        // new ffmpeg()
-
 
 
         mp3.once('response', () => {
@@ -251,18 +233,28 @@ ipcMain.on('send-convert-video-to-mp3', (event, arg) => {
             process.stdout.write(`running for: ${downloadedMinutes.toFixed(2)}minutes`);
             process.stdout.write(`, estimated time left: ${(downloadedMinutes / floatDownloaded - downloadedMinutes).toFixed(2)}minutes `);
             readline.moveCursor(process.stdout, 0, -1);
+
+            const data = {
+                percent: (floatDownloaded * 100).toFixed(2),
+                downloaded: (downloaded / 1024 / 1024).toFixed(2),
+                total: (total / 1024 / 1024).toFixed(2),
+                mn: downloadedMinutes.toFixed(2),
+                mnRest: (downloadedMinutes / floatDownloaded - downloadedMinutes).toFixed(2)
+            };
+            event.sender.send('get-dl-progress', data);
         });
 
         mp3.on('end', () => {
             process.stdout.write('\n\n');
+            event.sender.send('get-dl-progress', 'succes');
         });
 
         mp3.on('info', (err, info) => {
-            console.log('info', info, err);
+            // console.log('info', info, err);
         });
 
         // mp3.pipe();
-        ffmpeg(mp3).format('mp3').pipe(fs.createWriteStream(fileName))
+        ffmpeg(mp3).audioBitrate(128).format('mp3').pipe(fs.createWriteStream(fileName))
 
         console.log('ENDED');
 

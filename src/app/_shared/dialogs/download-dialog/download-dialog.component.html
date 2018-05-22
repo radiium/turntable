@@ -1,0 +1,23 @@
+<div>
+    <h2 mat-dialog-title class="noOverflow"></h2>
+
+    <div class="dialContent">
+        <div>{{ progress.downloaded }} MB / {{ progress.total }} MB </div>
+        <div>running for: {{ progress.mn }} minutes -- rest: {{ progress.mnRest }} minutes</div>
+
+        <!--
+            <mat-progress-bar class="progressBar" [value]="progress.percent"></mat-progress-bar>
+        [style.width]="progress.percent + 'px'"
+        -->
+
+        <div class="progressBar">
+            <div class="bg"></div>
+            <div id="prBar" class="pr" ></div>
+        </div>
+
+    </div>
+
+    <mat-dialog-actions>
+    <button class="decline" mat-button [mat-dialog-close]>Cancel</button>
+    </mat-dialog-actions>
+</div>
