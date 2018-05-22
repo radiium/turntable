@@ -7,7 +7,6 @@ export class AppState {
     public displayType?: string,
     public selectedTab?: number,
     public showPlayerBar?: boolean,
-    public loading?: boolean,
     public isMiniSideBar?: boolean,
     public multiPlayer?: boolean,
     public onPlayList?: PlaylistItem[],
@@ -19,7 +18,6 @@ export class AppState {
         this.displayType   = displayType   || 'grid';
         this.selectedTab   = selectedTab   || 1;
         this.showPlayerBar = showPlayerBar || false;
-        this.loading       = loading       || false;
         this.isMiniSideBar = isMiniSideBar || false;
         this.multiPlayer   = multiPlayer   || true;
         this.onPlayList    = onPlayList    || [];
