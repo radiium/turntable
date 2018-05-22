@@ -12,7 +12,7 @@ export class Playlist {
         public publishedAt: string,
         public privacyStatus: string,
         public isLocal: boolean,
-        public videolist?: Array<Video>) {
+        public videolist?: Video[]) {
             this.id            = id;
             this.title         = title;
             this.description   = description;

@@ -44,7 +44,7 @@ export class PlayerControlComponent implements OnInit, OnChanges {
     // Volume control
     isOnPlay: boolean;
     currentVolumeIcon: string;
-    volumeIconList: Array<string> = [
+    volumeIconList: string[] = [
         'volume-high',
         'volume-medium',
         'volume-off'

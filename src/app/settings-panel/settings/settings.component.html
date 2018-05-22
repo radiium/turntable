@@ -16,7 +16,7 @@
                 <mat-form-field>
                     <mat-select [panelClass]="'theme-' + appState.theme" placeholder="Langage"
                         [(ngModel)]="appState.langage"
-                        (ngModelChange)="onLangageChange($event)">
+                        (selectionChange)="onLangageChange($event)">
                         <mat-option *ngFor="let langage of langagesList" [value]="langage.value">{{langage.viewValue}}</mat-option>
                     </mat-select>
                 </mat-form-field>
@@ -29,7 +29,7 @@
                 <mat-form-field>
                     <mat-select [panelClass]="'theme-' + appState.theme" placeholder="Theme"
                         [(ngModel)]="appState.theme"
-                        (change)="onThemeChange($event)">
+                        (selectionChange)="onThemeChange($event)">
                         <mat-option *ngFor="let theme of themesList" [value]="theme">{{theme}}</mat-option>
                     </mat-select>
                 </mat-form-field>

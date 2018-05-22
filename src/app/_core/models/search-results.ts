@@ -2,7 +2,7 @@ import { PlaylistItem } from './';
 
 export interface SearchResults {
     query: string;
-    results: Array<Array<PlaylistItem>>;
+    results: PlaylistItem[][];
     prevPageToken: string;
     nextPageToken: string;
 }

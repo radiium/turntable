@@ -27,7 +27,7 @@ export class AppStateService {
         this.isElectronApp = this.electronSrv.isElectronApp;
         this.isFirstLoad = true;
 
-        this.playlistsList = new Array<Playlist>();
+        this.playlistsList = [];
         this.dataSrv.playlistsList$.subscribe((pll) => {
             this.playlistsList = pll;
             this.saveAppState();
@@ -80,7 +80,7 @@ export class AppStateService {
     }
 
     saveAppState() {
-        // console.log('===== saveAppState');
+        console.log('===== saveAppState');
         if (this.isElectronApp && !this.isFirstLoad) {
             this.electronSrv.ipcRenderer.send('send-save-app-state', this.appState);
         }
@@ -134,8 +134,8 @@ export class AppStateService {
         return playlist;
     }
 
-    fillVideoList(videoList: Array<PlaylistItem>) {
-        const newVideoList = new Array<PlaylistItem>();
+    fillVideoList(videoList: PlaylistItem[]) {
+        const newVideoList: PlaylistItem[] = [];
         if (videoList || videoList.length > 0) {
             videoList.forEach(video => {
                 const newVideo = new PlaylistItem(

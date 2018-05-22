@@ -35,7 +35,7 @@ import { DataService } from 'core/services/data.service';
 export class YoutubeService {
 
     user: User;
-    playlistList: Array<Playlist>;
+    playlistList: Playlist[];
     searchResults: SearchResults = {
         query: '',
         results: new Array(),
@@ -59,7 +59,7 @@ export class YoutubeService {
 
         this.isElectronApp = this.electron.isElectronApp;
 
-        this.playlistList = new Array<Playlist>();
+        this.playlistList = [];
         this.dataSrv.playlistsList$.subscribe((data) => {
             this.playlistList = data;
         });

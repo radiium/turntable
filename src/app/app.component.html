@@ -88,7 +88,7 @@
                 <div class="flexItem sectionLabel">
                     <span  [translate]="'pl'"></span>
                     <div class="flexSpacer"></div>
-                    <button *ngIf="user" mat-menu-item (click)="refreshYTPlaylists()" [class.rotate]="appState.loading" class="refreshBtn btnHover">
+                    <button *ngIf="user" mat-menu-item (click)="refreshYTPlaylists()" [class.rotate]="loader.panel" class="refreshBtn btnHover">
                     <fa class="refreshBtnIco" [name]="'refresh'" [size]="1"></fa>
                     </button>
                 </div>

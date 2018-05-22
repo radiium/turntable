@@ -89,7 +89,6 @@ export class PlaylistDetailsComponent implements OnInit, AfterViewInit, AfterVie
 
     ngAfterViewChecked() {
         if (this.loader.global) {
-            console.log('TADADA1')
             setTimeout(() => {
                 this.dataSrv.setLoaderGlobal(false);
             }, 3000);

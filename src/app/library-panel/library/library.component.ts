@@ -10,7 +10,7 @@ import { DataService } from 'core/services/data.service';
 })
 export class LibraryComponent {
 
-    playlistsList: Array<Playlist> = [];
+    playlistsList: Playlist[] = [];
     appState: AppState;
 
     constructor(

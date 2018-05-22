@@ -20,7 +20,7 @@ import { ElectronService } from 'ngx-electron';
 export class PlayerPanelComponent implements OnInit {
 
     @ViewChild('playerListScrollContainer') set container(scrollContainer: ElementRef) {
-        this.dndService.playerListContainer = scrollContainer;
+        this.dndSrv.playerListContainer = scrollContainer;
     }
 
     playlistsList: Playlist[];
@@ -70,8 +70,8 @@ export class PlayerPanelComponent implements OnInit {
     constructor(
     private cd: ChangeDetectorRef,
     private appRef: ApplicationRef,
-    private dndService: DndService,
-    private dataService: DataService,
+    private dndSrv: DndService,
+    private dataSrv: DataService,
     private playerState: PlayerStateService,
     private Electron: ElectronService) {
         this.onDisplayPl = 'playlist';
@@ -82,7 +82,7 @@ export class PlayerPanelComponent implements OnInit {
 
     ngOnInit() {
 
-        this.dataService.playlistsList$.subscribe((data) => {
+        this.dataSrv.playlistsList$.subscribe((data) => {
             this.playlistsList = data;
             this.canAddToPlaylist = data.length > 0;
             this.cd.markForCheck();
@@ -115,7 +115,7 @@ export class PlayerPanelComponent implements OnInit {
             this.cd.markForCheck();
         });
 
-        this.dataService.appState$.subscribe((data) => {
+        this.dataSrv.appState$.subscribe((data) => {
             this.appState = data;
             this.cd.markForCheck();
         });

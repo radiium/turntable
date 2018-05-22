@@ -11,7 +11,7 @@ export class ClickOutsideDirective {
 
     constructor(
     private _elementRef: ElementRef,
-    private dataService: DataService) {
+    private dataSrv: DataService) {
     }
 
     @Output()
@@ -24,7 +24,7 @@ export class ClickOutsideDirective {
         }
         const clickedInside = this._elementRef.nativeElement.contains(targetElement);
         if (!clickedInside) {
-            this.dataService.setSuggestsBox(false);
+            this.dataSrv.setSuggestsBox(false);
         }
     }
 }

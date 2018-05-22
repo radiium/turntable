@@ -61,7 +61,7 @@ export class SettingsComponent implements OnInit {
     }
 
     onLangageChange(event) {
-        this.dataSrv.setLangage(event);
+        this.dataSrv.setLangage(event.value);
     }
 
     onThemeChange(event) {

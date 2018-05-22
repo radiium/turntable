@@ -13,7 +13,7 @@ export class SelectPlaylistDialogComponent {
 
     @ViewChild('list') list: any;
     videoId: string;
-    playlistList: Array<Playlist>;
+    playlistList: Playlist[];
 
     constructor(
     private zone: NgZone,

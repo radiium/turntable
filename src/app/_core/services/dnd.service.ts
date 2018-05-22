@@ -26,11 +26,11 @@ export class DndService implements OnDestroy {
     plDetailContainer: ElementRef;
     playerListContainer: ElementRef;
 
-    playlistsList: Array<Playlist>;
+    playlistsList: Playlist[];
     searchResults: SearchResults;
-    onPlayList: Array<PlaylistItem>;
-    historicList: Array<PlaylistItem>;
-    onSelectPL: Array<PlaylistItem>;
+    onPlayList: PlaylistItem[];
+    historicList: PlaylistItem[];
+    onSelectPL: PlaylistItem[];
 
     selectedTab: number;
     plPanelState: PlayerPanelState;

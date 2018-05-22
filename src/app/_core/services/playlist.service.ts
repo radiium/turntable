@@ -9,13 +9,10 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { UUID } from 'angular2-uuid';
 
 
+import { DataService } from 'core/services/data.service';
 import { CreatePlaylistDialogComponent } from 'shared/dialogs/create-playlist-dialog/create-playlist-dialog.component';
 import { DeletePlaylistDialogComponent } from 'shared/dialogs/delete-playlist-dialog/delete-playlist-dialog.component';
 import { EditPlaylistDialogComponent } from 'shared/dialogs/edit-playlist-dialog/edit-playlist-dialog.component';
-
-import { DataService } from 'core/services/data.service';
-import { PlayerStateService } from 'core/services/player-state.service';
-import { YoutubePlayerService } from 'shared/modules/youtube-player/youtube-player.service';
 import { PlaylistItem,
          Playlist,
          Suggests,
@@ -32,7 +29,6 @@ export class PlaylistService {
 
     constructor(
     private dataSrv: DataService,
-    private playerState: PlayerStateService,
     public dialog: MatDialog
     ) {
         this.dataSrv.appState$.subscribe(appState => {
@@ -102,7 +98,7 @@ export class PlaylistService {
                 const title = result.name;
                 const privacyStatus = 'private';
 
-                const videoList = new Array<PlaylistItem>();
+                const videoList: PlaylistItem[] = [];
                 const pl = new Playlist(
                     id, title, '', '', 0, 0, '',
                     privacyStatus, true,

@@ -26,24 +26,24 @@ export class SearchBarComponent implements OnInit {
     searchResults: SearchResults;
 
     constructor(
-    private YTService: YoutubeService,
-    private dataService: DataService
+    private ytSrv: YoutubeService,
+    private dataSrv: DataService
     ) {
 
         // Get suggests results
-        this.dataService.suggestsResult$.subscribe((data) => {
+        this.dataSrv.suggestsResult$.subscribe((data) => {
             this.query = data.query;
             this.suggestsResult = data.suggests;
         });
 
         // Get suggests results
-        this.dataService.setSuggestsBox(false);
-        this.dataService.suggestsBox$.subscribe((data) => {
+        this.dataSrv.setSuggestsBox(false);
+        this.dataSrv.suggestsBox$.subscribe((data) => {
             this.suggestsBox = data;
         });
 
         // Get search results
-        this.dataService.searchResults$.subscribe((data) => {
+        this.dataSrv.searchResults$.subscribe((data) => {
             this.searchResults = data;
         });
     }
@@ -54,9 +54,9 @@ export class SearchBarComponent implements OnInit {
         .debounceTime(200)
         .switchMap((query) => {
             if (query && query !== this.selectedSugest) {
-                return this.YTService.searchSuggestsVideo(query);
+                return this.ytSrv.searchSuggestsVideo(query);
             } else if (!query) {
-                this.dataService.setSuggestsBox(false);
+                this.dataSrv.setSuggestsBox(false);
             }
             return new EmptyObservable();
         })
@@ -69,30 +69,30 @@ export class SearchBarComponent implements OnInit {
 
             // Clear playlist if no value
             if (this.search.value === '') {
-                this.dataService.setSuggestsResult({});
-                this.dataService.setSuggestsBox(false);
-                // this.dataService.setSearchResults();
+                this.dataSrv.setSuggestsResult({});
+                this.dataSrv.setSuggestsBox(false);
+                // this.dataSrv.setSearchResults();
             } else {
-                this.dataService.setSuggestsResult(suggests);
-                this.dataService.setSuggestsBox(true);
+                this.dataSrv.setSuggestsResult(suggests);
+                this.dataSrv.setSuggestsBox(true);
             }
         });
     }
 
     // Select suggest
     selectSuggestion(suggest: string) {
-        this.dataService.setSuggestsResult({});
+        this.dataSrv.setSuggestsResult({});
         this.selectedSugest = suggest;
         this.search.setValue(suggest);
-        this.dataService.setSuggestsBox(false);
+        this.dataSrv.setSuggestsBox(false);
         this.searchVideos(suggest);
     }
 
     // Search videos by selected suggest
     searchVideos(suggest: string) {
         if (suggest) {
-            this.YTService.searchVideos(suggest);
-            this.dataService.setSelectedTab(2);
+            this.ytSrv.searchVideos(suggest);
+            this.dataSrv.setSelectedTab(2);
         }
     }
 
@@ -136,13 +136,13 @@ export class SearchBarComponent implements OnInit {
         }
 
         if (!this.suggestsBox && this.search.value !== '') {
-            this.dataService.setSuggestsBox(true);
+            this.dataSrv.setSuggestsBox(true);
         }
     }
 
     onFocus() {
         if (this.searchResults && this.searchResults.results.length > 0) {
-            this.dataService.setSelectedTab(2);
+            this.dataSrv.setSelectedTab(2);
         }
     }
 }

@@ -31,37 +31,31 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
 
     user: User;
     appState: AppState;
-    playlistsList: Array<Playlist>;
-
-    loading: any = false;
-
-    isOnDrag: boolean;
+    playlistsList: Playlist[];
     showPlayerBar: boolean;
-    scroll: any;
-
-    miniNav = false;
-
+    miniNav: boolean;
     loader: Loader;
 
     constructor(
     public snackBar: MatSnackBar,
-    private appStateService: AppStateService,
+    private appStateSrv: AppStateService,
     private plSrv: PlaylistService,
     private dataSrv: DataService,
     private Electron: ElectronService,
-    private authService: AuthService,
-    private YTService: YoutubeService,
+    private authSrv: AuthService,
+    private ytSrv: YoutubeService,
     private overlayContainer: OverlayContainer,
-    private dndService: DndService,
+    private dndSrv: DndService,
     private translate: TranslateService) {
 
+        this.miniNav = false;
         translate.setDefaultLang('en');
 
         // User
         this.dataSrv.user$.subscribe((data) => {
             this.user = data;
             if (data !== null) {
-                this.YTService.fetchYoutubePlaylists();
+                this.ytSrv.fetchYoutubePlaylists();
             }
         });
 
@@ -74,35 +68,23 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
         });
 
         // Playlists
-        this.playlistsList = new Array<Playlist>();
+        this.playlistsList = [];
         this.dataSrv.playlistsList$.subscribe((data) => {
             this.playlistsList = data;
         });
 
-
         this.dataSrv.loader$.subscribe((data) => {
             this.loader = data;
-            console.log('this.loader', this.loader)
-
-            /*
-            if (this.loader.global) {
-                setTimeout(() => {
-                    this.dataSrv.setLoaderGlobal(false);
-                }, 3000);
-            }
-            */
         });
 
-        this.dndService.initDnd();
-        this.appStateService.loadAppState();
+        this.dndSrv.initDnd();
+        this.appStateSrv.loadAppState();
     }
 
     ngOnInit() {
         // this.snackBar.open('Hey', '', {
         //    duration: 2000,
         // });
-
-
     }
 
     ngAfterViewInit() {
@@ -138,13 +120,13 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
 
     signin() {
         if (this.Electron.isElectronApp) {
-            this.authService.login();
+            this.authSrv.login();
         }
     }
 
     signout() {
         if (this.Electron.isElectronApp && this.user) {
-            this.authService.logout();
+            this.authSrv.logout();
         }
     }
 
@@ -161,7 +143,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     refreshYTPlaylists() {
-        this.YTService.fetchYoutubePlaylists();
+        this.ytSrv.fetchYoutubePlaylists();
     }
 
     createPlaylist() {
@@ -179,7 +161,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
         this.playlistsList = <Playlist[]>arr;
         */
 
-        const videoList = new Array<PlaylistItem>();
+        const videoList: PlaylistItem[] = [];
         testPlaylist['testPlaylist']['videolist'].forEach(el => {
             const video = new PlaylistItem(
                 el['id'],
