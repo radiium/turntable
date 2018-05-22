@@ -10,10 +10,6 @@ import { AppStateService } from 'core/services/app-state.service';
 import { PlayerStateService } from 'core/services/player-state.service';
 import { PlaylistService } from 'core/services/playlist.service';
 import { DndService } from 'core/services/dnd.service';
-import { ConfirmDialogComponent } from 'shared/dialogs/confirm-dialog/confirm-dialog.component';
-import { EditPlaylistDialogComponent } from 'shared/dialogs/edit-playlist-dialog/edit-playlist-dialog.component';
-import { DeletePlaylistDialogComponent } from 'shared/dialogs/delete-playlist-dialog/delete-playlist-dialog.component';
-import { SelectPlaylistDialogComponent } from 'shared/dialogs/select-playlist-dialog/select-playlist-dialog.component';
 
 @Component({
     selector: 'app-playlist-details',
@@ -28,6 +24,8 @@ export class PlaylistDetailsComponent implements OnInit {
     onPlayList: PlaylistItem[];
     videoList: PlaylistItem[];
     onEdit: boolean;
+
+    canAddToPlaylist: boolean = false;
 
     title: string;
     description: string;
@@ -72,7 +70,12 @@ export class PlaylistDetailsComponent implements OnInit {
         // Get selected playlist
         this.dataService.onSelectPL$.subscribe((data) => {
             this.playlist = _.find(this.playlistsList, { id: data });
-            this.videoList = this.playlist.videolist;
+            if (this.playlist) {
+                this.videoList = this.playlist.videolist;
+            } else {
+                this.playlist = null;
+                this.videoList = [];
+            }
             this.updateState(false);
             this.cdRef.markForCheck();
             // this.appRef.tick();
@@ -86,7 +89,11 @@ export class PlaylistDetailsComponent implements OnInit {
             } else if (!this.playlist && this.playlistsList.length > 0) {
                 this.playlist = this.playlistsList[0];
                 this.videoList = this.playlist.videolist;
+            } else {
+                this.playlist = null;
+                this.videoList = [];
             }
+            this.canAddToPlaylist = data.length > 1;
             this.cdRef.detectChanges();
         });
 
@@ -100,24 +107,7 @@ export class PlaylistDetailsComponent implements OnInit {
     ngOnInit() {
     }
 
-    deleteVideo(video: PlaylistItem, index: number) {
-        const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-            data: { title: 'Delete \'' + video.title + '\'?' }
-        });
-        dialogRef.afterClosed().subscribe(delVideo => {
-            if (delVideo) {
 
-                this.playlist.videolist.splice(index, 1);
-
-                const plIdx = _.findIndex(this.playlistsList, { 'id': this.playlist.id });
-                this.playlistsList.splice(plIdx, 1, this.playlist);
-                this.dataService.setPlaylistsList(this.playlistsList);
-
-                const isOnEdit = this.playlist.videolist.length > 0 ? true : false;
-                this.updateState(isOnEdit);
-            }
-        });
-    }
 
     updateState(isOnEdit) {
         this.onEdit = isOnEdit;
@@ -127,36 +117,6 @@ export class PlaylistDetailsComponent implements OnInit {
             this.privacyStatus = this.playlist.privacyStatus;
             // this.videoListConfig.attr.playlistId = this.playlist.id;
             // this.cdRef.markForCheck();
-        }
-    }
-
-    playVideo(video: PlaylistItem) {
-        this.playerState.playVideo(video);
-    }
-    addToQueue(video: PlaylistItem) {
-        this.playerState.addToPlaylist(video);
-    }
-
-    addToPlaylist(video: PlaylistItem) {
-        const plList = _.filter(this.playlistsList, (pl) => {
-            return pl.id !== this.playlist.id;
-        });
-        if (video && plList && plList.length > 0) {
-            const dialogRef = this.dialog.open(SelectPlaylistDialogComponent, {
-                height: 'auto',
-                data: {
-                    videoId: video.id,
-                    playlistList: plList
-                }
-            });
-            dialogRef.afterClosed().subscribe(resp => {
-                if (resp) {
-                    _.each(resp.plIdList, (plId) => {
-                        const pl = _.find(this.playlistsList, { 'id': plId });
-                        pl.videolist.push(_.cloneDeep(video));
-                    });
-                }
-            });
         }
     }
 

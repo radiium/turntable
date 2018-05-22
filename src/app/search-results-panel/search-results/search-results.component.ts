@@ -55,13 +55,14 @@ export class SearchResultsComponent implements OnInit {
             }
             this.searchResults = data;
             this.loadNextPage = false;
-            this.hasNextPage = data.nextPageToken ? true : false;
+            this.hasNextPage = !!data.nextPageToken;
         });
 
         this.enableDrag = false;
         this.dataService.playlistsList$.subscribe((data) => {
             this.playlistList = data;
-            this.enableDrag = data.length > 0 ? true : false;
+            this.enableDrag = data.length > 0;
+            // this.canAddToPlaylist = data.length > ;
         });
 
          // Get on play list

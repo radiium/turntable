@@ -4,36 +4,10 @@
 
         <!-- Video list -->
         <app-video-list
+            [playlistId]="'search'"
             [videoList]="videoList"
-            [config]="videoListConfig">
-
-            <!-- Item control buttons -->
-            <ng-template #itemControl let-video="video" let-index="index">
-                <button class="toolbarBtn btnHover"
-                    [matMenuTriggerFor]="menuSearch" xPosition="'before'" yPosition="'above'">
-                    <fa [name]="'bars'" [size]="2"></fa>
-                </button>
-                <mat-menu #menuSearch="matMenu">
-                    <button mat-menu-item (click)="playVideo(video)">
-                        <mat-icon svgIcon="play-circle-outline"></mat-icon>
-                        <span [translate]="'play'">Play</span>
-                    </button>
-                    <button mat-menu-item (click)="addToQueue(video)">
-                        <mat-icon svgIcon="playlist-plus"></mat-icon>
-                        <span [translate]="'addToPlay'"></span>
-                    </button>
-                    <button mat-menu-item (click)="addToPlaylist(video)" [disabled]="!playlistList" [class.disabled]="!playlistList">
-                        <mat-icon svgIcon="library-plus"></mat-icon>
-                        <span [translate]="'addToPl'"></span>
-                    </button>
-                </mat-menu>
-
-                <!--
-                    <button class="toolbarBtn btnHover resize" (click)="addToPlaylist(video)" [disabled]="!playlistList" >
-                        <mat-icon svgIcon="playlist-plus"></mat-icon>
-                    </button>
-                -->
-            </ng-template>
+            [config]="videoListConfig"
+            [canAddToPlaylist]="enableDrag">
 
             <!-- Load more button -->
             <ng-template #footer let-footer>

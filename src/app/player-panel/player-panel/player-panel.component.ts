@@ -23,6 +23,9 @@ export class PlayerPanelComponent implements OnInit {
         this.dndService.playerListContainer = scrollContainer;
     }
 
+    playlistsList: Playlist[];
+    canAddToPlaylist: boolean = false;
+
     onDisplayPl: string;
     isDoublePlayer: boolean;
     playerPanelState: PlayerPanelState;
@@ -77,6 +80,13 @@ export class PlayerPanelComponent implements OnInit {
     }
 
     ngOnInit() {
+
+        this.dataService.playlistsList$.subscribe((data) => {
+            this.playlistsList = data;
+            this.canAddToPlaylist = data.length > 0;
+            this.cd.markForCheck();
+        });
+
         this.playerState.playerPanelState$.subscribe((data) => {
             this.playerPanelState = data;
             this.cd.detectChanges();

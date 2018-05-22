@@ -24,37 +24,12 @@
         <app-video-list
             *ngFor="let pl of playlistsList; let i = index; trackBy: trackByFn"
             [hidden]="pl.id !== playlist.id"
+            [playlistId]="pl.id"
             [videoList]="pl.videolist"
             (videoListOut)="onVideolistChange($event)"
-            [config]="getConfig(pl.id)">
-
-            <!-- Item control buttons -->
-            <ng-template #itemControl let-video="video" let-index="index">
-                <button class="toolbarBtn btnHover"
-                    [matMenuTriggerFor]="menuDetail" xPosition="'before'" yPosition="'above'">
-                    <fa [name]="'bars'" [size]="2"></fa>
-                </button>
-                <mat-menu #menuDetail="matMenu">
-                    <button mat-menu-item (click)="playVideo(video)">
-                        <mat-icon svgIcon="play-circle-outline"></mat-icon>
-                        <span [translate]="'play'"></span>
-                    </button>
-                    <button mat-menu-item (click)="addToQueue(video)">
-                        <mat-icon svgIcon="playlist-plus"></mat-icon>
-                        <span [translate]="'addToPlay'"></span>
-                    </button>
-                    <button mat-menu-item (click)="addToPlaylist(video)"
-                        [disabled]="!playlistList && playlistsList?.length < 2"
-                        [class.disabled]="!playlistList && playlistsList?.length < 2">
-                        <mat-icon svgIcon="library-plus"></mat-icon>
-                        <span [translate]="'copyToPl'"></span>
-                    </button>
-                </mat-menu>
-
-                <button class="toolbarBtn btnHover" (click)="deleteVideo(video, index)">
-                    <fa [name]="'trash-o'" [size]="2"></fa>
-                </button>
-            </ng-template>
+            [config]="getConfig(pl.id)"
+            [canAddToPlaylist]="canAddToPlaylist"
+            >
         </app-video-list>
     </div>
 </div>

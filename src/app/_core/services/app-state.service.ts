@@ -151,6 +151,7 @@ export class AppStateService {
             videoList.forEach(video => {
                 const newVideo = new PlaylistItem(
                     video.id,
+                    video.selected,
                     video.title,
                     video.description,
                     video.thumbUrl,

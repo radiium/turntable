@@ -187,36 +187,28 @@
 
 
         <!-- Onplay list -->
-        <div [hidden]="onDisplayPl !== 'playlist'"
-            class="scrollContainer plPlayerList"
-            #playerListScrollContainer >
-
+        <div #playerListScrollContainer
+            [hidden]="onDisplayPl !== 'playlist'"
+            class="scrollContainer plPlayerList">
             <app-video-list
+                [playlistId]="'onplay'"
                 [videoList]="playerPanelState?.playlist"
                 (videoListOut)="onVideolistChange($event)"
-                [config]="playListConfig">
-
-                <!-- Item control buttons -->
-                <ng-template #itemControl let-video="video" let-index="index">
-                    <button class="toolbarBtn btnHover" (click)="playVideo(video, index)">
-                        <fa [name]="'play'" [size]="2"></fa>
-                    </button>
-                    <button class="toolbarBtn btnHover" (click)="deleteVideo(video, index)">
-                        <fa [name]="'trash-o'" [size]="2"></fa>
-                    </button>
-                </ng-template>
+                [config]="playListConfig"
+                [canAddToPlaylist]="canAddToPlaylist">
             </app-video-list>
         </div>
 
 
         <!-- Historic list -->
-        <div [hidden]="onDisplayPl !== 'historic'" class="scrollContainer plPlayerList" #plPlayerList>
+        <div #plPlayerList
+            [hidden]="onDisplayPl !== 'historic'"
+            class="scrollContainer plPlayerList">
             <app-video-list
+                [playlistId]="'historic'"
                 [videoList]="playerPanelState?.historiclist"
-                [config]="historicListConfig">
-
-                <ng-template #itemControl let-video="video" let-index="index">
-                </ng-template>
+                [config]="historicListConfig"
+                [canAddToPlaylist]="canAddToPlaylist">
             </app-video-list>
         </div>
 

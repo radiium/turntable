@@ -3,10 +3,14 @@ import { Component, Input, Output, OnChanges, SimpleChanges,
     ChangeDetectionStrategy, ChangeDetectorRef, EventEmitter } from '@angular/core';
 import * as _ from 'lodash';
 
-import { PlaylistItem, VideoListConfig } from 'core/models';
+import { Playlist, PlaylistItem, VideoListConfig } from 'core/models';
 import { PlayerStateService } from 'core/services/player-state.service';
 import { DndService } from 'core/services/dnd.service';
 import { DataService } from 'core/services/data.service';
+import { YoutubeService } from 'core/services/youtube.service';
+import { PlaylistItemService } from 'core/services/playlist-item.service';
+
+
 
 @Component({
     selector: 'app-video-list',
@@ -17,7 +21,11 @@ import { DataService } from 'core/services/data.service';
 export class VideoListComponent implements OnChanges {
 
     @Input() videoList: PlaylistItem[];
+    @Input() playlistId: string;
     @Input() config: VideoListConfig;
+    @Input() canAddToPlaylist: boolean;
+
+    deletable: boolean = false;
 
     @Output() videoListOut = new EventEmitter();
     @ViewChild('listRef') listRef: ElementRef;
@@ -26,6 +34,8 @@ export class VideoListComponent implements OnChanges {
 
 
     constructor(
+    private ytSrv: YoutubeService,
+    private plItemSrv: PlaylistItemService,
     private data: DataService,
     private playerState: PlayerStateService,
     private cdRef: ChangeDetectorRef) {
@@ -46,24 +56,50 @@ export class VideoListComponent implements OnChanges {
 
     ngOnChanges(changes: SimpleChanges) {
         if (changes.videoList && changes.videoList.currentValue) {
+            this.videoList = changes.videoList.currentValue;
             this.cdRef.detectChanges();
             this.reIndexItems();
         }
 
+        if (changes.playlistId && changes.playlistId.currentValue) {
+            this.playlistId = changes.playlistId.currentValue;
+            this.cdRef.detectChanges();
+        }
+
         if (changes.config && changes.config.currentValue) {
             this.config = changes.config.currentValue;
+            this.deletable = (this.config.attr.from !== 'search');
+            this.cdRef.detectChanges();
+        }
+
+        if (changes.canAddToPlaylist && changes.canAddToPlaylist.currentValue) {
+            this.canAddToPlaylist = changes.canAddToPlaylist.currentValue;
             this.cdRef.detectChanges();
         }
     }
 
     playVideo(video: PlaylistItem, index: number) {
-        if (this.config.dragBagName !== 'playerListBag') {
-            index = undefined;
-        }
-        this.playerState.playVideo(video, index);
+        this.plItemSrv.playVideo(video, index);
+    }
+
+    addToPlayerList(video: PlaylistItem) {
+        this.plItemSrv.addToPlayerList(video);
+    }
+
+    addToPlaylist(video: PlaylistItem) {
+        this.plItemSrv.addToPlaylist(video, this.playlistId);
+    }
+
+    download(video: PlaylistItem) {
+        this.plItemSrv.download(video);
+    }
+
+    deleteVideo(video: PlaylistItem, index: number) {
+        this.plItemSrv.deleteVideo(video, index, this.playlistId);
     }
 
 
+    // Move/sort item
     moveToTop(index: number, event) {
         this.move(index, 0);
     }
@@ -78,6 +114,9 @@ export class VideoListComponent implements OnChanges {
     }
 
     move(from, to) {
+
+        this.plItemSrv.moveVideo(from, to, this.playlistId, this.listRef.nativeElement.children[to])
+        /*
         if (to === from) {
             return;
         }
@@ -95,6 +134,7 @@ export class VideoListComponent implements OnChanges {
             this.listRef.nativeElement.children[to].scrollIntoView({behavior: 'auto'});
         });
         this.videoListOut.emit(this.videoList);
+        */
     }
 
     // ------------------------------------------------------------------------

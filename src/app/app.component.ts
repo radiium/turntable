@@ -174,6 +174,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
         testPlaylist['testPlaylist']['videolist'].forEach(el => {
             const video = new PlaylistItem(
                 el['id'],
+                el['selected'],
                 el['title'],
                 el['description'],
                 el['thumbUrl'],

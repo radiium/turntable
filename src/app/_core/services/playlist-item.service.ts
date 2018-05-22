@@ -1,0 +1,139 @@
+import { Injectable, Input } from '@angular/core';
+import { Observable,
+         Subject,
+         BehaviorSubject,
+         Subscription,
+         timer } from 'rxjs';
+import * as _ from 'lodash';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { UUID } from 'angular2-uuid';
+
+import { ConfirmDialogComponent } from 'shared/dialogs/confirm-dialog/confirm-dialog.component';
+import { SelectPlaylistDialogComponent } from 'shared/dialogs/select-playlist-dialog/select-playlist-dialog.component';
+
+import { DataService } from 'core/services/data.service';
+import { YoutubeService } from 'core/services/youtube.service';
+import { PlayerStateService } from 'core/services/player-state.service';
+import { YoutubePlayerService } from 'shared/modules/youtube-player/youtube-player.service';
+import { PlaylistItem,
+         Playlist,
+         Suggests,
+         PlayerPanelState,
+         PlayerState,
+         PlayerSide,
+         AppState } from 'core/models';
+
+@Injectable()
+export class PlaylistItemService {
+
+    appState: AppState;
+    playlistsList: Playlist[];
+    playerPanelState: PlayerPanelState;
+
+    constructor(
+
+    private data: DataService,
+    private ytSrv: YoutubeService,
+    private playerState: PlayerStateService,
+    public dialog: MatDialog
+    ) {
+        this.data.appState$.subscribe(appState => {
+            this.appState = appState;
+        });
+
+        this.data.playlistsList$.subscribe(datalist => {
+            this.playlistsList = datalist;
+        });
+
+        this.playerState.playerPanelState$.subscribe(playerPanelState => {
+            this.playerPanelState = playerPanelState;
+        });
+    }
+
+    playVideo(video: PlaylistItem, index: number) {
+        // if (this.config.dragBagName !== 'playerListBag') {
+            index = undefined;
+        // }
+        this.playerState.playVideo(video, index);
+    }
+
+    addToPlayerList(video: PlaylistItem) {
+        this.playerState.addToPlaylist(video);
+    }
+
+    addToPlaylist(video: PlaylistItem, plId: string) {
+        const plList = _.filter(this.playlistsList, (pl) => pl.id !== plId);
+        if (video && plList && plList.length > 0) {
+            const dialogRef = this.dialog.open(SelectPlaylistDialogComponent, {
+                height: 'auto',
+                data: { videoId: video.id, playlistList: plList }
+            });
+            dialogRef.afterClosed().subscribe(resp => {
+                if (resp) {
+                    _.each(resp.plIdList, (plId) => {
+                        const pl = _.find(this.playlistsList, { 'id': plId });
+                        pl.videolist.push(_.cloneDeep(video));
+                    });
+                }
+            });
+        }
+    }
+
+    download(video: PlaylistItem) {
+        this.ytSrv.downloadVideo(video);
+    }
+
+    deleteVideo(video: PlaylistItem, index: number, plId: string) {
+        const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+            data: { title: 'Delete \'' + video.title + '\'?' }
+        });
+        dialogRef.afterClosed().subscribe(delVideo => {
+            if (delVideo) {
+                const plIdx = _.findIndex(this.playlistsList, { 'id': plId });
+                this.playlistsList[plIdx].videolist.splice(index, 1);
+                debugger
+                this.data.setPlaylistsList(this.playlistsList);
+            }
+        });
+    }
+
+    moveVideo(from: number, to: number, plId: string, elRef: Element) {
+
+        let videoList;
+        switch (plId) {
+            case 'search':
+                break;
+
+            case 'onplay':
+                videoList = this.move(from, to, this.playerPanelState.playlist);
+                this.playerState.setOnPlaylist(videoList);
+                break;
+
+            case 'historic':
+                videoList = this.move(from, to, this.playerPanelState.historiclist);
+                this.playerState.setHistoriclist(videoList);
+                break;
+
+            default:
+                const vlIdx = _.findIndex(this.playlistsList, { id: plId });
+                videoList = this.move(from, to, this.playlistsList[vlIdx].videolist);
+                this.playlistsList[vlIdx].videolist = videoList;
+                this.data.setPlaylistsList(this.playlistsList);
+                break;
+        }
+
+        setTimeout(() => elRef.scrollIntoView() );
+    }
+
+    private move(from: number, to: number, videoList: PlaylistItem[]): PlaylistItem[] {
+        const target = videoList[from];
+        const increment = to < from ? -1 : 1;
+
+        for (let k = from; k !== to; k += increment) {
+            videoList[k] = videoList[k + increment];
+        }
+
+        videoList[to] = target;
+        return videoList;
+    }
+}

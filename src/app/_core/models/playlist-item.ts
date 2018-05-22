@@ -1,6 +1,7 @@
 export class PlaylistItem {
     constructor(
         public id: string,
+        public selected: boolean,
         public title: string,
         public description: string,
         public thumbUrl: string,
@@ -9,6 +10,7 @@ export class PlaylistItem {
         public publishedAt: any
         ) {
             this.id = id;
+            this.selected = selected;
             this.title = title;
             this.description = description;
             this.thumbUrl = thumbUrl;

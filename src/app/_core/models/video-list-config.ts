@@ -1,5 +1,4 @@
 export interface VideoListConfig {
-
     dragBagName: String;
     draggable: boolean;
     displayType: String;
