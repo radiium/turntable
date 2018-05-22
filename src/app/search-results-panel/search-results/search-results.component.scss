@@ -7,10 +7,16 @@
 
         .spinner { margin: 0 auto; }
         .loadLineItem {
-            text-align: center;
-            line-height: 40px;
+            display: flex;
+            justify-content: center;
+            height: 100%;
             width: 100%;
-            align-self: center;
+            -ms-grid-row-align: center;
+            align-items: center;
+
+            .loadLineItemLabel {
+                margin: 0 20px 0 20px;
+            }
         }
     }
     .srList {

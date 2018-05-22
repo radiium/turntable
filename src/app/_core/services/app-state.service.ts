@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { ElectronService } from 'ngx-electron';
+import * as _ from 'lodash';
 
-import { User, Playlist, PlaylistItem, AppState } from '../models';
+import { User, Playlist, PlaylistItem, AppState } from 'core/models';
 import { AuthService } from 'core/services/auth.service';
 import { DataService } from 'core/services/data.service';
 import { YoutubeService } from 'core/services/youtube.service';
@@ -18,27 +19,25 @@ export class AppStateService {
 
     constructor(
     private electron: ElectronService,
-    private authService: AuthService,
-    private dataService: DataService,
-    private Electron: ElectronService,
-    private YTService: YoutubeService
+    private authSrv: AuthService,
+    private dataSrv: DataService,
+    private electronSrv: ElectronService,
+    private ytSrv: YoutubeService
     ) {
-        this.isElectronApp = this.electron.isElectronApp;
+        this.isElectronApp = this.electronSrv.isElectronApp;
         this.isFirstLoad = true;
 
         this.playlistsList = new Array<Playlist>();
-        this.dataService.playlistsList$.subscribe((pll) => {
+        this.dataSrv.playlistsList$.subscribe((pll) => {
             this.playlistsList = pll;
             this.saveAppState();
             this.storeLocalPlaylists();
         });
 
-        this.dataService.appState$.subscribe((data) => {
+        this.dataSrv.appState$.subscribe((data) => {
             this.appState = data;
             this.saveAppState();
         });
-
-
     }
 
     loadAppState() {
@@ -47,27 +46,31 @@ export class AppStateService {
             this.isFirstLoad = false;
 
             // Retrieve previous user on start up and reload app
-            this.electron.ipcRenderer.send('send-get-user');
-            this.electron.ipcRenderer.on('get-user', (event, user) => {
-                if (Object.keys(user).length !== 0) {
+            this.electronSrv.ipcRenderer.send('send-get-user');
+            this.electronSrv.ipcRenderer.on('get-user', (event, user) => {
+                if (user && user.token) {
                     // Check if user is authenticated
-                    this.authService.checkAuth().subscribe((resp) => {
-                        if (!resp['error']) {
-                            this.dataService.setUser(user);
-                            this.authService.storeToken(user.token);
-                            this.YTService.fetchYoutubePlaylists();
+                    this.authSrv.checkAuth(user.token).subscribe((resp: any) => {
+                        if (resp.error) {
+                            this.dataSrv.setUser(null);
+                        } else {
+                            this.dataSrv.setUser(user);
+                            this.authSrv.storeToken(user.token);
+                            this.ytSrv.fetchYoutubePlaylists();
                         }
                     });
+                } else {
+                    this.dataSrv.setUser(null);
                 }
             });
 
             // Get app state
-            this.electron.ipcRenderer.send('send-get-app-state');
-            this.electron.ipcRenderer.on('get-app-state', (event, data) => {
+            this.electronSrv.ipcRenderer.send('send-get-app-state');
+            this.electronSrv.ipcRenderer.on('get-app-state', (event, data) => {
                 // console.log('get-app-state', data);
                 if (data && Object.keys(data).length > 0) {
                     data.loading = false;
-                    this.dataService.setAppState(data);
+                    this.dataSrv.setAppState(data);
                 }
             });
 
@@ -79,7 +82,7 @@ export class AppStateService {
     saveAppState() {
         // console.log('===== saveAppState');
         if (this.isElectronApp && !this.isFirstLoad) {
-            this.electron.ipcRenderer.send('send-save-app-state', this.appState);
+            this.electronSrv.ipcRenderer.send('send-save-app-state', this.appState);
         }
     }
 
@@ -87,27 +90,19 @@ export class AppStateService {
     storeLocalPlaylists() {
         if (this.isElectronApp && !this.isFirstLoad) {
             // console.log('===== storeLocalPlaylists');
-            const localPlaylists: Playlist[] = [];
-            this.playlistsList.forEach(playlist => {
-                if (playlist.isLocal) {
-                    localPlaylists.push(playlist);
-                }
-            });
-            this.Electron.ipcRenderer.send('send-save-local-playlists', localPlaylists);
+            const localPlaylists = _.filter(this.playlistsList, pl => pl.isLocal);
+            this.electronSrv.ipcRenderer.send('send-save-local-playlists', localPlaylists);
         }
     }
 
     loadLocalPlaylist() {
         if (this.isElectronApp) {
             // console.log('===== loadLocalPlaylist');
-            this.Electron.ipcRenderer.send('send-get-local-playlists');
-            this.Electron.ipcRenderer.on('get-local-playlists', (event, localPlaylist) => {
-                if (localPlaylist) {
-                    localPlaylist.forEach(playlist => {
-                        const pl = this.fillPlaylist(playlist);
-                        this.playlistsList.push(pl);
-                    });
-                    this.dataService.setPlaylistsList(this.playlistsList);
+            this.electronSrv.ipcRenderer.send('send-get-local-playlists');
+            this.electronSrv.ipcRenderer.on('get-local-playlists', (event, localPlaylist) => {
+                if (localPlaylist && localPlaylist.length > 0) {
+                    const pll = [...this.playlistsList, ..._.map(localPlaylist, pl => this.fillPlaylist(pl))];
+                    this.dataSrv.setPlaylistsList(pll);
                 }
             });
         }
@@ -116,14 +111,9 @@ export class AppStateService {
     removeLocalPlaylist() {
         if (this.isElectronApp) {
             // console.log('===== removeLocalPlaylist');
-            this.Electron.ipcRenderer.send('send-remove-local-playlists');
-            const pll: Playlist[] = [];
-            this.playlistsList.forEach(playlist => {
-                if (!playlist.isLocal) {
-                    pll.push(playlist);
-                }
-            });
-            this.dataService.setPlaylistsList(pll);
+            this.electronSrv.ipcRenderer.send('send-remove-local-playlists');
+            const pll = _.filter(this.playlistsList, pl => pl.isLocal);
+            this.dataSrv.setPlaylistsList(pll);
         }
     }
 

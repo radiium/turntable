@@ -7,7 +7,7 @@ import { Observable, Subscription, timer } from 'rxjs';
 import { EmptyObservable } from 'rxjs/observable/EmptyObservable';
 
 import { DurationPipe } from 'shared/pipes/duration.pipe';
-import { PlayerState, ProgressPosition } from 'core/models';
+import { PlayerState } from 'core/models';
 
 @Component({
     selector: 'app-player-control',

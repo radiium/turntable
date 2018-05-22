@@ -37,7 +37,7 @@ export class AuthService {
 
     constructor(
     private http: HttpClient,
-    private dataService: DataService,
+    private dataSrv: DataService,
     private userInfosService: UserInfosApiService,
     private electron: ElectronService) {
     }
@@ -54,18 +54,15 @@ export class AuthService {
 
         return this.http.post(logoutUrl, null , options)
         .subscribe((result) => {
-            this.dataService.setUser(null);
+            this.dataSrv.setUser(null);
             this.electron.ipcRenderer.send('remove-user');
         });
     }
 
     // Check auth to google api
-    checkAuth() {
-        const tokenInfoUrl =
-            this.tokenInfoUrl +
-            '?access_token=' + localStorage.getItem('access_token');
-
-        return this.http.get(tokenInfoUrl);
+    checkAuth(token) {
+        const URL = this.tokenInfoUrl + '?access_token=' + token;
+        return this.http.get(URL);
     }
 
     // Get access token
@@ -83,17 +80,11 @@ export class AuthService {
 
                 this.storeToken(token);
 
-                // Get user infos
                 this.userInfosService.getUserInfos(token)
-                .subscribe((result) => {
-                    const user = new User(
-                        result['name'], token,
-                        result['picture'], true
-                    );
-
-                    // Set user
+                .subscribe((resp: any) => {
+                    const user = new User(resp.name, token, resp.picture, true);
                     this.electron.ipcRenderer.send('save-user', user);
-                    this.dataService.setUser(user);
+                    this.dataSrv.setUser(user);
                 });
 
             });

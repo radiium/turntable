@@ -19,11 +19,6 @@ export class DataService {
     public  appState$ = this.appState.asObservable();
 
 
-    // On drag event
-    private isOnDrag  = new BehaviorSubject<boolean>(false);
-    public  isOnDrag$ = this.isOnDrag.asObservable();
-
-
     // Suggest list
     private suggestsResult  = new Subject<Suggests>();
     public  suggestsResult$ = this.suggestsResult.asObservable();
@@ -51,9 +46,8 @@ export class DataService {
         this.user.next(_.cloneDeep(data));
     }
 
-    setAppState(data) {
-        this.appState.next(data);
-    }
+    // App State
+    setAppState(data)      { this.appState.next(data); }
     setLangage(data)       { this.setAppStateKey('langage', data); }
     setTheme(data)         { this.setAppStateKey('theme', data); }
     setDisplayType(data)   { this.setAppStateKey('displayType', data); }
@@ -85,9 +79,5 @@ export class DataService {
 
     setPlaylistsList(data) {
         this.playlistsList.next(_.cloneDeep(data));
-    }
-
-    setIsOnDrag(data) {
-        this.isOnDrag.next(data);
     }
 }

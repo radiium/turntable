@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import * as _ from 'lodash';
 
 import { Playlist, PlaylistItem, SearchResults, AppState } from 'core/models';
@@ -9,7 +9,8 @@ import { PlayerStateService } from 'core/services/player-state.service';
 @Component({
     selector: 'app-search-results',
     templateUrl: './search-results.component.html',
-    styleUrls: ['./search-results.component.scss']
+    styleUrls: ['./search-results.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SearchResultsComponent implements OnInit {
 
@@ -35,6 +36,7 @@ export class SearchResultsComponent implements OnInit {
     };
 
     constructor(
+    private cdRef: ChangeDetectorRef,
     private dataSrv: DataService,
     private ytSrv: YoutubeService,
     private playerState: PlayerStateService) {
@@ -43,23 +45,27 @@ export class SearchResultsComponent implements OnInit {
             if (data.results.length === 1) {
                 this.videoList = data.results[0];
             } else if (data.results.length > 1) {
-                _.each(data.results[data.results.length - 1], (video) => {
-                    this.videoList.push(video);
-                });
+                this.videoList = [
+                    ...this.videoList,
+                    ...data.results[data.results.length - 1]
+                ];
             }
             this.searchResults = data;
             this.loadNextPage = false;
             this.hasNextPage = !!data.nextPageToken;
+            this.cdRef.markForCheck();
         });
 
         this.enableDrag = false;
         this.dataSrv.playlistsList$.subscribe((data) => {
             this.playlistList = data;
             this.enableDrag = data.length > 0;
+            this.cdRef.markForCheck();
         });
 
         this.dataSrv.appState$.subscribe((data) => {
             this.appState = data;
+            this.cdRef.markForCheck();
         });
     }
 

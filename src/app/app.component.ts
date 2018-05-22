@@ -57,9 +57,9 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
         translate.setDefaultLang('en');
 
         // User
-        this.dataService.user$.subscribe((user) => {
-            this.user = user;
-            if (user !== null) {
+        this.dataService.user$.subscribe((data) => {
+            this.user = data;
+            if (data !== null) {
                 this.YTService.fetchYoutubePlaylists();
             }
         });

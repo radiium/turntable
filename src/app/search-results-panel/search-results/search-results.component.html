@@ -16,8 +16,10 @@
                         <mat-spinner [diameter]="40" class="spinner"></mat-spinner>
                     </div>
                     <div mat-line *ngIf="!loadNextPage" class="loadLineItem" (click)="loadMore()">
-                        <span><fa class="loadLineItemIco" [name]="'ellipsis-h'" [size]="1"></fa></span>
+                        <span><fa class="loadLineItemIco" [name]="'ellipsis-h'" [size]="2"></fa></span>
                         <span class="loadLineItemLabel" [translate]="'loadMore'"></span>
+                        <span><fa class="loadLineItemIco" [name]="'ellipsis-h'" [size]="2"></fa></span>
+
                     </div>
                 </div>
             </ng-template>

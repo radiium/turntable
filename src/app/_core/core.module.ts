@@ -3,9 +3,19 @@ import { HttpClientModule,
          HttpClientJsonpModule,
          HTTP_INTERCEPTORS } from '@angular/common/http';
 
-// Http service
+// Http services
 import { HttpInterceptorService } from 'core/services/http/http-interceptor.service';
 import { HttpClientService } from 'core/services/http/http-client.service';
+
+// App services
+import { AppStateService } from 'core/services/app-state.service';
+import { DataService } from 'core/services/data.service';
+import { DndService } from 'core/services/dnd.service';
+import { PlaylistService } from 'core/services/playlist.service';
+import { PlaylistItemService } from 'core/services/playlist-item.service';
+import { PlayerStateService } from 'core/services/player-state.service';
+import { TimerService } from 'core/services/timer.service';
+import { OnlineService } from 'core/services/online.service';
 
 // Youtube api service
 import { YoutubeService } from 'core/services/youtube.service';
@@ -19,25 +29,13 @@ import { PlaylistItemsApiService,
          SubscriptionsApiService,
          UserInfosApiService } from 'core/services/api';
 
-// Others service
-import { PlayerStateService } from 'core/services/player-state.service';
-import { UtilsService } from 'core/services/utils.service';
-import { OnlineService } from 'core/services/online.service';
-
-import { AppStateService } from 'core/services/app-state.service';
-import { DataService } from 'core/services/data.service';
-import { DndService } from 'core/services/dnd.service';
-import { TimerService } from 'core/services/timer.service';
-import { PlaylistService } from 'core/services/playlist.service';
-import { PlaylistItemService } from 'core/services/playlist-item.service';
-
 @NgModule({
     imports: [],
     exports: [],
     declarations: [],
     providers: [
 
-        // Http service
+        // Http services
         HttpClientService,
         {
             provide: HTTP_INTERCEPTORS,
@@ -45,11 +43,17 @@ import { PlaylistItemService } from 'core/services/playlist-item.service';
             multi: true
         },
 
-        DataService,
+        // App services
         AppStateService,
+        DataService,
         DndService,
+        PlaylistService,
+        PlaylistItemService,
+        PlayerStateService,
         TimerService,
-        // Youtube api service
+        OnlineService,
+
+        // Youtube api services
         YoutubeService,
         AuthService,
         ChannelsApiService,
@@ -59,14 +63,7 @@ import { PlaylistItemService } from 'core/services/playlist-item.service';
         SearchApiService,
         SuggestApiService,
         UserInfosApiService,
-        SubscriptionsApiService,
-
-        // Others service
-        PlayerStateService,
-        UtilsService,
-        OnlineService,
-        PlaylistService,
-        PlaylistItemService
+        SubscriptionsApiService
     ]
 })
 export class CoreModule { }

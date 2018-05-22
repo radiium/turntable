@@ -1,7 +1,7 @@
 export class User {
     constructor(
         public name: string,
-        public token: string,
+        public token: any,
         public img: string,
         public isAuthenticated: boolean) {
             this.name = name;

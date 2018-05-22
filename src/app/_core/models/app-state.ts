@@ -1,4 +1,4 @@
-import { PlaylistItem } from 'core/models';
+import { PlaylistItem, User } from 'core/models';
 
 export class AppState {
     constructor(
