@@ -22,7 +22,7 @@
         "youtube",
         "youtubeplayer",
         "dj",
-        "angular5",
+        "angular6",
         "javascript",
         "typescript"
     ],
@@ -30,6 +30,8 @@
     "main": "main.js",
     "dependencies": {
         "electron-context-menu": "^0.9.1",
-        "electron-json-storage": "^4.0.2"
+        "electron-json-storage": "^4.0.2",
+        "ytdl-core": "^0.20.4",
+        "fluent-ffmpeg": "^2.1.2"
     }
 }

@@ -5,13 +5,17 @@ console.log(`Electron launching with NODE_ENV: ${process.env.NODE_ENV}`);
 // Import dependencies
 import * as path from 'path';
 import * as url from 'url';
-import { app, BrowserWindow, ipcMain, Menu, shell } from 'electron';
+import { app, BrowserWindow, ipcMain, Menu, shell, dialog } from 'electron';
 import { devMenuTemplate } from './menu/dev_menu.template';
 import { fileMenuTemplate } from './menu/file_menu.template';
 import { editMenuTemplate } from './menu/edit_menu.template';
 import { session } from 'electron';
 import * as contextMenu from 'electron-context-menu';
 import * as storage from 'electron-json-storage';
+import * as ytdl from 'ytdl-core';
+import * as fs from 'fs';
+import * as readline from 'readline'
+import * as ffmpeg from 'fluent-ffmpeg'
 
 // Init variable
 let mainWindow: any = null;
@@ -50,6 +54,7 @@ const createMainWindow = async () => {
         webPreferences: {
             nodeIntegration: true,
             // contextIsolation: true,
+            experimentalFeatures: true
         }
     });
 
@@ -107,9 +112,9 @@ app.on('activate', () => {
 
 // Clear cahe and cookie session before quit
 app.on('before-quit', () => {
-    if (process.env.NODE_ENV !== 'development') {
+    // if (process.env.NODE_ENV !== 'development') {
         mainWindow.webContents.session.clearStorageData();
-    }
+    // }
 
     storage.remove('user', (error) => {
         if (error) { throw error; }
@@ -123,6 +128,7 @@ app.on('before-quit', () => {
 
 // Store user at signin
 ipcMain.on('save-user', (event, user) => {
+    console.log('saveUser', user)
     storage.set('user', user, (error) => {
         if (error) { throw error; }
         console.log('user saved');
@@ -132,6 +138,7 @@ ipcMain.on('save-user', (event, user) => {
 
 // Remove user from storage at signout
 ipcMain.on('remove-user', (event, user) => {
+    console.log('rmUser', user)
     storage.remove('user', (error) => {
         if (error) { throw error; }
         console.log('user removed');
@@ -142,6 +149,7 @@ ipcMain.on('remove-user', (event, user) => {
 ipcMain.on('send-get-user', (event, arg) => {
     storage.get('user', (err, data) => {
         if (err) { throw err; }
+        console.log('sendGetUser', data)
         event.sender.send('get-user', data);
     });
 });
@@ -212,6 +220,55 @@ ipcMain.on('send-get-app-state', (event, arg) => {
     });
 });
 
+
+// Convert video to mp3
+ipcMain.on('send-convert-video-to-mp3', (event, arg) => {
+    const url = 'http://www.youtube.com/watch?v=' + arg.id;
+
+    dialog.showSaveDialog({
+        defaultPath: '/Users/amigamac/Downloads/' + arg.title + '.mp3',
+    }, (fileName) => {
+
+        console.log('showSaveDialog', fileName);
+        if (fileName === undefined) return;
+        let starttime;
+        const mp3 = ytdl(url, { filter: 'audioonly' });
+
+        // new ffmpeg()
+
+
+
+        mp3.once('response', () => {
+            starttime = Date.now();
+        });
+
+        mp3.on('progress', (chunkLength, downloaded, total) => {
+            const floatDownloaded = downloaded / total;
+            const downloadedMinutes = (Date.now() - starttime) / 1000 / 60;
+            readline.cursorTo(process.stdout, 0);
+            process.stdout.write(`${(floatDownloaded * 100).toFixed(2)}% downloaded`);
+            process.stdout.write(`(${(downloaded / 1024 / 1024).toFixed(2)}MB of ${(total / 1024 / 1024).toFixed(2)}MB)\n`);
+            process.stdout.write(`running for: ${downloadedMinutes.toFixed(2)}minutes`);
+            process.stdout.write(`, estimated time left: ${(downloadedMinutes / floatDownloaded - downloadedMinutes).toFixed(2)}minutes `);
+            readline.moveCursor(process.stdout, 0, -1);
+        });
+
+        mp3.on('end', () => {
+            process.stdout.write('\n\n');
+        });
+
+        mp3.on('info', (err, info) => {
+            console.log('info', info, err);
+        });
+
+        // mp3.pipe();
+        ffmpeg(mp3).format('mp3').pipe(fs.createWriteStream(fileName))
+
+        console.log('ENDED');
+
+    });
+
+});
 
 
 
