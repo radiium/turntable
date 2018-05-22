@@ -2,6 +2,7 @@ export * from './playlist';
 export * from './playlist-item';
 export * from './suggests';
 export * from './user';
+export * from './loader';
 export * from './app-state';
 export * from './search-results';
 export * from './player-side';

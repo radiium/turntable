@@ -13,13 +13,12 @@
             <ng-template #footer let-footer>
                 <div *ngIf="hasNextPage" class="loadLine btnHover" [attr.data-movable]="false">
                     <div mat-line *ngIf="loadNextPage" class="loadLineItem">
-                        <mat-spinner [diameter]="40" class="spinner"></mat-spinner>
+                        <mat-progress-spinner class="spinner" [diameter]="40"  [mode]="'indeterminate'"></mat-progress-spinner>
                     </div>
                     <div mat-line *ngIf="!loadNextPage" class="loadLineItem" (click)="loadMore()">
                         <span><fa class="loadLineItemIco" [name]="'ellipsis-h'" [size]="2"></fa></span>
                         <span class="loadLineItemLabel" [translate]="'loadMore'"></span>
                         <span><fa class="loadLineItemIco" [name]="'ellipsis-h'" [size]="2"></fa></span>
-
                     </div>
                 </div>
             </ng-template>

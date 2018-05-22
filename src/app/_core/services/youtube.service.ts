@@ -12,6 +12,7 @@ import { mergeMap,
          map,
          flatMap,
          catchError } from 'rxjs/operators';
+import { ElectronService } from 'ngx-electron';
 import * as moment from 'moment';
 import * as _ from 'lodash';
 
@@ -42,26 +43,32 @@ export class YoutubeService {
         nextPageToken: ''
     };
 
+    isElectronApp: boolean;
+
     constructor(
+    private electron: ElectronService,
     private playlistsService: PlaylistsApiService,
     private playlistItemsService: PlaylistItemsApiService,
     private channelsApiService: ChannelsApiService,
     private subsApiService: SubscriptionsApiService,
-    private dataService: DataService,
+    private dataSrv: DataService,
     private searchService: SearchApiService,
     private videosService: VideosApiService,
     private suggestService: SuggestApiService
     ) {
+
+        this.isElectronApp = this.electron.isElectronApp;
+
         this.playlistList = new Array<Playlist>();
-        this.dataService.playlistsList$.subscribe((data) => {
+        this.dataSrv.playlistsList$.subscribe((data) => {
             this.playlistList = data;
         });
 
-        this.dataService.searchResults$.subscribe((data) => {
+        this.dataSrv.searchResults$.subscribe((data) => {
             this.searchResults = data;
         });
 
-        this.dataService.user$.subscribe((data) => {
+        this.dataSrv.user$.subscribe((data) => {
             this.user = data;
         });
     }
@@ -78,7 +85,7 @@ export class YoutubeService {
     // Search videos by query string
     searchVideos(query: string, pageToken?: string) {
 
-        this.dataService.setLoading(!pageToken ? true : false);
+        this.dataSrv.setLoaderPanel(!pageToken ? true : false);
 
         this.searchService.searchVideos(query, pageToken)
         .pipe(
@@ -99,8 +106,8 @@ export class YoutubeService {
             }
 
             this.searchResults.results.push(videoList);
-            this.dataService.setSearchResults(this.searchResults);
-            this.dataService.setLoading(false);
+            this.dataSrv.setSearchResults(this.searchResults);
+            this.dataSrv.setLoaderPanel(false);
         });
     }
 
@@ -109,7 +116,7 @@ export class YoutubeService {
     // Into playlistslist Observable
     fetchYoutubePlaylists() {
 
-        this.dataService.setLoading(true);
+        this.dataSrv.setLoaderPanel(true);
 
         this.playlistsService.getPlaylists().subscribe(
             (data) => {
@@ -120,11 +127,11 @@ export class YoutubeService {
                             this.playlistList.push(playlist);
                         });
                         this.playlistList = _.uniqBy(this.playlistList, 'id');
-                        this.dataService.setPlaylistsList(this.playlistList);
+                        this.dataSrv.setPlaylistsList(this.playlistList);
                     },
                     (err) => console.log('Something went wrong:', err),
                     () => {
-                        this.dataService.setLoading(false);
+                        this.dataSrv.setLoaderPanel(false);
                         // this.fetchYoutubeSubscriptions();
                     }
                 );
@@ -209,6 +216,15 @@ export class YoutubeService {
 
 
 
+
+    downloadVideo(video: PlaylistItem) {
+        if (this.isElectronApp) {
+            this.electron.ipcRenderer.send('send-convert-video-to-mp3', video);
+        }
+    }
+
+
+
     // UTILS
 
 
@@ -257,6 +273,7 @@ export class YoutubeService {
     parseVideo(video: any) {
         return new PlaylistItem(
             video.id,
+            false,
             _.deburr(video.snippet.localized.title),
             _.deburr(video.snippet.localized.description),
             video.snippet.thumbnails.default.url,

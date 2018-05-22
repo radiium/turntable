@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 // import { BrowserModule } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-// import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+// import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HttpClientJsonpModule, HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
 
@@ -42,6 +42,7 @@ import { VideoListComponent } from './components/video-list/video-list.component
 import { PlaylistButtonListComponent } from './components/playlist-button-list/playlist-button-list.component';
 import { PlaylistControlComponent } from './components/playlist-control/playlist-control.component';
 import { ContextMenuComponent } from './components/context-menu/context-menu.component';
+import { LoaderComponent } from './components/loader/loader.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -75,6 +76,7 @@ export function HttpLoaderFactory(http: HttpClient) {
         VideoListComponent,
         PlaylistButtonListComponent,
         ContextMenuComponent,
+        LoaderComponent,
         PlaylistControlComponent
     ],
     imports: [
@@ -82,8 +84,8 @@ export function HttpLoaderFactory(http: HttpClient) {
         // BrowserModule,
         HttpClientModule,
         HttpClientJsonpModule,
-        NoopAnimationsModule,
-        // BrowserAnimationsModule,
+        // NoopAnimationsModule,
+        BrowserAnimationsModule,
         FormsModule,
         ReactiveFormsModule,
         DragulaModule,
@@ -103,8 +105,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     exports: [
         CommonModule,
         // BrowserModule,
-        NoopAnimationsModule,
-        // BrowserAnimationsModule,
+        // NoopAnimationsModule,
+        BrowserAnimationsModule,
         FormsModule,
         ReactiveFormsModule,
         DragulaModule,
@@ -125,6 +127,7 @@ export function HttpLoaderFactory(http: HttpClient) {
         VideoListComponent,
         PlaylistButtonListComponent,
         ContextMenuComponent,
+        LoaderComponent,
         PlaylistControlComponent
     ],
     providers: [],

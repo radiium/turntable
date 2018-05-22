@@ -28,10 +28,11 @@
     .appTitle {
         width: 205px;
         height: 64px;
-        //text-align: center;
+
         .title {
+            font-family: 'paintcans' !important;
             margin-left: 20px;
-            font-size: 2rem;
+            font-size: 1.6rem;
             line-height: 64px;
         }
     }
@@ -176,22 +177,7 @@
         @include themify($themes) {
             background-color: themed('secondary');
         }
-        .appLoader {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            align-content: center;
-            justify-content: center;
-            z-index: 2;
-            @include themify($themes) {
-                background-color: themed('darkBg');
-            }
-            mat-spinner {
-                align-self: center;
-            }
-        }
+
         .content {
             // padding: 20px;
             width: 100%;

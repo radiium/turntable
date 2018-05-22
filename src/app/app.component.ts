@@ -8,7 +8,7 @@ import { MatSnackBar } from '@angular/material';
 import { TranslateService } from '@ngx-translate/core';
 import * as _ from 'lodash';
 
-import { User, PlaylistItem, Playlist, AppState } from 'core/models';
+import { User, PlaylistItem, Playlist, AppState, Loader } from 'core/models';
 import { AppStateService } from 'core/services/app-state.service';
 import { AuthService } from 'core/services/auth.service';
 import { DataService } from 'core/services/data.service';
@@ -40,13 +40,14 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     scroll: any;
 
     miniNav = false;
-    isLoaded = false;
+
+    loader: Loader;
 
     constructor(
     public snackBar: MatSnackBar,
     private appStateService: AppStateService,
     private plSrv: PlaylistService,
-    private dataService: DataService,
+    private dataSrv: DataService,
     private Electron: ElectronService,
     private authService: AuthService,
     private YTService: YoutubeService,
@@ -57,7 +58,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
         translate.setDefaultLang('en');
 
         // User
-        this.dataService.user$.subscribe((data) => {
+        this.dataSrv.user$.subscribe((data) => {
             this.user = data;
             if (data !== null) {
                 this.YTService.fetchYoutubePlaylists();
@@ -66,7 +67,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
 
         // App state
         this.appState = new AppState();
-        this.dataService.appState$.subscribe((data) => {
+        this.dataSrv.appState$.subscribe((data) => {
             this.appState = data;
             this.initMatOverlay();
             translate.use(this.appState.langage);
@@ -74,8 +75,22 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
 
         // Playlists
         this.playlistsList = new Array<Playlist>();
-        this.dataService.playlistsList$.subscribe((data) => {
+        this.dataSrv.playlistsList$.subscribe((data) => {
             this.playlistsList = data;
+        });
+
+
+        this.dataSrv.loader$.subscribe((data) => {
+            this.loader = data;
+            console.log('this.loader', this.loader)
+
+            /*
+            if (this.loader.global) {
+                setTimeout(() => {
+                    this.dataSrv.setLoaderGlobal(false);
+                }, 3000);
+            }
+            */
         });
 
         this.dndService.initDnd();
@@ -86,6 +101,8 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
         // this.snackBar.open('Hey', '', {
         //    duration: 2000,
         // });
+
+
     }
 
     ngAfterViewInit() {
@@ -132,15 +149,15 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     onSelectTab(index: number) {
-        this.dataService.setSelectedTab(index);
+        this.dataSrv.setSelectedTab(index);
     }
 
     setIsMiniSideBar() {
-        this.dataService.setIsMiniSideBar(!this.appState.isMiniSideBar);
+        this.dataSrv.setIsMiniSideBar(!this.appState.isMiniSideBar);
     }
 
     setShowPlayerBar() {
-        this.dataService.setShowPlayerBar(!this.appState.showPlayerBar);
+        this.dataSrv.setShowPlayerBar(!this.appState.showPlayerBar);
     }
 
     refreshYTPlaylists() {
@@ -192,6 +209,6 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
             videoList
         );
         // this.playlistsList = <Playlist[]>[datas];
-        this.dataService.setPlaylistsList(<Playlist[]>[datas]);
+        this.dataSrv.setPlaylistsList(<Playlist[]>[datas]);
     }
 }

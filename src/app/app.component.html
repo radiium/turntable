@@ -34,9 +34,7 @@
 
         <div *ngIf="user" class="toolbarBtn userImg">
             <img src="{{ user.img }}" alt="">
-            <!--
-            <div class="sidenavBtnLabel">{{ user.name }}</div>
-            -->
+            <!-- <div class="sidenavBtnLabel">{{ user.name }}</div> -->
         </div>
 
         <button [matMenuTriggerFor]="menu" class="toolbarBtn btnHover">
@@ -60,31 +58,7 @@
     </mat-toolbar>
 
 
-
     <mat-sidenav-container class="appContainer flexSpacer" autosize>
-
-        <!-- Sidenav mini --
-        <mat-sidenav [hidden]="!appState.isMiniSideBar" #sidenav [mode]="'side'" opened="true" class="appSidenav miniNav">
-            <div class="flexItem sectionLabel"></div>
-            <button class="sidenavBtn btnHover" (click)="onSelectTab(1)" [class.activ]="appState.selectedTab === 1 || selectedTab === 2">
-                <fa class="sidenavBtnIco" [name]="'home'" [size]="1"></fa>
-            </button>
-            <button class="sidenavBtn btnHover" (click)="onSelectTab(3)" [class.activ]="appState.selectedTab === 3">
-                <fa class="sidenavBtnIco" [name]="'th-list'" [size]="1"></fa>
-                <span class="sidenavBtnLabel"  [translate]="'library'"></span>
-            </button>
-            <button class="sidenavBtn btnHover" (click)="onSelectTab(5)" [class.activ]="appState.selectedTab === 5">
-                <fa class="sidenavBtnIco" [name]="'play-circle'" [size]="1"></fa>
-            </button>
-
-            <div class="flexSpacer"></div>
-
-            <button class="sidenavBtn btnHover addBtn" (click)="createPlaylist()">
-                <fa class="sidenavBtnIco" [name]="'plus'" [size]="1"></fa>
-            </button>
-        </mat-sidenav>
-        -->
-
 
         <!-- Sidenav normal -->
         <mat-sidenav  #sidenav [mode]="'side'"
@@ -150,38 +124,11 @@
                     <fa class="sidenavBtnIco" [name]="'plus'" [size]="1"></fa>
                 </button>
             </div>
-            <!--
-
-            <div *ngIf="appState.isMiniSideBar">
-                <div class="flexItem sectionLabel"><span></span></div>
-                <div class="flexItem">
-                    <button class="sidenavBtnMini btnHover" (click)="onSelectTab(1)" [class.activ]="appState.selectedTab === 1 || selectedTab === 2">
-                        <fa class="sidenavBtnIcoMini" [name]="'home'" [size]="1"></fa>
-                    </button>
-                    <button class="sidenavBtnMini btnHover" (click)="onSelectTab(3)" [class.activ]="appState.selectedTab === 3 || selectedTab === 4">
-                        <fa class="sidenavBtnIcoMini" [name]="'th-list'" [size]="1"></fa>
-                    </button>
-                    <button class="sidenavBtnMini btnHover" (click)="onSelectTab(5)" [class.activ]="appState.selectedTab === 5">
-                        <fa class="sidenavBtnIcoMini" [name]="'play-circle'" [size]="1"></fa>
-                    </button>
-                </div>
-                <!-- Add playlist button ->
-                <div class="flexItem">
-                    <button class="sidenavBtnMini btnHover addBtn" (click)="createPlaylist()">
-                        <fa class="sidenavBtnIcoMini" [name]="'plus'" [size]="1"></fa>
-                    </button>
-                </div>
-            </div>
-        -->
 
         </mat-sidenav>
 
         <!-- Content -->
         <mat-sidenav-content class="appContent">
-
-            <div *ngIf="appState.loading" class="appLoader">
-                <mat-spinner></mat-spinner>
-            </div>
 
             <!-- Content -->
             <div class="content flexSpacer" [class.withPlayerBar]="appState.showPlayerBar">
@@ -193,12 +140,14 @@
                 <app-settings         class="tabContent" [style.zIndex]="appState.selectedTab === 6 ? 1 : 0"></app-settings>
             </div>
 
-            <!--
-            *ngIf="isOnPlay"
-            -->
+            <!-- *ngIf="isOnPlay" -->
             <app-player-bar *ngIf="appState.showPlayerBar" class="playerBar" [class.toggleBar]="!appState.showPlayerBar"></app-player-bar>
+
+            <app-loader [show]="loader.panel" [isGlobal]="false"></app-loader>
 
         </mat-sidenav-content>
     </mat-sidenav-container>
+
+    <app-loader [show]="loader.global" [isGlobal]="true"></app-loader>
 
 </div>

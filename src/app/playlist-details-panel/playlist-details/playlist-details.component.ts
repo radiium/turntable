@@ -1,8 +1,8 @@
-import { Component, OnInit, ViewChild, ElementRef, ApplicationRef,
+import { Component, OnInit, AfterViewInit, AfterViewChecked, ViewChild, ElementRef, ApplicationRef,
     ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
 import * as _ from 'lodash';
 
-import { Playlist, PlaylistItem, AppState, VideoListConfig } from 'core/models';
+import { Playlist, PlaylistItem, AppState, VideoListConfig, Loader } from 'core/models';
 import { DataService } from 'core/services/data.service';
 import { DndService } from 'core/services/dnd.service';
 
@@ -12,7 +12,7 @@ import { DndService } from 'core/services/dnd.service';
     styleUrls: ['./playlist-details.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class PlaylistDetailsComponent implements OnInit {
+export class PlaylistDetailsComponent implements OnInit, AfterViewInit, AfterViewChecked {
 
     appState: AppState;
     currentPlaylist: Playlist;
@@ -23,6 +23,8 @@ export class PlaylistDetailsComponent implements OnInit {
     title: string;
     description: string;
     privacyStatus: string;
+
+    loader: Loader;
 
     videoListConfig: VideoListConfig = {
         draggable: true,
@@ -46,7 +48,7 @@ export class PlaylistDetailsComponent implements OnInit {
     constructor(
     private cdRef: ChangeDetectorRef,
     private appRef: ApplicationRef,
-    private dataService: DataService,
+    private dataSrv: DataService,
     private dnd: DndService) {
 
         this.title = '';
@@ -55,7 +57,7 @@ export class PlaylistDetailsComponent implements OnInit {
         this.canAddToPlaylist = false;
 
         // Get selected playlist
-        this.dataService.appState$.subscribe((data) => {
+        this.dataSrv.appState$.subscribe((data) => {
             this.appState = data;
             this.currentPlaylist = _.find(this.playlistsList, { id: data.selectedPl });
             this.updateState();
@@ -64,7 +66,7 @@ export class PlaylistDetailsComponent implements OnInit {
         });
 
         // Get playlist list
-        this.dataService.playlistsList$.subscribe((data) => {
+        this.dataSrv.playlistsList$.subscribe((data) => {
             this.playlistsList = data;
             if (this.currentPlaylist) {
                 this.currentPlaylist = _.find(this.playlistsList, { id: this.currentPlaylist.id });
@@ -76,9 +78,33 @@ export class PlaylistDetailsComponent implements OnInit {
             this.canAddToPlaylist = data.length > 1;
             this.cdRef.detectChanges();
         });
+        this.dataSrv.loader$.subscribe((data) => {
+            this.loader = data;
+            this.cdRef.markForCheck();
+        });
     }
 
     ngOnInit() {
+    }
+
+    ngAfterViewChecked() {
+        if (this.loader.global) {
+            console.log('TADADA1')
+            setTimeout(() => {
+                this.dataSrv.setLoaderGlobal(false);
+            }, 3000);
+        }
+    }
+
+    ngAfterViewInit() {
+        /*
+        if (this.loader.global) {
+            console.log('TADADA2')
+            setTimeout(() => {
+                this.dataSrv.setLoaderGlobal(false);
+            }, 3000);
+        }
+        */
     }
 
     updateState() {

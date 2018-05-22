@@ -3,7 +3,7 @@ import { Subject ,  BehaviorSubject } from 'rxjs';
 import { ElectronService } from 'ngx-electron';
 import * as _ from 'lodash';
 
-import { User, Playlist, PlaylistItem, Suggests, SearchResults, AppState } from 'core/models';
+import { User, Playlist, PlaylistItem, Suggests, SearchResults, AppState, Loader } from 'core/models';
 
 @Injectable()
 export class DataService {
@@ -39,6 +39,10 @@ export class DataService {
     public  playlistsList$ = this.playlistsList.asObservable();
 
 
+    // Loading state
+    private loader  = new BehaviorSubject<Loader>({panel: false, global: true});
+    public  loader$ = this.loader.asObservable();
+
     constructor() { }
 
 
@@ -53,7 +57,6 @@ export class DataService {
     setDisplayType(data)   { this.setAppStateKey('displayType', data); }
     setSelectedTab(data)   { this.setAppStateKey('selectedTab', data); }
     setShowPlayerBar(data) { this.setAppStateKey('showPlayerBar', data); }
-    setLoading(data)       { this.setAppStateKey('loading', data); }
     setIsMiniSideBar(data) { this.setAppStateKey('isMiniSideBar', data); }
     setMultiPlayer(data)   { this.setAppStateKey('multiPlayer', data); }
     setSelectedPl(data)    { this.setAppStateKey('selectedPl', data); }
@@ -79,5 +82,21 @@ export class DataService {
 
     setPlaylistsList(data) {
         this.playlistsList.next(_.cloneDeep(data));
+    }
+
+    setLoader(data) {
+        this.loader.next(_.cloneDeep(data));
+    }
+
+    setLoaderGlobal(data) {
+        const loader = this.loader.getValue();
+        loader.global = data;
+        this.setLoader(loader);
+    }
+
+    setLoaderPanel(data) {
+        const loader = this.loader.getValue();
+        loader.panel = data;
+        this.setLoader(loader);
     }
 }
