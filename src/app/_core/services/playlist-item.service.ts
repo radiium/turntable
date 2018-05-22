@@ -32,16 +32,16 @@ export class PlaylistItemService {
 
     constructor(
 
-    private data: DataService,
+    private dataSrv: DataService,
     private ytSrv: YoutubeService,
     private playerState: PlayerStateService,
     public dialog: MatDialog
     ) {
-        this.data.appState$.subscribe(appState => {
+        this.dataSrv.appState$.subscribe(appState => {
             this.appState = appState;
         });
 
-        this.data.playlistsList$.subscribe(datalist => {
+        this.dataSrv.playlistsList$.subscribe(datalist => {
             this.playlistsList = datalist;
         });
 
@@ -58,7 +58,7 @@ export class PlaylistItemService {
     }
 
     addToPlayerList(video: PlaylistItem) {
-        this.playerState.addToPlaylist(video);
+        this.dataSrv.setOnPlayList([...this.appState.onPlayList, video]);
     }
 
     addToPlaylist(video: PlaylistItem, plId: string) {
@@ -70,8 +70,8 @@ export class PlaylistItemService {
             });
             dialogRef.afterClosed().subscribe(resp => {
                 if (resp) {
-                    _.each(resp.plIdList, (plId) => {
-                        const pl = _.find(this.playlistsList, { 'id': plId });
+                    _.each(resp.plIdList, (id) => {
+                        const pl = _.find(this.playlistsList, { id: id });
                         pl.videolist.push(_.cloneDeep(video));
                     });
                 }
@@ -91,8 +91,7 @@ export class PlaylistItemService {
             if (delVideo) {
                 const plIdx = _.findIndex(this.playlistsList, { 'id': plId });
                 this.playlistsList[plIdx].videolist.splice(index, 1);
-                debugger
-                this.data.setPlaylistsList(this.playlistsList);
+                this.dataSrv.setPlaylistsList(this.playlistsList);
             }
         });
     }
@@ -105,20 +104,20 @@ export class PlaylistItemService {
                 break;
 
             case 'onplay':
-                videoList = this.move(from, to, this.playerPanelState.playlist);
-                this.playerState.setOnPlaylist(videoList);
+                videoList = this.move(from, to, this.appState.onPlayList);
+                this.dataSrv.setOnPlayList(videoList);
                 break;
 
             case 'historic':
-                videoList = this.move(from, to, this.playerPanelState.historiclist);
-                this.playerState.setHistoriclist(videoList);
+                videoList = this.move(from, to, this.appState.historicList);
+                this.dataSrv.setHistoricList(videoList);
                 break;
 
             default:
                 const vlIdx = _.findIndex(this.playlistsList, { id: plId });
                 videoList = this.move(from, to, this.playlistsList[vlIdx].videolist);
                 this.playlistsList[vlIdx].videolist = videoList;
-                this.data.setPlaylistsList(this.playlistsList);
+                this.dataSrv.setPlaylistsList(this.playlistsList);
                 break;
         }
 

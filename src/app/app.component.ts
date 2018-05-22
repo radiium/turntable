@@ -31,9 +31,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
 
     user: User;
     appState: AppState;
-
     playlistsList: Array<Playlist>;
-    onSelectPLID: string;
 
     loading: any = false;
 
@@ -78,12 +76,6 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
         this.playlistsList = new Array<Playlist>();
         this.dataService.playlistsList$.subscribe((data) => {
             this.playlistsList = data;
-        });
-
-        // Get selected playlist
-        this.onSelectPLID = '';
-        this.dataService.onSelectPL$.subscribe((pl: any) => {
-            this.onSelectPLID = pl ? pl.id : '';
         });
 
         this.dndService.initDnd();
@@ -155,8 +147,8 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
         this.YTService.fetchYoutubePlaylists();
     }
 
-    addPlaylist() {
-        this.plSrv.createPlaylist()
+    createPlaylist() {
+        this.plSrv.createPlaylist();
     }
 
 

@@ -20,9 +20,9 @@ export class ContextMenuComponent implements OnInit {
     @ViewChild('menuContainer') menuContainer: ElementRef;
 
     constructor(
-    private data: DataService,
+    private dataSrv: DataService,
     private renderer: Renderer2) {
-        this.data.appState$.subscribe(appState => this.theme = appState.theme);
+        this.dataSrv.appState$.subscribe(appState => this.theme = appState.theme);
         this.body = document.querySelectorAll('body')[0];
     }
 

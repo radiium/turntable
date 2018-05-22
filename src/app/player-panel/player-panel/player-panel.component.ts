@@ -24,7 +24,7 @@ export class PlayerPanelComponent implements OnInit {
     }
 
     playlistsList: Playlist[];
-    canAddToPlaylist: boolean = false;
+    canAddToPlaylist: boolean;
 
     onDisplayPl: string;
     isDoublePlayer: boolean;
@@ -77,6 +77,7 @@ export class PlayerPanelComponent implements OnInit {
         this.onDisplayPl = 'playlist';
         this.isDoublePlayer = true;
         this.crossFaderValue = 50;
+        this.canAddToPlaylist = false;
     }
 
     ngOnInit() {
@@ -163,23 +164,6 @@ export class PlayerPanelComponent implements OnInit {
     }
 
 
-    // ------------------------------------------------------------------------
-    // Playlist control
-    deleteVideo(video: PlaylistItem, index: number) {
-        this.playerPanelState.playlist.splice(index, 1);
-        this.playerState.setPlayerPanelState(_.cloneDeep(this.playerPanelState));
-    }
-
-    onVideolistChange(event) {
-        this.playerPanelState.playlist = event;
-        this.playerState.setPlayerPanelState(_.cloneDeep(this.playerPanelState));
-    }
-
-    // ------------------------------------------------------------------------
-    // Track onPlay list item in ngFor
-    trackByFn(index: number, item: any) {
-        return item.id; // index;
-    }
 
     onChangeCrossFaderValue(value) {
         let valLeft = 0;
@@ -220,5 +204,11 @@ export class PlayerPanelComponent implements OnInit {
 
     setFulscreenPlayer() {
 
+    }
+
+    // ------------------------------------------------------------------------
+    // Track onPlay list item in ngFor
+    trackByFn(index: number, item: any) {
+        return item.id; // index;
     }
 }

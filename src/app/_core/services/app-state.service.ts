@@ -33,7 +33,6 @@ export class AppStateService {
             this.storeLocalPlaylists();
         });
 
-
         this.dataService.appState$.subscribe((data) => {
             this.appState = data;
             this.saveAppState();
@@ -88,7 +87,7 @@ export class AppStateService {
     storeLocalPlaylists() {
         if (this.isElectronApp && !this.isFirstLoad) {
             // console.log('===== storeLocalPlaylists');
-            const localPlaylists = new Array<Playlist>();
+            const localPlaylists: Playlist[] = [];
             this.playlistsList.forEach(playlist => {
                 if (playlist.isLocal) {
                     localPlaylists.push(playlist);
@@ -118,7 +117,7 @@ export class AppStateService {
         if (this.isElectronApp) {
             // console.log('===== removeLocalPlaylist');
             this.Electron.ipcRenderer.send('send-remove-local-playlists');
-            const pll = new Array<Playlist>();
+            const pll: Playlist[] = [];
             this.playlistsList.forEach(playlist => {
                 if (!playlist.isLocal) {
                     pll.push(playlist);

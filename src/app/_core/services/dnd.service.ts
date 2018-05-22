@@ -49,7 +49,7 @@ export class DndService implements OnDestroy {
     constructor(
         private ngZone: NgZone,
         private dragulaService: DragulaService,
-        private data: DataService,
+        private dataSrv: DataService,
         private playerState: PlayerStateService) {
     }
 
@@ -115,20 +115,19 @@ export class DndService implements OnDestroy {
 
             // Datas subscription
             this.playerState.playerPanelState$.subscribe((data) => {
-                this.historicList = data.historiclist;
-                this.onPlayList = data.playlist;
+
             }),
-            this.data.playlistsList$.subscribe((data) => this.playlistsList = data),
-            this.data.searchResults$.subscribe((data) => this.searchResults = data),
-            this.data.onPlayList$.subscribe((data) => this.onPlayList = data),
-            this.data.appState$.subscribe((data) => this.selectedTab = data.selectedTab),
-            this.data.onSelectPL$.subscribe((data) => {
-                const selectedPl = _.find(this.playlistsList, { id: data });
+            this.dataSrv.playlistsList$.subscribe((data) => this.playlistsList = data),
+            this.dataSrv.searchResults$.subscribe((data) => this.searchResults = data),
+            this.dataSrv.appState$.subscribe((data) => {
+                this.selectedTab = data.selectedTab;
+                this.historicList = data.historicList;
+                this.onPlayList = data.onPlayList;
+                const selectedPl = _.find(this.playlistsList, { id: data.selectedPl });
                 if (selectedPl) {
                     this.onSelectPL = selectedPl.videolist;
                 }
             }),
-
 
             // Dragula event subscription
             this.dragulaService.over.subscribe((value) => {
@@ -329,9 +328,9 @@ export class DndService implements OnDestroy {
             }
 
             if (target.classList.contains('onplay')) {
-                this.playerState.setOnPlaylist(this.onPlayList);
+                this.dataSrv.setOnPlayList(this.onPlayList);
             } else {
-                this.data.setPlaylistsList(this.playlistsList);
+                this.dataSrv.setPlaylistsList(this.playlistsList);
             }
         }
     }
@@ -340,7 +339,7 @@ export class DndService implements OnDestroy {
         const [el, target, source] = args;
 
         if (bagName === this.playerBag) {
-            this.data.setOnPlayList(this.onPlayList);
+            this.dataSrv.setOnPlayList(this.onPlayList);
         }
     }
 

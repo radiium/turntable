@@ -44,20 +44,6 @@ export class DataService {
     public  playlistsList$ = this.playlistsList.asObservable();
 
 
-    // Selected playlist
-    private onSelectPL  = new Subject<string>();
-    public  onSelectPL$ = this.onSelectPL.asObservable();
-
-
-    // On play videolist
-    private onPlayList  = new Subject<Array<PlaylistItem>>();
-    public  onPlayList$ = this.onPlayList.asObservable();
-
-    // On play historic videolist
-    private historicList  = new Subject<Array<PlaylistItem>>();
-    public  historicList$ = this.historicList.asObservable();
-
-
     constructor() { }
 
 
@@ -76,6 +62,9 @@ export class DataService {
     setLoading(data)       { this.setAppStateKey('loading', data); }
     setIsMiniSideBar(data) { this.setAppStateKey('isMiniSideBar', data); }
     setMultiPlayer(data)   { this.setAppStateKey('multiPlayer', data); }
+    setSelectedPl(data)    { this.setAppStateKey('selectedPl', data); }
+    setOnPlayList(data)    { this.setAppStateKey('onPlayList', data); }
+    setHistoricList(data)  { this.setAppStateKey('historicList', data); }
     setAppStateKey(key: string, value: any) {
         const appState = this.appState.getValue();
         appState[key] = value;
@@ -96,18 +85,6 @@ export class DataService {
 
     setPlaylistsList(data) {
         this.playlistsList.next(_.cloneDeep(data));
-    }
-
-    setOnSelectPL(data) {
-        this.onSelectPL.next(_.cloneDeep(data));
-    }
-
-    setOnPlayList(data) {
-        this.onPlayList.next(data);
-    }
-
-    setHistoricList(data) {
-        this.historicList.next(_.cloneDeep(data));
     }
 
     setIsOnDrag(data) {

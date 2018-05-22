@@ -7,23 +7,22 @@ import { Observable,
 import * as _ from 'lodash';
 
 
-import { UtilsService } from 'core/services/utils.service';
 import { DataService } from 'core/services/data.service';
 import { YoutubePlayerService } from 'shared/modules/youtube-player/youtube-player.service';
 import { PlaylistItem, Playlist, Suggests,
     PlayerPanelState, PlayerState,
-    PlayerSide } from 'core/models';
+    PlayerSide, AppState} from 'core/models';
 
 @Injectable()
 export class PlayerStateService {
+
+    appState: AppState;
 
     // Player panel state
     private playerPLStateDefault: PlayerPanelState = {
         isFirstPlay: true,
         isRandom: false,
         isRepeat: false,
-        playlist: new Array<PlaylistItem>(),
-        historiclist: new Array<PlaylistItem>()
     };
     private playerPanelState  = new BehaviorSubject<PlayerPanelState>(this.playerPLStateDefault);
     public  playerPanelState$ = this.playerPanelState.asObservable();
@@ -63,46 +62,16 @@ export class PlayerStateService {
 
     constructor(
     private YTPlayer: YoutubePlayerService,
-    public utilsService: UtilsService,
-    private dataService: DataService) {
+    private dataSrv: DataService) {
 
-        this.playerLeft.subscribe((data) => {
-            this.currentPlayerLeft = data;
-        });
-
-        this.playerRight.subscribe((data) => {
-            this.currentPlayerRight = data;
-        });
+        this.dataSrv.appState$.subscribe(data => this.appState = data);
+        this.playerLeft.subscribe(data => this.currentPlayerLeft = data);
+        this.playerRight.subscribe(data => this.currentPlayerRight = data);
     }
 
     // Setters
     setPlayerPanelState(data: PlayerPanelState) {
         this.playerPanelState.next(data);
-    }
-
-    setPlaylist(videoList: Array<PlaylistItem>) {
-        this.playerPanelState.getValue().playlist = _.cloneDeep(videoList);
-        this.setPlayerPanelState(this.playerPanelState.getValue());
-        this.dataService.setSelectedTab(5);
-    }
-
-    addToPlaylist(data: any) {
-        if (!Array.isArray(data)) {
-            data = [data];
-        }
-        this.playerPanelState.getValue().playlist.push(..._.cloneDeep(data));
-        this.setPlayerPanelState(_.cloneDeep(this.playerPanelState.getValue()));
-        this.dataService.setSelectedTab(5);
-    }
-
-    setHistoriclist(data: Array<PlaylistItem>) {
-        this.playerPanelState.getValue().historiclist = _.cloneDeep(data);
-        this.setPlayerPanelState(_.cloneDeep(this.playerPanelState.getValue()));
-    }
-
-    setOnPlaylist(data: Array<PlaylistItem>) {
-        this.playerPanelState.getValue().playlist = _.cloneDeep(data);
-        this.setPlayerPanelState(_.cloneDeep(this.playerPanelState.getValue()));
     }
 
     setRandom(isRandom: boolean) {
@@ -191,18 +160,17 @@ export class PlayerStateService {
     }
 
     playVideo(video: PlaylistItem, index?: number) {
-        const panelState = this.playerPanelState.getValue();
         let videoToPlay;
         if (index !== undefined) {
-            videoToPlay = panelState.playlist[index];
-            panelState.playlist.splice(index, 1);
+            videoToPlay = this.appState.onPlayList[index];
+            this.appState.onPlayList.splice(index, 1);
         } else {
             videoToPlay = video;
         }
 
-        panelState.historiclist.unshift(videoToPlay);
+        this.appState.historicList.unshift(videoToPlay);
+        this.dataSrv.setHistoricList(this.appState.historicList);
 
-        this.setHistoriclist(panelState.historiclist);
         // this.setPlayerPanelState(panelState);
         this.playOnPlayer(videoToPlay);
     }
@@ -212,8 +180,8 @@ export class PlayerStateService {
 
         const panelState = this.playerPanelState.getValue();
 
-        const playlist = panelState.playlist;
-        const historiclist = panelState.historiclist;
+        const playlist = this.appState.onPlayList;
+        const historiclist = this.appState.historicList;
         const isRandom = panelState.isRandom;
         const isRepeat = panelState.isRepeat;
 
@@ -235,11 +203,8 @@ export class PlayerStateService {
                 historiclist.unshift(videoToPlay);
             }
 
-            // Update player panel playlist
-            panelState.playlist     = playlist;
-            panelState.historiclist = historiclist;
-            this.setPlayerPanelState(panelState);
-
+            this.dataSrv.setOnPlayList(playlist);
+            this.dataSrv.setHistoricList(historiclist);
 
             // Play video on the oposite player
             if (side === PlayerSide.LEFT) {

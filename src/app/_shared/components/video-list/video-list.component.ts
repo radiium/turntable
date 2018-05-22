@@ -25,7 +25,7 @@ export class VideoListComponent implements OnChanges {
     @Input() config: VideoListConfig;
     @Input() canAddToPlaylist: boolean;
 
-    deletable: boolean = false;
+    deletable: boolean;
 
     @Output() videoListOut = new EventEmitter();
     @ViewChild('listRef') listRef: ElementRef;
@@ -39,6 +39,7 @@ export class VideoListComponent implements OnChanges {
     private data: DataService,
     private playerState: PlayerStateService,
     private cdRef: ChangeDetectorRef) {
+        this.deletable = false;
     }
 
     // Update index (text and dataset)
@@ -78,6 +79,7 @@ export class VideoListComponent implements OnChanges {
         }
     }
 
+    // Menu action
     playVideo(video: PlaylistItem, index: number) {
         this.plItemSrv.playVideo(video, index);
     }
@@ -99,46 +101,27 @@ export class VideoListComponent implements OnChanges {
     }
 
 
-    // Move/sort item
+    // Menu sort action
     moveToTop(index: number, event) {
         this.move(index, 0);
     }
+
     up(index: number, event) {
         this.move(index, index - 1);
     }
+
     down(index: number, event) {
         this.move(index, index + 1);
     }
+
     moveToBottom(index: number, event) {
         this.move(index, this.videoList.length - 1);
     }
 
     move(from, to) {
-
-        this.plItemSrv.moveVideo(from, to, this.playlistId, this.listRef.nativeElement.children[to])
-        /*
-        if (to === from) {
-            return;
-        }
-
-        const target = this.videoList[from];
-        const increment = to < from ? -1 : 1;
-
-        for (let k = from; k !== to; k += increment) {
-            this.videoList[k] = this.videoList[k + increment];
-        }
-
-        this.videoList[to] = target;
-
-        setTimeout(() => {
-            this.listRef.nativeElement.children[to].scrollIntoView({behavior: 'auto'});
-        });
-        this.videoListOut.emit(this.videoList);
-        */
+        this.plItemSrv.moveVideo(from, to, this.playlistId, this.listRef.nativeElement.children[to]);
     }
 
-    // ------------------------------------------------------------------------
-    // Track video list item in ngFor
     trackByFn(index: number, item: any) {
         return item.id;
     }

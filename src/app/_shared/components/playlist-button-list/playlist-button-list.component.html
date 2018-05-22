@@ -7,7 +7,7 @@
                 <button
                     [id]="pl.id"
                     class="sidenavBtn btnHover dropZone"
-                    [class.activ]="appState.selectedTab === 4 && pl.id === onSelectPL"
+                    [class.activ]="appState.selectedTab === 4 && pl.id === appState.selectedPL"
                     [dragula]="'videolistBag'"
                     [attr.data-acceptdrop]="true"
                     [attr.data-hideshadow]="true"

@@ -1,3 +1,5 @@
+import { PlaylistItem } from 'core/models';
+
 export class AppState {
     constructor(
     public langage?: string,
@@ -7,7 +9,10 @@ export class AppState {
     public showPlayerBar?: boolean,
     public loading?: boolean,
     public isMiniSideBar?: boolean,
-    public multiPlayer?: boolean
+    public multiPlayer?: boolean,
+    public onPlayList?: PlaylistItem[],
+    public historicList?: PlaylistItem[],
+    public selectedPl?: string,
     ) {
         this.langage       = langage       || 'en';
         this.theme         = theme         || 'dark';
@@ -17,5 +22,8 @@ export class AppState {
         this.loading       = loading       || false;
         this.isMiniSideBar = isMiniSideBar || false;
         this.multiPlayer   = multiPlayer   || true;
+        this.onPlayList    = onPlayList    || [];
+        this.historicList  = historicList  || [];
+        this.selectedPl    = selectedPl    || '';
     }
 }

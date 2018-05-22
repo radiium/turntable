@@ -14,16 +14,16 @@ export class LibraryComponent {
     appState: AppState;
 
     constructor(
-    private dataService: DataService) {
-        this.dataService.appState$.subscribe((data) => {
-            this.appState = data;
+    private dataSrv: DataService) {
+        this.dataSrv.appState$.subscribe((appState) => {
+            this.appState = appState;
         });
-        this.dataService.playlistsList$.subscribe((data) => {
-            this.playlistsList = data;
+        this.dataSrv.playlistsList$.subscribe((pll) => {
+            this.playlistsList = pll;
         });
     }
 
     changeDisplayType(evt) {
-        this.dataService.setDisplayType(evt.value);
+        this.dataSrv.setDisplayType(evt.value);
     }
 }

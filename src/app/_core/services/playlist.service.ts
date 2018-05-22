@@ -31,24 +31,24 @@ export class PlaylistService {
     playlistsList: Playlist[];
 
     constructor(
-    private data: DataService,
+    private dataSrv: DataService,
     private playerState: PlayerStateService,
     public dialog: MatDialog
     ) {
-        this.data.appState$.subscribe(appState => {
+        this.dataSrv.appState$.subscribe(appState => {
             this.appState = appState;
         });
 
-        this.data.playlistsList$.subscribe(datalist => {
+        this.dataSrv.playlistsList$.subscribe(datalist => {
             this.playlistsList = datalist;
         });
     }
 
     setPlayerPlaylist(playlist: Playlist) {
-        this.playerState.setPlaylist(playlist.videolist);
+        this.dataSrv.setOnPlayList(playlist.videolist);
     }
     addToPlayerPlaylist(playlist: Playlist) {
-        this.playerState.addToPlaylist(playlist.videolist);
+        this.dataSrv.setOnPlayList([...this.appState.onPlayList, ...playlist.videolist]);
     }
 
     deletePlaylist(playlist: Playlist): void {
@@ -59,9 +59,9 @@ export class PlaylistService {
         dialogRef.afterClosed().subscribe(delPl => {
             if (delPl) {
                 _.remove(this.playlistsList, { id: playlist.id });
-                this.data.setPlaylistsList(this.playlistsList);
-                this.data.setOnSelectPL(null);
-                this.data.setSelectedTab(3);
+                this.dataSrv.setPlaylistsList(this.playlistsList);
+                this.dataSrv.setSelectedPl(null);
+                this.dataSrv.setSelectedTab(3);
             }
         });
     }
@@ -80,15 +80,15 @@ export class PlaylistService {
                     this.playlistsList[plIdx].title         = result.title;
                     this.playlistsList[plIdx].description   = result.description;
                     this.playlistsList[plIdx].privacyStatus = result.privacyStatus;
-                    this.data.setPlaylistsList(this.playlistsList);
+                    this.dataSrv.setPlaylistsList(this.playlistsList);
                 }
             }
         });
     }
 
     showPlaylist(playlist: Playlist) {
-        this.data.setOnSelectPL(playlist.id);
-        this.data.setSelectedTab(4);
+        this.dataSrv.setSelectedPl(playlist.id);
+        this.dataSrv.setSelectedTab(4);
     }
 
     createPlaylist() {
@@ -110,7 +110,7 @@ export class PlaylistService {
                 );
 
                 this.playlistsList.push(pl);
-                this.data.setPlaylistsList(this.playlistsList);
+                this.dataSrv.setPlaylistsList(this.playlistsList);
             }
         });
     }

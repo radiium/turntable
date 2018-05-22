@@ -14,25 +14,20 @@ import { DndService } from 'core/services/dnd.service';
 export class PlaylistButtonListComponent implements AfterViewInit {
 
     playlistsList: Playlist[];
-    onSelectPL: string;
     appState: AppState;
 
     @ViewChild('scrollContainer') scrollContainer: ElementRef;
 
     constructor(
-    private data: DataService,
+    private dataSrv: DataService,
     private plSrv: PlaylistService,
     private dnd: DndService,
     ) {
-        this.data.playlistsList$.subscribe(datalist => {
+        this.dataSrv.playlistsList$.subscribe(datalist => {
             this.playlistsList = datalist;
         });
 
-        this.data.onSelectPL$.subscribe(selPl => {
-            this.onSelectPL = selPl;
-        });
-
-        this.data.appState$.subscribe(appState => {
+        this.dataSrv.appState$.subscribe(appState => {
             this.appState = appState;
         });
     }

@@ -14,11 +14,11 @@ import { Playlist, AppState } from 'core/models';
 })
 export class SettingsComponent implements OnInit {
 
-    selTabSetting: any = 1;
-
-    playlistsList;
-
     appState: AppState;
+    playlistsList;
+    selTabSetting: number;
+
+
 
     langagesList = [
         { value: 'en', viewValue: 'English' },
@@ -30,19 +30,18 @@ export class SettingsComponent implements OnInit {
         'light'
     ];
 
-
     constructor(
+    public dialog: MatDialog,
     private Electron: ElectronService,
-    private dataService: DataService,
-    private appStateService: AppStateService,
-    public dialog: MatDialog
-    ) {
-        this.dataService.playlistsList$.subscribe((pll) => {
+    private dataSrv: DataService,
+    private appStateSrv: AppStateService) {
+
+        this.selTabSetting = 1;
+
+        this.dataSrv.playlistsList$.subscribe((pll) => {
             this.playlistsList = pll;
         });
-
-        // App State
-        this.dataService.appState$.subscribe((data) => {
+        this.dataSrv.appState$.subscribe((data) => {
             this.appState = data;
         });
     }
@@ -56,20 +55,20 @@ export class SettingsComponent implements OnInit {
         });
         dialogRef.afterClosed().subscribe(isDelete => {
             if (isDelete) {
-                this.appStateService.removeLocalPlaylist();
+                this.appStateSrv.removeLocalPlaylist();
             }
         });
     }
 
     onLangageChange(event) {
-        this.dataService.setLangage(event);
+        this.dataSrv.setLangage(event);
     }
 
     onThemeChange(event) {
-        this.dataService.setTheme(event.value);
+        this.dataSrv.setTheme(event.value);
     }
 
     onMultiPlayerChange(event) {
-        this.dataService.setMultiPlayer(event.value);
+        this.dataSrv.setMultiPlayer(event.value);
     }
 }

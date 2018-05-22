@@ -1,14 +1,9 @@
-import { Component, OnInit, ViewChild, ElementRef, ApplicationRef, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { DragulaService } from 'ng2-dragula/ng2-dragula';
+import { Component, OnInit, ViewChild, ElementRef, ApplicationRef,
+    ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
 import * as _ from 'lodash';
-import * as moment from 'moment';
 
-import { Playlist, PlaylistItem, AppState } from 'core/models';
+import { Playlist, PlaylistItem, AppState, VideoListConfig } from 'core/models';
 import { DataService } from 'core/services/data.service';
-import { AppStateService } from 'core/services/app-state.service';
-import { PlayerStateService } from 'core/services/player-state.service';
-import { PlaylistService } from 'core/services/playlist.service';
 import { DndService } from 'core/services/dnd.service';
 
 @Component({
@@ -19,21 +14,17 @@ import { DndService } from 'core/services/dnd.service';
 })
 export class PlaylistDetailsComponent implements OnInit {
 
-    playlist: Playlist;
+    appState: AppState;
+    currentPlaylist: Playlist;
     playlistsList: Playlist[];
-    onPlayList: PlaylistItem[];
-    videoList: PlaylistItem[];
-    onEdit: boolean;
 
-    canAddToPlaylist: boolean = false;
+    canAddToPlaylist: boolean;
 
     title: string;
     description: string;
     privacyStatus: string;
 
-    appState: AppState;
-
-    videoListConfig = {
+    videoListConfig: VideoListConfig = {
         draggable: true,
         displayType: 'list',
         dragBagName: 'videolistBag',
@@ -56,27 +47,18 @@ export class PlaylistDetailsComponent implements OnInit {
     private cdRef: ChangeDetectorRef,
     private appRef: ApplicationRef,
     private dataService: DataService,
-    private appStateService: AppStateService,
-    private playerState: PlayerStateService,
-    private dnd: DndService,
-    public plSrv: PlaylistService,
-    public dialog: MatDialog) {
+    private dnd: DndService) {
 
-        this.onEdit = false;
         this.title = '';
         this.description = '';
         this.privacyStatus = '';
+        this.canAddToPlaylist = false;
 
         // Get selected playlist
-        this.dataService.onSelectPL$.subscribe((data) => {
-            this.playlist = _.find(this.playlistsList, { id: data });
-            if (this.playlist) {
-                this.videoList = this.playlist.videolist;
-            } else {
-                this.playlist = null;
-                this.videoList = [];
-            }
-            this.updateState(false);
+        this.dataService.appState$.subscribe((data) => {
+            this.appState = data;
+            this.currentPlaylist = _.find(this.playlistsList, { id: data.selectedPl });
+            this.updateState();
             this.cdRef.markForCheck();
             // this.appRef.tick();
         });
@@ -84,43 +66,32 @@ export class PlaylistDetailsComponent implements OnInit {
         // Get playlist list
         this.dataService.playlistsList$.subscribe((data) => {
             this.playlistsList = data;
-            if (this.playlist) {
-                this.playlist = _.find(this.playlistsList, { id: this.playlist.id });
-            } else if (!this.playlist && this.playlistsList.length > 0) {
-                this.playlist = this.playlistsList[0];
-                this.videoList = this.playlist.videolist;
+            if (this.currentPlaylist) {
+                this.currentPlaylist = _.find(this.playlistsList, { id: this.currentPlaylist.id });
+            } else if (!this.currentPlaylist && this.playlistsList.length > 0) {
+                this.currentPlaylist = this.playlistsList[0];
             } else {
-                this.playlist = null;
-                this.videoList = [];
+                this.currentPlaylist = null;
             }
             this.canAddToPlaylist = data.length > 1;
             this.cdRef.detectChanges();
-        });
-
-        // App State
-        this.dataService.appState$.subscribe((data) => {
-            this.appState = data;
-            this.cdRef.markForCheck();
         });
     }
 
     ngOnInit() {
     }
 
-
-
-    updateState(isOnEdit) {
-        this.onEdit = isOnEdit;
-        if (this.playlist) {
-            this.title = this.playlist.title;
-            this.description = this.playlist.description;
-            this.privacyStatus = this.playlist.privacyStatus;
+    updateState() {
+        if (this.currentPlaylist) {
+            this.title = this.currentPlaylist.title;
+            this.description = this.currentPlaylist.description;
+            this.privacyStatus = this.currentPlaylist.privacyStatus;
             // this.videoListConfig.attr.playlistId = this.playlist.id;
             // this.cdRef.markForCheck();
         }
     }
 
-    getConfig(plId) {
+    getConfig(plId): VideoListConfig {
         return {
             draggable: true,
             displayType: 'list',
@@ -133,16 +104,6 @@ export class PlaylistDetailsComponent implements OnInit {
                 from: 'detail'
             }
         };
-    }
-
-
-    onVideolistChange(event) {
-        _.each(this.playlistsList, pl => {
-            if (pl.id === this.playlist.id) {
-                pl.videolist = event;
-            }
-        });
-        this.dataService.setPlaylistsList(this.playlistsList);
     }
 
     // ------------------------------------------------------------------------

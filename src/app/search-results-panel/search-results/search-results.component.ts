@@ -1,13 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import * as _ from 'lodash';
 
-import { Playlist, PlaylistItem, SearchResults } from 'core/models';
+import { Playlist, PlaylistItem, SearchResults, AppState } from 'core/models';
 import { DataService } from 'core/services/data.service';
 import { YoutubeService } from 'core/services/youtube.service';
 import { PlayerStateService } from 'core/services/player-state.service';
-import { SelectPlaylistDialogComponent } from 'shared/dialogs/select-playlist-dialog/select-playlist-dialog.component';
 
 @Component({
     selector: 'app-search-results',
@@ -16,12 +13,10 @@ import { SelectPlaylistDialogComponent } from 'shared/dialogs/select-playlist-di
 })
 export class SearchResultsComponent implements OnInit {
 
-    formControl = new FormControl();
-
+    appState: AppState;
     searchResults: SearchResults;
-    onPlayList: Array<PlaylistItem>;
-    videoList: Array<PlaylistItem>;
-    playlistList: Array<Playlist>;
+    videoList: PlaylistItem[];
+    playlistList: Playlist[];
     hasNextPage: boolean;
     loadNextPage: boolean;
     enableDrag: boolean;
@@ -40,12 +35,11 @@ export class SearchResultsComponent implements OnInit {
     };
 
     constructor(
-    private dataService: DataService,
-    private YTService: YoutubeService,
-    private playerState: PlayerStateService,
-    public dialog: MatDialog) {
-        this.videoList = new Array<PlaylistItem>();
-        this.dataService.searchResults$.subscribe((data) => {
+    private dataSrv: DataService,
+    private ytSrv: YoutubeService,
+    private playerState: PlayerStateService) {
+        this.videoList = [];
+        this.dataSrv.searchResults$.subscribe((data) => {
             if (data.results.length === 1) {
                 this.videoList = data.results[0];
             } else if (data.results.length > 1) {
@@ -59,15 +53,13 @@ export class SearchResultsComponent implements OnInit {
         });
 
         this.enableDrag = false;
-        this.dataService.playlistsList$.subscribe((data) => {
+        this.dataSrv.playlistsList$.subscribe((data) => {
             this.playlistList = data;
             this.enableDrag = data.length > 0;
-            // this.canAddToPlaylist = data.length > ;
         });
 
-         // Get on play list
-         this.dataService.onPlayList$.subscribe((data) => {
-            this.onPlayList = data;
+        this.dataSrv.appState$.subscribe((data) => {
+            this.appState = data;
         });
     }
 
@@ -76,41 +68,20 @@ export class SearchResultsComponent implements OnInit {
 
     loadMore(event) {
         this.loadNextPage = true;
-        this.YTService.searchVideos(
+        this.ytSrv.searchVideos(
             this.searchResults.query,
             this.searchResults.nextPageToken
         );
     }
 
-    addToPlaylist(video: PlaylistItem) {
-        if (video && this.playlistList && this.playlistList.length > 0) {
-            const dialogRef = this.dialog.open(SelectPlaylistDialogComponent, {
-                height: 'auto',
-                data: {
-                    videoId: video.id,
-                    playlistList: this.playlistList
-                }
-            });
-            dialogRef.afterClosed().subscribe(resp => {
-                if (resp) {
-                    _.each(resp.plIdList, (plId) => {
-                        const pl = _.find(this.playlistList, { 'id': plId });
-                        pl.videolist.push(_.cloneDeep(video));
-                    });
-                }
-            });
-        }
-    }
-
     playVideo(video: PlaylistItem) {
         this.playerState.playVideo(video);
     }
+
     addToQueue(video: PlaylistItem) {
-        this.playerState.addToPlaylist(video);
+        this.dataSrv.setOnPlayList([...this.appState.onPlayList, video]);
     }
 
-    // ------------------------------------------------------------------------
-    // Track onPlay list item in ngFor
     trackByFn(index: number, item: any) {
         return item.id; // index;
     }
