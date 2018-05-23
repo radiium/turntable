@@ -85,24 +85,17 @@ export class PlaylistItemService {
         }
     }
 
+    // Download and convert video as mp3
     download(video: PlaylistItem) {
-        // this.ytSrv.downloadVideo(video);
-
-        if (this.isElectronApp) {
-
-            const dialogRef = this.dialog.open(DownloadDialogComponent, {
-                height: '300px',
-                width: '500px',
-                disableClose: true,
-                data: { video: video }
-            });
-            dialogRef.afterClosed().subscribe(resp => {
-                console.log('CLOSE DownloadDialog');
-            });
-
-            this.electron.ipcRenderer.send('send-convert-video-to-mp3', video);
-
-        }
+        const dialogRef = this.dialog.open(DownloadDialogComponent, {
+            height: 'auto',
+            width: '500px',
+            disableClose: true,
+            data: { video: video }
+        });
+        dialogRef.afterClosed().subscribe(resp => {
+            console.log('CLOSE DownloadDialog');
+        });
     }
 
     deleteVideo(video: PlaylistItem, index: number, plId: string) {
