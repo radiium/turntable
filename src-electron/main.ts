@@ -16,6 +16,8 @@ import * as ytdl from 'ytdl-core';
 import * as fs from 'fs';
 import * as readline from 'readline'
 import * as ffmpeg from 'fluent-ffmpeg'
+import { send } from 'q';
+import { sanitize }  from './utils';
 
 // Init variable
 let mainWindow: any = null;
@@ -54,7 +56,7 @@ const createMainWindow = async () => {
         webPreferences: {
             nodeIntegration: true,
             // contextIsolation: true,
-            experimentalFeatures: true
+            // experimentalFeatures: true // For prevent angular/animation error
         }
     });
 
@@ -208,64 +210,104 @@ ipcMain.on('send-get-app-state', (event, arg) => {
 
 // Convert video to mp3
 ipcMain.on('send-convert-video-to-mp3', (event, arg) => {
-    const url = 'http://www.youtube.com/watch?v=' + arg.id;
-const dlPath = path.resolve(app.getPath('downloads'), arg.title + '.mp3');
-    dialog.showSaveDialog({
-        defaultPath: dlPath || '',
-    }, (fileName) => {
-
-        console.log('showSaveDialog', fileName);
-        if (fileName === undefined) return;
-        let starttime;
-        const mp3 = ytdl(url, { filter: 'audioonly' });
 
 
-        mp3.once('response', () => {
-            starttime = Date.now();
-        });
+    console.log('BEGIN => ', arg)
+    const videoId = arg.videoId;
+    const filePath = arg.filePath;
+    let fileName = arg.fileName;
 
-        mp3.on('progress', (chunkLength, downloaded, total) => {
-            const floatDownloaded = downloaded / total;
-            const downloadedMinutes = (Date.now() - starttime) / 1000 / 60;
-            readline.cursorTo(process.stdout, 0);
-            process.stdout.write(`${(floatDownloaded * 100).toFixed(2)}% downloaded`);
-            process.stdout.write(`(${(downloaded / 1024 / 1024).toFixed(2)}MB of ${(total / 1024 / 1024).toFixed(2)}MB)\n`);
-            process.stdout.write(`running for: ${downloadedMinutes.toFixed(2)}minutes`);
-            process.stdout.write(`, estimated time left: ${(downloadedMinutes / floatDownloaded - downloadedMinutes).toFixed(2)}minutes `);
-            readline.moveCursor(process.stdout, 0, -1);
+    if (!videoId)  handleError(event, 'Error, wrong videoId: ' + videoId);
+    if (!filePath) handleError(event, 'Error, wrong filePath: ' + filePath);
+    if (!fileName) handleError(event, 'Error, wrong fileName: ' + fileName);
+    if (!videoId || !fileName || !filePath) return;
 
-            const data = {
+    fileName = sanitize(fileName, '') + '.mp3';
+
+    const URL = 'http://www.youtube.com/watch?v=' + videoId;
+    const PATH = path.resolve(filePath, fileName);
+
+
+    let startDL;
+    let startConvert;
+
+    let stream = ytdl(videoId, {
+        quality: 'highestaudio', // filter: 'audioonly',
+    })
+    .once('response', () => {
+        startDL = Date.now();
+        event.sender.send('get-progress', { type: 'download', status: 'start' });
+    })
+    .on('progress', (chunkLength, downloaded, total) => {
+        // console.log('DOWNLOAD => progress');
+        const floatDownloaded = downloaded / total;
+        const downloadedMinutes = (Date.now() - startDL) / 1000 / 60;
+
+        const data = {
+            type: 'download',
+            status: 'progress',
+            progress: {
                 percent: (floatDownloaded * 100).toFixed(2),
                 downloaded: (downloaded / 1024 / 1024).toFixed(2),
                 total: (total / 1024 / 1024).toFixed(2),
                 mn: downloadedMinutes.toFixed(2),
                 mnRest: (downloadedMinutes / floatDownloaded - downloadedMinutes).toFixed(2)
-            };
-            event.sender.send('get-dl-progress', data);
-        });
-
-        mp3.on('end', () => {
-            process.stdout.write('\n\n');
-            event.sender.send('get-dl-progress', 'succes');
-        });
-
-        mp3.on('info', (err, info) => {
-            // console.log('info', info, err);
-        });
-
-        // mp3.pipe();
-        ffmpeg(mp3).audioBitrate(128).format('mp3').pipe(fs.createWriteStream(fileName))
-
-        console.log('ENDED');
-
+            }
+        };
+        event.sender.send('get-progress', data);
+    })
+    .on('end', () => {
+        event.sender.send('get-progress', { type: 'download', status: 'ended' });
     });
+
+
+    ffmpeg(stream)
+        .audioBitrate(128)
+        .save(PATH)
+        .on('end', () => {
+            event.sender.send('get-progress', { type: 'convert', status: 'ended' });
+        });
+        // .saveToFile(PATH);
+
+
+    // mp3.pipe();
+    // ffmpeg(mp3).audioBitrate(128).format('mp3').pipe(fs.createWriteStream(dlPath))
 
 });
 
 
 
+// Resolve file path
+ipcMain.on('send-get-save-path', (event, arg) => {
+
+    const edit     = arg.edit;
+    const filePath = arg.filePath;
+    const defaultPath = app.getPath('downloads') || '';
+
+    const choosenPath = filePath ? filePath : defaultPath;
+
+    if (edit) {
+        dialog.showOpenDialog({
+            title: 'Select folder',
+            defaultPath: choosenPath,
+            filters: [ {name: 'All Files', extensions: ['.mp3']} ],
+            properties: ['openDirectory', 'createDirectory']
+        }, (filePath) => {
+            let path = filePath[0];
+            if (!path) {
+                path = defaultPath
+            }
+            event.sender.send('get-save-path', path);
+        });
+    } else {
+        event.sender.send('get-save-path', choosenPath);
+    }
+});
 
 
+function handleError(event, error) {
+    event.sender.send('app-error', error);
+}
 
 
 
