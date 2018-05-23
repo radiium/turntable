@@ -62,10 +62,12 @@
             <div class="controlBox itemBox">
 
                 <div *ngIf="config.attr.acceptDrop">
+
                     <button *ngIf="videoList.length > 1" class="toolbarBtn btnHover"
                         [matMenuTriggerFor]="menuOrder" xPosition="'before'" yPosition="'above'">
                         <fa [name]="'sort'" [size]="2"></fa>
                     </button>
+
                     <mat-menu #menuOrder="matMenu">
                         <div class="inlineBtn">
                             <button class="toolbarBtn iconMenuBtn btnHover"

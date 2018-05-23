@@ -1,25 +1,81 @@
+@import '../../../../styles/themes';
+
 .dialContent {
     display: flex;
     flex-direction: column;
 
-    .progressBar {
-        position: relative;
+    .contentRow {
         width: 100%;
-        height: 20px;
+        display: flex;
+        margin-bottom: 5px;
 
-        .bg {
-            z-index: 99998;
-            width: 100%;
-            height: 100%;
-            position: absolute;
-            background-color: black;
+        &.formRow {
+            font-size: 0.9rem;
+            align-items: center;
+            .rowLabel {
+                width: 100px;
+            }
+            .rowInput {
+                font-size: 0.9rem;
+                resize: horizontal;
+                width: auto;
+                background-color: rgba(0, 0, 0, 0.1);
+                padding: 6px;
+            }
+            .rowBtn {
+                width: 40px;
+                height: 31px;
+            }
         }
 
-        .pr {
-            z-index: 99999;
-            height: 100%;
-            position: absolute;
-            background-color: blue;
+        &.progressRow {
+            flex-direction: column;
+            .pItem {
+                width: 100%;
+            }
+            .pItemBar {
+                width: 100%;
+                height: 20px;
+                margin-top: 15px;
+                position: relative;
+
+                .progressBg {
+                    z-index: 99997;
+                    width: 100%;
+                    height: 100%;
+                    position: absolute;
+                }
+
+                .progressBar {
+                    z-index: 99998;
+                    height: 100%;
+                    position: absolute;
+                }
+
+                .progressBarConvert {
+                    z-index: 99999;
+                    height: 100%;
+                    position: absolute;
+                }
+            }
         }
+    }
+}
+
+:host-context() .progressBg {
+    @include themify($themes) {
+        background-color: themed('grayLight') !important;
+    }
+}
+:host-context() .progressBar {
+    @include themify($themes) {
+        background-color: themed('accent') !important;
+    }
+}
+
+:host-context() .progressBarConvert {
+    background-color: red !important;
+    @include themify($themes) {
+        // background-color: themed('accent') !important;
     }
 }

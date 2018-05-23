@@ -61,7 +61,7 @@ export class YoutubePlayerComponent implements AfterContentInit, OnChanges {
 
         if (Object.keys(this.playerVars).length === 0) {
             this.playerVars = {
-                'autoplay': 0,
+                // 'autoplay': 0,
                 'controls': 0,
                 'enablejsapi': 1,
                 'rel' : 0,

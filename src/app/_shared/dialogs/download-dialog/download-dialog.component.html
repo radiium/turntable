@@ -1,23 +1,54 @@
 <div>
-    <h2 mat-dialog-title class="noOverflow"></h2>
+    <h2 mat-dialog-title class="noOverflow">Download and convert to mp3</h2>
 
-    <div class="dialContent">
-        <div>{{ progress.downloaded }} MB / {{ progress.total }} MB </div>
-        <div>running for: {{ progress.mn }} minutes -- rest: {{ progress.mnRest }} minutes</div>
+    <div mat-dialog-content>
+        <div class="dialContent">
 
-        <!--
-            <mat-progress-bar class="progressBar" [value]="progress.percent"></mat-progress-bar>
-        [style.width]="progress.percent + 'px'"
-        -->
+            <div class="dialContent" *ngIf="error">
+                <span>{{ error }}</span>
+            </div>
 
-        <div class="progressBar">
-            <div class="bg"></div>
-            <div id="prBar" class="pr" ></div>
+
+            <div class="contentRow formRow" *ngIf="!canStartDL && !error">
+                <div class="rowLabel">File name</div>
+                <input class="rowInput" type="text"
+                    #fileNameInput
+                    [ngModel]="fileName"
+                    [ngModelOptions]="{standalone: true}"
+                    (ngModelChange)="fileName = $event; resizeInput($event, fileNameInput)">
+                <div>.mp3</div>
+            </div>
+
+
+            <div class="contentRow formRow" *ngIf="!canStartDL && !error">
+                <div class="rowLabel">File path</div>
+                <input class="rowInput" type="text" disabled
+                    #filePathInput
+                    [(ngModel)]="filePath"
+                    [ngModelOptions]="{standalone: true}"
+                    (ngModelChange)="filePath = $event; eventresizeInput($event, filePathInput);">
+                <button class="rowBtn btnHover" (click)="editDLPath()">
+                    <fa [name]="'pencil'" [size]="2"></fa>
+                </button>
+            </div>
+
+
+            <div class="contentRow progressRow" *ngIf="!error && canStartDL">
+                <div class="pItem">{{ progress.downloaded }} MB / {{ progress.total }} MB </div>
+                <div class="pItem">running for: {{ progress.mn }} minutes -- rest: {{ progress.mnRest }} minutes</div>
+                <div class="pItemBar">
+                    <div class="progressBg"></div>
+                    <div id="progressBarDL" class="progressBar" [style.width]="progress.percent + '%'"></div>
+                </div>
+            </div>
+
         </div>
-
     </div>
 
-    <mat-dialog-actions>
-    <button class="decline" mat-button [mat-dialog-close]>Cancel</button>
-    </mat-dialog-actions>
+
+    <div mat-dialog-actions>
+        <button class="cancel" *ngIf="!isStarted" mat-raised-button (click)="cancelDL()">Cancel</button>
+        <button *ngIf="!canStartDL" [disabled]="!fileName || !filePath"
+            class="" mat-raised-button (click)="startDL()">Start download</button>
+    </div>
 </div>
