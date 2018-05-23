@@ -214,17 +214,7 @@ export class YoutubeService {
 
 
 
-
-    downloadVideo(video: PlaylistItem) {
-        if (this.isElectronApp) {
-            this.electron.ipcRenderer.send('send-convert-video-to-mp3', video);
-        }
-    }
-
-
-
     // UTILS
-
 
 
     // Get all video id from an array of playlist items
