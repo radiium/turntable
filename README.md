@@ -8,7 +8,8 @@
 - [x] Change theme: dark or light.  
 - [x] Change language: french or english.  
 - [x] Search videos from anywhere in the app and it by drag and drop.  
-- [x] Connect to your youtube account and fetch your playlists.  
+- [x] Connect to your youtube account and fetch your playlists.
+- [x] Download and convert video as mp3!! :p  
 - [ ] Create and manage your playlists. (*Work in progress...*)  
 - [ ] Use single or double YT player (double players like a dj :p ). (*Work in progress...*)  
 - [ ] Import/Export your playlist. (*Work in progress...*)  
