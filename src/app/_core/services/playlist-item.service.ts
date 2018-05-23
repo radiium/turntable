@@ -104,9 +104,27 @@ export class PlaylistItemService {
         });
         dialogRef.afterClosed().subscribe(delVideo => {
             if (delVideo) {
-                const plIdx = _.findIndex(this.playlistsList, { 'id': plId });
-                this.playlistsList[plIdx].videolist.splice(index, 1);
-                this.dataSrv.setPlaylistsList(this.playlistsList);
+
+                switch (plId) {
+                    case 'search':
+                        break;
+
+                    case 'onplay':
+                        this.appState.onPlayList.splice(index, 1);
+                        this.dataSrv.setOnPlayList(this.appState.onPlayList);
+                        break;
+
+                    case 'historic':
+                        this.appState.historicList.splice(index, 1);
+                        this.dataSrv.setHistoricList(this.appState.historicList);
+                        break;
+
+                    default:
+                        const plIdx = _.findIndex(this.playlistsList, { 'id': plId });
+                        this.playlistsList[plIdx].videolist.splice(index, 1);
+                        this.dataSrv.setPlaylistsList(this.playlistsList);
+                        break;
+                }
             }
         });
     }
