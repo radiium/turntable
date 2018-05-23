@@ -211,8 +211,6 @@ ipcMain.on('send-get-app-state', (event, arg) => {
 // Convert video to mp3
 ipcMain.on('send-convert-video-to-mp3', (event, arg) => {
 
-
-    console.log('BEGIN => ', arg)
     const videoId = arg.videoId;
     const filePath = arg.filePath;
     let fileName = arg.fileName;
@@ -223,16 +221,12 @@ ipcMain.on('send-convert-video-to-mp3', (event, arg) => {
     if (!videoId || !fileName || !filePath) return;
 
     fileName = sanitize(fileName, '') + '.mp3';
-
+    let startDL;
     const URL = 'http://www.youtube.com/watch?v=' + videoId;
     const PATH = path.resolve(filePath, fileName);
 
-
-    let startDL;
-    let startConvert;
-
     let stream = ytdl(videoId, {
-        quality: 'highestaudio', // filter: 'audioonly',
+        filter: 'audioonly' // ,quality: 'highestaudio'
     })
     .once('response', () => {
         startDL = Date.now();
