@@ -1,3 +1,11 @@
+## v 1.2.0-beta (2017/12/18)
+
+### Updates
+* Download and convert video as mp3! :)
+* Improve navigation
+* Add context menu
+* Fix some bugs
+
 ## v 1.1.0-beta (2017/12/18)
 
 ### Updates
