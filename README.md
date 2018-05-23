@@ -1,7 +1,7 @@
 # Turntable
 
 > A simple youtube dj app made with Electron (in progress)  
-> Current version: [1.2.0-beta](https://github.com/radiium/turntable/releases/tag/v1.1.0-beta)  
+> Current version: [1.2.0-beta](https://github.com/radiium/turntable/releases)  
 > (/!\ warning: big redesign, partially working)  
   
 ## Features:  
@@ -24,7 +24,7 @@
 
 ## Releases:  
 
-[Download latest release here](https://github.com/radiium/turntable/releases/tag/v1.1.0-beta)   
+[Download latest release here](https://github.com/radiium/turntable/releases)   
 [Changelog](/CHANGELOG.md)  
 
 ## Made with  
