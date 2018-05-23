@@ -1,10 +1,11 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { trigger, state, style, animate, transition } from '@angular/animations';
+// import { trigger, state, style, animate, transition } from '@angular/animations';
 
 @Component({
   selector: 'app-loader',
   templateUrl: './loader.component.html',
-  styleUrls: ['./loader.component.scss'],
+  styleUrls: ['./loader.component.scss']
+  /*,
   animations: [
       trigger('fadeInOut', [
           transition(':enter', [
@@ -16,6 +17,7 @@ import { trigger, state, style, animate, transition } from '@angular/animations'
           ])
       ])
   ]
+  */
 })
 export class LoaderComponent implements OnInit {
 

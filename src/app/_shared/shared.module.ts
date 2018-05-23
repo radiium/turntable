@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 // import { BrowserModule } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
-// import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+// import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HttpClientJsonpModule, HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
 
@@ -13,6 +13,7 @@ import { NgxElectronModule } from 'ngx-electron';
 import { MatIconRegistry, MatIconModule } from '@angular/material';
 import { DomSanitizer } from '@angular/platform-browser';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 import { CustomMaterialModule } from './modules/material/custom-material.module';
@@ -87,8 +88,8 @@ export function HttpLoaderFactory(http: HttpClient) {
         // BrowserModule,
         HttpClientModule,
         HttpClientJsonpModule,
-        // NoopAnimationsModule,
-        BrowserAnimationsModule,
+        NoopAnimationsModule,
+        // BrowserAnimationsModule,
         FormsModule,
         ReactiveFormsModule,
         DragulaModule,
@@ -108,8 +109,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     exports: [
         CommonModule,
         // BrowserModule,
-        // NoopAnimationsModule,
-        BrowserAnimationsModule,
+        NoopAnimationsModule,
+        // BrowserAnimationsModule,
         FormsModule,
         ReactiveFormsModule,
         DragulaModule,

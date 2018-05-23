@@ -1,15 +1,14 @@
-<div *ngIf="isGlobal && show"
-    class="loaderContainer global"
-    [@fadeInOut]>
 
+
+<!--
+    [@fadeInOut]
+-->
+<div *ngIf="isGlobal && show" class="loaderContainer global">
     <img class="appTitle" src="assets/images/title.png">
     <img class="appLoader" src="assets/images/pacman1.gif">
 </div>
 
-<div *ngIf="!isGlobal && show"
-    class="loaderContainer panel"
-    [@fadeInOut]>
-
+<div *ngIf="!isGlobal && show" class="loaderContainer panel">
     <div *ngIf="isGlobal" class="appText">Turntable</div>
     <div class="la-pacman la-3x">
         <div></div>
