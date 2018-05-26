@@ -15,7 +15,7 @@ import { ElectronService } from 'ngx-electron';
   selector: 'app-player-panel',
   templateUrl: './player-panel.component.html',
   styleUrls: ['./player-panel.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  // changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PlayerPanelComponent implements OnInit {
 
@@ -40,6 +40,9 @@ export class PlayerPanelComponent implements OnInit {
     crossFaderValue: number;
 
     appState: AppState;
+
+    onPlayList: PlaylistItem[];
+    historicList: PlaylistItem[];
 
     playListConfig = {
         draggable: true,
@@ -117,6 +120,8 @@ export class PlayerPanelComponent implements OnInit {
 
         this.dataSrv.appState$.subscribe((data) => {
             this.appState = data;
+            this.onPlayList = _.cloneDeep(data.onPlayList);
+            this.historicList = _.cloneDeep(data.historicList);
             this.cd.markForCheck();
         });
     }

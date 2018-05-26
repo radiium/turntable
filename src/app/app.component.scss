@@ -79,6 +79,11 @@
         .sidenavCont {
             height: 100%;
             max-height: 100%;
+
+            &.sidenavContMiniNav {
+                display: flex;
+                flex-direction: column;
+            }
         }
 
         width: 250px;

@@ -129,7 +129,8 @@ export class AppStateService {
             pl.publishedAt,
             pl.privacyStatus,
             pl.isLocal,
-            this.fillVideoList(pl.videolist)
+            this.fillVideoList(pl.videolist),
+            pl.appId
         );
         return playlist;
     }
@@ -147,6 +148,7 @@ export class AppStateService {
                     video.duration,
                     video.channelTitle,
                     video.publishedAt,
+                    video.appId,
                 );
 
                 newVideoList.push(newVideo);

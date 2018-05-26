@@ -6,6 +6,7 @@ import { ElectronService } from 'ngx-electron';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { MatSnackBar } from '@angular/material';
 import { TranslateService } from '@ngx-translate/core';
+import { UUID } from 'angular2-uuid';
 import * as _ from 'lodash';
 
 import { User, PlaylistItem, Playlist, AppState, Loader } from 'core/models';
@@ -77,7 +78,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
             this.loader = data;
         });
 
-        this.dndSrv.initDnd();
+        //this.dndSrv.initDnd();
         this.appStateSrv.loadAppState();
     }
 
@@ -90,13 +91,27 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     ngAfterViewInit() {
         // Load a local playlist for development
         if (isDevMode()) {
-            setTimeout(() => {
-                this.insertFakeData();
-            });
         }
+        setTimeout(() => {
+            this.insertFakeData();
+        });
     }
 
     ngOnDestroy() {
+    }
+
+    onDropSuccess(event) {
+        console.log('PLAYER BTN', event.srcElement);
+        const dragData = event.dragData;
+        if (dragData) {
+            if (dragData.type === 'PlayList') {
+                const playlist: Playlist = dragData.playlist as Playlist;
+                this.plSrv.addToPlayerList(playlist);
+            } else if (dragData.type === 'PlayListItem') {
+                const video: PlaylistItem = dragData.video as PlaylistItem;
+                this.plSrv.addToPlayerList(video);
+            }
+        }
     }
 
     initMatOverlay() {
@@ -160,7 +175,6 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
         }
         this.playlistsList = <Playlist[]>arr;
         */
-
         const videoList: PlaylistItem[] = [];
         testPlaylist['testPlaylist']['videolist'].forEach(el => {
             const video = new PlaylistItem(
@@ -171,10 +185,11 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
                 el['thumbUrl'],
                 el['duration'],
                 el['channelTitle'],
-                el['publishedAt']
+                el['publishedAt'],
+                UUID.UUID()
             );
 
-            for (let i = 0; i < 40; i++) {
+            for (let i = 0; i < 1; i++) {
                 videoList.push(video);
             }
         });
@@ -188,7 +203,8 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
             testPlaylist['testPlaylist']['publishedAt'],
             testPlaylist['testPlaylist']['privacyStatus'],
             true,
-            videoList
+            videoList,
+            UUID.UUID()
         );
         // this.playlistsList = <Playlist[]>[datas];
         this.dataSrv.setPlaylistsList(<Playlist[]>[datas]);

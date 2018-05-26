@@ -1,10 +1,13 @@
 import { Component, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 import * as _ from 'lodash';
 
-import { Playlist, AppState } from 'core/models';
+import { Playlist, AppState, PlaylistItem } from 'core/models';
 import { DataService } from 'core/services/data.service';
 import { PlaylistService } from 'core/services/playlist.service';
 import { DndService } from 'core/services/dnd.service';
+import { DragImage } from 'shared/modules/ngx-dnd/ngx-dnd.config';
+import { Base64Images } from 'core/models/base64-images';
+import { DragDropService } from 'shared/modules/ngx-dnd/ngx-dnd.service';
 
 @Component({
     selector: 'app-playlist-button-list',
@@ -15,20 +18,29 @@ export class PlaylistButtonListComponent implements AfterViewInit {
 
     playlistsList: Playlist[];
     appState: AppState;
+    dragImage: DragImage;
+    dragData: any;
 
     @ViewChild('scrollContainer') scrollContainer: ElementRef;
 
     constructor(
     private dataSrv: DataService,
     private plSrv: PlaylistService,
-    private dnd: DndService,
+    private dnd: DndService
     ) {
+
+        this.dragImage = new DragImage(Base64Images.playlist, 20, 20);
+
         this.dataSrv.playlistsList$.subscribe(datalist => {
             this.playlistsList = datalist;
         });
 
         this.dataSrv.appState$.subscribe(appState => {
             this.appState = appState;
+        });
+
+        this.dataSrv.onDragData$.subscribe(dragData => {
+            this.dragData = dragData;
         });
     }
 
@@ -38,6 +50,33 @@ export class PlaylistButtonListComponent implements AfterViewInit {
 
     selectPlaylist(playlist: Playlist) {
         this.plSrv.showPlaylist(playlist);
+    }
+
+    onDragOver(btnRef, plId) {
+        if (btnRef && this.dragData && (this.dragData.from !== plId)) {
+            btnRef.classList.add('dnd-drag-over');
+        }
+        if (event.preventDefault) event.preventDefault();
+    }
+
+    onDragLeave(btnRef) {
+        if (btnRef && btnRef.classList && btnRef.classList.contains('dnd-drag-over')) {
+            btnRef.classList.remove('dnd-drag-over')
+        }
+    }
+    
+    onDrop(event, btnRef, plId) {
+        if (this.dragData && (this.dragData.from !== plId)) {
+            const stringData = event.dataTransfer.getData('text');
+            if (stringData) {
+                const data = JSON.parse(stringData);
+                if (data.video && data.type === 'PlayListItem') {
+                    const video: PlaylistItem = data.video as PlaylistItem;
+                    this.plSrv.addToPlaylistOne(video, plId);
+                }
+            }
+        }
+        this.onDragLeave(btnRef);
     }
 
     trackByFn(index, item) {

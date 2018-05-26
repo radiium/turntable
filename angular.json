@@ -30,7 +30,6 @@
               "src/styles/styles.scss",
               "node_modules/dragula/dist/dragula.css",
               "node_modules/font-awesome/css/font-awesome.css",
-
               "src/styles/material-custom-theme.scss"
             ],
             "scripts": []

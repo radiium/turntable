@@ -60,7 +60,7 @@
 
     <mat-sidenav-container class="appContainer flexSpacer" autosize>
 
-        <!-- Sidenav normal -->
+        <!-- Sidenav -->
         <mat-sidenav  #sidenav [mode]="'side'"
             opened="true" class="appSidenav" [class.miniNav]="appState.isMiniSideBar">
 
@@ -78,7 +78,9 @@
                         <fa class="sidenavBtnIco" [name]="'th-list'" [size]="1"></fa>
                         <span class="sidenavBtnLabel"  [translate]="'library'"></span>
                     </button>
-                    <button class="sidenavBtn btnHover" (click)="onSelectTab(5)" [class.activ]="appState.selectedTab === 5">
+                    <button class="sidenavBtn btnHover" (click)="onSelectTab(5)"
+                        [class.activ]="appState.selectedTab === 5"
+                        dnd-droppable (onDropSuccess)="onDropSuccess($event)">
                         <fa class="sidenavBtnIco" [name]="'play-circle'" [size]="1"></fa>
                         <span class="sidenavBtnLabel"  [translate]="'player'"></span>
                     </button>
@@ -106,7 +108,7 @@
             </div>
 
 
-            <div class="sidenavCont" [hidden]="!appState.isMiniSideBar">
+            <div class="sidenavCont" [hidden]="!appState.isMiniSideBar" [class.sidenavContMiniNav]="appState.isMiniSideBar">
                 <div class="flexItem sectionLabel"></div>
                 <button class="sidenavBtn btnHover" (click)="onSelectTab(1)" [class.activ]="appState.selectedTab === 1 || appState.selectedTab === 2">
                     <fa class="sidenavBtnIco" [name]="'home'" [size]="1"></fa>
@@ -114,7 +116,8 @@
                 <button class="sidenavBtn btnHover" (click)="onSelectTab(3)" [class.activ]="appState.selectedTab === 3">
                     <fa class="sidenavBtnIco" [name]="'th-list'" [size]="1"></fa>
                 </button>
-                <button class="sidenavBtn btnHover" (click)="onSelectTab(5)" [class.activ]="appState.selectedTab === 5">
+                <button class="sidenavBtn btnHover" (click)="onSelectTab(5)" [class.activ]="appState.selectedTab === 5"
+                    dnd-droppable (onDropSuccess)="onDropSuccess($event)">
                     <fa class="sidenavBtnIco" [name]="'play-circle'" [size]="1"></fa>
                 </button>
 

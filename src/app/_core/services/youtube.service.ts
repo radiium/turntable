@@ -13,8 +13,10 @@ import { mergeMap,
          flatMap,
          catchError } from 'rxjs/operators';
 import { ElectronService } from 'ngx-electron';
+import { UUID } from 'angular2-uuid';
 import * as moment from 'moment';
 import * as _ from 'lodash';
+
 
 import { User,
          PlaylistItem,
@@ -253,7 +255,8 @@ export class YoutubeService {
             playlist.snippet.publishedAt,
             playlist.status.privacyStatus,
             false,
-            videolist
+            videolist,
+            UUID.UUID()
         );
     }
 
@@ -268,6 +271,7 @@ export class YoutubeService {
             moment.duration(video.contentDetails.duration).asMilliseconds(),
             video.snippet.channelTitle,
             video.snippet.publishedAt,
+            UUID.UUID()
         );
     }
 }

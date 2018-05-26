@@ -12,7 +12,6 @@ import { AppStateService } from 'core/services/app-state.service';
 import { DataService } from 'core/services/data.service';
 import { DndService } from 'core/services/dnd.service';
 import { PlaylistService } from 'core/services/playlist.service';
-import { PlaylistItemService } from 'core/services/playlist-item.service';
 import { PlayerStateService } from 'core/services/player-state.service';
 import { TimerService } from 'core/services/timer.service';
 import { OnlineService } from 'core/services/online.service';
@@ -48,7 +47,6 @@ import { PlaylistItemsApiService,
         DataService,
         DndService,
         PlaylistService,
-        PlaylistItemService,
         PlayerStateService,
         TimerService,
         OnlineService,

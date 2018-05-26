@@ -18,11 +18,11 @@ export class PlaylistControlComponent {
     }
 
     setPlayerPlaylist() {
-        this.plSrv.setPlayerPlaylist(this.playlist);
+        this.plSrv.setPlayerList(this.playlist);
     }
 
     addToPlayerPlaylist() {
-        this.plSrv.addToPlayerPlaylist(this.playlist);
+        this.plSrv.addToPlayerList(this.playlist);
     }
 
     showPlaylist() {
@@ -30,7 +30,7 @@ export class PlaylistControlComponent {
     }
 
     editPlaylist() {
-        this.plSrv.editPlaylist(this.playlist);
+        this.plSrv.editPlaylistInfos(this.playlist);
     }
 
     deletePlaylist() {

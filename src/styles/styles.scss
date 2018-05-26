@@ -46,6 +46,7 @@ body {
     padding: 0;
     height: 100%;
     overflow: hidden;
+    position: relative;
 }
 
 input,
@@ -334,6 +335,61 @@ iframe {
 
 ****************************/
 
+.dnd-drag-item {
+    position: absolute;
+    z-index: 9999;
+    background-color: red;
+    height: 40px;
+    width: 40px;
+    top: 0;
+    left: -1900px;
+    &.playlist {
+
+    }
+    &.playlistItem {
+        
+    }
+
+    .counter {
+        width: 15px;
+        height: 15px;
+    }
+}
+
+
+
+.dnd-drag-over {
+    border: 2px dashed  rgb(75, 87, 243);
+}
+
+.dnd-drag-start {
+    opacity:0.7;
+    border: 2px dashed #000;
+}
+
+.dnd-drag-enter {
+    // opacity:0.7;
+    // border: 2px dashed #000;
+}
+
+
+
+.onSortableDragClass,
+.dnd-sortable-drag {
+
+    /*
+  -moz-transform:scale(0.9);
+  -webkit-transform:scale(0.9);
+  transform:scale(0.9);
+  */
+  opacity: 0.7;
+  border: 2px dashed #000;
+}
+
+
+
+
+
 // Hide shadow aid item on over drop container
 .hideShadow {
     &.gu-transit {
@@ -344,6 +400,10 @@ iframe {
 
 // Over effect on over drop container
 .btnHoveredDrop {
+
+    &.dnd-drag-over {
+        border: 2px solid transparent;
+    }
     border: 2px dashed black;
     @include themify($themes) {
         background-color: themed('btnHover');
@@ -355,6 +415,11 @@ iframe {
 
 // Dragged video list item
 .appListItem {
+
+    @include themify($themes) {
+        background-color: themed('secondary') !important;
+    }
+
     &.gu-mirror {
         border: 2px dashed black;
         display: flex;

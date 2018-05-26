@@ -1,20 +1,40 @@
 <div class="plBtnListContainer" #scrollContainer>
     <div class="scrollContainer">
 
-        <app-context-menu *ngFor="let pl of playlistsList; let i = index; trackBy: trackByFn;">
+        <app-context-menu
+        class="dropBtn"
+        *ngFor="let pl of playlistsList; let i = index; trackBy: trackByFn;"
+        
+        (dragover)="onDragOver(btnRef, pl.id)"
+        (dragleave)="onDragLeave(btnRef)"
+        (drop)="onDrop($event, btnRef, pl.id)"
+        >
 
+            <!--
+                [dragula]="'videolistBag'"
+                [attr.data-acceptdrop]="true"
+                [attr.data-hideshadow]="true"
+                [attr.data-plid]="pl.id"
+
+                dnd-droppable
+                (onDropSuccess)="onDropSuccess($event)"
+            -->
             <div content>
                 <button
+                    #btnRef
+                    
                     [id]="pl.id"
-                    class="sidenavBtn btnHover dropZone"
-                    [class.activ]="appState.selectedTab === 4 && pl.id === appState.selectedPL"
-                    [dragula]="'videolistBag'"
-                    [attr.data-acceptdrop]="true"
-                    [attr.data-hideshadow]="true"
-                    [attr.data-plid]="pl.id"
+                    class="sidenavBtn btnHover dropBtn"
+                    [class.activ]="appState.selectedTab === 4 && pl.id === appState.selectedPl"
+                    
+                    dnd-draggable
+                    [dragEnabled]="pl.videolist.length > 0"
+                    [dragImage]="dragImage"
+                    [dragData]="{ playlist: pl, type: 'PlayList' }"
                     (click)="selectPlaylist(pl)">
-                    <fa class="sidenavBtnIco" [name]="'folder-open-o'" [size]="1"></fa>
-                    <span class="sidenavBtnLabel noOverflow">{{ pl.title }}</span>
+                    
+                    <fa class="sidenavBtnIco dropBtn" [name]="'folder-open-o'" [size]="1"></fa>
+                    <span class="sidenavBtnLabel noOverflow dropBtn">{{ pl.title }} </span>
                 </button>
             </div>
 

@@ -45,6 +45,11 @@ export class DataService {
     private loader  = new BehaviorSubject<Loader>({panel: false, global: true});
     public  loader$ = this.loader.asObservable();
 
+
+    // Reindex list
+    private onDragData  = new Subject<any>();
+    public  onDragData$ = this.onDragData.asObservable();
+
     constructor() { }
 
 
@@ -84,6 +89,11 @@ export class DataService {
 
     setPlaylistsList(data) {
         this.playlistsList.next(_.cloneDeep(data));
+    }
+
+    setOnDragData(data) {
+        let dragData = (data && data.hasOwnProperty('dragData')) ? data.dragData : data;
+        this.onDragData.next(dragData);
     }
 
     setLoader(data) {

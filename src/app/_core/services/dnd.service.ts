@@ -202,6 +202,7 @@ export class DndService implements OnDestroy {
         const [el, source] = args;
 
         this.currentEl = el;
+        // el.classList.add('original');
 
         if (el.dataset.from === 'search') {
             this.createAutoScroll('search');
@@ -308,11 +309,13 @@ export class DndService implements OnDestroy {
                 this.move(parseInt(el.dataset.index, 10), elIdx, videoList);
                 this.playlistsList[plTargetIndex].videolist = _.cloneDeep(videoList);
 
+                /*
                 // Replace dropped element by the original element
                 el.classList.add('dropped');
                 if (this.currentEl) {
                     el.parentNode.replaceChild(this.currentEl, el);
                 }
+                */
 
 
             } else if (target.classList.contains('onplay') && target === source) {
@@ -320,17 +323,23 @@ export class DndService implements OnDestroy {
                 const elIdx = nodes.indexOf(el);
                 this.move(parseInt(el.dataset.index, 10), elIdx, this.onPlayList);
 
+                /*
                 // Replace dropped element by the original element
                 el.classList.add('dropped');
                 if (this.currentEl) {
                     el.parentNode.replaceChild(this.currentEl, el);
                 }
+                */
             }
 
             if (target.classList.contains('onplay')) {
                 this.dataSrv.setOnPlayList(this.onPlayList);
             } else {
                 this.dataSrv.setPlaylistsList(this.playlistsList);
+            }
+            
+            // console.log('Item dropped');
+            if (target === source) {
             }
         }
     }
@@ -342,11 +351,6 @@ export class DndService implements OnDestroy {
             this.dataSrv.setOnPlayList(this.onPlayList);
         }
     }
-
-
-
-
-
 
     createAutoScroll(scrollSrc: string) {
         const boxList = [];
