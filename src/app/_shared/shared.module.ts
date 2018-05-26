@@ -14,8 +14,7 @@ import { MatIconRegistry, MatIconModule } from '@angular/material';
 import { DomSanitizer } from '@angular/platform-browser';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import { NgxDnd2Module } from './modules/ngx-dnd/ngx-dnd.module';
-// import { NgxDndModule } from './modules/dnd/dnd.module';
+import { NgxDndModule } from './modules/ngx-dnd/ngx-dnd.module';
 import { AngularSplitModule } from 'angular-split';
 
 import { CustomMaterialModule } from './modules/material/custom-material.module';
@@ -35,7 +34,6 @@ import { SelectPlaylistDialogComponent } from './dialogs/select-playlist-dialog/
 // Directives
 import { ClickOutsideDirective } from './directives/click-outside.directive';
 import { TooltipDirective } from './directives/tooltip.directive';
-import { NgLoopDirective } from './directives/ng-loop.directive';
 
 // pipes
 import { DurationPipe } from './pipes/duration.pipe';
@@ -67,7 +65,6 @@ export function HttpLoaderFactory(http: HttpClient) {
     declarations: [
         ClickOutsideDirective,
         TooltipDirective,
-        NgLoopDirective,
         DurationPipe,
         TotalDurationPipe,
         FilterPlaylistsPipe,
@@ -109,8 +106,7 @@ export function HttpLoaderFactory(http: HttpClient) {
                 deps: [HttpClient]
             }
         }),
-        NgxDnd2Module.forRoot(),
-        // NgxDndModule.forRoot()
+        NgxDndModule.forRoot(),
         AngularSplitModule.forRoot()
     ],
     exports: [
@@ -127,7 +123,6 @@ export function HttpLoaderFactory(http: HttpClient) {
         YoutubePlayerModule,
         ClickOutsideDirective,
         TooltipDirective,
-        NgLoopDirective,
         DurationPipe,
         TotalDurationPipe,
         FilterPlaylistsPipe,
@@ -141,8 +136,7 @@ export function HttpLoaderFactory(http: HttpClient) {
         ContextMenuComponent,
         LoaderComponent,
         PlaylistControlComponent,
-        NgxDnd2Module,
-        // NgxDndModule
+        NgxDndModule,
         AngularSplitModule
     ],
     providers: [],
