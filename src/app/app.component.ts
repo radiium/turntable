@@ -175,16 +175,6 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
         this.dataSrv.setSelectedTab(index);
     }
 
-    setIsMiniSideBar() {
-        const newValue = !this.isMiniSideBar;
-        if (newValue === true) {
-            this.sideNav.nativeElement.style.width = '44px';
-        } else if (newValue === false) {
-            this.sideNav.nativeElement.style.width = '250px';
-        }
-        this.dataSrv.setIsMiniSideBar(newValue);
-    }
-
     setShowPlayerBar() {
         this.dataSrv.setShowPlayerBar(!this.appState.showPlayerBar);
     }
@@ -198,10 +188,18 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     // Resize splitter
+    setIsMiniSideBar() {
+        if (this.isMiniSideBar === true) {
+            this.resize(250);
+        } else if (this.isMiniSideBar === false) {
+            this.resize(44);
+        }
+    }
+
     onMouseDown(event: MouseEvent) { this.onGrab = true; }
-    onMouseUp(event: MouseEvent) {
+    onMouseUp(event?: MouseEvent) {
         this.onGrab = false;
-        event.preventDefault();
+        // event.preventDefault();
     }
 
     onMouseOut(e: MouseEvent) {
@@ -211,6 +209,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
             this.onMouseUp(evnt);
         }
         if (evnt.clientX < 44) {
+            if (!this.onGrab) return;
             this.resize(evnt.clientX)
         }
     }
@@ -219,23 +218,18 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     onMove(event: MouseEvent) {
+        if (!this.onGrab) return;
         this.resize(event.clientX);
     }
 
     resize(x) {
-        if (!this.onGrab) return;
         if (x < 150) {
             this.dataSrv.setIsMiniSideBar(true);
-        } else {
-            this.dataSrv.setIsMiniSideBar(false);
-        }
-        // const wWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
-        if (x > 44 && x < 400) {
-            this.sideNav.nativeElement.style.width = (x - 5) + 'px';
-        } else if (x < 44) {
             this.sideNav.nativeElement.style.width = '44px';
-        } else if (x > 400) {
-            this.sideNav.nativeElement.style.width = '400px';
+
+        } else if(x > 150 && x < 400) {
+            this.dataSrv.setIsMiniSideBar(false);
+            this.sideNav.nativeElement.style.width = (x - 5) + 'px';
         }
     }
 
