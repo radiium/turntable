@@ -111,6 +111,8 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
             this.appp.nativeElement.addEventListener('mousemove', this.onMove.bind(this));
             this.appp.nativeElement.addEventListener('dragover', this.onMove.bind(this));
             this.appp.nativeElement.addEventListener('mouseup', this.onMouseUp.bind(this));
+            // this.appp.nativeElement.addEventListener('mouseout', this.onMouseOut.bind(this));
+            document.addEventListener("mouseout", this.onMouseOut.bind(this));
         });
     }
 
@@ -119,6 +121,8 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
             this.appp.nativeElement.removeEventListener('mousemove', this.onMove.bind(this));
             this.appp.nativeElement.removeEventListener('dragover', this.onMove.bind(this));
             this.appp.nativeElement.removeEventListener('mouseup', this.onMouseUp.bind(this));
+            // this.appp.nativeElement.removeEventListener('mouseout', this.onMouseOut.bind(this));
+            document.removeEventListener("mouseout", this.onMouseOut.bind(this));
         });
     }
 
@@ -195,23 +199,43 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
 
     // Resize splitter
     onMouseDown(event: MouseEvent) { this.onGrab = true; }
-    onMouseUp(event: MouseEvent) { this.onGrab = false; }
-    onDrag(event) { event.dataTransfer.setDragImage(new Image(), 0, 0); }
-
-    onMove(event: MouseEvent) {
-        this.resize(event);
+    onMouseUp(event: MouseEvent) {
+        this.onGrab = false;
+        event.preventDefault();
     }
 
-    resize(event) {
+    onMouseOut(e: MouseEvent) {
+        const evnt: any = e ? e : window.event;
+        var from = evnt.relatedTarget || evnt.toElement;
+        if (from === null) {
+            this.onMouseUp(evnt);
+        }
+        if (evnt.clientX < 44) {
+            this.resize(evnt.clientX)
+        }
+    }
+    onDrag(event) {
+        event.dataTransfer.setDragImage(new Image(), 0, 0);
+    }
+
+    onMove(event: MouseEvent) {
+        this.resize(event.clientX);
+    }
+
+    resize(x) {
         if (!this.onGrab) return;
-        if (event.clientX < 150) {
+        if (x < 150) {
             this.dataSrv.setIsMiniSideBar(true);
         } else {
             this.dataSrv.setIsMiniSideBar(false);
         }
         // const wWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
-        if (event.clientX > 44 && event.clientX < 400) {
-            this.sideNav.nativeElement.style.width = (event.clientX - 5) + 'px';
+        if (x > 44 && x < 400) {
+            this.sideNav.nativeElement.style.width = (x - 5) + 'px';
+        } else if (x < 44) {
+            this.sideNav.nativeElement.style.width = '44px';
+        } else if (x > 400) {
+            this.sideNav.nativeElement.style.width = '400px';
         }
     }
 

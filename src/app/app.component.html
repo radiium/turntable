@@ -11,13 +11,13 @@
 
         <button class="toolbarBtn menuBtn btnHover" (click)="setIsMiniSideBar()">
             <!--
-            <fa class="sidenavBtnIco" [name]="'bars'" [size]="2" [rotate]="!appState.isMiniSideBar ? 90 : 0"></fa>
-            <fa *ngIf="appState.isMiniSideBar" class="sidenavBtnIco" [name]="'caret-right'" [size]="3"></fa>
-            <fa *ngIf="!appState.isMiniSideBar" class="sidenavBtnIco" [name]="'caret-left'" [size]="3"></fa>
+            <fa class="sidenavBtnIco" [name]="'bars'" [size]="2" [rotate]="!isMiniSideBar ? 90 : 0"></fa>
+            <fa *ngIf="isMiniSideBar" class="sidenavBtnIco" [name]="'caret-right'" [size]="3"></fa>
+            <fa *ngIf="!isMiniSideBar" class="sidenavBtnIco" [name]="'caret-left'" [size]="3"></fa>
             -->
 
-            <mat-icon *ngIf="appState.isMiniSideBar"  class="sidenavBtnIco" svgIcon="chevron-left"></mat-icon>
-            <mat-icon *ngIf="!appState.isMiniSideBar" class="sidenavBtnIco" svgIcon="chevron-down"></mat-icon>
+            <mat-icon *ngIf="isMiniSideBar"  class="sidenavBtnIco" svgIcon="chevron-left"></mat-icon>
+            <mat-icon *ngIf="!isMiniSideBar" class="sidenavBtnIco" svgIcon="chevron-down"></mat-icon>
         </button>
 
         <!-- App title -->
@@ -66,35 +66,35 @@
             <div #sideNav class="appSidenav" >
                 <div class="sidenavCont">
                     <div class="flexItem sectionLabel">
-                        <span *ngIf="!appState.isMiniSideBar"  [translate]="'nav'"></span>
+                        <span *ngIf="!isMiniSideBar"  [translate]="'nav'"></span>
                     </div>
                     <div class="flexItem">
                         <button class="sidenavBtn btnHover" (click)="onSelectTab(1)" [class.activ]="appState.selectedTab === 1 || appState.selectedTab === 2">
                             <fa class="sidenavBtnIco" [name]="'home'" [size]="1"></fa>
-                            <span *ngIf="!appState.isMiniSideBar" class="sidenavBtnLabel"  [translate]="'home'"></span>
+                            <span *ngIf="!isMiniSideBar" class="sidenavBtnLabel"  [translate]="'home'"></span>
                         </button>
                         <button class="sidenavBtn btnHover" (click)="onSelectTab(3)" [class.activ]="appState.selectedTab === 3">
                             <fa class="sidenavBtnIco" [name]="'th-list'" [size]="1"></fa>
-                            <span *ngIf="!appState.isMiniSideBar" class="sidenavBtnLabel"  [translate]="'library'"></span>
+                            <span *ngIf="!isMiniSideBar" class="sidenavBtnLabel"  [translate]="'library'"></span>
                         </button>
                         <button class="sidenavBtn btnHover" (click)="onSelectTab(5)"
                             [class.activ]="appState.selectedTab === 5"
                             dnd-droppable (onDropSuccess)="onDropSuccess($event)">
                             <fa class="sidenavBtnIco" [name]="'play-circle'" [size]="1"></fa>
-                            <span *ngIf="!appState.isMiniSideBar" class="sidenavBtnLabel"  [translate]="'player'"></span>
+                            <span *ngIf="!isMiniSideBar" class="sidenavBtnLabel"  [translate]="'player'"></span>
                         </button>
                     </div>
     
                     <!-- Playlists list -->
-                    <div class="flexItem sectionLabel" [hidden]="appState.isMiniSideBar">
-                        <span [hidden]="appState.isMiniSideBar" [translate]="'pl'"></span>
+                    <div class="flexItem sectionLabel" [hidden]="isMiniSideBar">
+                        <span [hidden]="isMiniSideBar" [translate]="'pl'"></span>
                         <div class="flexSpacer"></div>
-                        <button *ngIf="user && !appState.isMiniSideBar" mat-menu-item (click)="refreshYTPlaylists()" [class.rotate]="loader.panel" class="refreshBtn btnHover">
+                        <button *ngIf="user && !isMiniSideBar" mat-menu-item (click)="refreshYTPlaylists()" [class.rotate]="loader.panel" class="refreshBtn btnHover">
                         <fa class="refreshBtnIco" [name]="'refresh'" [size]="1"></fa>
                         </button>
                     </div>
     
-                    <app-playlist-button-list  [hidden]="appState.isMiniSideBar" class="flexItem sidenavPlBtnList"></app-playlist-button-list>
+                    <app-playlist-button-list  [hidden]="isMiniSideBar" class="flexItem sidenavPlBtnList"></app-playlist-button-list>
     
                     <div class="flexSpacer"></div>
     
@@ -102,15 +102,17 @@
                     <div class="flexItem">
                         <button class="sidenavBtn btnHover addBtn" (click)="createPlaylist()">
                             <fa class="sidenavBtnIco" [name]="'plus'" [size]="1"></fa>
-                            <span [hidden]="appState.isMiniSideBar"  class="sidenavBtnLabel"  [translate]="'addPl'"></span>
+                            <span [hidden]="isMiniSideBar"  class="sidenavBtnLabel"  [translate]="'addPl'"></span>
                         </button>
                     </div>
                 </div>
             </div>
 
 
-            <!-- Resizable Gutter -->
-            <dir class="gutter" draggable="true"
+            <!-- Resizable Gutter
+                draggable="true"
+            -->
+            <dir class="gutter"
                 (mousedown)="onMouseDown($event)">
             </dir>
     
