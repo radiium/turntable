@@ -1,5 +1,5 @@
 
-<div class="appWrapper theme-{{ appState.theme }}">
+<div #appp class="appWrapper theme-{{ appState.theme }}">
 
 
     <!-- window title bar -->
@@ -58,99 +58,82 @@
     </mat-toolbar>
 
 
-    <mat-sidenav-container class="appContainer flexSpacer" autosize>
 
-        <!-- Sidenav -->
-        <mat-sidenav  #sidenav [mode]="'side'"
-            opened="true" class="appSidenav" [class.miniNav]="appState.isMiniSideBar">
+    <div class="appapp">
+        <div  class="appContainer flexSpacer">
 
-            <div class="sidenavCont" [hidden]="appState.isMiniSideBar">
-                <!-- Navigation -->
-                <div class="flexItem sectionLabel">
-                    <span  [translate]="'nav'"></span>
-                </div>
-                <div class="flexItem">
-                    <button class="sidenavBtn btnHover" (click)="onSelectTab(1)" [class.activ]="appState.selectedTab === 1 || appState.selectedTab === 2">
-                        <fa class="sidenavBtnIco" [name]="'home'" [size]="1"></fa>
-                        <span class="sidenavBtnLabel"  [translate]="'home'"></span>
-                    </button>
-                    <button class="sidenavBtn btnHover" (click)="onSelectTab(3)" [class.activ]="appState.selectedTab === 3">
-                        <fa class="sidenavBtnIco" [name]="'th-list'" [size]="1"></fa>
-                        <span class="sidenavBtnLabel"  [translate]="'library'"></span>
-                    </button>
-                    <button class="sidenavBtn btnHover" (click)="onSelectTab(5)"
-                        [class.activ]="appState.selectedTab === 5"
-                        dnd-droppable (onDropSuccess)="onDropSuccess($event)">
-                        <fa class="sidenavBtnIco" [name]="'play-circle'" [size]="1"></fa>
-                        <span class="sidenavBtnLabel"  [translate]="'player'"></span>
-                    </button>
-                </div>
-
-                <!-- Playlists list -->
-                <div class="flexItem sectionLabel">
-                    <span  [translate]="'pl'"></span>
+            <!-- Side navbar -->
+            <div #sideNav class="appSidenav" >
+                <div class="sidenavCont">
+                    <div class="flexItem sectionLabel">
+                        <span *ngIf="!appState.isMiniSideBar"  [translate]="'nav'"></span>
+                    </div>
+                    <div class="flexItem">
+                        <button class="sidenavBtn btnHover" (click)="onSelectTab(1)" [class.activ]="appState.selectedTab === 1 || appState.selectedTab === 2">
+                            <fa class="sidenavBtnIco" [name]="'home'" [size]="1"></fa>
+                            <span *ngIf="!appState.isMiniSideBar" class="sidenavBtnLabel"  [translate]="'home'"></span>
+                        </button>
+                        <button class="sidenavBtn btnHover" (click)="onSelectTab(3)" [class.activ]="appState.selectedTab === 3">
+                            <fa class="sidenavBtnIco" [name]="'th-list'" [size]="1"></fa>
+                            <span *ngIf="!appState.isMiniSideBar" class="sidenavBtnLabel"  [translate]="'library'"></span>
+                        </button>
+                        <button class="sidenavBtn btnHover" (click)="onSelectTab(5)"
+                            [class.activ]="appState.selectedTab === 5"
+                            dnd-droppable (onDropSuccess)="onDropSuccess($event)">
+                            <fa class="sidenavBtnIco" [name]="'play-circle'" [size]="1"></fa>
+                            <span *ngIf="!appState.isMiniSideBar" class="sidenavBtnLabel"  [translate]="'player'"></span>
+                        </button>
+                    </div>
+    
+                    <!-- Playlists list -->
+                    <div class="flexItem sectionLabel" [hidden]="appState.isMiniSideBar">
+                        <span [hidden]="appState.isMiniSideBar" [translate]="'pl'"></span>
+                        <div class="flexSpacer"></div>
+                        <button *ngIf="user && !appState.isMiniSideBar" mat-menu-item (click)="refreshYTPlaylists()" [class.rotate]="loader.panel" class="refreshBtn btnHover">
+                        <fa class="refreshBtnIco" [name]="'refresh'" [size]="1"></fa>
+                        </button>
+                    </div>
+    
+                    <app-playlist-button-list  [hidden]="appState.isMiniSideBar" class="flexItem sidenavPlBtnList"></app-playlist-button-list>
+    
                     <div class="flexSpacer"></div>
-                    <button *ngIf="user" mat-menu-item (click)="refreshYTPlaylists()" [class.rotate]="loader.panel" class="refreshBtn btnHover">
-                    <fa class="refreshBtnIco" [name]="'refresh'" [size]="1"></fa>
-                    </button>
-                </div>
-                <app-playlist-button-list class="flexItem sidenavPlBtnList"></app-playlist-button-list>
-
-                <div class="flexSpacer"></div>
-
-                <!-- Creaye playlist button -->
-                <div class="flexItem">
-                    <button class="sidenavBtn btnHover addBtn" (click)="createPlaylist()">
-                        <fa class="sidenavBtnIco" [name]="'plus'" [size]="1"></fa>
-                        <span class="sidenavBtnLabel"  [translate]="'addPl'"></span>
-                    </button>
+    
+                    <!-- Creaye playlist button -->
+                    <div class="flexItem">
+                        <button class="sidenavBtn btnHover addBtn" (click)="createPlaylist()">
+                            <fa class="sidenavBtnIco" [name]="'plus'" [size]="1"></fa>
+                            <span [hidden]="appState.isMiniSideBar"  class="sidenavBtnLabel"  [translate]="'addPl'"></span>
+                        </button>
+                    </div>
                 </div>
             </div>
 
 
-            <div class="sidenavCont" [hidden]="!appState.isMiniSideBar" [class.sidenavContMiniNav]="appState.isMiniSideBar">
-                <div class="flexItem sectionLabel"></div>
-                <button class="sidenavBtn btnHover" (click)="onSelectTab(1)" [class.activ]="appState.selectedTab === 1 || appState.selectedTab === 2">
-                    <fa class="sidenavBtnIco" [name]="'home'" [size]="1"></fa>
-                </button>
-                <button class="sidenavBtn btnHover" (click)="onSelectTab(3)" [class.activ]="appState.selectedTab === 3">
-                    <fa class="sidenavBtnIco" [name]="'th-list'" [size]="1"></fa>
-                </button>
-                <button class="sidenavBtn btnHover" (click)="onSelectTab(5)" [class.activ]="appState.selectedTab === 5"
-                    dnd-droppable (onDropSuccess)="onDropSuccess($event)">
-                    <fa class="sidenavBtnIco" [name]="'play-circle'" [size]="1"></fa>
-                </button>
-
-                <div class="flexSpacer"></div>
-
-                <button class="sidenavBtn btnHover addBtn" (click)="createPlaylist()">
-                    <fa class="sidenavBtnIco" [name]="'plus'" [size]="1"></fa>
-                </button>
-            </div>
-
-        </mat-sidenav>
-
-        <!-- Content -->
-        <mat-sidenav-content class="appContent">
-
+            <!-- Resizable Gutter -->
+            <dir class="gutter" draggable="true"
+                (mousedown)="onMouseDown($event)">
+            </dir>
+    
             <!-- Content -->
-            <div class="content flexSpacer" [class.withPlayerBar]="appState.showPlayerBar">
-                <app-home             class="tabContent" [style.zIndex]="appState.selectedTab === 1 ? 1 : 0"></app-home>
-                <app-search-results   class="tabContent" [style.zIndex]="appState.selectedTab === 2 ? 1 : 0"></app-search-results>
-                <app-library          class="tabContent" [style.zIndex]="appState.selectedTab === 3 ? 1 : 0"></app-library>
-                <app-playlist-details class="tabContent" [style.zIndex]="appState.selectedTab === 4 ? 1 : 0"></app-playlist-details>
-                <app-player-panel     class="tabContent" [style.zIndex]="appState.selectedTab === 5 ? 1 : 0"></app-player-panel>
-                <app-settings         class="tabContent" [style.zIndex]="appState.selectedTab === 6 ? 1 : 0"></app-settings>
+            <div #content class="appContent flexSpacer">
+                <div class="content flexSpacer" [class.withPlayerBar]="appState.showPlayerBar">
+                    <app-home             class="tabContent" [style.zIndex]="appState.selectedTab === 1 ? 1 : 0"></app-home>
+                    <app-search-results   class="tabContent" [style.zIndex]="appState.selectedTab === 2 ? 1 : 0"></app-search-results>
+                    <app-library          class="tabContent" [style.zIndex]="appState.selectedTab === 3 ? 1 : 0"></app-library>
+                    <app-playlist-details class="tabContent" [style.zIndex]="appState.selectedTab === 4 ? 1 : 0"></app-playlist-details>
+                    <app-player-panel     class="tabContent" [style.zIndex]="appState.selectedTab === 5 ? 1 : 0"></app-player-panel>
+                    <app-settings         class="tabContent" [style.zIndex]="appState.selectedTab === 6 ? 1 : 0"></app-settings>
+                </div>
+    
+                <!-- Player control bar   *ngIf="isOnPlay" -->
+                <app-player-bar *ngIf="appState.showPlayerBar" class="playerBar" [class.toggleBar]="!appState.showPlayerBar"></app-player-bar>
+    
+                <!-- Panel loader -->
+                <app-loader [show]="loader.panel" [isGlobal]="false"></app-loader>
             </div>
+        </div>
+    </div>
 
-            <!-- *ngIf="isOnPlay" -->
-            <app-player-bar *ngIf="appState.showPlayerBar" class="playerBar" [class.toggleBar]="!appState.showPlayerBar"></app-player-bar>
-
-            <app-loader [show]="loader.panel" [isGlobal]="false"></app-loader>
-
-        </mat-sidenav-content>
-    </mat-sidenav-container>
-
+    <!-- Global app loader -->
     <app-loader [show]="loader.global" [isGlobal]="true"></app-loader>
-
 </div>

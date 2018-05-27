@@ -15,7 +15,6 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { NgxDndModule } from './modules/ngx-dnd/ngx-dnd.module';
-import { AngularSplitModule } from 'angular-split';
 
 import { CustomMaterialModule } from './modules/material/custom-material.module';
 import { YoutubePlayerModule } from './modules/youtube-player/youtube-player.module';
@@ -106,8 +105,7 @@ export function HttpLoaderFactory(http: HttpClient) {
                 deps: [HttpClient]
             }
         }),
-        NgxDndModule.forRoot(),
-        AngularSplitModule.forRoot()
+        NgxDndModule.forRoot()
     ],
     exports: [
         CommonModule,
@@ -136,8 +134,7 @@ export function HttpLoaderFactory(http: HttpClient) {
         ContextMenuComponent,
         LoaderComponent,
         PlaylistControlComponent,
-        NgxDndModule,
-        AngularSplitModule
+        NgxDndModule
     ],
     providers: [],
 })

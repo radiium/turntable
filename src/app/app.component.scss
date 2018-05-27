@@ -56,11 +56,18 @@
     }
 }
 
-
+.appapp {
+    height: calc(100% - 20px - 64px) !important;
+    width: 100%;
+    
+}
 
 .appContainer {
-    height: calc(100% - 20px - 64px);
+    height: 100% !important;
+    display: flex;
+    width: 100%;
 
+    /*
     // Panel list
     .mat-expansion-panel {
         box-shadow: none;
@@ -72,18 +79,33 @@
             font-size: 0.8rem !important;
         }
     }
+    */
+
+
+    .gutter {
+        flex-grow: 0;
+        flex-shrink: 0;
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg==");
+        width: 10px;
+        height: 100% !important;
+        @include themify($themes) {
+            background-color: themed('btnHover');
+        }
+        margin: 0;
+        padding: 0;
+        cursor: ew-resize !important;
+    }
+
 
     // Sidenav
     .appSidenav {
-
         .sidenavCont {
             height: 100%;
             max-height: 100%;
-
-            &.sidenavContMiniNav {
-                display: flex;
-                flex-direction: column;
-            }
+            display: flex;
+            flex-direction: column;
         }
 
         width: 250px;

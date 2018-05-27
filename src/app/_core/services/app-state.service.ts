@@ -118,6 +118,16 @@ export class AppStateService {
     }
 
 
+    getOs(callback) {
+        if (this.isElectronApp) {
+            // console.log('===== removeLocalPlaylist');
+            this.electronSrv.ipcRenderer.send('send-get-os');
+            this.electronSrv.ipcRenderer.send('get-os', callback);
+        } else {
+            callback(null);
+        }
+    }
+
     fillPlaylist(pl: Playlist) {
         const playlist = new Playlist(
             pl.id,

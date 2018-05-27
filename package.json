@@ -63,7 +63,6 @@
     "@ngx-translate/core": "^10.0.2",
     "@ngx-translate/http-loader": "^3.0.1",
     "@types/lodash": "^4.14.109",
-    "angular-split": "^1.0.0-rc.3",
     "angular2-fontawesome": "^5.2.1",
     "angular2-uuid": "^1.1.1",
     "core-js": "^2.5.6",

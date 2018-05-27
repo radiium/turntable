@@ -41,6 +41,11 @@ export class DataService {
     public  playlistsList$ = this.playlistsList.asObservable();
 
 
+    // Is MiniSideBar
+    private isMiniSideBar  = new BehaviorSubject<boolean>(false);
+    public  isMiniSideBar$ = this.isMiniSideBar.asObservable();
+
+
     // Loading state
     private loader  = new BehaviorSubject<Loader>({panel: false, global: true});
     public  loader$ = this.loader.asObservable();
@@ -64,7 +69,6 @@ export class DataService {
     setDisplayType(data)   { this.setAppStateKey('displayType', data); }
     setSelectedTab(data)   { this.setAppStateKey('selectedTab', data); }
     setShowPlayerBar(data) { this.setAppStateKey('showPlayerBar', data); }
-    setIsMiniSideBar(data) { this.setAppStateKey('isMiniSideBar', data); }
     setMultiPlayer(data)   { this.setAppStateKey('multiPlayer', data); }
     setSelectedPl(data)    { this.setAppStateKey('selectedPl', data); }
     setOnPlayList(data)    { this.setAppStateKey('onPlayList', data); }
@@ -95,6 +99,11 @@ export class DataService {
         let dragData = (data && data.hasOwnProperty('dragData')) ? data.dragData : data;
         this.onDragData.next(dragData);
     }
+
+    setIsMiniSideBar(data) {
+        this.isMiniSideBar.next(data);
+    }
+
 
     setLoader(data) {
         this.loader.next(_.cloneDeep(data));

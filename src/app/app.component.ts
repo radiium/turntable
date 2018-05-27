@@ -1,10 +1,9 @@
 import { Component, OnInit, OnDestroy, ViewChild,
-    ElementRef, isDevMode, ViewEncapsulation,
-    HostListener, AfterViewInit } from '@angular/core';
+    ElementRef, isDevMode, ViewEncapsulation, QueryList,
+    HostListener, AfterViewInit, ContentChild, ViewChildren, NgZone } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ElectronService } from 'ngx-electron';
 import { OverlayContainer } from '@angular/cdk/overlay';
-import { MatSnackBar } from '@angular/material';
 import { TranslateService } from '@ngx-translate/core';
 import { UUID } from 'angular2-uuid';
 import * as _ from 'lodash';
@@ -35,14 +34,20 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     playlistsList: Playlist[];
     showPlayerBar: boolean;
     miniNav: boolean;
+    isMiniSideBar: boolean;
     loader: Loader;
 
+    onGrab: boolean;
+    @ViewChild('appp') appp: ElementRef
+    @ViewChild('sideNav') sideNav: ElementRef
+    @ViewChild('content') content: ElementRef
+
     constructor(
-    public snackBar: MatSnackBar,
     private appStateSrv: AppStateService,
     private plSrv: PlaylistService,
     private dataSrv: DataService,
     private Electron: ElectronService,
+    private zone: NgZone,
     private authSrv: AuthService,
     private ytSrv: YoutubeService,
     private overlayContainer: OverlayContainer,
@@ -50,6 +55,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     private translate: TranslateService) {
 
         this.miniNav = false;
+        this.onGrab = false;
         translate.setDefaultLang('en');
 
         // User
@@ -74,30 +80,46 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
             this.playlistsList = data;
         });
 
+        this.dataSrv.isMiniSideBar$.subscribe((data) => {
+            this.isMiniSideBar = data;
+        });
+
         this.dataSrv.loader$.subscribe((data) => {
             this.loader = data;
         });
 
         //this.dndSrv.initDnd();
         this.appStateSrv.loadAppState();
-    }
 
-    ngOnInit() {
-        // this.snackBar.open('Hey', '', {
-        //    duration: 2000,
-        // });
+        this.appStateSrv.getOs((os) => {
+            console.log('PLATFORM', os);
+            if (os === 'darwin') {
+            }
+        })
     }
 
     ngAfterViewInit() {
         // Load a local playlist for development
-        if (isDevMode()) {
-        }
+        // if (isDevMode()) { }
         setTimeout(() => {
             this.insertFakeData();
         });
     }
 
+    ngOnInit() {
+        this.zone.runOutsideAngular(() => {
+            this.appp.nativeElement.addEventListener('mousemove', this.onMove.bind(this));
+            this.appp.nativeElement.addEventListener('dragover', this.onMove.bind(this));
+            this.appp.nativeElement.addEventListener('mouseup', this.onMouseUp.bind(this));
+        });
+    }
+
     ngOnDestroy() {
+        this.zone.runOutsideAngular(() => {
+            this.appp.nativeElement.removeEventListener('mousemove', this.onMove.bind(this));
+            this.appp.nativeElement.removeEventListener('dragover', this.onMove.bind(this));
+            this.appp.nativeElement.removeEventListener('mouseup', this.onMouseUp.bind(this));
+        });
     }
 
     onDropSuccess(event) {
@@ -150,7 +172,13 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     setIsMiniSideBar() {
-        this.dataSrv.setIsMiniSideBar(!this.appState.isMiniSideBar);
+        const newValue = !this.isMiniSideBar;
+        if (newValue === true) {
+            this.sideNav.nativeElement.style.width = '44px';
+        } else if (newValue === false) {
+            this.sideNav.nativeElement.style.width = '250px';
+        }
+        this.dataSrv.setIsMiniSideBar(newValue);
     }
 
     setShowPlayerBar() {
@@ -163,6 +191,28 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
 
     createPlaylist() {
         this.plSrv.createPlaylist();
+    }
+
+    // Resize splitter
+    onMouseDown(event: MouseEvent) { this.onGrab = true; }
+    onMouseUp(event: MouseEvent) { this.onGrab = false; }
+    onDrag(event) { event.dataTransfer.setDragImage(new Image(), 0, 0); }
+
+    onMove(event: MouseEvent) {
+        this.resize(event);
+    }
+
+    resize(event) {
+        if (!this.onGrab) return;
+        if (event.clientX < 150) {
+            this.dataSrv.setIsMiniSideBar(true);
+        } else {
+            this.dataSrv.setIsMiniSideBar(false);
+        }
+        // const wWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+        if (event.clientX > 44 && event.clientX < 400) {
+            this.sideNav.nativeElement.style.width = (event.clientX - 5) + 'px';
+        }
     }
 
 

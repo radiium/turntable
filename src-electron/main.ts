@@ -81,6 +81,9 @@ const createMainWindow = async () => {
     menus.push(editMenuTemplate);
     if (isDev) { menus.push(devMenuTemplate); }
     Menu.setApplicationMenu(Menu.buildFromTemplate(menus));
+
+    console.log('process.platform', process.platform)
+
 };
 
 // On app is ready
@@ -269,8 +272,6 @@ ipcMain.on('send-convert-video-to-mp3', (event, arg) => {
 
 });
 
-
-
 // Resolve file path
 ipcMain.on('send-get-save-path', (event, arg) => {
 
@@ -304,6 +305,12 @@ function handleError(event, error) {
 }
 
 
+// ----------------------------------------------------------------------------
+// Get operating system
+
+ipcMain.on('send-get-os', (event, arg) => {
+    event.sender.send('get-os', process.platform);
+});
 
 
 /*
