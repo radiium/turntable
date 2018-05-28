@@ -67,9 +67,9 @@ export class VideoListComponent implements OnChanges {
         if (changes.videoList && changes.videoList.currentValue) {
             this.videoList = changes.videoList.currentValue;
             
-            this._length = this.videoList.length - 1;
+            this._length = this.videoList.length;
             this.sum = 20;
-            if (this._length < this.sum) {
+            if ((this._length) < this.sum) {
                 this.sum = this._length;
             }
             this._videoList = this.videoList.slice(0, this.sum);
@@ -152,11 +152,9 @@ export class VideoListComponent implements OnChanges {
         
         const start = this.sum;
         this.sum += 20;
-        if (this.videoList.length <= this.sum) {
-            this.sum = this.videoList.length;
+        if ((this._length) <= this.sum) {
+            this.sum = this._length;
         }
-
-        console.log('onScrollDown', start, this.sum);
 
         for (let i = start; i < this.sum; i++) {
             const element = this.videoList[i];

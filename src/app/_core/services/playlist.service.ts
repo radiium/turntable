@@ -371,7 +371,6 @@ export class PlaylistService {
 
     private resolveVideoList(data: Playlist | PlaylistItem | PlaylistItem[]) {
         let videoList = [];
-        /*
         if (typeof data  === 'string') {
             const pl = this.getPlaylistById(data);
             if (pl) {
@@ -385,7 +384,6 @@ export class PlaylistService {
         } else if (Array.isArray(data)) {
             videoList = data;
         }
-        */
         return videoList;
     }
 }

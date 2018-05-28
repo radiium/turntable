@@ -23,7 +23,7 @@ export class PlayerPanelComponent implements OnInit {
         this.dndSrv.playerListContainer = scrollContainer;
     }
 
-    playlistsList: Playlist[];
+    // playlistsList: Playlist[];
     canAddToPlaylist: boolean;
 
     onDisplayPl: string;
@@ -71,7 +71,7 @@ export class PlayerPanelComponent implements OnInit {
     };
 
     constructor(
-    private cd: ChangeDetectorRef,
+    // private cdRef: ChangeDetectorRef,
     private appRef: ApplicationRef,
     private dndSrv: DndService,
     private dataSrv: DataService,
@@ -85,40 +85,49 @@ export class PlayerPanelComponent implements OnInit {
 
     ngOnInit() {
         this.dataSrv.playlistsList$.subscribe((data) => {
-            this.playlistsList = data;
+            // this.playlistsList = data;
             this.canAddToPlaylist = data.length > 0;
+            // this.cdRef.markForCheck();
         });
 
         this.playerState.playerPanelState$.subscribe((data) => {
             this.playerPanelState = data;
+            // this.cdRef.markForCheck();
         });
 
         this.playerState.playerStateLeft$.subscribe((data) => {
             this.playerStateLeft = data;
+            // this.cdRef.markForCheck();
         });
 
         this.playerState.playerLeft$.subscribe((data) => {
             this.playerLeft = data;
+            // this.cdRef.markForCheck();
         });
 
         this.playerState.playerStateRight$.subscribe((data) => {
             this.playerStateRight = data;
+            // this.cdRef.markForCheck();
         });
 
         this.playerState.playerRight$.subscribe((data) => {
             this.playerRight = data;
+            // this.cdRef.markForCheck();
         });
 
         this.dataSrv.appState$.subscribe((data) => {
             this.appState = data;
+            // this.cdRef.markForCheck();
         });
 
         this.dataSrv.onPlayList$.subscribe((data) => {
             this.onPlayList = data;
+            // this.cdRef.detectChanges();
         });
 
-        this.dataSrv.onPlayList$.subscribe((data) => {
+        this.dataSrv.historicList$.subscribe((data) => {
             this.historicList = data;
+            // this.cdRef.detectChanges();
         });
     }
 

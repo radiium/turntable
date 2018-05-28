@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, AfterViewInit, ViewChild, ElementRef, NgZone } from '@angular/core';
 import * as _ from 'lodash';
 
 import { Playlist, AppState, PlaylistItem } from 'core/models';
@@ -26,7 +26,8 @@ export class PlaylistButtonListComponent implements AfterViewInit {
     constructor(
     private dataSrv: DataService,
     private plSrv: PlaylistService,
-    private dnd: DndService
+    // private dnd: DndService,
+        private zone: NgZone
     ) {
 
         this.dragImage = new DragImage(Base64Images.playlist, 20, 20);
@@ -45,7 +46,7 @@ export class PlaylistButtonListComponent implements AfterViewInit {
     }
 
     ngAfterViewInit() {
-        this.dnd.plButtonContainer = this.scrollContainer;
+        // this.dnd.plButtonContainer = this.scrollContainer;
     }
 
     selectPlaylist(playlist: Playlist) {
@@ -53,30 +54,36 @@ export class PlaylistButtonListComponent implements AfterViewInit {
     }
 
     onDragOver(btnRef, plId) {
-        if (btnRef && this.dragData && (this.dragData.from !== plId)) {
-            btnRef.classList.add('dnd-drag-over');
-        }
-        if (event.preventDefault) event.preventDefault();
+        this.zone.runOutsideAngular(() => {
+            if (btnRef && this.dragData && (this.dragData.from !== plId)) {
+                btnRef.classList.add('dnd-drag-over');
+            }
+            if (event.preventDefault) event.preventDefault();
+        });
     }
 
     onDragLeave(btnRef) {
-        if (btnRef && btnRef.classList && btnRef.classList.contains('dnd-drag-over')) {
-            btnRef.classList.remove('dnd-drag-over')
-        }
+        this.zone.runOutsideAngular(() => {
+            if (btnRef && btnRef.classList && btnRef.classList.contains('dnd-drag-over')) {
+                btnRef.classList.remove('dnd-drag-over')
+            }
+        });
     }
     
     onDrop(event, btnRef, plId) {
-        if (this.dragData && (this.dragData.from !== plId)) {
-            const stringData = event.dataTransfer.getData('text');
-            if (stringData) {
-                const data = JSON.parse(stringData);
-                if (data.video && data.type === 'PlayListItem') {
-                    const video: PlaylistItem = data.video as PlaylistItem;
-                    this.plSrv.addToPlaylistOne(video, plId);
+        this.zone.runOutsideAngular(() => {
+            if (this.dragData && (this.dragData.from !== plId)) {
+                const stringData = event.dataTransfer.getData('text');
+                if (stringData) {
+                    const data = JSON.parse(stringData);
+                    if (data.video && data.type === 'PlayListItem') {
+                        const video: PlaylistItem = data.video as PlaylistItem;
+                        this.plSrv.addToPlaylistOne(video, plId);
+                    }
                 }
             }
-        }
-        this.onDragLeave(btnRef);
+            this.onDragLeave(btnRef);
+        });
     }
 
     trackByFn(index, item) {

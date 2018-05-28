@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, AfterViewChecked, ViewChild, ElementRef, ApplicationRef,
+import { Component, OnInit, AfterViewChecked, ViewChild, ElementRef,
     ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
 import * as _ from 'lodash';
 
@@ -12,7 +12,7 @@ import { DndService } from 'core/services/dnd.service';
     styleUrls: ['./playlist-details.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class PlaylistDetailsComponent implements OnInit, AfterViewInit, AfterViewChecked {
+export class PlaylistDetailsComponent implements OnInit, AfterViewChecked {
 
     appState: AppState;
     currentPlaylist: Playlist;
@@ -47,7 +47,6 @@ export class PlaylistDetailsComponent implements OnInit, AfterViewInit, AfterVie
 
     constructor(
     private cdRef: ChangeDetectorRef,
-    private appRef: ApplicationRef,
     private dataSrv: DataService,
     private dnd: DndService) {
 
@@ -63,7 +62,6 @@ export class PlaylistDetailsComponent implements OnInit, AfterViewInit, AfterVie
             this.currentPlaylist = _.find(this.playlistsList, { id: data.selectedPl }) || undefined;
             this.updateState();
             this.cdRef.markForCheck();
-            // this.appRef.tick();
         });
 
         this.dataSrv.playlistsList$.subscribe((data) => {
@@ -97,17 +95,6 @@ export class PlaylistDetailsComponent implements OnInit, AfterViewInit, AfterVie
                 this.dataSrv.setLoaderGlobal(false);
             }, 3000);
         }
-    }
-
-    ngAfterViewInit() {
-        /*
-        if (this.loader.global) {
-            console.log('TADADA2')
-            setTimeout(() => {
-                this.dataSrv.setLoaderGlobal(false);
-            }, 3000);
-        }
-        */
     }
 
     updateState() {

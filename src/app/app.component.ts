@@ -103,6 +103,7 @@ export class AppComponent implements OnInit, OnDestroy {
     }
 
     onDropSuccess(event) {
+        console.log('onDropSuccess')
         const dragData = event.dragData;
         if (dragData) {
             if (dragData.type === 'PlayList') {

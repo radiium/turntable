@@ -84,7 +84,6 @@ export class TimerService {
         if (!id || !this.subscription[id]) {
             return false;
         }
-        console.log('unsubscribe', id);
         this.subscription[id].subscription.unsubscribe();
         delete this.subscription[id];
     }

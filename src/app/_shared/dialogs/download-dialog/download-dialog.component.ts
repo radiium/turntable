@@ -78,7 +78,6 @@ export class DownloadDialogComponent implements AfterContentInit, AfterViewInit 
     }
 
     getPathDL(event, newPath) {
-        console.log('newPath', newPath);
         this.filePath = newPath;
         this.resizeInput(this.filePath, this.filePathInput.nativeElement);
         this.cdr.detectChanges();
