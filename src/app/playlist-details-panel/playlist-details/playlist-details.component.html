@@ -23,10 +23,10 @@
         <!-- Video list -->
         <app-video-list
             *ngFor="let pl of playlistsList; let i = index; trackBy: trackByFn"
-            [hidden]="pl.id !== currentPlaylist.id"
-            [playlistId]="pl.id"
-            [videoList]="pl.videolist"
-            [config]="getConfig(pl.id)"
+            [hidden]="pl?.id !== currentPlaylist?.id"
+            [playlistId]="pl?.id"
+            [videoList]="pl?.videolist"
+            [config]="getConfig(pl?.id)"
             [canAddToPlaylist]="canAddToPlaylist"
             >
         </app-video-list>
