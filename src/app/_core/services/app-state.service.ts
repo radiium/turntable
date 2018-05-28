@@ -1,12 +1,16 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { ElectronService } from 'ngx-electron';
+import { UUID } from 'angular2-uuid';
+
 import * as _ from 'lodash';
 
 import { User, Playlist, PlaylistItem, AppState } from 'core/models';
 import { AuthService } from 'core/services/auth.service';
 import { DataService } from 'core/services/data.service';
 import { YoutubeService } from 'core/services/youtube.service';
+
+import * as testPlaylist from '../test-playlist.json';
 
 @Injectable()
 export class AppStateService {
@@ -76,6 +80,8 @@ export class AppStateService {
 
             // Load local playlist on start up app
             this.loadLocalPlaylist();
+        } else {
+            this.insertFakeData();
         }
     }
 
@@ -129,7 +135,7 @@ export class AppStateService {
     }
 
     fillPlaylist(pl: Playlist) {
-        const playlist = new Playlist(
+        return new Playlist(
             pl.id,
             pl.title,
             pl.description,
@@ -142,7 +148,6 @@ export class AppStateService {
             this.fillVideoList(pl.videolist),
             pl.appId
         );
-        return playlist;
     }
 
     fillVideoList(videoList: PlaylistItem[]) {
@@ -165,5 +170,51 @@ export class AppStateService {
             });
         }
         return newVideoList;
+    }
+
+
+
+     // Load a local playlist for development
+     insertFakeData() {
+        /*
+        const arr = [];
+        for (let i = 0; i < 25; i++) {
+        arr.push(testPlaylist);
+        }
+        this.playlistsList = <Playlist[]>arr;
+        */
+        const videoList: PlaylistItem[] = [];
+        testPlaylist['testPlaylist']['videolist'].forEach(el => {
+            const video = new PlaylistItem(
+                el['id'],
+                el['selected'],
+                el['title'],
+                el['description'],
+                el['thumbUrl'],
+                el['duration'],
+                el['channelTitle'],
+                el['publishedAt'],
+                UUID.UUID()
+            );
+
+            for (let i = 0; i < 40; i++) {
+                videoList.push(video);
+            }
+        });
+        const datas = new Playlist(
+            testPlaylist['testPlaylist']['id'],
+            testPlaylist['testPlaylist']['title'],
+            testPlaylist['testPlaylist']['description'],
+            testPlaylist['testPlaylist']['thumbUrl'],
+            testPlaylist['testPlaylist']['thumbH'],
+            testPlaylist['testPlaylist']['thumbW'],
+            testPlaylist['testPlaylist']['publishedAt'],
+            testPlaylist['testPlaylist']['privacyStatus'],
+            true,
+            videoList,
+            UUID.UUID()
+        );
+        // this.playlistsList = <Playlist[]>[datas];
+        this.dataSrv.setPlaylistsList(<Playlist[]>[datas]);
     }
 }

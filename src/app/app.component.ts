@@ -1,11 +1,8 @@
-import { Component, OnInit, OnDestroy, ViewChild,
-    ElementRef, isDevMode, ViewEncapsulation, QueryList,
-    HostListener, AfterViewInit, ContentChild, ViewChildren, NgZone } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef, NgZone } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ElectronService } from 'ngx-electron';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { TranslateService } from '@ngx-translate/core';
-import { UUID } from 'angular2-uuid';
 import * as _ from 'lodash';
 
 import { User, PlaylistItem, Playlist, AppState, Loader } from 'core/models';
@@ -16,18 +13,12 @@ import { YoutubeService } from 'core/services/youtube.service';
 import { DndService } from 'core/services/dnd.service';
 import { PlaylistService } from 'core/services/playlist.service';
 
-import * as testPlaylist from './test-playlist.json';
-
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html',
-    styleUrls: ['./app.component.scss'],
-    // directives: [Dragula],
-    // encapsulation: ViewEncapsulation.None,
-    // viewProviders: [DragulaService]
-
+    styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
+export class AppComponent implements OnInit, OnDestroy {
 
     user: User;
     appState: AppState;
@@ -58,7 +49,6 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
         this.onGrab = false;
         translate.setDefaultLang('en');
 
-        // User
         this.dataSrv.user$.subscribe((data) => {
             this.user = data;
             if (data !== null) {
@@ -66,16 +56,12 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
             }
         });
 
-        // App state
-        this.appState = new AppState();
         this.dataSrv.appState$.subscribe((data) => {
             this.appState = data;
             this.initMatOverlay();
             translate.use(this.appState.langage);
         });
 
-        // Playlists
-        this.playlistsList = [];
         this.dataSrv.playlistsList$.subscribe((data) => {
             this.playlistsList = data;
         });
@@ -98,20 +84,11 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
         })
     }
 
-    ngAfterViewInit() {
-        // Load a local playlist for development
-        // if (isDevMode()) { }
-        setTimeout(() => {
-            this.insertFakeData();
-        });
-    }
-
     ngOnInit() {
         this.zone.runOutsideAngular(() => {
             this.appp.nativeElement.addEventListener('mousemove', this.onMove.bind(this));
             this.appp.nativeElement.addEventListener('dragover', this.onMove.bind(this));
             this.appp.nativeElement.addEventListener('mouseup', this.onMouseUp.bind(this));
-            // this.appp.nativeElement.addEventListener('mouseout', this.onMouseOut.bind(this));
             document.addEventListener("mouseout", this.onMouseOut.bind(this));
         });
     }
@@ -121,18 +98,16 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
             this.appp.nativeElement.removeEventListener('mousemove', this.onMove.bind(this));
             this.appp.nativeElement.removeEventListener('dragover', this.onMove.bind(this));
             this.appp.nativeElement.removeEventListener('mouseup', this.onMouseUp.bind(this));
-            // this.appp.nativeElement.removeEventListener('mouseout', this.onMouseOut.bind(this));
             document.removeEventListener("mouseout", this.onMouseOut.bind(this));
         });
     }
 
     onDropSuccess(event) {
-        console.log('PLAYER BTN', event.srcElement);
         const dragData = event.dragData;
         if (dragData) {
             if (dragData.type === 'PlayList') {
-                const playlist: Playlist = dragData.playlist as Playlist;
-                this.plSrv.addToPlayerList(playlist);
+                // const playlist: Playlist = dragData.playlist as Playlist;
+                this.plSrv.addToPlayerListByPlId(dragData.playlist);
             } else if (dragData.type === 'PlayListItem') {
                 const video: PlaylistItem = dragData.video as PlaylistItem;
                 this.plSrv.addToPlayerList(video);
@@ -231,50 +206,5 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
             this.dataSrv.setIsMiniSideBar(false);
             this.sideNav.nativeElement.style.width = (x - 5) + 'px';
         }
-    }
-
-
-    // Load a local playlist for development
-    insertFakeData() {
-        /*
-        const arr = [];
-        for (let i = 0; i < 25; i++) {
-        arr.push(testPlaylist);
-        }
-        this.playlistsList = <Playlist[]>arr;
-        */
-        const videoList: PlaylistItem[] = [];
-        testPlaylist['testPlaylist']['videolist'].forEach(el => {
-            const video = new PlaylistItem(
-                el['id'],
-                el['selected'],
-                el['title'],
-                el['description'],
-                el['thumbUrl'],
-                el['duration'],
-                el['channelTitle'],
-                el['publishedAt'],
-                UUID.UUID()
-            );
-
-            for (let i = 0; i < 1; i++) {
-                videoList.push(video);
-            }
-        });
-        const datas = new Playlist(
-            testPlaylist['testPlaylist']['id'],
-            testPlaylist['testPlaylist']['title'],
-            testPlaylist['testPlaylist']['description'],
-            testPlaylist['testPlaylist']['thumbUrl'],
-            testPlaylist['testPlaylist']['thumbH'],
-            testPlaylist['testPlaylist']['thumbW'],
-            testPlaylist['testPlaylist']['publishedAt'],
-            testPlaylist['testPlaylist']['privacyStatus'],
-            true,
-            videoList,
-            UUID.UUID()
-        );
-        // this.playlistsList = <Playlist[]>[datas];
-        this.dataSrv.setPlaylistsList(<Playlist[]>[datas]);
     }
 }
