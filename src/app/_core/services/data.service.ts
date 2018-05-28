@@ -37,8 +37,18 @@ export class DataService {
 
 
     // PlayList list
-    private playlistsList  = new Subject<Playlist[]>();
+    private playlistsList  = new BehaviorSubject<Playlist[]>([]);
     public  playlistsList$ = this.playlistsList.asObservable();
+
+
+    // On play list
+    private onPlayList  = new BehaviorSubject<PlaylistItem[]>([]);
+    public  onPlayList$ = this.onPlayList.asObservable();
+
+
+    // Historic list
+    private historicList  = new BehaviorSubject<PlaylistItem[]>([]);
+    public  historicList$ = this.historicList.asObservable();
 
 
     // Is MiniSideBar
@@ -71,8 +81,8 @@ export class DataService {
     setShowPlayerBar(data) { this.setAppStateKey('showPlayerBar', data); }
     setMultiPlayer(data)   { this.setAppStateKey('multiPlayer', data); }
     setSelectedPl(data)    { this.setAppStateKey('selectedPl', data); }
-    setOnPlayList(data)    { this.setAppStateKey('onPlayList', data); }
-    setHistoricList(data)  { this.setAppStateKey('historicList', data); }
+    // setHistoricList(data)  { this.setAppStateKey('historicList', data); }
+    // setOnPlayList(data)    { this.setAppStateKey('onPlayList', data); }
     setAppStateKey(key: string, value: any) {
         const appState = this.appState.getValue();
         appState[key] = value;
@@ -95,6 +105,14 @@ export class DataService {
         this.playlistsList.next(_.cloneDeep(data));
     }
 
+    setOnPlayList(data) {
+        this.onPlayList.next(data);
+    }
+
+    setHistoricList(data) {
+        this.historicList.next(data);
+    }
+
     setOnDragData(data) {
         let dragData = (data && data.hasOwnProperty('dragData')) ? data.dragData : data;
         this.onDragData.next(dragData);
@@ -103,7 +121,6 @@ export class DataService {
     setIsMiniSideBar(data) {
         this.isMiniSideBar.next(data);
     }
-
 
     setLoader(data) {
         this.loader.next(_.cloneDeep(data));

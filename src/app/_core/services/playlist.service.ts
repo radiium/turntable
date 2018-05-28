@@ -38,7 +38,9 @@ export class PlaylistService {
     appState: AppState;
     playlistsList: Playlist[];
     playerPanelState: PlayerPanelState;
-
+    onPlayList: PlaylistItem[];
+    historicList: PlaylistItem[];
+    
     constructor(
     private electron: ElectronService,
     private dataSrv: DataService,
@@ -50,6 +52,14 @@ export class PlaylistService {
         
         this.dataSrv.appState$.subscribe(appState => {
             this.appState = appState;
+        });
+
+        this.dataSrv.onPlayList$.subscribe(data => {
+            this.onPlayList = data;
+        });
+
+        this.dataSrv.historicList$.subscribe(data => {
+            this.historicList = data;
         });
 
         this.dataSrv.playlistsList$.subscribe(datalist => {
@@ -67,11 +77,24 @@ export class PlaylistService {
      * PLAYER
      * 
      */
+    addToPlayerListByVideolist(videoList: PlaylistItem[]) {
+        if (videoList && videoList.length) {
+            this.dataSrv.setOnPlayList([...this.onPlayList, ...videoList]);
+        }
+    }
+
+    addToPlayerListByPlId(plId: string) {
+        let playlist = this.getPlaylistById(plId);
+        let videoList = playlist.videolist || [];
+        if (videoList && videoList.length) {
+            this.dataSrv.setOnPlayList([...this.onPlayList, ...videoList]);
+        }
+    }
 
     addToPlayerList(data: any) {
         let videoList = this.resolveVideoList(data);
         if (videoList && videoList.length) {
-            this.dataSrv.setOnPlayList([...this.appState.onPlayList, ...videoList]);
+            this.dataSrv.setOnPlayList([...this.onPlayList, ...videoList]);
         }
     }
 
@@ -91,7 +114,7 @@ export class PlaylistService {
 
     addToHistoricList(video: PlaylistItem) {
         if (video) {
-            this.dataSrv.setOnPlayList([...this.appState.historicList, video]);
+            this.dataSrv.setHistoricList([...this.historicList, video]);
         }
     }
 
@@ -159,7 +182,6 @@ export class PlaylistService {
     addToPlaylistOne(data: any, plId: string) {
         const videoList = this.resolveVideoList(data);
         if (videoList && plId) {
-            
             const plIdx = this.getPlaylistIndexById(plId);
             if (plIdx > -1) {
                 this.playlistsList[plIdx].videolist = [...this.playlistsList[plIdx].videolist, ...videoList];
@@ -235,20 +257,19 @@ export class PlaylistService {
     deleteVideo(video: PlaylistItem, index: number, plId: string, withoutConfirm?: boolean) {
 
         if (withoutConfirm) {
-            console.log('deleteVideo',video, index, plId);
 
             switch (plId) {
                 case 'search':
                     break;
 
                 case 'onplay':
-                    this.appState.onPlayList.splice(index, 1);
-                    this.dataSrv.setOnPlayList(this.appState.onPlayList);
+                    this.onPlayList.splice(index, 1);
+                    this.dataSrv.setOnPlayList(this.onPlayList);
                     break;
 
                 case 'historic':
-                    this.appState.historicList.splice(index, 1);
-                    this.dataSrv.setHistoricList(this.appState.historicList);
+                    this.historicList.splice(index, 1);
+                    this.dataSrv.setHistoricList(this.historicList);
                     break;
 
                 default:
@@ -265,20 +286,18 @@ export class PlaylistService {
             dialogRef.afterClosed().subscribe(delVideo => {
                 if (delVideo) {
     
-                    console.log('deleteVideo',video, index, plId);
-    
                     switch (plId) {
                         case 'search':
                             break;
     
                         case 'onplay':
-                            this.appState.onPlayList.splice(index, 1);
-                            this.dataSrv.setOnPlayList(this.appState.onPlayList);
+                            this.onPlayList.splice(index, 1);
+                            this.dataSrv.setOnPlayList(this.onPlayList);
                             break;
     
                         case 'historic':
-                            this.appState.historicList.splice(index, 1);
-                            this.dataSrv.setHistoricList(this.appState.historicList);
+                            this.historicList.splice(index, 1);
+                            this.dataSrv.setHistoricList(this.historicList);
                             break;
     
                         default:
@@ -302,12 +321,12 @@ export class PlaylistService {
                 break;
 
             case 'onplay':
-                videoList = this.move(from, to, this.appState.onPlayList);
+                videoList = this.move(from, to, this.onPlayList);
                 this.dataSrv.setOnPlayList(videoList);
                 break;
 
             case 'historic':
-                videoList = this.move(from, to, this.appState.historicList);
+                videoList = this.move(from, to, this.historicList);
                 this.dataSrv.setHistoricList(videoList);
                 break;
 
@@ -320,7 +339,7 @@ export class PlaylistService {
         }
 
         setTimeout(() => {
-            elRef.scrollIntoView();
+            // elRef.scrollIntoView();
         });
     }
 
@@ -352,14 +371,21 @@ export class PlaylistService {
 
     private resolveVideoList(data: Playlist | PlaylistItem | PlaylistItem[]) {
         let videoList = [];
-        if (data instanceof Playlist || (data.hasOwnProperty('type') && data['type'] === 'Playlist')) {
+        /*
+        if (typeof data  === 'string') {
+            const pl = this.getPlaylistById(data);
+            if (pl) {
+                videoList = pl.videolist;
+            }
+            //videoList = (<Playlist>data).videolist;
+        } else  if (data instanceof Playlist || (data.hasOwnProperty('type') && data['type'] === 'Playlist')) {
             videoList = (<Playlist>data).videolist;
         } else if (data instanceof PlaylistItem || (data.hasOwnProperty('type') && data['type'] === 'PlaylistItem')) {
             videoList = [data];
         } else if (Array.isArray(data)) {
             videoList = data;
-        } 
-
+        }
+        */
         return videoList;
     }
 }

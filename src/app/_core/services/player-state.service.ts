@@ -17,6 +17,8 @@ import { PlaylistItem, Playlist, Suggests,
 export class PlayerStateService {
 
     appState: AppState;
+    onPlayList: PlaylistItem[];
+    historicList: PlaylistItem[];
 
     // Player panel state
     private playerPLStateDefault: PlayerPanelState = {
@@ -65,6 +67,8 @@ export class PlayerStateService {
     private dataSrv: DataService) {
 
         this.dataSrv.appState$.subscribe(data => this.appState = data);
+        this.dataSrv.onPlayList$.subscribe(data => this.onPlayList = data);
+        this.dataSrv.historicList$.subscribe(data => this.historicList = data);
         this.playerLeft.subscribe(data => this.currentPlayerLeft = data);
         this.playerRight.subscribe(data => this.currentPlayerRight = data);
     }
@@ -162,14 +166,14 @@ export class PlayerStateService {
     playVideo(video: PlaylistItem, index?: number) {
         let videoToPlay;
         if (index !== undefined) {
-            videoToPlay = this.appState.onPlayList[index];
-            this.appState.onPlayList.splice(index, 1);
+            videoToPlay = this.onPlayList[index];
+            this.onPlayList.splice(index, 1);
         } else {
             videoToPlay = video;
         }
 
-        this.appState.historicList.unshift(videoToPlay);
-        this.dataSrv.setHistoricList(this.appState.historicList);
+        this.historicList.unshift(videoToPlay);
+        this.dataSrv.setHistoricList(this.historicList);
 
         // this.setPlayerPanelState(panelState);
         this.playOnPlayer(videoToPlay);
@@ -180,8 +184,8 @@ export class PlayerStateService {
 
         const panelState = this.playerPanelState.getValue();
 
-        const playlist = this.appState.onPlayList;
-        const historiclist = this.appState.historicList;
+        const playlist = this.onPlayList;
+        const historiclist = this.historicList;
         const isRandom = panelState.isRandom;
         const isRepeat = panelState.isRepeat;
 

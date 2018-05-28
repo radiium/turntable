@@ -9,8 +9,6 @@ export class AppState {
     public showPlayerBar?: boolean,
     public isMiniSideBar?: boolean,
     public multiPlayer?: boolean,
-    public onPlayList?: PlaylistItem[],
-    public historicList?: PlaylistItem[],
     public selectedPl?: string,
     ) {
         this.langage       = langage       || 'en';
@@ -20,8 +18,6 @@ export class AppState {
         this.showPlayerBar = showPlayerBar || false;
         this.isMiniSideBar = isMiniSideBar || false;
         this.multiPlayer   = multiPlayer   || true;
-        this.onPlayList    = onPlayList    || [];
-        this.historicList  = historicList  || [];
         this.selectedPl    = selectedPl    || '';
     }
 }
