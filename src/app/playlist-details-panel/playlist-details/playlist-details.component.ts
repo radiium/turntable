@@ -17,7 +17,6 @@ export class PlaylistDetailsComponent implements OnInit, AfterViewInit, AfterVie
     appState: AppState;
     currentPlaylist: Playlist;
     playlistsList: Playlist[];
-
     canAddToPlaylist: boolean;
 
     title: string;
@@ -25,6 +24,7 @@ export class PlaylistDetailsComponent implements OnInit, AfterViewInit, AfterVie
     privacyStatus: string;
 
     loader: Loader;
+    hasData: boolean;
 
     videoListConfig: VideoListConfig = {
         draggable: true,
@@ -55,17 +55,17 @@ export class PlaylistDetailsComponent implements OnInit, AfterViewInit, AfterVie
         this.description = '';
         this.privacyStatus = '';
         this.canAddToPlaylist = false;
+        this.hasData = false;
 
         // Get selected playlist
         this.dataSrv.appState$.subscribe((data) => {
             this.appState = data;
-            this.currentPlaylist = _.find(this.playlistsList, { id: data.selectedPl });
+            this.currentPlaylist = _.find(this.playlistsList, { id: data.selectedPl }) || undefined;
             this.updateState();
             this.cdRef.markForCheck();
             // this.appRef.tick();
         });
 
-        // Get playlist list
         this.dataSrv.playlistsList$.subscribe((data) => {
             this.playlistsList = data;
             if (this.currentPlaylist) {
@@ -75,9 +75,13 @@ export class PlaylistDetailsComponent implements OnInit, AfterViewInit, AfterVie
             } else {
                 this.currentPlaylist = null;
             }
+
+            this.hasData = this.currentPlaylist ? true : false;
+
             this.canAddToPlaylist = data.length > 1;
-            this.cdRef.detectChanges();
+            this.cdRef.markForCheck();
         });
+
         this.dataSrv.loader$.subscribe((data) => {
             this.loader = data;
             this.cdRef.markForCheck();
