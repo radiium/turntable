@@ -113,6 +113,7 @@ export class DndService implements OnDestroy {
     subscribeEvent() {
         this.eventSubcriptions = [
 
+            /*
             // Datas subscription
             this.playerState.playerPanelState$.subscribe((data) => {
 
@@ -128,6 +129,7 @@ export class DndService implements OnDestroy {
                     this.onSelectPL = selectedPl.videolist;
                 }
             }),
+            */
 
             // Dragula event subscription
             this.dragulaService.over.subscribe((value) => {
