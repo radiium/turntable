@@ -84,45 +84,41 @@ export class PlayerPanelComponent implements OnInit {
     }
 
     ngOnInit() {
-
         this.dataSrv.playlistsList$.subscribe((data) => {
             this.playlistsList = data;
             this.canAddToPlaylist = data.length > 0;
-            this.cd.markForCheck();
         });
 
         this.playerState.playerPanelState$.subscribe((data) => {
             this.playerPanelState = data;
-            this.cd.detectChanges();
-            // this.cd.markForCheck();
-            // this.appRef.tick();
         });
 
-        // Get player and player state left
         this.playerState.playerStateLeft$.subscribe((data) => {
             this.playerStateLeft = data;
-            this.cd.markForCheck();
-        });
-        this.playerState.playerLeft$.subscribe((data) => {
-            this.playerLeft = data;
-            this.cd.markForCheck();
         });
 
-        // Get player and player state right
+        this.playerState.playerLeft$.subscribe((data) => {
+            this.playerLeft = data;
+        });
+
         this.playerState.playerStateRight$.subscribe((data) => {
             this.playerStateRight = data;
-            this.cd.markForCheck();
         });
+
         this.playerState.playerRight$.subscribe((data) => {
             this.playerRight = data;
-            this.cd.markForCheck();
         });
 
         this.dataSrv.appState$.subscribe((data) => {
             this.appState = data;
-            this.onPlayList = _.cloneDeep(data.onPlayList);
-            this.historicList = _.cloneDeep(data.historicList);
-            this.cd.markForCheck();
+        });
+
+        this.dataSrv.onPlayList$.subscribe((data) => {
+            this.onPlayList = data;
+        });
+
+        this.dataSrv.onPlayList$.subscribe((data) => {
+            this.historicList = data;
         });
     }
 
