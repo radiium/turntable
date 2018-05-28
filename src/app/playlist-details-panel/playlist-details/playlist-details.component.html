@@ -1,4 +1,4 @@
-<div *ngIf="currentPlaylist" id="playlistDetailsContainer" class="contentPanel">
+<div *ngIf="hasData" id="playlistDetailsContainer" class="contentPanel">
 
     <app-toolbar [height]="'40px'" [margin]="'0 0 0 2px'" [padding]="'0 0 0 15px'">
         <div class="name noOverflow">{{ currentPlaylist?.title }}</div>
