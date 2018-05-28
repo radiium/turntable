@@ -27,7 +27,7 @@
         "typescript"
     ],
     "private": true,
-    "main": "main.js",
+    "main": "electron.js",
     "dependencies": {
         "electron-context-menu": "^0.9.1",
         "electron-json-storage": "^4.0.2",
