@@ -43,12 +43,15 @@ export class DragDropSortableService {
     constructor(private _config: DragDropConfig) {}
 
     markSortable(elem: HTMLElement) {
+        // prev used class
+        //this._config.onSortableDragClass
+
         if (isPresent(this._elem)) {
-            this._elem.classList.remove(this._config.onSortableDragClass);
+            this._elem.classList.remove(this._config.onDragOverClass);
         }
         if (isPresent(elem)) {
             this._elem = elem;
-            this._elem.classList.add(this._config.onSortableDragClass);
+            this._elem.classList.add(this._config.onDragOverClass);
         }
     }
 }
