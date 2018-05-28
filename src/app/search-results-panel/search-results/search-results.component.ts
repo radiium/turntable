@@ -5,6 +5,7 @@ import { Playlist, PlaylistItem, SearchResults, AppState } from 'core/models';
 import { DataService } from 'core/services/data.service';
 import { YoutubeService } from 'core/services/youtube.service';
 import { PlayerStateService } from 'core/services/player-state.service';
+import { PlaylistService } from 'core/services/playlist.service';
 
 @Component({
     selector: 'app-search-results',
@@ -38,6 +39,7 @@ export class SearchResultsComponent implements OnInit {
     constructor(
     private cdRef: ChangeDetectorRef,
     private dataSrv: DataService,
+    private plSrv: PlaylistService,
     private ytSrv: YoutubeService,
     private playerState: PlayerStateService) {
         this.videoList = [];
@@ -85,7 +87,7 @@ export class SearchResultsComponent implements OnInit {
     }
 
     addToQueue(video: PlaylistItem) {
-        this.dataSrv.setOnPlayList([...this.appState.onPlayList, video]);
+        this.plSrv.addToPlayerList(video);
     }
 
     trackByFn(index: number, item: any) {
