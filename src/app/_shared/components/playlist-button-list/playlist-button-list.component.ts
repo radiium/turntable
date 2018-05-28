@@ -19,7 +19,6 @@ export class PlaylistButtonListComponent implements AfterViewInit {
     playlistsList: Playlist[];
     appState: AppState;
     dragImage: DragImage;
-    dragData: any;
 
     @ViewChild('scrollContainer') scrollContainer: ElementRef;
 
@@ -39,10 +38,6 @@ export class PlaylistButtonListComponent implements AfterViewInit {
         this.dataSrv.appState$.subscribe(appState => {
             this.appState = appState;
         });
-
-        this.dataSrv.onDragData$.subscribe(dragData => {
-            this.dragData = dragData;
-        });
     }
 
     ngAfterViewInit() {
@@ -53,37 +48,15 @@ export class PlaylistButtonListComponent implements AfterViewInit {
         this.plSrv.showPlaylist(playlist);
     }
 
-    onDragOver(btnRef, plId) {
-        this.zone.runOutsideAngular(() => {
-            if (btnRef && this.dragData && (this.dragData.from !== plId)) {
-                btnRef.classList.add('dnd-drag-over');
-            }
-            if (event.preventDefault) event.preventDefault();
-        });
+    onDropSuccess(event, plId) {
+        this.plSrv.addToPlaylistOne(event.dragData.video, plId);
     }
 
-    onDragLeave(btnRef) {
-        this.zone.runOutsideAngular(() => {
-            if (btnRef && btnRef.classList && btnRef.classList.contains('dnd-drag-over')) {
-                btnRef.classList.remove('dnd-drag-over')
-            }
-        });
-    }
-    
-    onDrop(event, btnRef, plId) {
-        this.zone.runOutsideAngular(() => {
-            if (this.dragData && (this.dragData.from !== plId)) {
-                const stringData = event.dataTransfer.getData('text');
-                if (stringData) {
-                    const data = JSON.parse(stringData);
-                    if (data.video && data.type === 'PlayListItem') {
-                        const video: PlaylistItem = data.video as PlaylistItem;
-                        this.plSrv.addToPlaylistOne(video, plId);
-                    }
-                }
-            }
-            this.onDragLeave(btnRef);
-        });
+    allowDrop(plId) {
+        return (dragData: any) => {
+            return dragData.type === 'PlayListItem'
+                && dragData.from !== plId;
+        };
     }
 
     trackByFn(index, item) {

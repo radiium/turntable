@@ -135,16 +135,8 @@ export class VideoListComponent implements OnChanges {
         this.plSrv.moveVideo(from, to, this.playlistId, this.listRef.nativeElement.children[to]);
     }
 
-
-    // DND event
-    onDragStart(event) {
-        this.dataSrv.setOnDragData(event);
-    }
-
     onDropSuccess(event) {
-        this.dataSrv.setOnDragData(null);
     }
-
 
     // Infinite scroll
     onScrollDown (ev) {

@@ -61,10 +61,6 @@ export class DataService {
     public  loader$ = this.loader.asObservable();
 
 
-    // Reindex list
-    private onDragData  = new Subject<any>();
-    public  onDragData$ = this.onDragData.asObservable();
-
     constructor() { }
 
 
@@ -111,11 +107,6 @@ export class DataService {
 
     setHistoricList(data) {
         this.historicList.next(data);
-    }
-
-    setOnDragData(data) {
-        let dragData = (data && data.hasOwnProperty('dragData')) ? data.dragData : data;
-        this.onDragData.next(dragData);
     }
 
     setIsMiniSideBar(data) {

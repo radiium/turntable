@@ -365,6 +365,12 @@ iframe {
 
 .dnd-drag-over {
     border: 2px dashed  rgb(75, 87, 243);
+    &.dropBtn {
+        border: none;
+    }
+    .contentContainer {
+        border: 2px dashed  rgb(75, 87, 243);
+    }
 }
 
 .dnd-drag-start {

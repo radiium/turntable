@@ -4,21 +4,9 @@
         <app-context-menu
         class="dropBtn"
         *ngFor="let pl of playlistsList; let i = index; trackBy: trackByFn;"
-        
-        (dragover)="onDragOver(btnRef, pl.id)"
-        (dragleave)="onDragLeave(btnRef)"
-        (drop)="onDrop($event, btnRef, pl.id)"
-        >
+        dnd-droppable [allowDrop]="allowDrop(pl.id)"
+        (onDropSuccess)="onDropSuccess($event, pl.id)">
 
-            <!--
-                [dragula]="'videolistBag'"
-                [attr.data-acceptdrop]="true"
-                [attr.data-hideshadow]="true"
-                [attr.data-plid]="pl.id"
-
-                dnd-droppable
-                (onDropSuccess)="onDropSuccess($event)"
-            -->
             <div content>
                 <button
                     #btnRef
