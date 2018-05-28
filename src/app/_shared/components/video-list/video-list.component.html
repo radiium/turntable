@@ -1,4 +1,14 @@
-<div class="appListContainer">
+<div class="appListContainer"
+
+    infinite-scroll
+    [infiniteScrollDistance]="scrollDistance"
+    [infiniteScrollThrottle]="throttle"
+    (scrolled)="onScrollDown()"
+    [scrollWindow]="false"
+    >
+    <!--
+        (scrolledUp)="onUp()"
+    -->
 
         <!-- Video list -->
         <div
@@ -7,11 +17,10 @@
             class="appList"
             dnd-sortable-container
             [sortableData]="videoList">
-       
     
             <!-- Video list item -->
             <div
-                *ngFor="let video of videoList; let i = index"
+                *ngFor="let video of _videoList; let i = index; trackBy: trackByFn"
                 id="{{ 'onPlayItem-' + i }}"
                 class="appListItem"
 
@@ -161,7 +170,7 @@
             [dragImage]='assets/images/vinyl.png'
         -->
             <div
-                *ngFor="let video of videoList; let i = index"
+                *ngFor="let video of _videoList; let i = index; trackBy: trackByFn"
                 id="{{ 'onPlayItem-' + i }}"
                 class="appListItem"
                 dnd-draggable

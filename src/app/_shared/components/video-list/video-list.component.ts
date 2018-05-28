@@ -22,20 +22,27 @@ import { PlaylistService } from 'core/services/playlist.service';
 })
 export class VideoListComponent implements OnChanges {
 
+
     @Input() videoList: PlaylistItem[] = [];
+    _videoList: PlaylistItem[] = [];
+    _length: number;
+
     @Input() playlistId: string;
     @Input() config: VideoListConfig;
     @Input() canAddToPlaylist: boolean;
 
+    dragImage: DragImage;
     deletable: boolean;
     confirmDelete: boolean;
+    sum = 20;
+    throttle = 200;
+    scrollDistance = 2;
 
     @Output() videoListOut = new EventEmitter();
+
     @ViewChild('listRef') listRef: ElementRef;
     @ContentChild('itemControl') itemControlTmpl: TemplateRef<any>;
     @ContentChild('footer') footerTmpl: TemplateRef<any>;
-
-    dragImage: DragImage;
 
     constructor(
     private ytSrv: YoutubeService,
@@ -48,65 +55,42 @@ export class VideoListComponent implements OnChanges {
         this.dragImage = new DragImage(Base64Images.playlistItem, 20, 20);
     }
 
-    // Update index (text and dataset)
-    reIndexItems() {
-        /*
-        if (this.config.attr.from !== 'search') {
-            if (this.listRef) {
-                const elements = this.listRef.nativeElement.children;
-                const len = elements.length;
-                console.log('REINDEX from ' + this.config.attr.from, len);
-                for (let i = 0; i < len; i++) {
-                    const el = elements[i];
-                    el.getElementsByClassName('itemIndex')[0].innerHTML = i + 1;
-                    el.dataset.index = i + '';
-                }
-            }
-        }
-        */
-    }
-
     initDeleteBtn() {
         if (this.config) {
             this.deletable = this.config.attr.from !== 'search';
             this.confirmDelete = this.config.attr.from === 'onplay' || this.config.attr.from === 'historic';
         }
-        this.cdRef.detectChanges();
+        this.cdRef.markForCheck();
     }
 
     ngOnChanges(changes: SimpleChanges) {
         if (changes.videoList && changes.videoList.currentValue) {
             this.videoList = changes.videoList.currentValue;
-            // this.cdRef.detectChanges();
-            // this.reIndexItems();
+            
+            this._length = this.videoList.length - 1;
+            this.sum = 20;
+            if (this._length < this.sum) {
+                this.sum = this._length;
+            }
+            this._videoList = this.videoList.slice(0, this.sum);
         }
 
         if (changes.playlistId && changes.playlistId.currentValue) {
             this.playlistId = changes.playlistId.currentValue;
-            // this.cdRef.detectChanges();
         }
 
         if (changes.config && changes.config.currentValue) {
             this.config = changes.config.currentValue;
             this.deletable = (this.config.attr.from !== 'search');
-            // this.cdRef.detectChanges();
         }
 
         if (changes.canAddToPlaylist && changes.canAddToPlaylist.currentValue) {
             this.canAddToPlaylist = changes.canAddToPlaylist.currentValue;
-            // this.cdRef.detectChanges();
         }
 
         this.initDeleteBtn();
     }
 
-    onDragStart(event) {
-        this.dataSrv.setOnDragData(event);
-    }
-
-    onDropSuccess(event) {
-        this.dataSrv.setOnDragData(null);
-    }
 
     // Menu action
     playVideo(video: PlaylistItem, index: number) {
@@ -151,6 +135,39 @@ export class VideoListComponent implements OnChanges {
         this.plSrv.moveVideo(from, to, this.playlistId, this.listRef.nativeElement.children[to]);
     }
 
+
+    // DND event
+    onDragStart(event) {
+        this.dataSrv.setOnDragData(event);
+    }
+
+    onDropSuccess(event) {
+        this.dataSrv.setOnDragData(null);
+    }
+
+
+    // Infinite scroll
+    onScrollDown (ev) {
+        if (this.videoList.length === this.sum) return;
+        
+        const start = this.sum;
+        this.sum += 20;
+        if (this.videoList.length <= this.sum) {
+            this.sum = this.videoList.length;
+        }
+
+        console.log('onScrollDown', start, this.sum);
+
+        for (let i = start; i < this.sum; i++) {
+            const element = this.videoList[i];
+            this._videoList.push(element);
+        }
+        //this._videoList.push.apply([...this.videoList.slice(start, this.sum)]);
+        this.cdRef.detectChanges();
+    }
+
+
+    // For NgFor
     trackByFn(index: number, item: any) {
         return item.id;
     }
