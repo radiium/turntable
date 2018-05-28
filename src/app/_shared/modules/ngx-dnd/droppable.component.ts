@@ -86,6 +86,7 @@ export class DroppableComponent extends AbstractComponent {
     _onDropCallback (event: MouseEvent) {
         if (this._dragDropService.isDragged) {
             this.onDropSuccess.emit({dragData: this._dragDropService.dragData, mouseEvent: event});
+
             if (this._dragDropService.onDragSuccessCallback) {
                 this._dragDropService.onDragSuccessCallback.emit({
                     dragData: this._dragDropService.dragData, mouseEvent: event

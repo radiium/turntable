@@ -74,7 +74,7 @@ export abstract class AbstractComponent implements OnInit, OnDestroy {
     public _dragDropService: DragDropService,
     public _config: DragDropConfig,
     private _cdr: ChangeDetectorRef,
-    private ngZone: NgZone) {
+    public ngZone: NgZone) {
         this._elem = elemRef.nativeElement;
     }
 
@@ -126,7 +126,6 @@ export abstract class AbstractComponent implements OnInit, OnDestroy {
         if (event.dataTransfer != null) {
             event.dataTransfer.setData('text', JSON.stringify(this._dragDropService.dragData));
             event.dataTransfer.effectAllowed = this.effectAllowed || this._config.dragEffect.name;
-            // console.log('effectAllowed', event.dataTransfer.effectAllowed);
             
             if (this.dragImage) {
                 let img, x, y;
@@ -162,8 +161,6 @@ export abstract class AbstractComponent implements OnInit, OnDestroy {
     }
 
     _onDragEnd(event) {
-        console.log('_onDragEnd');
-
         if (this._elem.parentElement && this._dragHelper) {
             // this._elem.parentElement.removeChild(this._dragHelper);
         }
@@ -177,10 +174,8 @@ export abstract class AbstractComponent implements OnInit, OnDestroy {
     }
 
     _onDragOver(event) {
-        //
         if (event.dataTransfer != null) {
             event.dataTransfer.dropEffect = 'move'; // this._config.dropEffect.name;
-            // console.log('dropEffect', event.dataTransfer.dropEffect);
         }
 
         if (this._isDropAllowed) {
@@ -212,7 +207,7 @@ export abstract class AbstractComponent implements OnInit, OnDestroy {
             if (event.preventDefault) event.preventDefault();
             if (event.stopPropagation) event.stopPropagation();
             this._onDropCallback(event);
-            this.detectChanges();
+            // this.detectChanges();
         }
     }
 
@@ -235,6 +230,7 @@ export abstract class AbstractComponent implements OnInit, OnDestroy {
 
     detectChanges() {
         // Programmatically run change detection to fix issue in Safari
+        /*
         setTimeout(() => {
             if (this._cdr) {
                 const destroyed = (<ViewRef>(<any>this._cdr)).destroyed;
@@ -243,6 +239,7 @@ export abstract class AbstractComponent implements OnInit, OnDestroy {
                 }
             }
         }, 250);
+        */
     }
 
     public setDragHandle(elem: HTMLElement) {

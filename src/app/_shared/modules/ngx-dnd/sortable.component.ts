@@ -47,10 +47,7 @@ export class SortableContainer extends AbstractComponent {
 
     @Input() set sortableData(sortableData: Array<any>) {
         this._sortableData = sortableData;
-        
-        //
         this.dropEnabled = !!this._sortableData;
-        // console.log('collection is changed, drop enabled: ' + this.dropEnabled);
     }
     get sortableData(): Array<any> {
         return this._sortableData;
@@ -110,7 +107,6 @@ export class SortableComponent extends AbstractComponent {
                 this.setDragHandle(handles[0].nativeElement);
             }
         } else {
-            console.log('HANDLE', handle);
         }
     };
 
@@ -192,7 +188,6 @@ export class SortableComponent extends AbstractComponent {
     }
 
     _onDragEndCallback(event: Event) {
-        // console.log('_onDragEndCallback. end dragging elem with index ' + this.index);
         this._sortableDataService.isDragged = false;
         this._sortableDataService.sortableContainer = null;
         this._sortableDataService.index = null;
