@@ -1,7 +1,7 @@
 # Turntable
 
 > A simple youtube dj app made with Electron (in progress)  
-> Current version: [1.2.0-beta](https://github.com/radiium/turntable/releases)  
+> Current version: [1.3.0-beta](https://github.com/radiium/turntable/releases)  
 > (/!\ warning: big redesign, partially working)  
   
 ## Features:  
@@ -32,7 +32,7 @@
 [Changelog](/CHANGELOG.md)  
 
 
-## Test it:  
+## Development:  
 
 #### Run in browser at 'http://localhost:4200' (*Electron features not available in this mode*)  
 > ng serve   
