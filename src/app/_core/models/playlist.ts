@@ -38,7 +38,7 @@ export enum PlayListType {
     ONPLAY = 'onplay',
     HISTORIC = 'historic',
     PLAYLIST = 'playlist',
-    WATCHLATER = 'watchLater',
+    WATCHLATER = 'watchlater',
     SEARCH = 'search'
 }
 

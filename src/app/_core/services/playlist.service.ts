@@ -43,6 +43,7 @@ export class PlaylistService {
     playerPanelState: PlayerPanelState;
     onPlayList: Playlist;
     historicList: Playlist;
+    watchLaterList: Playlist;
     
     constructor(
     private electron: ElectronService,
@@ -63,6 +64,10 @@ export class PlaylistService {
 
         this.dataSrv.historicList$.subscribe(data => {
             this.historicList = data;
+        });
+
+        this.dataSrv.watchLaterList$.subscribe(data => {
+            this.watchLaterList = data;
         });
 
         this.dataSrv.playlistsList$.subscribe(datalist => {
@@ -87,11 +92,33 @@ export class PlaylistService {
         }
     }
 
-    addToPlayerListByPlId(plId: string) {
-        let playlist = this.getPlaylistById(plId);
-        let videoList = playlist.videolist || [];
-        if (videoList && videoList.length) {
-            this.onPlayList.videolist.push.apply([...videoList]);
+    addToPlayerListByType(type: PlayListType ,plId: string) {
+
+        if (type) {
+            let videoList = [];
+            switch (type) {
+                case PlayListType.HISTORIC:
+                    videoList = _.cloneDeep(this.historicList.videolist);
+                    break;
+    
+                case PlayListType.WATCHLATER:
+                    videoList = _.cloneDeep(this.watchLaterList.videolist);
+                    break;
+    
+                case PlayListType.PLAYLIST:
+                    if (plId) {
+                        const playlist = this.getPlaylistById(plId);
+                        videoList = _.cloneDeep(playlist.videolist);
+                    }
+                    break;
+    
+                case PlayListType.SEARCH:
+                case PlayListType.ONPLAY:
+                default:
+                    break;
+            }
+
+            this.onPlayList.videolist = [...this.onPlayList.videolist, ...videoList];
             this.dataSrv.setOnPlayList(this.onPlayList);
         }
     }
@@ -99,7 +126,8 @@ export class PlaylistService {
     addToPlayerList(data: any) {
         let videoList = this.resolveVideoList(data);
         if (videoList && videoList.length) {
-            this.onPlayList.videolist.push.apply([...videoList]);
+            // this.onPlayList.videolist.push.apply([...videoList]);
+            this.onPlayList.videolist = [...this.onPlayList.videolist, ...videoList];
             this.dataSrv.setOnPlayList(this.onPlayList);
         }
     }
@@ -112,7 +140,8 @@ export class PlaylistService {
     }
 
     deletePlayerList() {
-        this.dataSrv.setOnPlayList([]);
+        this.onPlayList.videolist = [];
+        this.dataSrv.setOnPlayList(this.onPlayList);
     }
 
 
@@ -131,7 +160,8 @@ export class PlaylistService {
     }
 
     deleteHistoricList() {
-        this.dataSrv.setHistoricList([]);
+        this.historicList.videolist = [];
+        this.dataSrv.setHistoricList(this.historicList);
     }
 
     /**
@@ -147,11 +177,6 @@ export class PlaylistService {
         });
         dialogRef.afterClosed().subscribe(result => {
             if (result) {
-                const id = UUID.UUID();
-                const title = result.name;
-                const privacyStatus = 'private';
-                // const videoList: PlaylistItem[] = [];
-
                 if (!videoList) {
                     videoList = [];
                 }
@@ -159,6 +184,7 @@ export class PlaylistService {
                 const pl = PlaylistFactory.create(PlayListType.PLAYLIST, {
                     id: UUID.UUID(),
                     appId: UUID.UUID(),
+                    title: result.name,
                     privacyStatus: PrivacyStatus.PRIVATE,
                     isLocal: true,
                     videolist: videoList
@@ -227,6 +253,39 @@ export class PlaylistService {
         });
     }
 
+    updatePlaylist(playlist: Playlist) {
+        let videoList;
+        switch (playlist.type) {
+            case PlayListType.SEARCH:
+                break;
+
+            case PlayListType.ONPLAY:
+                this.dataSrv.setOnPlayList(playlist);
+                break;
+
+            case PlayListType.HISTORIC:
+                this.dataSrv.setHistoricList(playlist);
+                break;
+
+            case PlayListType.WATCHLATER:
+                this.dataSrv.setWatchLaterList(playlist);
+                break;
+
+            case PlayListType.PLAYLIST:
+                const vlIdx = _.findIndex(this.playlistsList, { id: playlist.id });
+                this.playlistsList[vlIdx] = playlist;
+                this.dataSrv.setPlaylistsList(this.playlistsList);
+                break;
+
+            default:
+                break;
+        }
+
+        setTimeout(() => {
+            // elRef.scrollIntoView();
+        });
+    }
+
     deletePlaylist(playlist: Playlist): void {
         console.log('deletePlaylist')
         const dialogRef = this.dialog.open(DeletePlaylistDialogComponent, {
@@ -272,85 +331,84 @@ export class PlaylistService {
         });
     }
 
-    deleteVideo(video: PlaylistItem, index: number, plId: string, withoutConfirm?: boolean) {
-
-        console.log('deleteVideo')
+    deleteVideoOnPlaylist(video: PlaylistItem, index: number, plType: PlayListType, plId: string, withoutConfirm?: boolean) {
         if (withoutConfirm) {
-
-            switch (plId) {
-                case 'search':
-                    break;
-
-                case 'onplay':
-                    this.onPlayList.videolist.splice(index, 1);
-                    this.dataSrv.setOnPlayList(this.onPlayList);
-                    break;
-
-                case 'historic':
-                    this.historicList.videolist.splice(index, 1);
-                    this.dataSrv.setHistoricList(this.historicList);
-                    break;
-
-                default:
-                    const plIdx = this.getPlaylistIndexById(plId);
-                    this.playlistsList[plIdx].videolist.splice(index, 1);
-                    this.dataSrv.setPlaylistsList(this.playlistsList);
-                    break;
-            }
+            this.deleteVideo(index, plType, plId);
         } else {
-
             const dialogRef = this.dialog.open(ConfirmDialogComponent, {
                 data: { title: 'Delete \'' + video.title + '\'?' }
             });
             dialogRef.afterClosed().subscribe(delVideo => {
                 if (delVideo) {
-    
-                    switch (plId) {
-                        case 'search':
-                            break;
-    
-                        case 'onplay':
-                            this.onPlayList.videolist.splice(index, 1);
-                            this.dataSrv.setOnPlayList(this.onPlayList);
-                            break;
-    
-                        case 'historic':
-                            this.historicList.videolist.splice(index, 1);
-                            this.dataSrv.setHistoricList(this.historicList);
-                            break;
-    
-                        default:
-                            const plIdx = this.getPlaylistIndexById(plId);
-                            this.playlistsList[plIdx].videolist.splice(index, 1);
-                            this.dataSrv.setPlaylistsList(this.playlistsList);
-                            break;
-                    }
+                    this.deleteVideo(index, plType, plId);
                 }
             });
         }
     }
 
-    moveVideo(from: number, to: number, plId: string, elRef?: Element) {
+    deleteVideo(index: number, type: PlayListType, plId: string) {
+        if (type) {
+            switch (type) {
+                
+                case PlayListType.ONPLAY:
+                    this.onPlayList.videolist.splice(index, 1);
+                    this.dataSrv.setOnPlayList(this.onPlayList);
+                    break;
+    
+                case PlayListType.HISTORIC:
+                    this.historicList.videolist.splice(index, 1);
+                    this.dataSrv.setHistoricList(this.historicList);
+                    break;
+    
+                case PlayListType.WATCHLATER:
+                    this.watchLaterList.videolist.splice(index, 1);
+                    this.dataSrv.setHistoricList(this.watchLaterList);
+                    break;
+    
+                case PlayListType.PLAYLIST:
+                    if (plId) {
+                        const plIdx = this.getPlaylistIndexById(plId);
+                        this.playlistsList[plIdx].videolist.splice(index, 1);
+                        this.dataSrv.setPlaylistsList(this.playlistsList);
+                        break;
+                    }
+    
+                case PlayListType.SEARCH:
+                default:
+                    break;
+            }
+        }
+    }
+
+    moveVideo(from: number, to: number, type: PlayListType, plId: string, elRef?: Element) {
         let videoList;
-        switch (plId) {
-            case 'search':
+        switch (type) {
+            case PlayListType.SEARCH:
                 break;
 
-            case 'onplay':
+            case PlayListType.ONPLAY:
                 this.onPlayList.videolist = this.move(from, to, this.onPlayList.videolist);
                 this.dataSrv.setOnPlayList(this.onPlayList);
                 break;
 
-            case 'historic':
+            case PlayListType.HISTORIC:
                 this.historicList.videolist = this.move(from, to, this.historicList.videolist);
                 this.dataSrv.setHistoricList(this.historicList);
                 break;
 
-            default:
+            case PlayListType.WATCHLATER:
+                this.watchLaterList.videolist = this.move(from, to, this.watchLaterList.videolist);
+                this.dataSrv.setWatchLaterList(this.watchLaterList);
+                break;
+
+            case PlayListType.PLAYLIST:
                 const vlIdx = _.findIndex(this.playlistsList, { id: plId });
                 videoList = this.move(from, to, this.playlistsList[vlIdx].videolist);
                 this.playlistsList[vlIdx].videolist = videoList;
                 this.dataSrv.setPlaylistsList(this.playlistsList);
+                break;
+
+            default:
                 break;
         }
 

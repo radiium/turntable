@@ -224,7 +224,7 @@ export class AppStateService {
             width: pl.thumb.width,
         };
 
-        const playlists = PlaylistFactory.create(PlayListType.ONPLAY, {
+        const playlists = PlaylistFactory.create(PlayListType.PLAYLIST, {
             id: pl.id,
             appId: pl.appId || UUID.UUID(),
             title: pl.title,

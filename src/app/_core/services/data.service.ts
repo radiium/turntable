@@ -117,7 +117,7 @@ export class DataService {
     }
 
     setOnPlayList(data) {
-        this.onPlayList.next(data);
+        this.onPlayList.next(_.cloneDeep(data));
     }
 
     setHistoricList(data) {

@@ -18,7 +18,7 @@
                     dnd-draggable
                     [dragEnabled]="pl.videolist.length > 0"
                     [dragImage]="dragImage"
-                    [dragData]="{ playlist: pl.id, type: 'PlayList' }"
+                    [dragData]="{ plId: pl.id, plType: pl.type, type: 'PlayList' }"
                     (click)="selectPlaylist(pl)">
                     
                     <fa class="sidenavBtnIco dropBtn" [name]="'folder-open-o'" [size]="1"></fa>

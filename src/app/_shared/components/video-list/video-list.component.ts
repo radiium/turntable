@@ -1,5 +1,4 @@
-import { Component, Input, Output, OnChanges, SimpleChanges,
-    ViewChild, ContentChild, TemplateRef, ElementRef,
+import { Component, Input, Output, ViewChild, ContentChild, TemplateRef, ElementRef,
     ChangeDetectionStrategy, ChangeDetectorRef, EventEmitter } from '@angular/core';
 import * as _ from 'lodash';
 
@@ -19,20 +18,16 @@ import { PlaylistService } from 'core/services/playlist.service';
     styleUrls: ['./video-list.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class VideoListComponent /*implements OnChanges*/ {
-
-
-    
+export class VideoListComponent {
 
     _playlist: Playlist;
     @Input()
     set playlist(playlist: Playlist) {
-        console.log('playlist change', playlist)
         this._playlist = playlist;
 
         if (playlist) {
-            this.initVideoList();
             this.initVar();
+            this.initVideoList();
         }
         this.cdRef.detectChanges();
     }
@@ -48,38 +43,17 @@ export class VideoListComponent /*implements OnChanges*/ {
     // Loadable videoList
     _items: PlaylistItem[] = [];
     _itemsLen: number;
-    
+
+    // Number of item to add on scroll
+    _step: number;
+
     sortable: boolean;
     deletable: boolean;
     confirmDelete: boolean;
     disableInfiniteScroll: boolean;
-    
     @Input() canAddToPlaylist: boolean;
+
     dragImage: DragImage;
-    
-
-
-
-    /*
-    @Input() videoList: PlaylistItem[] = [];
-    @Input() playlistId: string;
-    @Input() canAddToPlaylist: boolean;
-    @Input() config: VideoListConfig;
-    */
-
-    /*
-    dragBagName: String;
-    draggable: boolean;
-    displayType: String;
-    showShadow: boolean;
-    attr: {
-        copy: boolean;
-        acceptDrop: boolean;
-        playlistId: string;
-        from: string;
-    };
-    */
-
 
     @ViewChild('listRef') listRef: ElementRef;
     @ContentChild('footer') footerTmpl: TemplateRef<any>;
@@ -91,19 +65,28 @@ export class VideoListComponent /*implements OnChanges*/ {
     private playerState: PlayerStateService,
     private cdRef: ChangeDetectorRef) {
         
-        // this.initDeleteBtn();
+        this._step = 5;
         this.dragImage = new DragImage(Base64Images.playlistItem, 20, 20);
     }
 
    
     initVideoList() {
-        this._videoList    = this.playlist.videolist;
-        this._videoListLen = this.playlist.videolist.length;
+        if (this.disableInfiniteScroll) {
+            this._items = this.playlist.videolist;
 
-        this._itemsLen = (this._videoListLen < this._itemsLen)
-            ? this._videoListLen : 20;
+        } else {
+            this._videoList    = this.playlist.videolist;
+            this._videoListLen = this.playlist.videolist.length;
+    
+            this._itemsLen = (this._videoListLen < this._itemsLen)
+                ? this._videoListLen : this._step;
+    
+            this._items = this.playlist.videolist.slice(0, this._itemsLen);
 
-        this._items = this.playlist.videolist.slice(0, this._itemsLen);
+            if (this.listRef) {
+                this.listRef.nativeElement.scrollIntoView();
+            }
+        }
     }
 
     initVar() {
@@ -152,51 +135,6 @@ export class VideoListComponent /*implements OnChanges*/ {
         }
     }
 
-    initDeleteBtn() {
-        /*
-        if (this.config) {
-            this.deletable = this.config.attr.from !== 'search';
-            
-            this.confirmDelete =
-               this.config.attr.from === 'onplay'
-            || this.config.attr.from === 'historic';
-        }
-        this.cdRef.markForCheck();
-        */
-    }
-
-    /*
-    ngOnChanges(changes: SimpleChanges) {
-        if (changes.videoList && changes.videoList.currentValue) {
-            this.videoList = changes.videoList.currentValue;
-            
-            console.log('videolist ngOnChanges')
-            this._length = this.videoList.length;
-            this.sum = 20;
-            if ((this._length) < this.sum) {
-                this.sum = this._length;
-            }
-            this._videoList = this.videoList.slice(0, this.sum);
-        }
-
-        if (changes.playlistId && changes.playlistId.currentValue) {
-            this.playlistId = changes.playlistId.currentValue;
-        }
-
-        if (changes.config && changes.config.currentValue) {
-            this.config = changes.config.currentValue;
-            this.deletable = (this.config.attr.from !== 'search');
-        }
-
-        if (changes.canAddToPlaylist && changes.canAddToPlaylist.currentValue) {
-            this.canAddToPlaylist = changes.canAddToPlaylist.currentValue;
-        }
-
-        this.initDeleteBtn();
-    }
-    */
-
-
     // Menu action
     playVideo(video: PlaylistItem, index: number) {
         this.plSrv.playVideo(video, index);
@@ -215,7 +153,7 @@ export class VideoListComponent /*implements OnChanges*/ {
     }
 
     deleteVideo(video: PlaylistItem, index: number, withoutConfirm?: boolean) {
-        this.plSrv.deleteVideo(video, index, this._playlist.id, withoutConfirm);
+        this.plSrv.deleteVideoOnPlaylist(video, index, this._playlist.type, this._playlist.id, withoutConfirm);
     }
 
 
@@ -237,10 +175,14 @@ export class VideoListComponent /*implements OnChanges*/ {
     }
 
     private move(from, to) {
-        this.plSrv.moveVideo(from, to, this._playlist.id/*, this.listRef.nativeElement.children[to]*/);
+        this.plSrv.moveVideo(from, to, this._playlist.type, this._playlist.id/*, this.listRef.nativeElement.children[to]*/);
     }
 
     onDropSuccess(event) {
+        for (let i = 0; i < this._items.length; i++) {
+            this._videoList[i] = this._items[i];
+        }
+        this.plSrv.updatePlaylist(this._playlist);
     }
 
     // Infinite scroll
@@ -248,7 +190,7 @@ export class VideoListComponent /*implements OnChanges*/ {
         if (this._videoListLen === this._itemsLen) return;
         
         const start = this._itemsLen;
-        this._itemsLen += 20;
+        this._itemsLen += this._step;
         if ((this._videoListLen) <= this._itemsLen) {
             this._itemsLen = this._videoListLen;
         }
@@ -256,6 +198,8 @@ export class VideoListComponent /*implements OnChanges*/ {
         for (let i = start; i < this._itemsLen; i++) {
             const element = this._videoList[i];
             this._items.push(element);
+
+            this._items = _.cloneDeep(this._items);
         }
         //this._videoList.push.apply([...this.videoList.slice(start, this.sum)]);
         this.cdRef.detectChanges();

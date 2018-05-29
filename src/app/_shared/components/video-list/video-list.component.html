@@ -27,7 +27,7 @@
             class="appListItem"
             dnd-sortable
             [sortableIndex]="i"
-            [dragData]="{ video: video, from: playlistId, type: 'PlayListItem' }"
+            [dragData]="{ video: video, from: playlist.type, type: 'PlayListItem' }"
             [dragEnabled]="true"
             [dragImage]="dragImage"
             [effectAllowed]="'copyMove'"
@@ -139,7 +139,7 @@
 
                     <!-- Delete track -->
                     <button mat-menu-item (click)="deleteVideo(video, i)"
-                        *ngIf="deletable && !confirmDelete">
+                        *ngIf="deletable && confirmDelete">
                         <mat-icon svgIcon="delete-forever"></mat-icon>
                         <span [translate]="'removeTrack'"></span>
                     </button>
@@ -147,7 +147,7 @@
 
                 <!-- Delete track -->
                 <button class="toolbarBtn btnHover" (click)="deleteVideo(video, i, true)"
-                    *ngIf="deletable && confirmDelete">
+                    *ngIf="deletable && !confirmDelete">
                     <mat-icon svgIcon="delete-forever"></mat-icon>
                 </button>
 
@@ -298,9 +298,9 @@
                 </button>
             </div>
         </div>
+        <ng-container *ngTemplateOutlet="footerTmpl, context: { $implicit: footer }"></ng-container>
     </div>
 
-    <ng-container *ngTemplateOutlet="footerTmpl, context: { $implicit: footer }"></ng-container>
 </div>
 
 

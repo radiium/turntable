@@ -107,7 +107,7 @@ export class AppComponent implements OnInit, OnDestroy {
         if (dragData) {
             if (dragData.type === 'PlayList') {
                 // const playlist: Playlist = dragData.playlist as Playlist;
-                this.plSrv.addToPlayerListByPlId(dragData.playlist);
+                this.plSrv.addToPlayerListByType(dragData.plType, dragData.plId);
             } else if (dragData.type === 'PlayListItem') {
                 const video: PlaylistItem = dragData.video as PlaylistItem;
                 this.plSrv.addToPlayerList(video);

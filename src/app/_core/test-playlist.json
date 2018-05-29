@@ -1,80 +1,215 @@
 {
     "playlist": {
-        "type": "",
-        "id": "a55f086e-82e7-8e8b-f0e2-bfef59cf5cf1",
-        "appId": "bfef59cf5cf1-a55f086e",
-        "title": "Test playlist",
+        "type": "playlist",
+        "id": "f187f9f6-14d2-3a82-3a8e-3072673444db",
+        "appId": "41fa5859-a4dd-19d7-f28b-24cc742a966e",
+        "title": "Test Playlist",
         "description": "",
         "thumb": {
             "url": "assets/images/pochette.png"
         },
-        "publishedAt": "",
-        "privacyStatus": "public",
+        "publishedAt": "14:03:39",
+        "privacyStatus": "private",
         "isLocal": true,
         "videolist": []
     },
 
     "videolist": [
-        {
-            "id": "gAfqguL88tA",
-            "appId": "gAfqguL88tA",
-            "title": "Bad maners",
-            "description": "",
-            "thumb": {
-                "url": "assets/images/pochette.png"
-            },
-            "duration": 268000,
-            "channelTitle": "CoucouChannel",
-            "publishedAt": "2014-04-06T03:19:37.000Z",
-            "selected": false
-        }, {
-            "id": "-Cvo2fVb1aY",
-            "appId": "gAfqguL88tA",
-            "title": "Midnight Magic - Vicious Love (Offi…",
-            "description": "The official video for Vicious Lov…",
-            "thumb": {
-                "url": "assets/images/pochette.png"
-            },
-            "duration": 268000,
-            "channelTitle": "CoucouChannel",
-            "publishedAt": "2014-04-06T03:19:37.000Z",
-            "selected": false
-        }, {
-            "id": "MceYFMDL108",
-            "appId": "gAfqguL88tA",
-            "title": "Midnight Magic - Drop Me A Line (Of…",
-            "description": "by Pilar Wiley",
-            "thumb": {
-                "url": "assets/images/pochette.png"
-            },
-            "duration": 235000,
-            "channelTitle": "CoucouChannel",
-            "publishedAt": "2014-04-06T03:19:37.000Z",
-            "selected": false
-        }, {
-            "id": "29uVBx9cyrs",
-            "appId": "gAfqguL88tA",
-            "title": "Midnight Magic - I Gotta Feeling",
-            "description": "Stream / Download:  https: //midnight…",
-            "thumb": {
-                "url": "assets/images/pochette.png"
-            },
-            "duration": 346000,
-            "channelTitle": "CoucouChannel",
-            "publishedAt": "2014-04-06T03:19:37.000Z",
-            "selected": false
-        }, {
-            "id": "8EaYwmv7hcA",
-            "appId": "gAfqguL88tA",
-            "title": "Midnight Magic - Beam Me Up",
-            "description": "Midnight Magics official music vid…",
-            "thumb": {
-                "url": "assets/images/pochette.png"
-            },
-            "duration": 235000,
-            "channelTitle": "CoucouChannel",
-            "publishedAt": "2014-04-06T03:19:37.000Z",
-            "selected": false
-        }
-    ]
+    {
+      "type": "PlaylistItem",
+      "id": "tpLLst4-3fw",
+      "appId": "24f908f2-299c-0a9e-3894-58814d1e0c12",
+      "title": "7 Riddles That Will Test Your Brain Power",
+      "description": "These 7 puzzles will trick your brain. Take this fun test to check the sharpness and productivity of your brain. Try to answer these questions as quickly as possible and see the results!\n\nOur brain is a mysterious thing. We know more about stars than about the things inside our heads! But what we do know about the brain is that it gets less sharp and productive with age. \nYou have a maximum of 20 seconds for each task, but try to answer the questions as fast as possible. \n\nTIMESTAMPS\nWhat is the mistake two photos have in common? 0:45\nHow many holes does the T-shirt have? 1:53\nHow would you name this tree? 2:40\nCan you solve this riddle one in 5 seconds? 3:21\nDo you see a hidden baby? 4:26\nWhich line is longer? 5:12\nCan you spot Mike Wazowski? 6:30\n\nSUMMARY\nIf it took you more than 20 seconds to answer each question, or you didn't manage all the tasks, it means that you have the brain of a mature person. It 's hard for you to make your mind see beyond the obvious and you can't handle change easily. \nIf took you less than 20 seconds, your brain is quite young, and you can approach tasks from different angles. \nIf you answered each question correctly in less than 5 seconds, your brain is very young and flexible! You can notice the tiniest details right away and adapt to new situations easily! \n\nWhat is your result? Tell us in the comment section below! \n\nSubscribe to our new channel 'SLICK SLIME SAM' - https://goo.gl/zarVZo\nGive a thumbs–up to see more adventures! \n\n\nSubscribe to Bright Side : https://goo.gl/rQTJZz\n\n----------------------------------------------------------------------------------------\nOur Social Media:\n\nFacebook: https://www.facebook.com/brightside/\nInstagram: https://www.instagram.com/brightgram/\n5-Minute Crafts Youtube: https://www.goo.gl/8JVmuC \n\n----------------------------------------------------------------------------------------\nFor more videos and articles visit:\nhttp://www.brightside.me/",
+      "thumb": {
+        "url": "https://i.ytimg.com/vi/tpLLst4-3fw/default.jpg"
+      },
+      "duration": 491000,
+      "channelTitle": "BRIGHT SIDE",
+      "publishedAt": "2017-10-03T03:00:05.000Z",
+      "selected": false
+    },
+    {
+      "type": "PlaylistItem",
+      "id": "5aZI-jukT5E",
+      "appId": "f7aaf761-8689-ab61-dae0-27416a375f56",
+      "title": "See If You Can Pass the FBI Special Agent Test",
+      "description": "Test your logic and creative thinking in the hardest test ever. Find out if you’re intelligent enough solve all these tricky riddles and become an FBI special agent. \nFBI special agent is one of the hardest jobs to get into. According to statistics, less than 5% of the applicants are accepted. Answering a number of questions can show if the candidate has a natural potential to develop creative thinking and logic based reasoning skills. Would you be one of the few who nailed the test?\n\nMusic: https://www.youtube.com/audiolibrary/music\n\nTIMESTAMPS\nTwo pills 0:45\nBeverages 1:41\nCassette 2:51\nChristmas mystery 3:56\nWho is the mother? 6:00\n\nSUMMARY\nHow did the killer always get the harmless pill?\nWhy was the woman still alive when the man died? \nWhy does the detective think that it was a murder, but not a suicide?\nHow did the detective know the neighbor was a liar?\nWho do you think is the real mother of the child?\n\nSubscribe to Bright Side : https://goo.gl/rQTJZz\n\n----------------------------------------------------------------------------------------\nOur Social Media:\n\nFacebook: https://www.facebook.com/brightside/\nInstagram: https://www.instagram.com/brightgram/\n\n5-Minute Crafts Youtube: https://www.goo.gl/8JVmuC\n\n----------------------------------------------------------------------------------------\nFor more videos and articles visit:\nhttp://www.brightside.me/",
+      "thumb": {
+        "url": "https://i.ytimg.com/vi/5aZI-jukT5E/default.jpg"
+      },
+      "duration": 467000,
+      "channelTitle": "BRIGHT SIDE",
+      "publishedAt": "2018-04-01T03:00:00.000Z",
+      "selected": false
+    },
+    {
+      "type": "PlaylistItem",
+      "id": "XetfIFOzqWc",
+      "appId": "d198577f-3145-145d-f390-61871ce59913",
+      "title": "Find Out If You're Hot Or Just Cute | Quick Personality Test",
+      "description": "It’s time to find out if people see you as a little cutie-pie or a drop-dead babe! This quick test will help you find out how others see you and what your strong side is. It will help you see if you’re super hot or just cute. \nYou have 4 options for each of the 10 questions. You’ll see how many points you get for your choice after each one. Add them up and find out more about the true you! \nThis video is intended for entertainment and information purposes only. The video is not intended to serve as a substitute for professional, medical or psychiatric advice of any kind.\n\nMusic: \nhttps://www.youtube.com/audiolibrary/music\n\nTIMESTAMPS\nPick your happy song 0:22\nHow do you react to a flirty text from a stranger? 0:48\nWhere do your eyes go when you first meet a handsome guy? 1:21\nWhat would you never do to get someone to like you? 1:51\nWhat is your driving style? 2:21\nDescribe your ideal Friday night. 2:52\nPick a fruit 3:15\nPick a dessert 3:35\nWhat do you do when you feel like you need some change in your life? 3:57\nDo you believe in love at first sight? 4:30\n100 to 170 points explained 5:04\n180 to 250 points explained 5:28\n260 to 320 points explained 5:49\n330 to 400 points explained 6:12\n\nSubscribe to Bright Side : https://goo.gl/rQTJZz\n\n----------------------------------------------------------------------------------------\nOur Social Media:\n\nFacebook: https://www.facebook.com/brightside/\nInstagram: https://www.instagram.com/brightgram/\n\n5-Minute Crafts Youtube: https://www.goo.gl/8JVmuC\n\n----------------------------------------------------------------------------------------\nFor more videos and articles visit:\nhttp://www.brightside.me/",
+      "thumb": {
+        "url": "https://i.ytimg.com/vi/XetfIFOzqWc/default.jpg"
+      },
+      "duration": 417000,
+      "channelTitle": "BRIGHT SIDE",
+      "publishedAt": "2018-05-17T03:00:00.000Z",
+      "selected": false
+    },
+    {
+      "type": "PlaylistItem",
+      "id": "Fisr4YY_2L8",
+      "appId": "200ef01d-114e-18d5-c602-7d240588d444",
+      "title": "What Is Your Soul Element? Cool Personality Test",
+      "description": "Take this cool quick test to find out what your soul element is. Let’s see whether you have a “fire”, “air”, “water” or “earth” soul. You probably think you know everything about yourself, but here is a chance to learn something new. Your driving element has a great influence on your character and actions. If you’d like to find out more about it, then grab a piece of paper and a pen and let's begin. \n\nThis video is intended for entertainment and information purposes only. The video is not intended to serve as a substitute for professional, medical or psychiatric advice of any kind.\n\nMusic: In_the_Land_of_Rhinoplasty\nhttps://www.youtube.com/audiolibrary/music\n\nTIMESTAMPS\nInstruction 0:30\nQuestion 1 0:51\nQuestion 2 1:32\nQuestion 3 2:16\nQuestion 4 2:56\nQuestion 5 3:44\nQuestion 6 4:26\nQuestion 7 5:10\nQuestion 8 5:55\nQuestion 9 6:54\nQuestion 10 7:45\n100-160 points – Fire 8:41\n170-240 points – Air 9:13\n250-320 points – Water 9:49\n330-400 points – Earth 10:17\n\nSUMMARY\n-You’ll have 10 seconds to answer each of these 10 questions. You’ll get a certain amount of points for the choice you make.\n-What three words best describe your personality?\n-Which of these animals do you like the most?\n-Which color combo do you like the most? \n-What’s your favorite movie genre?\n-How many friends do you have?\n-Which of these music genres do you like more than the others? \n-Which magical charm would you like to have?\n-If someone you love died, how would you handle it?\n-If you had 1 million dollars, what would you do with it?\n-How would you describe your life?\n-You're an exceptionally bright and charismatic person and you charm people with your character and attitude.\n-You’re truly a people person living life to the fullest. \n-If you're in this group, you're incredibly trusting, understanding, and devoted to everything that matters to you.\n-You're an empathetic, loyal, and hard-working person who prefers to think things through before acting.\n\nSubscribe to Bright Side : https://goo.gl/rQTJZz\n\n----------------------------------------------------------------------------------------\nOur Social Media:\n\nFacebook: https://www.facebook.com/brightside/\nInstagram: https://www.instagram.com/brightgram/\n\n5-Minute Crafts Youtube: https://www.goo.gl/8JVmuC\n\n----------------------------------------------------------------------------------------\nFor more videos and articles visit:\nhttp://www.brightside.me/",
+      "thumb": {
+        "url": "https://i.ytimg.com/vi/Fisr4YY_2L8/default.jpg"
+      },
+      "duration": 673000,
+      "channelTitle": "BRIGHT SIDE",
+      "publishedAt": "2018-04-05T03:00:00.000Z",
+      "selected": false
+    },
+    {
+      "type": "PlaylistItem",
+      "id": "Fisr4YY_2L8",
+      "appId": "200ef01d-114e-18d5-c602-7d240588d444",
+      "title": "What Is Your Soul Element? Cool Personality Test",
+      "description": "Take this cool quick test to find out what your soul element is. Let’s see whether you have a “fire”, “air”, “water” or “earth” soul. You probably think you know everything about yourself, but here is a chance to learn something new. Your driving element has a great influence on your character and actions. If you’d like to find out more about it, then grab a piece of paper and a pen and let's begin. \n\nThis video is intended for entertainment and information purposes only. The video is not intended to serve as a substitute for professional, medical or psychiatric advice of any kind.\n\nMusic: In_the_Land_of_Rhinoplasty\nhttps://www.youtube.com/audiolibrary/music\n\nTIMESTAMPS\nInstruction 0:30\nQuestion 1 0:51\nQuestion 2 1:32\nQuestion 3 2:16\nQuestion 4 2:56\nQuestion 5 3:44\nQuestion 6 4:26\nQuestion 7 5:10\nQuestion 8 5:55\nQuestion 9 6:54\nQuestion 10 7:45\n100-160 points – Fire 8:41\n170-240 points – Air 9:13\n250-320 points – Water 9:49\n330-400 points – Earth 10:17\n\nSUMMARY\n-You’ll have 10 seconds to answer each of these 10 questions. You’ll get a certain amount of points for the choice you make.\n-What three words best describe your personality?\n-Which of these animals do you like the most?\n-Which color combo do you like the most? \n-What’s your favorite movie genre?\n-How many friends do you have?\n-Which of these music genres do you like more than the others? \n-Which magical charm would you like to have?\n-If someone you love died, how would you handle it?\n-If you had 1 million dollars, what would you do with it?\n-How would you describe your life?\n-You're an exceptionally bright and charismatic person and you charm people with your character and attitude.\n-You’re truly a people person living life to the fullest. \n-If you're in this group, you're incredibly trusting, understanding, and devoted to everything that matters to you.\n-You're an empathetic, loyal, and hard-working person who prefers to think things through before acting.\n\nSubscribe to Bright Side : https://goo.gl/rQTJZz\n\n----------------------------------------------------------------------------------------\nOur Social Media:\n\nFacebook: https://www.facebook.com/brightside/\nInstagram: https://www.instagram.com/brightgram/\n\n5-Minute Crafts Youtube: https://www.goo.gl/8JVmuC\n\n----------------------------------------------------------------------------------------\nFor more videos and articles visit:\nhttp://www.brightside.me/",
+      "thumb": {
+        "url": "https://i.ytimg.com/vi/Fisr4YY_2L8/default.jpg"
+      },
+      "duration": 673000,
+      "channelTitle": "BRIGHT SIDE",
+      "publishedAt": "2018-04-05T03:00:00.000Z",
+      "selected": false
+    },
+    {
+      "type": "PlaylistItem",
+      "id": "cHXtnNCsGo4",
+      "appId": "27414057-d7b4-abd8-a99a-daad4ef9ae0b",
+      "title": "Who Is Secretly In Love With You? (Personality Test)",
+      "description": "Take this simple 7-question test to find out who is secretly in love with you. Don’t feel sad and lonely if you’re single at the moment – happiness awaits. Chances are that there’s somebody in your life right now who can’t wait for you to fall in love with them. \nEach question in this test will give you a certain amount of points, and in the end, you’ll need to total your score. So get your calculator ready because you’re about to find your one and only. \n\nThis video is intended for entertainment and information purposes only. The video is not intended to serve as a substitute for professional, medical or psychiatric advice of any kind.\n\nTIMESTAMPS\nHow would you describe yourself in one word? 0:35\nWhere do you spend most of your time? 1:20\nIf you were in a jam, who would you call first? 2:05\nWhich season is your favorite? 2:50\nIf you have some free time on your hands, what will you most likely do? 3:35\nWhat’s your idea of the perfect date? 4:27\nWho do you spend most of your time with? 5:14\nIf you got 0 to 50 points 6:20\nFrom 60 to 100 6:40\nFrom 110 to 150 7:00\nFrom 160 to 210 7:22\n\nSUMMARY\n-Choose one word that describes you best of all. \n-Your favorite hangout spot tells a lot about you. \n-Let’s see who comes to your mind in case of an emergency.\n-This choice shouldn't be too difficult, not unless you have 2 favorites!\n-Pick just one perfect answer to get one step closer to your destiny. \n-The best match for you will most likely have the same perfect date ideas as you do. \n-People you spend your time with affect your life, as well. \n-Time has passed, and nowadays your first crush can't get you out of their head.\n-Looks like love is in the air at your workplace!\n-It turns out that your best friend might want to be more than just friends.\n-Your neighbor is trying to use any chance to see you because he or she has feelings for you. \n\nSubscribe to Bright Side : https://goo.gl/rQTJZz\n\n----------------------------------------------------------------------------------------\nOur Social Media:\n\nFacebook: https://www.facebook.com/brightside/\nInstagram: https://www.instagram.com/brightgram/\n\n5-Minute Crafts Youtube: https://www.goo.gl/8JVmuC\n\n----------------------------------------------------------------------------------------\nFor more videos and articles visit:\nhttp://www.brightside.me/",
+      "thumb": {
+        "url": "https://i.ytimg.com/vi/cHXtnNCsGo4/default.jpg"
+      },
+      "duration": 492000,
+      "channelTitle": "BRIGHT SIDE",
+      "publishedAt": "2018-03-25T02:00:01.000Z",
+      "selected": false
+    },
+    {
+      "type": "PlaylistItem",
+      "id": "EzXKa1xMVss",
+      "appId": "989090eb-8ea4-0410-e315-9f9c75166092",
+      "title": "What ANIMAL Are You? (Personality Test With Animals)",
+      "description": "What ANIMAL Are You?  (Personality Test With Animals)\n\nHere on AlphaTests, you can find the most accurate psychological tests, personality disorder quiz and personality tests. We have the best the tests to analyse your social psychology & psychological behaviours. \n\nSUBSCRIBE FOR MORE-\nhttp://www.youtube.com/AlphaTests\n\nFan Funding (Donation and Support)\nPaypal - https://paypal.me/AlphaTests\n\n============== *Related Videos* =============\n\nCOUPLE COMPATIBILITY TEST -\nDoes he like me?\n https://www.youtube.com/watch?v=hAq9DJh9dtQ\nDoes she like me?\nhttps://www.youtube.com/watch?v=x0J__JBQIng\nHow to tell if a girl likes you? \nhttps://www.youtube.com/watch?v=RdZx1JcR3v8\n\nDISNEY PERSONALITY TEST - \nDisney Princess\nhttps://www.youtube.com/watch?v=ylXS7QH40SA&t=25s\nDisney Character\nhttps://www.youtube.com/watch?v=CXW6p1Ed7G8\nType of Princess\nhttps://www.youtube.com/watch?v=LnLp81AVUBg\n\nFUN ONLINE TESTS\nDo I have psychic ability?\nhttps://www.youtube.com/watch?v=CRE1Sp00FDo&t=29s\nAre you psychic quiz\nhttps://www.youtube.com/watch?v=V6UH4_nvmOA&t=1s\n\nPSYCHOLOGICAL TESTS & PERSONALITY  TESTS -\nColor psychology test\nhttps://www.youtube.com/watch?v=-5iPIj1Pzoc&t=49s\n\n ↠For information regarding content submission, business, press materials, advertising rates, or sponsorships, please contact: Alphafanrequest@gmail.com\n\nRelated Keywords:\npersonality disorder test\npsychology \nsocial psychology\npsychological\npersonality disorder quiz\npersonality test with animals\npsychological tests\npersonality tests\nantisocial personality disorder\n\n================Credits================\nMusic and Audio- Pisco Sour by Gunnar Olsen from YouTube Audio Library\nhttps://www.youtube.com/audiolibrary/music?vid=08ede75e788be089",
+      "thumb": {
+        "url": "https://i.ytimg.com/vi/EzXKa1xMVss/default.jpg"
+      },
+      "duration": 353000,
+      "channelTitle": "Alpha Tests",
+      "publishedAt": "2016-12-19T20:00:01.000Z",
+      "selected": false
+    },
+    {
+      "type": "PlaylistItem",
+      "id": "eBzqM8-Skcc",
+      "appId": "aa953cd1-58c8-3dfe-85ad-1f789788fec8",
+      "title": "¿Con que letra empieza el nombre del amor de tu vida? • Test",
+      "description": "Test del nombre de tu amor verdadero. Completa el test y descubre con que letra empieza el nombre del amor de tu vida. \n\nDeja tu resultado, comparte este video con tus amigos y suscribete al Raton Curioso.\n\n¡Gracias por visitar!\n\n🐭 🐭 🐭 🐭 🐭\n\n❤️ Facebook: http://www.facebook.com/el.raton.curioso/\n❤️ Twitter: http://www.twitter.com/El_RatonCurioso\n❤️ Google+: https://plus.google.com/u/0/+RaTonaCuriosaChannel\n❤️ Raton en Ingles: https://www.youtube.com/channel/UCoVWnwRvzXZkKbHsjvr7UAQ\n❤️ Instagram personal: http://www.instagram.com/tabi.belen/\n\n🐭 🐭 🐭 🐭 🐭\n\n🎞 Fondo: Youngman Yeshua.\n\n🎶 Musica: \"Rev\" de Eveningland.\n\n**ATENCION**\nEste test carece de estudios medicos o psicologicos. Tenga en cuenta que la principal finalidad de este test es la ENTRETENCION.",
+      "thumb": {
+        "url": "https://i.ytimg.com/vi/eBzqM8-Skcc/default.jpg"
+      },
+      "duration": 326000,
+      "channelTitle": "El Ratón Curioso",
+      "publishedAt": "2018-05-03T18:41:07.000Z",
+      "selected": false
+    },
+    {
+      "type": "PlaylistItem",
+      "id": "PNhTfD7lXtI",
+      "appId": "9282918b-18bf-15d8-9f89-a407fc43612d",
+      "title": "Sarfraz Ahmed: \"Proud to win a Test at the Home of Cricket\"  | MCC/Lord's",
+      "description": "Sarfraz Ahmed discusses Pakistan's 9 -wicket victory over England at Lord's Cricket Ground. With special mentions for quick bowlers Mohammad Amir, man-of-the-match Mohammad Abas and Hasan Ali.\n\nInterview: Will Roe \n\nSubscribe to Lord's: http://www.youtube.com/user/LordsCricketGround?sub_confirmation=1\n\nIf you have any concerns about the contents of this video please refer to our Notice and Takedown policy.\nhttp://www.lords.org/our-organisation/notice-and-takedown-policy\n\nFacebook: https://www.facebook.com/lordscricket\nTwitter: https://twitter.com/HomeOfCricket\nGoogle+: https://plus.google.com/+lordscricketground/posts",
+      "thumb": {
+        "url": "https://i.ytimg.com/vi/PNhTfD7lXtI/default.jpg"
+      },
+      "duration": 91000,
+      "channelTitle": "Lord's Cricket Ground",
+      "publishedAt": "2018-05-27T13:23:17.000Z",
+      "selected": false
+    },
+    {
+      "type": "PlaylistItem",
+      "id": "_nfREkI7Nsk",
+      "appId": "a32d848d-6699-00c0-0e8f-df878687ea67",
+      "title": "MAKE THE HARDEST CHOICE EVER. PERSONALITY VIDEO TEST",
+      "description": "BRAIN TIME► https://goo.gl/tTWgH2\n\nWe're sure you've always wanted to know your true personality, the real one. Not the one that smiles to its colleagues and neighbors. And neither the one that tries to be the smartest one in the classroom. We're talking about your inner self, the true personality that controls your choices, actions and decisions. Today we have prepared a few psychological tests for you to know more about yourself and understand yourself better or maybe to start thinking about your own life. But we should remind you that we're no professional psychologists at all, so the result is not a final diagnose of your psyche. So, are you ready to know the horrible truth? Here are a few personality tests for you.",
+      "thumb": {
+        "url": "https://i.ytimg.com/vi/_nfREkI7Nsk/default.jpg"
+      },
+      "duration": 617000,
+      "channelTitle": "#Mind Warehouse",
+      "publishedAt": "2017-10-19T18:08:47.000Z",
+      "selected": false
+    },
+    {
+      "type": "PlaylistItem",
+      "id": "0ZPiNQDVcuc",
+      "appId": "4b625134-b3fa-6ffc-ca50-43bfcaf6250a",
+      "title": "¿Cual es tu mayor miedo? | Test Divertidos",
+      "description": "Cual es tu mayor miedo? Descubre cual es tu mayor miedo con este divertido test!\n\n↠↠ ¡No te olvides de suscribirte para no perderte ningun test!\n\nhttps://www.youtube.com/channel/UCEOWFJSDlfEgM_iPduEuHeg?sub_confirmation=1\n\n► ► Visita la web: http://test-divertidos.com\n\nSiguenos en las redes sociales!\n\n★★ Tests Divertidos Facebook  ★★\n\n https://www.facebook.com/testsdivertidos\n\n★★ Test-o-Matic Facebook ★★\n\nhttps://www.facebook.com/testsomatices\n\n★★ Tests Divertidos Twitter ★★\n\nhttps://twitter.com/divertidostests\n\n\n\n\n\nTodos los tests son orientativos y se basan en rasgos de la personalidad y otras caracteristicas para determinar los resultados! Nunca deben tomarse totalmente en serio!\n\nProhibida la reproduccion completa o parcial de este video sin consentimiento previo del autor. Textos con derechos de autor registrados en SafeCreative.\n\n♪♫ Musica compuesta por ♫ ♩\n\nBensounds\nIncompetech\nSilent Partner\nTwin Musicom\nAudionautix",
+      "thumb": {
+        "url": "https://i.ytimg.com/vi/0ZPiNQDVcuc/default.jpg"
+      },
+      "duration": 321000,
+      "channelTitle": "Test Divertidos",
+      "publishedAt": "2017-05-19T18:00:04.000Z",
+      "selected": false
+    },
+    {
+      "type": "PlaylistItem",
+      "id": "5eIy17ro4ZE",
+      "appId": "d004b4e3-f1be-e8aa-bdc7-63607a380e5d",
+      "title": "IELTS LISTENING PRACTICE TEST 2018 WITH ANSWERS | 27.05.2018",
+      "description": "The IELTS Listening Test IELTS Candidate DO LISTENING TEST IMPROVE YOUR SKILLS :- You will be given time to read through the questions before you listen. You will hear each recording of the Listening test only once.\n\nAs you listen, write your answers on the question paper. At the end of the test, you will have 10 minutes to transfer your answers to the answer sheet in pencil. You may write your answers in lower case or capital letters.Subscribe Us On Youtube :- - https://goo.gl/Gk0KtE\nLike Us ON Facebook :- https://goo.gl/DZm7Mc\nFollow Us n Tiwtter :- https://goo.gl/q7fNe8\nInstructions to candidates\n\nIn the actual test you will be given the following instructions:\n\ndo not open this question paper until you are told to do so\nwrite your name and candidate number in the spaces at the top of this page\n\nlisten to the instructions for each part of the paper carefully\nanswer all the questions\nwhile you are listening, write your answers on the question paper\nyou will have 10 minutes at the end of the test to copy your answers onto the separate answer sheet; \nuse a pencil\n\nAt the end of the test you will be asked to hand in the question paper.",
+      "thumb": {
+        "url": "https://i.ytimg.com/vi/5eIy17ro4ZE/default.jpg"
+      },
+      "duration": 1481000,
+      "channelTitle": "The IELTS Listening Test",
+      "publishedAt": "2018-05-27T06:33:19.000Z",
+      "selected": false
+    },
+    {
+      "type": "PlaylistItem",
+      "id": "VMHWljdOCrQ",
+      "appId": "f0a742f3-d9a8-13c7-0eb0-486c0e01519e",
+      "title": "QUANTO SEI INTELLIGENTE? Test di Intelligenza Completo (con Soluzioni)",
+      "description": "Quanto sei intelligente davvero? Scoprilo con questo test di intelligenza completo in soli 5 minuti e con i 6 trucchi per migliorare il tuo QI (quoziente intellettivo) e aumentare la tua intelligenza generale mettendo in pratica i consigli alla fine del video. Questi test mentali non ti faranno diventare subito un genio, ma sono fosforo quotidiano per il tuo cervello e per rendere la tua mente brillante: ISCRIVITI SUBITO AL CANALE E ATTIVA LE NOTIFICHE! ➜ https://www.youtube.com/channel/UCxWWX3yawmcJYuxMgZ0CWxg?sub_confirmation=1\n\n★ TEST DEI COLORI E VISIVI ➜ https://www.youtube.com/watch?v=fV0Au_ZRJeY&list=PLaQQ9uJu-yNNAjIdxifg70slS8KKl9OeY\n \n★ TEST DEL QI GRATIS ➜ https://www.youtube.com/watch?v=yXxghC-aSbk&list=PLaQQ9uJu-yNMtM0Hn6r45BuJOLxB9OXvD&index=1\n\n★ TEST DI PERSONALITA ➜ https://www.youtube.com/watch?v=n8s9wT9ha68&list=PLaQQ9uJu-yNOmzwRQAARDqrvlDXdF7viW\n\n- Test di Intelligenza Ufficiali \"Untimed\" (ENSDT 20) ➜ goo.gl/goaQo3\n\n*** I MIEI SOCIAL ***\nInstagram ➜ https://www.instagram.com/marcokrt_channel/\nSito Web ➜ http://www.spiqrsociety.com/\nFacebook ➜ https://www.facebook.com/marcokrtchannel\nTwitter ➜ https://twitter.com/marcokrt?lang=it",
+      "thumb": {
+        "url": "https://i.ytimg.com/vi/VMHWljdOCrQ/default.jpg"
+      },
+      "duration": 366000,
+      "channelTitle": "Marco Ripà",
+      "publishedAt": "2017-12-29T12:52:19.000Z",
+      "selected": false
+    },
+    {
+      "type": "PlaylistItem",
+      "id": "2iRWOaxWtDw",
+      "appId": "d10e6958-fd31-027f-15d5-174b74a0bc84",
+      "title": "OnePlus 6 vs iPhone 8 Plus Speed Test!",
+      "description": "OnePlus 6 vs iPhone 8 Plus Speed Test! Hello all, and welcome to this speed test comparison between the latest OnePlus 6 and Apple iPhone 8 Plus Product Red! The OnePlus 6 features a Qualcomm Snapdragon 845 CPU and 8GB of ram running Android Oreo 8.1.0 while the iPhone 8 Plus features an Apple A11 Bionic chipset and 3GB of ram running iOS 11.3.1. The intentions of this speed test is to show you what a $530 OnePlus 6 can do against a $799 Apple iPhone X. If you have either of these phones or both share your experiences below or if you have any thoughts as to which is faster feel free as well! Any further questions, comments, concerns, feedback, suggestions, please be sure to go ahead and post that down below in the comment section of this video. As always thank you for watching and be sure to be well and peace :) \n\nWatch the prior video: \nhttps://www.youtube.com/watch?v=1xcTa5brsVo&t=75s\n\nOnePlus 6 vs iPhone X Speed Test: https://www.youtube.com/watch?v=1xcTa5brsVo&t=75s\n\nMY GEAR KIT: https://kit.com/Nickackermanchannel\nMAIN CAMERA: http://amzn.to/2CbS4CM\nB CAMERA: http://amzn.to/2qJNyX4\nTRIPOD IN THE VIDEO: http://amzn.to/2qEZfPy\nWHERE I SAVE FOOTAGE: http://amzn.to/2Bo1bUt\nAUDIO MIC I USED: http://amzn.to/2p36weF\nMY OTHER YOUTUBE CAMERA: http://amzn.to/2pLZGts\nLAPTOP I EDITED THIS VIDEO WITH: http://amzn.to/2qFeiZx\nPHONE USED TO WRITE VIDEO POINTS: http://amzn.to/2qNRdTB\n\nLet's Connect!! \n\nSUBSCRIBE: http://bit.ly/2vnja7c \nWEBSITE: http://bit.ly/2hxN8Rm\nTWITTER: http://bit.ly/2t0IvD8\nINSTAGRAM:  http://bit.ly/2uoN7pW\nGOOGLE PLUS: http://bit.ly/2tT2rKT\nFACEBOOK FANPAGE: http://bit.ly/2uoNelm",
+      "thumb": {
+        "url": "https://i.ytimg.com/vi/2iRWOaxWtDw/default.jpg"
+      },
+      "duration": 636000,
+      "channelTitle": "Nick Ackerman",
+      "publishedAt": "2018-05-27T17:01:29.000Z",
+      "selected": false
+    }
+  ]
 }

@@ -40,12 +40,13 @@ import { DurationPipe } from './pipes/duration.pipe';
 import { TotalDurationPipe } from './pipes/total-duration.pipe';
 import { FilterPlaylistsPipe } from './pipes/filter-playlists.pipe';
 import { PlayerBarComponent } from './components/player-bar/player-bar.component';
-import { ToolbarComponent } from './components/toolbar/toolbar.component';
+import { UiToolbarComponent } from './components/ui-toolbar/ui-toolbar.component';
 import { VideoListComponent } from './components/video-list/video-list.component';
 import { PlaylistButtonListComponent } from './components/playlist-button-list/playlist-button-list.component';
 import { PlaylistControlComponent } from './components/playlist-control/playlist-control.component';
 import { ContextMenuComponent } from './components/context-menu/context-menu.component';
 import { LoaderComponent } from './components/loader/loader.component';
+import { UiButtonComponent } from './components/ui-button/ui-button.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -77,12 +78,13 @@ export function HttpLoaderFactory(http: HttpClient) {
 
         SearchBarComponent,
         PlayerBarComponent,
-        ToolbarComponent,
+        UiToolbarComponent,
         VideoListComponent,
         PlaylistButtonListComponent,
         ContextMenuComponent,
         LoaderComponent,
-        PlaylistControlComponent
+        PlaylistControlComponent,
+        UiButtonComponent
     ],
     imports: [
         CommonModule,
@@ -130,7 +132,7 @@ export function HttpLoaderFactory(http: HttpClient) {
         TranslateModule,
         SearchBarComponent,
         PlayerBarComponent,
-        ToolbarComponent,
+        UiToolbarComponent,
         VideoListComponent,
         PlaylistButtonListComponent,
         ContextMenuComponent,

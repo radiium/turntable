@@ -124,7 +124,6 @@ export class PlayerPanelComponent implements OnInit {
 
         this.dataSrv.onPlayList$.subscribe((data) => {
             this.onPlayList = _.cloneDeep(data);
-            console.log('onPlayList')
             // this.cdRef.detectChanges();
         });
 
@@ -190,8 +189,6 @@ export class PlayerPanelComponent implements OnInit {
     onSpeedChangeRight(speed: number) {
         this.playerState.setSpeedRight(speed);
     }
-
-
 
     onChangeCrossFaderValue(value) {
         let valLeft = 0;

@@ -1,6 +1,6 @@
 <div *ngIf="hasData" id="playlistDetailsContainer" class="contentPanel">
 
-    <app-toolbar [height]="'40px'" [margin]="'0 0 0 2px'" [padding]="'0 0 0 15px'">
+    <ui-toolbar [height]="'40px'" [margin]="'0 0 0 2px'" [padding]="'0 0 0 15px'">
         <div class="name noOverflow">{{ currentPlaylist?.title }}</div>
         <div class="length noOverflow">{{ currentPlaylist?.videolist?.length }} <span [translate]="'track'"></span><span *ngIf="currentPlaylist?.videolist?.length >1">s</span></div>
         <div class="duration noOverflow">{{ currentPlaylist?.videolist | totalduration | duration }}</div>
@@ -14,7 +14,7 @@
         <mat-menu #menu="matMenu" overlapTrigger="false">
             <app-playlist-control [playlist]="currentPlaylist" [show]="false"></app-playlist-control>
         </mat-menu>
-    </app-toolbar>
+    </ui-toolbar>
 
     <div class="spacer"></div>
 
