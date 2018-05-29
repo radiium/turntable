@@ -6,7 +6,7 @@
 
 
 [![License](http://img.shields.io/badge/Licence-MIT-brightgreen.svg)](LICENCE.md)
-
+[![Build Status](https://travis-ci.org/radiium/turntable.svg?branch=master)](https://travis-ci.org/radiium/turntable)
 
 ## Features:  
 
