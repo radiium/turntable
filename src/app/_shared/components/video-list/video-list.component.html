@@ -7,7 +7,7 @@
     [infiniteScrollDisabled]="disableInfiniteScroll"
     [infiniteScrollDistance]="2"
     [infiniteScrollThrottle]="200"
-    (scrolled)="onScrollDown()"
+    (scrolled)="onScrollDown($event)"
     [scrollWindow]="false">
 
 
@@ -174,7 +174,7 @@
         <!-- Video list item -->
         <div *ngFor="let video of _items; let i = index; trackBy: trackByFn"
             class="appListItem"
-            dnd-draggable
+            appDraggable
             [effectAllowed]="move"
             [dragData]="{ video: video, from: playlistId, type: 'PlayListItem' }"
             [dragEnabled]="true"

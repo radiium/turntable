@@ -186,7 +186,7 @@ export class VideoListComponent {
     }
 
     // Infinite scroll
-    onScrollDown (ev) {
+    onScrollDown(ev) {
         if (this._videoListLen === this._itemsLen) {
             return;
         }
