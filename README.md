@@ -31,6 +31,19 @@
 [Download latest release here](https://github.com/radiium/turntable/releases)  
 [Changelog](/CHANGELOG.md)  
 
+
+## Test it:  
+
+#### Run in browser at 'http://localhost:4200' (*Electron features not available in this mode*)  
+> ng serve   
+
+#### Run in electron  
+> npm run electron:dev  
+
+#### Package for: windows, ubuntu/debian and mac os  
+> npm run dist  
+
+
 ## Made with  
 
 - [angular 6](https://angular.io/) and [angular-cli](https://github.com/angular/angular-cli)  
