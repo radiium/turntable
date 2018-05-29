@@ -1,7 +1,19 @@
+## v 1.3.0-beta (2017/12/18)
+
+### Updates
+* Add resizable sidebar
+* Add easter egg!! ;)
+* Add infinite scroll on playlist
+* Change drag drop component (ng2-dragula => ng2-dnd)
+* Add draggable playlist
+* Refactor playlist management
+* Improvements performance
+* Fix some bugs
+
 ## v 1.2.0-beta (2017/12/18)
 
 ### Updates
-* Download and convert video as mp3! :)
+* Download and convert video as mp3! ;)
 * Improve navigation
 * Add context menu
 * Fix some bugs
