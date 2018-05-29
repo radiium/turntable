@@ -2,42 +2,37 @@
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 console.log(`Electron launching with NODE_ENV: ${process.env.NODE_ENV}`);
 
+
 // Import dependencies
-import * as path from 'path';
-import * as url from 'url';
-import { app, BrowserWindow, ipcMain, Menu, shell, dialog } from 'electron';
+import { app, BrowserWindow, ipcMain, Menu, shell, dialog, session } from 'electron';
+import contextMenu = require('electron-context-menu');
+import storage = require('electron-json-storage');
+import readline = require('readline');
+import ytdl = require('ytdl-core');
+import ffmpeg = require('fluent-ffmpeg');
+import path = require('path');
+import url = require('url');
+import fs = require('fs');
+
 import { devMenuTemplate } from './menu/dev_menu.template';
 import { fileMenuTemplate } from './menu/file_menu.template';
 import { editMenuTemplate } from './menu/edit_menu.template';
-import { session } from 'electron';
-import * as contextMenu from 'electron-context-menu';
-import * as storage from 'electron-json-storage';
-import * as ytdl from 'ytdl-core';
-import * as fs from 'fs';
-import * as readline from 'readline'
-import * as ffmpeg from 'fluent-ffmpeg'
-import { send } from 'q';
-import { sanitize }  from './utils';
+import { sanitize } from './utils';
+
 
 // Init variable
 let mainWindow: any = null;
 const menus: any[] = [];
 const isDev = process.env.NODE_ENV === 'development' ? true : false;
 
+
+// Init context menu
 if (isDev) {
-    // Init context menu
     contextMenu({
-        prepend: (params, browserWindow) => [
-            /*
-            {
-            label: 'Rainbow',
-            // Only show it when right-clicking images
-            visible: true // params.mediaType === 'image'
-            }
-            */
-    ]
+        prepend: (params, browserWindow) => []
     });
 }
+
 
 // Create main window
 const createMainWindow = async () => {
@@ -60,37 +55,54 @@ const createMainWindow = async () => {
         }
     });
 
-    // Load app entry point
-    mainWindow.loadURL(url.format({
-        pathname: path.join(__dirname, 'index.html'),
-        protocol: 'file:',
-        slashes: true,
-    }));
+    // DEV mode => Load app with live reload
+    if (isDev) {
+        require('electron-reload')(__dirname, {
+            electron: path.join(__dirname, 'node_modules', '.bin', 'electron'),
+            hardResetMethod: 'exit'
+        });
+        mainWindow.loadURL('http://localhost:4200');
+        mainWindow.webContents.openDevTools();
 
-    // Clear out the main window when the app is closed
-    mainWindow.on('closed', () => {
-        mainWindow = null;
-    });
+    // PROD mode => Load app
+    } else {
+        mainWindow.loadURL(url.format({
+            pathname: path.join(__dirname, 'index.html'),
+            protocol: 'file:',
+            slashes: true,
+        }));
+    }
 
-    mainWindow.once('ready-to-show', () => {
-        mainWindow.show();
-    });
+    mainWindow.on('closed', () => mainWindow = null);
+    mainWindow.once('ready-to-show', () => mainWindow.show());
+
 
     // Build menus
     menus.push(fileMenuTemplate);
     menus.push(editMenuTemplate);
-    if (isDev) { menus.push(devMenuTemplate); }
+    if (isDev) {
+        menus.push(devMenuTemplate);
+    }
     Menu.setApplicationMenu(Menu.buildFromTemplate(menus));
+};
 
-    console.log('process.platform', process.platform)
-
+const initHandleToutubeRequest = () => {
+    // Add youtube url as referer url for play video with restricted domain
+    const filters = [
+        'https://*.youtube.com/*',
+        'http://*.youtube.com/*'
+    ];
+    session.defaultSession.webRequest.onBeforeSendHeaders({urls: filters}, (details, callback) => {
+        details.requestHeaders['Referer'] = 'https://www.youtube.com';
+        callback({cancel: false, requestHeaders: details.requestHeaders});
+    });
 };
 
 // On app is ready
 app.on('ready', () => {
     createMainWindow();
+    // initHandleToutubeRequest();
 
-    // Add youtube url as referer url for play video with restricted domain
     const filters = [
         'https://*.youtube.com/*',
         'http://*.youtube.com/*'
@@ -112,7 +124,9 @@ app.on('window-all-closed', () => {
 
 // Recreate window when icon is clicked
 app.on('activate', () => {
-    if (mainWindow === null) { createMainWindow(); }
+    if (mainWindow === null) {
+        createMainWindow();
+    }
 });
 
 // Clear cahe and cookie session before quit
@@ -218,17 +232,28 @@ ipcMain.on('send-convert-video-to-mp3', (event, arg) => {
     const filePath = arg.filePath;
     let fileName = arg.fileName;
 
-    if (!videoId)  handleError(event, 'Error, wrong videoId: ' + videoId);
-    if (!filePath) handleError(event, 'Error, wrong filePath: ' + filePath);
-    if (!fileName) handleError(event, 'Error, wrong fileName: ' + fileName);
-    if (!videoId || !fileName || !filePath) return;
+    if (!videoId) {
+        handleError(event, 'Error, wrong videoId: ' + videoId);
+    }
+
+    if (!filePath) {
+        handleError(event, 'Error, wrong filePath: ' + filePath);
+    }
+
+    if (!fileName) {
+        handleError(event, 'Error, wrong fileName: ' + fileName);
+    }
+
+    if (!videoId || !fileName || !filePath) {
+        return;
+    }
 
     fileName = sanitize(fileName, '') + '.mp3';
     let startDL;
     const URL = 'http://www.youtube.com/watch?v=' + videoId;
     const PATH = path.resolve(filePath, fileName);
 
-    let stream = ytdl(videoId, {
+    const stream = ytdl(videoId, {
         filter: 'audioonly' // ,quality: 'highestaudio'
     })
     .once('response', () => {
@@ -287,12 +312,13 @@ ipcMain.on('send-get-save-path', (event, arg) => {
             defaultPath: choosenPath,
             filters: [ {name: 'All Files', extensions: ['.mp3']} ],
             properties: ['openDirectory', 'createDirectory']
-        }, (filePath) => {
-            let path = filePath[0];
-            if (!path) {
-                path = defaultPath
+        },
+        (selFilePath) => {
+            let selPath = selFilePath[0];
+            if (!selPath) {
+                selPath = defaultPath;
             }
-            event.sender.send('get-save-path', path);
+            event.sender.send('get-save-path', selPath);
         });
     } else {
         event.sender.send('get-save-path', choosenPath);
@@ -309,7 +335,7 @@ function handleError(event, error) {
 // Get operating system
 
 ipcMain.on('send-get-os', (event, arg) => {
-    event.sender.send('get-os', process.platform);
+    // event.sender.send('get-os', process.platform);
 });
 
 
