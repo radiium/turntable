@@ -1,1 +1,2 @@
-export const PUBLIC_KEY = 'AIzaSyCUgeZ1Wous0x3Rjw3EZQQPKDQTXJB21Es';
+import * as KEYS from './api-key.json';
+export const PUBLIC_KEY = KEYS['PUBLIC_KEY'];

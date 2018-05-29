@@ -1,10 +1,15 @@
 # Turntable
 
 > A simple youtube dj app made with Electron (in progress)  
-> Current version: [1.3.0-beta](https://github.com/radiium/turntable/releases)  
+> Current version: [1.3.0-beta](https://github.com/radiium/turntable/releases)
 > (/!\ warning: big redesign, partially working)  
-  
+
+
+[![License](http://img.shields.io/badge/Licence-MIT-brightgreen.svg)](LICENCE.md)
+
+
 ## Features:  
+
 - [x] Change theme: dark or light.  
 - [x] Change language: french or english.  
 - [x] Search videos from youtube.  
@@ -20,6 +25,7 @@
 ...and many more!!  
 
 ## Captures:  
+
 ![Capture 1](/captures/v1/cap1.png)  
 
 ![Capture 2](/captures/v1/cap2.png)  
