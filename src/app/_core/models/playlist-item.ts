@@ -1,26 +1,44 @@
+import { Thumbnail } from "core/models";
+
 export class PlaylistItem {
-
-    readonly type = 'PlaylistItem';
-
     constructor(
+        readonly type?: string,
         public id?: string,
-        public selected?: boolean,
+        public appId?: string,
         public title?: string,
         public description?: string,
-        public thumbUrl?: string,
+        public thumb?: Thumbnail,
         public duration?: any,
-        public channelTitle?: any,
+        public channelTitle?: string,
         public publishedAt?: any,
-        public appId?: string
+        public selected?: boolean
         ) {
             this.id = id;
-            this.selected = selected;
+            this.appId = appId;
             this.title = title;
             this.description = description;
-            this.thumbUrl = thumbUrl;
+            this.thumb = thumb;
             this.duration = duration;
             this.channelTitle = channelTitle;
             this.publishedAt = publishedAt;
-            this.appId = appId;
+            this.selected = selected;
+    }
+}
+
+export class PlaylistItemFactory {
+    static create(plItem: PlaylistItem) {
+        return new PlaylistItem(
+            'PlaylistItem',
+            plItem.id           || '',
+            plItem.appId        || '',
+            plItem.title        || '',
+            plItem.description  || '',
+            plItem.thumb        || { url: 'assets/images/pochette.png'},
+            plItem.duration     || '',
+            plItem.channelTitle || '',
+            plItem.publishedAt  || '',
+            plItem.selected     || false,
+            
+        )
     }
 }

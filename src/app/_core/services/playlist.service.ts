@@ -26,7 +26,10 @@ import { PlaylistItem,
          PlayerPanelState,
          PlayerState,
          PlayerSide,
-         AppState } from 'core/models';
+         AppState, 
+         PlaylistFactory,
+         PlayListType,
+         PrivacyStatus} from 'core/models';
 import { app } from 'electron';
 
 
@@ -38,8 +41,8 @@ export class PlaylistService {
     appState: AppState;
     playlistsList: Playlist[];
     playerPanelState: PlayerPanelState;
-    onPlayList: PlaylistItem[];
-    historicList: PlaylistItem[];
+    onPlayList: Playlist;
+    historicList: Playlist;
     
     constructor(
     private electron: ElectronService,
@@ -79,7 +82,8 @@ export class PlaylistService {
      */
     addToPlayerListByVideolist(videoList: PlaylistItem[]) {
         if (videoList && videoList.length) {
-            this.dataSrv.setOnPlayList([...this.onPlayList, ...videoList]);
+            this.onPlayList.videolist.push.apply([...videoList]);
+            this.dataSrv.setOnPlayList(this.onPlayList);
         }
     }
 
@@ -87,14 +91,16 @@ export class PlaylistService {
         let playlist = this.getPlaylistById(plId);
         let videoList = playlist.videolist || [];
         if (videoList && videoList.length) {
-            this.dataSrv.setOnPlayList([...this.onPlayList, ...videoList]);
+            this.onPlayList.videolist.push.apply([...videoList]);
+            this.dataSrv.setOnPlayList(this.onPlayList);
         }
     }
 
     addToPlayerList(data: any) {
         let videoList = this.resolveVideoList(data);
         if (videoList && videoList.length) {
-            this.dataSrv.setOnPlayList([...this.onPlayList, ...videoList]);
+            this.onPlayList.videolist.push.apply([...videoList]);
+            this.dataSrv.setOnPlayList(this.onPlayList);
         }
     }
 
@@ -103,6 +109,10 @@ export class PlaylistService {
         if (videoList && videoList.length) {
             this.dataSrv.setOnPlayList(videoList);
         }
+    }
+
+    deletePlayerList() {
+        this.dataSrv.setOnPlayList([]);
     }
 
 
@@ -114,12 +124,14 @@ export class PlaylistService {
 
     addToHistoricList(video: PlaylistItem) {
         if (video) {
-            this.dataSrv.setHistoricList([...this.historicList, video]);
+            this.historicList.videolist
+            this.historicList.videolist.push(video);
+            this.dataSrv.setHistoricList(this.historicList);
         }
     }
 
     deleteHistoricList() {
-        this.dataSrv.setOnPlayList([]);
+        this.dataSrv.setHistoricList([]);
     }
 
     /**
@@ -128,7 +140,7 @@ export class PlaylistService {
      * 
      */
 
-    createPlaylist() {
+    createPlaylist(videoList?: PlaylistItem[]) {
         const dialogRef = this.dialog.open(CreatePlaylistDialogComponent, {
             height: 'auto',
             panelClass: 'theme-' + this.appState.theme
@@ -138,14 +150,19 @@ export class PlaylistService {
                 const id = UUID.UUID();
                 const title = result.name;
                 const privacyStatus = 'private';
-                const videoList: PlaylistItem[] = [];
+                // const videoList: PlaylistItem[] = [];
 
-                const pl = new Playlist(
-                    id, title, '', '', 0, 0, '',
-                    privacyStatus, true,
-                    videoList,
-                    UUID.UUID()
-                );
+                if (!videoList) {
+                    videoList = [];
+                }
+
+                const pl = PlaylistFactory.create(PlayListType.PLAYLIST, {
+                    id: UUID.UUID(),
+                    appId: UUID.UUID(),
+                    privacyStatus: PrivacyStatus.PRIVATE,
+                    isLocal: true,
+                    videolist: videoList
+                });
 
                 this.playlistsList.push(pl);
                 this.dataSrv.setPlaylistsList(this.playlistsList);
@@ -211,6 +228,7 @@ export class PlaylistService {
     }
 
     deletePlaylist(playlist: Playlist): void {
+        console.log('deletePlaylist')
         const dialogRef = this.dialog.open(DeletePlaylistDialogComponent, {
             panelClass: 'theme-' + this.appState.theme,
             data: { title: playlist.title }
@@ -256,6 +274,7 @@ export class PlaylistService {
 
     deleteVideo(video: PlaylistItem, index: number, plId: string, withoutConfirm?: boolean) {
 
+        console.log('deleteVideo')
         if (withoutConfirm) {
 
             switch (plId) {
@@ -263,12 +282,12 @@ export class PlaylistService {
                     break;
 
                 case 'onplay':
-                    this.onPlayList.splice(index, 1);
+                    this.onPlayList.videolist.splice(index, 1);
                     this.dataSrv.setOnPlayList(this.onPlayList);
                     break;
 
                 case 'historic':
-                    this.historicList.splice(index, 1);
+                    this.historicList.videolist.splice(index, 1);
                     this.dataSrv.setHistoricList(this.historicList);
                     break;
 
@@ -291,12 +310,12 @@ export class PlaylistService {
                             break;
     
                         case 'onplay':
-                            this.onPlayList.splice(index, 1);
+                            this.onPlayList.videolist.splice(index, 1);
                             this.dataSrv.setOnPlayList(this.onPlayList);
                             break;
     
                         case 'historic':
-                            this.historicList.splice(index, 1);
+                            this.historicList.videolist.splice(index, 1);
                             this.dataSrv.setHistoricList(this.historicList);
                             break;
     
@@ -311,23 +330,20 @@ export class PlaylistService {
         }
     }
 
-    moveVideo(from: number, to: number, plId: string, elRef: Element) {
-
-        console.log('moveVideo', from, to, plId);
-
+    moveVideo(from: number, to: number, plId: string, elRef?: Element) {
         let videoList;
         switch (plId) {
             case 'search':
                 break;
 
             case 'onplay':
-                videoList = this.move(from, to, this.onPlayList);
-                this.dataSrv.setOnPlayList(videoList);
+                this.onPlayList.videolist = this.move(from, to, this.onPlayList.videolist);
+                this.dataSrv.setOnPlayList(this.onPlayList);
                 break;
 
             case 'historic':
-                videoList = this.move(from, to, this.historicList);
-                this.dataSrv.setHistoricList(videoList);
+                this.historicList.videolist = this.move(from, to, this.historicList.videolist);
+                this.dataSrv.setHistoricList(this.historicList);
                 break;
 
             default:

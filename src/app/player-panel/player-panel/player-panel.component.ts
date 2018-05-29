@@ -10,6 +10,7 @@ import { PlayerStateService } from 'core/services/player-state.service';
 import { DataService } from 'core/services/data.service';
 import { DndService } from 'core/services/dnd.service';
 import { ElectronService } from 'ngx-electron';
+import { PlaylistService } from 'core/services/playlist.service';
 
 @Component({
   selector: 'app-player-panel',
@@ -41,8 +42,8 @@ export class PlayerPanelComponent implements OnInit {
 
     appState: AppState;
 
-    onPlayList: PlaylistItem[];
-    historicList: PlaylistItem[];
+    onPlayList: Playlist;
+    historicList: Playlist;
 
     playListConfig = {
         draggable: true,
@@ -71,9 +72,10 @@ export class PlayerPanelComponent implements OnInit {
     };
 
     constructor(
-    // private cdRef: ChangeDetectorRef,
+    private cdRef: ChangeDetectorRef,
     private appRef: ApplicationRef,
     private dndSrv: DndService,
+    private plSrv: PlaylistService,
     private dataSrv: DataService,
     private playerState: PlayerStateService,
     private Electron: ElectronService) {
@@ -121,12 +123,13 @@ export class PlayerPanelComponent implements OnInit {
         });
 
         this.dataSrv.onPlayList$.subscribe((data) => {
-            this.onPlayList = data;
+            this.onPlayList = _.cloneDeep(data);
+            console.log('onPlayList')
             // this.cdRef.detectChanges();
         });
 
         this.dataSrv.historicList$.subscribe((data) => {
-            this.historicList = data;
+            this.historicList = _.cloneDeep(data);
             // this.cdRef.detectChanges();
         });
     }
@@ -152,6 +155,21 @@ export class PlayerPanelComponent implements OnInit {
         this.playerState.setSpeedLeft(speed);
     }
 
+    emptyOnPlayList() {
+        this.plSrv.deletePlayerList()
+    }
+
+    createPlaylistFromOnPlayList() {
+        // this.plSrv.createPlaylist(this.onPlayList);
+    }
+
+    emptyHistoricList() {
+        this.plSrv.deleteHistoricList()
+    }
+
+    createPlaylistFromHistoricList() {
+        // this.plSrv.createPlaylist(this.historicList);
+    }
 
     // ------------------------------------------------------------------------
     // Player Right

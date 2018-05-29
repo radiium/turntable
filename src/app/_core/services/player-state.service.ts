@@ -17,8 +17,8 @@ import { PlaylistItem, Playlist, Suggests,
 export class PlayerStateService {
 
     appState: AppState;
-    onPlayList: PlaylistItem[];
-    historicList: PlaylistItem[];
+    onPlayList: Playlist;
+    historicList: Playlist;
 
     // Player panel state
     private playerPLStateDefault: PlayerPanelState = {
@@ -166,13 +166,13 @@ export class PlayerStateService {
     playVideo(video: PlaylistItem, index?: number) {
         let videoToPlay;
         if (index !== undefined) {
-            videoToPlay = this.onPlayList[index];
-            this.onPlayList.splice(index, 1);
+            videoToPlay = this.onPlayList.videolist[index];
+            this.onPlayList.videolist.splice(index, 1);
         } else {
             videoToPlay = video;
         }
 
-        this.historicList.unshift(videoToPlay);
+        this.historicList.videolist.unshift(videoToPlay);
         this.dataSrv.setHistoricList(this.historicList);
 
         // this.setPlayerPanelState(panelState);
@@ -189,22 +189,22 @@ export class PlayerStateService {
         const isRandom = panelState.isRandom;
         const isRepeat = panelState.isRepeat;
 
-        if (playlist.length > 0) {
+        if (playlist.videolist.length > 0) {
 
             // Get video to play
             let videoToPlay = null;
             if (isRandom && !isRepeat) {
-                videoToPlay = playlist[Math.floor(Math.random() * playlist.length)];
-                _.remove(playlist, { id: videoToPlay.id });
-                historiclist.unshift(videoToPlay);
+                videoToPlay = playlist[Math.floor(Math.random() * playlist.videolist.length)];
+                _.remove(playlist.videolist, { id: videoToPlay.id });
+                historiclist.videolist.unshift(videoToPlay);
 
             } else if (isRandom && isRepeat || !isRandom && isRepeat) {
                 videoToPlay = historiclist[0];
 
             } else if (!isRandom && !isRepeat) {
                 videoToPlay = playlist[0];
-                _.remove(playlist, { id: videoToPlay.id });
-                historiclist.unshift(videoToPlay);
+                _.remove(playlist.videolist, { id: videoToPlay.id });
+                historiclist.videolist.unshift(videoToPlay);
             }
 
             this.dataSrv.setOnPlayList(playlist);

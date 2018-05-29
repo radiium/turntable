@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import * as _ from 'lodash';
 
-import { Playlist, PlaylistItem, SearchResults, AppState } from 'core/models';
+import { Playlist, PlaylistItem, SearchResults, AppState, PlaylistFactory, PlayListType } from 'core/models';
 import { DataService } from 'core/services/data.service';
 import { YoutubeService } from 'core/services/youtube.service';
 import { PlayerStateService } from 'core/services/player-state.service';
@@ -18,6 +18,9 @@ export class SearchResultsComponent implements OnInit {
     appState: AppState;
     searchResults: SearchResults;
     videoList: PlaylistItem[];
+
+    searchPlaylist: Playlist;
+
     playlistList: Playlist[];
     hasNextPage: boolean;
     loadNextPage: boolean;
@@ -42,16 +45,22 @@ export class SearchResultsComponent implements OnInit {
     private plSrv: PlaylistService,
     private ytSrv: YoutubeService,
     private playerState: PlayerStateService) {
+
+        this.searchPlaylist = PlaylistFactory.create(PlayListType.SEARCH, {});
+
         this.videoList = [];
+
         this.dataSrv.searchResults$.subscribe((data) => {
             if (data.results.length === 1) {
-                this.videoList = data.results[0];
+                this.searchPlaylist.videolist = data.results[0];
             } else if (data.results.length > 1) {
-                this.videoList = [
-                    ...this.videoList,
+                this.searchPlaylist.videolist = [
+                    ...this.searchPlaylist.videolist,
                     ...data.results[data.results.length - 1]
                 ];
             }
+
+            this.searchPlaylist = _.cloneDeep(this.searchPlaylist);
             this.searchResults = data;
             this.loadNextPage = false;
             this.hasNextPage = !!data.nextPageToken;

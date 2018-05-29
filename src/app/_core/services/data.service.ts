@@ -20,17 +20,22 @@ export class DataService {
     private appState  = new BehaviorSubject<AppState>(new AppState());
     public  appState$ = this.appState.asObservable();
 
+    // Is MiniSideBar
+    private isMiniSideBar  = new BehaviorSubject<boolean>(false);
+    public  isMiniSideBar$ = this.isMiniSideBar.asObservable();
+
+    // Loading state
+    private loader  = new BehaviorSubject<Loader>({panel: false, global: true});
+    public  loader$ = this.loader.asObservable();
+
+
 
     // Suggest list
     private suggestsResult  = new Subject<Suggests>();
     public  suggestsResult$ = this.suggestsResult.asObservable();
-
-
     // Suggest box state
     private suggestsBox  = new Subject<boolean>();
     public  suggestsBox$ = this.suggestsBox.asObservable();
-
-
     // Search result PlayList
     private searchResults  = new Subject<SearchResults>();
     public  searchResults$ = this.searchResults.asObservable();
@@ -40,25 +45,17 @@ export class DataService {
     private playlistsList  = new BehaviorSubject<Playlist[]>([]);
     public  playlistsList$ = this.playlistsList.asObservable();
 
-
     // On play list
-    private onPlayList  = new BehaviorSubject<PlaylistItem[]>([]);
+    private onPlayList  = new Subject<Playlist>();
     public  onPlayList$ = this.onPlayList.asObservable();
 
-
     // Historic list
-    private historicList  = new BehaviorSubject<PlaylistItem[]>([]);
+    private historicList  = new Subject<Playlist>();
     public  historicList$ = this.historicList.asObservable();
 
-
-    // Is MiniSideBar
-    private isMiniSideBar  = new BehaviorSubject<boolean>(false);
-    public  isMiniSideBar$ = this.isMiniSideBar.asObservable();
-
-
-    // Loading state
-    private loader  = new BehaviorSubject<Loader>({panel: false, global: true});
-    public  loader$ = this.loader.asObservable();
+    // Watch later list
+    private watchLaterList  = new Subject<Playlist>();
+    public  watchLaterList$ = this.watchLaterList.asObservable();
 
 
     constructor() { }
@@ -77,12 +74,30 @@ export class DataService {
     setShowPlayerBar(data) { this.setAppStateKey('showPlayerBar', data); }
     setMultiPlayer(data)   { this.setAppStateKey('multiPlayer', data); }
     setSelectedPl(data)    { this.setAppStateKey('selectedPl', data); }
-    // setHistoricList(data)  { this.setAppStateKey('historicList', data); }
-    // setOnPlayList(data)    { this.setAppStateKey('onPlayList', data); }
     setAppStateKey(key: string, value: any) {
         const appState = this.appState.getValue();
         appState[key] = value;
         this.setAppState(appState);
+    }
+
+    setIsMiniSideBar(data) {
+        this.isMiniSideBar.next(data);
+    }
+
+    setLoader(data) {
+        this.loader.next(_.cloneDeep(data));
+    }
+
+    setLoaderGlobal(data) {
+        const loader = this.loader.getValue();
+        loader.global = data;
+        this.setLoader(loader);
+    }
+
+    setLoaderPanel(data) {
+        const loader = this.loader.getValue();
+        loader.panel = data;
+        this.setLoader(loader);
     }
 
     setSuggestsResult(data) {
@@ -109,23 +124,7 @@ export class DataService {
         this.historicList.next(data);
     }
 
-    setIsMiniSideBar(data) {
-        this.isMiniSideBar.next(data);
-    }
-
-    setLoader(data) {
-        this.loader.next(_.cloneDeep(data));
-    }
-
-    setLoaderGlobal(data) {
-        const loader = this.loader.getValue();
-        loader.global = data;
-        this.setLoader(loader);
-    }
-
-    setLoaderPanel(data) {
-        const loader = this.loader.getValue();
-        loader.panel = data;
-        this.setLoader(loader);
+    setWatchLaterList(data) {
+        this.watchLaterList.next(data);
     }
 }

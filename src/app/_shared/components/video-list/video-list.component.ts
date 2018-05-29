@@ -3,12 +3,11 @@ import { Component, Input, Output, OnChanges, SimpleChanges,
     ChangeDetectionStrategy, ChangeDetectorRef, EventEmitter } from '@angular/core';
 import * as _ from 'lodash';
 
-import { Playlist, PlaylistItem, VideoListConfig } from 'core/models';
+import { Playlist, PlaylistItem, VideoListConfig, PlayListType } from 'core/models';
 import { PlayerStateService } from 'core/services/player-state.service';
 import { DndService } from 'core/services/dnd.service';
 import { DataService } from 'core/services/data.service';
 import { YoutubeService } from 'core/services/youtube.service';
-import {  } from 'core/services/playlist-item.service';
 import { Base64Images } from 'core/models/base64-images';
 import { DragImage } from "shared/modules/ngx-dnd/ngx-dnd.config";
 import { PlaylistService } from 'core/services/playlist.service';
@@ -20,28 +19,69 @@ import { PlaylistService } from 'core/services/playlist.service';
     styleUrls: ['./video-list.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class VideoListComponent implements OnChanges {
+export class VideoListComponent /*implements OnChanges*/ {
 
 
-    @Input() videoList: PlaylistItem[] = [];
+    
+
+    _playlist: Playlist;
+    @Input()
+    set playlist(playlist: Playlist) {
+        console.log('playlist change', playlist)
+        this._playlist = playlist;
+
+        if (playlist) {
+            this.initVideoList();
+            this.initVar();
+        }
+        this.cdRef.detectChanges();
+    }
+
+    get playlist() {
+        return this._playlist;
+    }
+
+    // Original videoList
     _videoList: PlaylistItem[] = [];
-    _length: number;
+    _videoListLen: number;
 
-    @Input() playlistId: string;
-    @Input() config: VideoListConfig;
-    @Input() canAddToPlaylist: boolean;
-
-    dragImage: DragImage;
+    // Loadable videoList
+    _items: PlaylistItem[] = [];
+    _itemsLen: number;
+    
+    sortable: boolean;
     deletable: boolean;
     confirmDelete: boolean;
-    sum = 20;
-    throttle = 200;
-    scrollDistance = 2;
+    disableInfiniteScroll: boolean;
+    
+    @Input() canAddToPlaylist: boolean;
+    dragImage: DragImage;
+    
 
-    @Output() videoListOut = new EventEmitter();
+
+
+    /*
+    @Input() videoList: PlaylistItem[] = [];
+    @Input() playlistId: string;
+    @Input() canAddToPlaylist: boolean;
+    @Input() config: VideoListConfig;
+    */
+
+    /*
+    dragBagName: String;
+    draggable: boolean;
+    displayType: String;
+    showShadow: boolean;
+    attr: {
+        copy: boolean;
+        acceptDrop: boolean;
+        playlistId: string;
+        from: string;
+    };
+    */
+
 
     @ViewChild('listRef') listRef: ElementRef;
-    @ContentChild('itemControl') itemControlTmpl: TemplateRef<any>;
     @ContentChild('footer') footerTmpl: TemplateRef<any>;
 
     constructor(
@@ -55,18 +95,82 @@ export class VideoListComponent implements OnChanges {
         this.dragImage = new DragImage(Base64Images.playlistItem, 20, 20);
     }
 
-    initDeleteBtn() {
-        if (this.config) {
-            this.deletable = this.config.attr.from !== 'search';
-            this.confirmDelete = this.config.attr.from === 'onplay' || this.config.attr.from === 'historic';
-        }
-        this.cdRef.markForCheck();
+   
+    initVideoList() {
+        this._videoList    = this.playlist.videolist;
+        this._videoListLen = this.playlist.videolist.length;
+
+        this._itemsLen = (this._videoListLen < this._itemsLen)
+            ? this._videoListLen : 20;
+
+        this._items = this.playlist.videolist.slice(0, this._itemsLen);
     }
 
+    initVar() {
+        switch (this.playlist.type) {
+            case PlayListType.PLAYLIST:
+                this.sortable = true;
+                this.deletable = true;
+                this.confirmDelete = true;
+                this.disableInfiniteScroll = false;
+                break;
+
+            case PlayListType.ONPLAY:
+                this.sortable = true;
+                this.deletable = true;
+                this.confirmDelete = false;
+                this.disableInfiniteScroll = false;
+                break;
+
+            case PlayListType.HISTORIC:
+                this.sortable = false;
+                this.deletable = true;
+                this.confirmDelete = false;
+                this.disableInfiniteScroll = false;
+                break;
+
+            case PlayListType.WATCHLATER:
+                this.sortable = true;
+                this.deletable = true;
+                this.confirmDelete = true;
+                this.disableInfiniteScroll = false;
+                break;
+
+            case PlayListType.SEARCH:
+                this.sortable = false;
+                this.deletable = false;
+                this.confirmDelete = false;
+                this.disableInfiniteScroll = true;
+                break;
+        
+            default:
+                this.sortable = false;
+                this.deletable = false;
+                this.confirmDelete = false;
+                this.disableInfiniteScroll = true;
+                break;
+        }
+    }
+
+    initDeleteBtn() {
+        /*
+        if (this.config) {
+            this.deletable = this.config.attr.from !== 'search';
+            
+            this.confirmDelete =
+               this.config.attr.from === 'onplay'
+            || this.config.attr.from === 'historic';
+        }
+        this.cdRef.markForCheck();
+        */
+    }
+
+    /*
     ngOnChanges(changes: SimpleChanges) {
         if (changes.videoList && changes.videoList.currentValue) {
             this.videoList = changes.videoList.currentValue;
             
+            console.log('videolist ngOnChanges')
             this._length = this.videoList.length;
             this.sum = 20;
             if ((this._length) < this.sum) {
@@ -90,6 +194,7 @@ export class VideoListComponent implements OnChanges {
 
         this.initDeleteBtn();
     }
+    */
 
 
     // Menu action
@@ -102,7 +207,7 @@ export class VideoListComponent implements OnChanges {
     }
 
     addToPlaylist(video: PlaylistItem) {
-        this.plSrv.addToPlaylistMulti(video, this.playlistId);
+        this.plSrv.addToPlaylistMulti(video, this._playlist.id);
     }
 
     download(video: PlaylistItem) {
@@ -110,7 +215,7 @@ export class VideoListComponent implements OnChanges {
     }
 
     deleteVideo(video: PlaylistItem, index: number, withoutConfirm?: boolean) {
-        this.plSrv.deleteVideo(video, index, this.playlistId, withoutConfirm);
+        this.plSrv.deleteVideo(video, index, this._playlist.id, withoutConfirm);
     }
 
 
@@ -128,11 +233,11 @@ export class VideoListComponent implements OnChanges {
     }
 
     moveToBottom(index: number, event) {
-        this.move(index, this.videoList.length - 1);
+        this.move(index, this._videoListLen - 1);
     }
 
     private move(from, to) {
-        this.plSrv.moveVideo(from, to, this.playlistId, this.listRef.nativeElement.children[to]);
+        this.plSrv.moveVideo(from, to, this._playlist.id/*, this.listRef.nativeElement.children[to]*/);
     }
 
     onDropSuccess(event) {
@@ -140,17 +245,17 @@ export class VideoListComponent implements OnChanges {
 
     // Infinite scroll
     onScrollDown (ev) {
-        if (this.videoList.length === this.sum) return;
+        if (this._videoListLen === this._itemsLen) return;
         
-        const start = this.sum;
-        this.sum += 20;
-        if ((this._length) <= this.sum) {
-            this.sum = this._length;
+        const start = this._itemsLen;
+        this._itemsLen += 20;
+        if ((this._videoListLen) <= this._itemsLen) {
+            this._itemsLen = this._videoListLen;
         }
 
-        for (let i = start; i < this.sum; i++) {
-            const element = this.videoList[i];
-            this._videoList.push(element);
+        for (let i = start; i < this._itemsLen; i++) {
+            const element = this._videoList[i];
+            this._items.push(element);
         }
         //this._videoList.push.apply([...this.videoList.slice(start, this.sum)]);
         this.cdRef.detectChanges();

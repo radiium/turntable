@@ -2,12 +2,15 @@
 
     <div class="scrollContainer srList">
 
-        <!-- Video list -->
-        <app-video-list
-            [playlistId]="'search'"
+        <!-- Video list
+            [playlsit]="'search'"
             [videoList]="videoList"
             [config]="videoListConfig"
-            [canAddToPlaylist]="enableDrag">
+        -->
+        <app-video-list
+
+            [playlist]="searchPlaylist"
+            [canAddToPlaylist]="true">
 
             <!-- Load more button -->
             <ng-template #footer let-footer>

@@ -26,20 +26,6 @@ export class PlaylistDetailsComponent implements OnInit, AfterViewChecked {
     loader: Loader;
     hasData: boolean;
 
-    videoListConfig: VideoListConfig = {
-        draggable: true,
-        displayType: 'list',
-        dragBagName: 'videolistBag',
-        showShadow: true,
-        attr: {
-            copy: false,
-            acceptDrop: true,
-            playlistId: '',
-            from: 'detail'
-        }
-    };
-
-
     @ViewChild('itemControl') itemControl;
     @ViewChild('pldScrollContainer') set container(scrollContainer: ElementRef) {
         this.dnd.plDetailContainer = scrollContainer;
@@ -105,21 +91,6 @@ export class PlaylistDetailsComponent implements OnInit, AfterViewChecked {
             // this.videoListConfig.attr.playlistId = this.playlist.id;
             // this.cdRef.markForCheck();
         }
-    }
-
-    getConfig(plId): VideoListConfig {
-        return {
-            draggable: true,
-            displayType: 'list',
-            dragBagName: 'videolistBag',
-            showShadow: true,
-            attr: {
-                copy: false,
-                acceptDrop: true,
-                playlistId: plId,
-                from: 'detail'
-            }
-        };
     }
 
     // ------------------------------------------------------------------------

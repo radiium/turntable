@@ -75,7 +75,7 @@ export class AppComponent implements OnInit, OnDestroy {
         });
 
         //this.dndSrv.initDnd();
-        this.appStateSrv.loadAppState();
+        this.appStateSrv.initAppData();
 
         this.appStateSrv.getOs((os) => {
             console.log('PLATFORM', os);
@@ -171,7 +171,10 @@ export class AppComponent implements OnInit, OnDestroy {
         }
     }
 
-    onMouseDown(event: MouseEvent) { this.onGrab = true; }
+    onMouseDown(event: MouseEvent) {
+        this.onGrab = true;
+    }
+
     onMouseUp(event?: MouseEvent) {
         this.onGrab = false;
         // event.preventDefault();
@@ -188,6 +191,7 @@ export class AppComponent implements OnInit, OnDestroy {
             this.resize(evnt.clientX)
         }
     }
+    
     onDrag(event) {
         event.dataTransfer.setDragImage(new Image(), 0, 0);
     }

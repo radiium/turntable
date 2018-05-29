@@ -1,6 +1,368 @@
+
+
+
+
+<div class="appListContainer"
+    infinite-scroll
+    [infiniteScrollDisabled]="disableInfiniteScroll"
+    [infiniteScrollDistance]="2"
+    [infiniteScrollThrottle]="200"
+    (scrolled)="onScrollDown()"
+    [scrollWindow]="false">
+
+
+    <!-- **************************************
+        
+                Sortable List
+    
+    ************************************** -->
+
+    <div *ngIf="sortable"
+        #listRef class="appList"
+        dnd-sortable-container
+        [sortableData]="_items">
+
+        <!-- Video list item -->
+        <div *ngFor="let video of _items; let i = index; trackBy: trackByFn"
+            class="appListItem"
+            dnd-sortable
+            [sortableIndex]="i"
+            [dragData]="{ video: video, from: playlistId, type: 'PlayListItem' }"
+            [dragEnabled]="true"
+            [dragImage]="dragImage"
+            [effectAllowed]="'copyMove'"
+            (onDropSuccess)="onDropSuccess($event)">
+
+            <!-- Select track
+                <div>
+                    <mat-checkbox [(ngModel)]="video.selected"></mat-checkbox>
+                </div>
+            -->
+
+            <!-- Drag handle
+                <div *ngIf="config.draggable" class="handle btnHovered itemBox" dnd-sortable-handle>
+                <i fa [name]="'ellipsis-v'" [size]="1" class="handle"></i>
+                </div>
+            -->
+    
+            <!-- Video thumbnail -->
+            <div class="srThumb itemBox">
+                <div class="hoverThumbPlayBtnIco hoverThumb" >
+                    <fa class="ico" [name]="'play-circle-o'" [size]="4" (click)="playVideo(video, i)"></fa>
+                </div>
+                <div class="hoverThumbPlayBtn hoverThumb"></div>
+                <img draggable="false" [src]="video?.thumb.url" alt=""
+                    [style.height]="imgHeight" [style.minWidth]="imgWidth">
+            </div>
+    
+            <!-- Video infos -->
+            <div class="srInfos itemBox">
+                <div class="srTitle itemText"><span class="itemIndex">{{ i + 1 }}</span> - {{ video?.title }}</div>
+                <div class="srDesc itemText">{{ video?.channelTitle }} - <span  [translate]="'since'"></span> {{ video?.publishedAt | date:'mediumDate' }} - {{ video?.duration | duration }}</div>
+                <div class="duration">{{ video?.duration | duration }}</div>
+                <div class="flexSpacer"></div>
+            </div>
+
+            <div class="flexSpacer"></div>
+
+            <!-- Video control buttons -->
+            <div class="controlBox itemBox">
+
+                <button class="toolbarBtn btnHover"
+                    [matMenuTriggerFor]="menuOrder" xPosition="'before'" yPosition="'above'">
+                    <fa [name]="'sort'" [size]="2"></fa>
+                </button>
+
+                <mat-menu #menuOrder="matMenu">
+                    <div class="inlineBtn">
+                        <button class="toolbarBtn iconMenuBtn btnHover"
+                            (click)="moveToTop(i, test)"
+                            [disabled]="i === 0"
+                            [class.disabled]="i === 0">
+                            <fa [name]="'angle-double-up'" [size]="2"></fa>
+                        </button>
+                        <button class="toolbarBtn iconMenuBtn btnHover"
+                            (click)="up(i, test)"
+                            [disabled]="i === 0"
+                            [class.disabled]="i === 0">
+                            <fa [name]="'angle-up'" [size]="2"></fa>
+                        </button>
+                    </div>
+                    <div class="inlineBtn">
+                        <button class="toolbarBtn iconMenuBtn btnHover"
+                            (click)="down(i, test)"
+                            [disabled]="i === (_videoListLen - 1)"
+                            [class.disabled]="i === (_videoListLen - 1)">
+                            <fa [name]="'angle-down'" [size]="2"></fa>
+                        </button>
+                        <button class="toolbarBtn iconMenuBtn btnHover"
+                            (click)="moveToBottom(i, test)"
+                            [disabled]="i === (_videoListLen - 1)"
+                            [class.disabled]="i === (_videoListLen - 1)">
+                            <fa [name]="'angle-double-down'" [size]="2"></fa>
+                        </button>
+                    </div>
+                </mat-menu>
+
+
+                <button class="toolbarBtn btnHover" [matMenuTriggerFor]="menuDetail"
+                    xPosition="'before'" yPosition="'above'">
+                    <fa [name]="'bars'" [size]="2"></fa>
+                </button>
+
+                <mat-menu #menuDetail="matMenu">
+                    <!-- Play track -->
+                    <button mat-menu-item (click)="playVideo(video)">
+                        <mat-icon svgIcon="play-circle-outline"></mat-icon>
+                        <span [translate]="'play'"></span>
+                    </button>
+
+                    <!-- Add track to player list -->
+                    <button mat-menu-item (click)="addToPlayerList(video)"
+                        *ngIf="playlist.type !== 'onplay'">
+                        <mat-icon svgIcon="playlist-plus"></mat-icon>
+                        <span [translate]="'addToPlay'"></span>
+                    </button>
+
+                    <!-- Add track to playlist -->
+                    <button mat-menu-item (click)="addToPlaylist(video)"
+                        *ngIf="canAddToPlaylist">
+                        <mat-icon svgIcon="library-plus"></mat-icon>
+                        <span [translate]="'addToPl'"></span>
+                    </button>
+
+                    <!-- Download track -->
+                    <button mat-menu-item (click)="download(video)">
+                        <mat-icon svgIcon="download"></mat-icon>
+                        <span [translate]="'download'"></span>
+                    </button>
+
+                    <!-- Delete track -->
+                    <button mat-menu-item (click)="deleteVideo(video, i)"
+                        *ngIf="deletable && !confirmDelete">
+                        <mat-icon svgIcon="delete-forever"></mat-icon>
+                        <span [translate]="'removeTrack'"></span>
+                    </button>
+                </mat-menu>
+
+                <!-- Delete track -->
+                <button class="toolbarBtn btnHover" (click)="deleteVideo(video, i, true)"
+                    *ngIf="deletable && confirmDelete">
+                    <mat-icon svgIcon="delete-forever"></mat-icon>
+                </button>
+
+            </div>
+        </div>
+
+        <ng-container *ngTemplateOutlet="footerTmpl, context: { $implicit: footer }"></ng-container>
+    </div>
+
+
+
+
+
+
+    <!-- **************************************
+        
+                Non Sortable List
+    
+    ************************************** -->
+
+    <div *ngIf="!sortable"
+        #listRef class="appList">
+
+        <!-- Video list item -->
+        <div *ngFor="let video of _items; let i = index; trackBy: trackByFn"
+            class="appListItem"
+            dnd-draggable
+            [effectAllowed]="move"
+            [dragData]="{ video: video, from: playlistId, type: 'PlayListItem' }"
+            [dragEnabled]="true"
+            [dragImage]="dragImage"
+            (onDropSuccess)="onDropSuccess($event)">
+
+            <!-- Select track
+                <div>
+                    <mat-checkbox [(ngModel)]="video.selected"></mat-checkbox>
+                </div>
+            -->
+
+            <!-- Drag handle
+                <div *ngIf="config.draggable" class="handle btnHovered itemBox" dnd-sortable-handle>
+                <i fa [name]="'ellipsis-v'" [size]="1" class="handle"></i>
+                </div>
+            -->
+    
+            <!-- Video thumbnail -->
+            <div class="srThumb itemBox">
+                <div class="hoverThumbPlayBtnIco hoverThumb" >
+                    <fa class="ico" [name]="'play-circle-o'" [size]="4" (click)="playVideo(video, i)"></fa>
+                </div>
+                <div class="hoverThumbPlayBtn hoverThumb"></div>
+                <img draggable="false" [src]="video?.thumb.url" alt=""
+                    [style.height]="imgHeight" [style.minWidth]="imgWidth">
+            </div>
+
+            <!-- Video infos -->
+            <div class="srInfos itemBox">
+                <div class="srTitle itemText"><span class="itemIndex">{{ i + 1 }}</span> - {{ video?.title }}</div>
+                <div class="srDesc itemText">{{ video?.channelTitle }} - <span  [translate]="'since'"></span> {{ video?.publishedAt | date:'mediumDate' }} - {{ video?.duration | duration }}</div>
+                <div class="duration">{{ video?.duration | duration }}</div>
+                <div class="flexSpacer"></div>
+            </div>
+
+            <div class="flexSpacer"></div>
+
+            <!-- Video control buttons -->
+            <div class="controlBox itemBox">
+
+                <button  class="toolbarBtn btnHover"
+                    [matMenuTriggerFor]="menuOrder" xPosition="'before'" yPosition="'above'">
+                    <fa [name]="'sort'" [size]="2"></fa>
+                </button>
+        
+                <mat-menu #menuOrder="matMenu">
+                    <div class="inlineBtn">
+                        <button class="toolbarBtn iconMenuBtn btnHover"
+                            (click)="moveToTop(i, test)"
+                            [disabled]="i === 0"
+                            [class.disabled]="i === 0">
+                            <fa [name]="'angle-double-up'" [size]="2"></fa>
+                        </button>
+                        <button class="toolbarBtn iconMenuBtn btnHover"
+                            (click)="up(i, test)"
+                            [disabled]="i === 0"
+                            [class.disabled]="i === 0">
+                            <fa [name]="'angle-up'" [size]="2"></fa>
+                        </button>
+                    </div>
+                    <div class="inlineBtn">
+                        <button class="toolbarBtn iconMenuBtn btnHover"
+                            (click)="down(i, test)"
+                            [disabled]="i === (_videoListLen - 1)"
+                            [class.disabled]="i === (_videoListLen - 1)">
+                            <fa [name]="'angle-down'" [size]="2"></fa>
+                        </button>
+                        <button class="toolbarBtn iconMenuBtn btnHover"
+                            (click)="moveToBottom(i, test)"
+                            [disabled]="i === (_videoListLen - 1)"
+                            [class.disabled]="i === (_videoListLen - 1)">
+                            <fa [name]="'angle-double-down'" [size]="2"></fa>
+                        </button>
+                    </div>
+                </mat-menu>
+
+
+                <button class="toolbarBtn btnHover" [matMenuTriggerFor]="menuDetail"
+                    xPosition="'before'" yPosition="'above'">
+                    <fa [name]="'bars'" [size]="2"></fa>
+                </button>
+                <mat-menu #menuDetail="matMenu">
+                    <!-- Play track -->
+                    <button mat-menu-item (click)="playVideo(video)">
+                        <mat-icon svgIcon="play-circle-outline"></mat-icon>
+                        <span [translate]="'play'"></span>
+                    </button>
+    
+                    <!-- Add track to player list -->
+                    <button mat-menu-item (click)="addToPlayerList(video)">
+                        <mat-icon svgIcon="playlist-plus"></mat-icon>
+                        <span [translate]="'addToPlay'"></span>
+                    </button>
+
+                    <!-- Add track to playlist -->
+                    <button mat-menu-item (click)="addToPlaylist(video)"
+                        *ngIf="canAddToPlaylist">
+                        <mat-icon svgIcon="library-plus"></mat-icon>
+                        <span [translate]="'addToPl'"></span>
+                    </button>
+    
+                    <!-- Download track -->
+                    <button mat-menu-item (click)="download(video)">
+                        <mat-icon svgIcon="download"></mat-icon>
+                        <span [translate]="'download'"></span>
+                    </button>
+
+                    <!-- Delete track -->
+                    <button mat-menu-item (click)="deleteVideo(video, i)"
+                        *ngIf="deletable && !confirmDelete">
+                        <mat-icon svgIcon="delete-forever"></mat-icon>
+                        <span [translate]="'removeTrack'"></span>
+                    </button>
+                </mat-menu>
+
+                <!-- Delete track -->
+                <button class="toolbarBtn btnHover" (click)="deleteVideo(video, i, true)"
+                    *ngIf="deletable && confirmDelete">
+                    <mat-icon svgIcon="delete-forever"></mat-icon>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <ng-container *ngTemplateOutlet="footerTmpl, context: { $implicit: footer }"></ng-container>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--
 <div class="appListContainer"
 
     infinite-scroll
+    [infiniteScrollDisabled]=''
     [infiniteScrollDistance]="scrollDistance"
     [infiniteScrollThrottle]="throttle"
     (scrolled)="onScrollDown()"
@@ -8,9 +370,9 @@
     >
     <!--
         (scrolledUp)="onUp()"
-    -->
+    --
 
-        <!-- Video list -->
+        <!-- Video list --
         <div
             *ngIf="config.attr.from !== 'search' && config.attr.from !== 'historic'"
             #listRef
@@ -18,7 +380,7 @@
             dnd-sortable-container
             [sortableData]="videoList">
     
-            <!-- Video list item -->
+            <!-- Video list item --
             <div
                 *ngFor="let video of _videoList; let i = index; trackBy: trackByFn"
                 id="{{ 'onPlayItem-' + i }}"
@@ -38,15 +400,15 @@
                     <div>
                         <mat-checkbox [(ngModel)]="video.selected"></mat-checkbox>
                     </div>
-                -->
+                --
     
                 <!-- Drag handle
                     <div *ngIf="config.draggable" class="handle btnHovered itemBox" dnd-sortable-handle>
                     <i fa [name]="'ellipsis-v'" [size]="1" class="handle"></i>
                     </div>
-                -->
+                --
     
-                <!-- Video thumbnail -->
+                <!-- Video thumbnail --
                 <div class="srThumb itemBox">
                     <div class="hoverThumbPlayBtnIco hoverThumb" >
                         <fa class="ico" [name]="'play-circle-o'" [size]="4" (click)="playVideo(video, i)"></fa>
@@ -58,8 +420,7 @@
                     [style.minWidth]="imgWidth">
                 </div>
     
-    
-                <!-- Video infos -->
+                <!-- Video infos --
                 <div class="srInfos itemBox">
                     <div class="srTitle itemText"><span class="itemIndex">{{ i + 1 }}</span> - {{ video?.title }}</div>
                     <div class="srDesc itemText">{{ video?.channelTitle }} - <span  [translate]="'since'"></span> {{ video?.publishedAt | date:'mediumDate' }} - {{ video?.duration | duration }}</div>
@@ -69,7 +430,7 @@
     
                 <div class="flexSpacer"></div>
     
-                <!-- Video control buttons -->
+                <!-- Video control buttons --
                 <div class="controlBox itemBox">
     
                     <div *ngIf="config.attr.acceptDrop">
@@ -116,51 +477,65 @@
                         <fa [name]="'bars'" [size]="2"></fa>
                     </button>
                     <mat-menu #menuDetail="matMenu">
-                        <!-- Play track -->
+                        <!-- Play track --
                         <button mat-menu-item (click)="playVideo(video)">
                             <mat-icon svgIcon="play-circle-outline"></mat-icon>
                             <span [translate]="'play'"></span>
                         </button>
     
-                        <!-- Add track to player list -->
-                        <button mat-menu-item (click)="addToPlayerList(video)">
+                        <!-- Add track to player list --
+                        <button mat-menu-item (click)="addToPlayerList(video)"  *ngIf="playlistId !== 'onplay'">
                             <mat-icon svgIcon="playlist-plus"></mat-icon>
                             <span [translate]="'addToPlay'"></span>
                         </button>
     
-                        <!-- Add track to playlist -->
+                        <!-- Add track to playlist --
                         <button mat-menu-item (click)="addToPlaylist(video)" *ngIf="canAddToPlaylist">
                             <mat-icon svgIcon="library-plus"></mat-icon>
                             <span [translate]="'addToPl'"></span>
                         </button>
     
-                        <!-- Download track -->
+                        <!-- Download track --
                         <button mat-menu-item (click)="download(video)">
                             <mat-icon svgIcon="download"></mat-icon>
                             <span [translate]="'download'"></span>
                         </button>
     
-                        <!-- Delete track -->
+                        <!-- Delete track --
                         <button mat-menu-item (click)="deleteVideo(video, i)" *ngIf="deletable && !confirmDelete">
                             <mat-icon svgIcon="delete-forever"></mat-icon>
                             <span [translate]="'removeTrack'"></span>
                         </button>
                     </mat-menu>
 
-                    <!-- Delete track -->
+                    <!-- Delete track --
                     <button class="toolbarBtn btnHover" (click)="deleteVideo(video, i, true)" *ngIf="deletable && confirmDelete">
                         <mat-icon svgIcon="delete-forever"></mat-icon>
                     </button>
                 </div>
             </div>
     
-            <!-- Footer of the list (For load more button in search list) -->
-            <ng-container *ngTemplateOutlet="footerTmpl, context: { $implicit: footer }"></ng-container>
+            <!-- Footer of the list (For load more button in search list) --
+            
         </div>
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         
-        <!-- Video list -->
+        <!-- Video list --
         <div *ngIf="config.attr.from === 'search' || config.attr.from === 'historic'"
             #listRef
             class="appList"
@@ -168,7 +543,7 @@
     
             <!-- Video list item
             [dragImage]='assets/images/vinyl.png'
-        -->
+        --
             <div
                 *ngFor="let video of _videoList; let i = index; trackBy: trackByFn"
                 id="{{ 'onPlayItem-' + i }}"
@@ -184,9 +559,9 @@
                     ngxDraggable
                     [dragImage]="dragImage"
                     
-                -->
+                --
     
-                <!-- Video thumbnail -->
+                <!-- Video thumbnail --
                 <div class="srThumb itemBox">
                     <div class="hoverThumbPlayBtnIco hoverThumb" >
                         <fa class="ico" [name]="'play-circle-o'" [size]="4" (click)="playVideo(video, i)"></fa>
@@ -198,7 +573,7 @@
                     [style.minWidth]="imgWidth">
                 </div>
     
-                <!-- Video infos -->
+                <!-- Video infos --
                 <div class="srInfos itemBox">
                     <div class="srTitle itemText"><span class="itemIndex">{{ i + 1 }}</span> - {{ video?.title }}</div>
                     <div class="srDesc itemText">{{ video?.channelTitle }} - <span  [translate]="'since'"></span> {{ video?.publishedAt | date:'mediumDate' }} - {{ video?.duration | duration }}</div>
@@ -208,7 +583,7 @@
     
                 <div class="flexSpacer"></div>
     
-                <!-- Video control buttons -->
+                <!-- Video control buttons --
                 <div class="controlBox itemBox">
     
                     <div *ngIf="config.attr.acceptDrop">
@@ -255,47 +630,49 @@
                         <fa [name]="'bars'" [size]="2"></fa>
                     </button>
                     <mat-menu #menuDetail="matMenu">
-                        <!-- Play track -->
+                        <!-- Play track --
                         <button mat-menu-item (click)="playVideo(video)">
                             <mat-icon svgIcon="play-circle-outline"></mat-icon>
                             <span [translate]="'play'"></span>
                         </button>
     
-                        <!-- Add track to player list -->
+                        <!-- Add track to player list --
                         <button mat-menu-item (click)="addToPlayerList(video)">
                             <mat-icon svgIcon="playlist-plus"></mat-icon>
                             <span [translate]="'addToPlay'"></span>
                         </button>
     
-                        <!-- Add track to playlist -->
+                        <!-- Add track to playlist --
                         <button mat-menu-item (click)="addToPlaylist(video)" *ngIf="canAddToPlaylist">
                             <mat-icon svgIcon="library-plus"></mat-icon>
                             <span [translate]="'addToPl'"></span>
                         </button>
     
-                        <!-- Download track -->
+                        <!-- Download track --
                         <button mat-menu-item (click)="download(video)">
                             <mat-icon svgIcon="download"></mat-icon>
                             <span [translate]="'download'"></span>
                         </button>
     
-                        <!-- Delete track -->
+                        <!-- Delete track --
                         <button mat-menu-item (click)="deleteVideo(video, i)" *ngIf="deletable && !confirmDelete">
                             <mat-icon svgIcon="delete-forever"></mat-icon>
                             <span [translate]="'removeTrack'"></span>
                         </button>
                     </mat-menu>
 
-                    <!-- Delete track -->
+                    <!-- Delete track --
                     <button class="toolbarBtn btnHover" (click)="deleteVideo(video, i, true)" *ngIf="deletable && confirmDelete">
                         <mat-icon svgIcon="delete-forever"></mat-icon>
                     </button>
                 </div>
             </div>
     
-            <!-- Footer of the list (For load more button in search list) -->
+            <!-- Footer of the list (For load more button in search list) --
             <ng-container *ngTemplateOutlet="footerTmpl, context: { $implicit: footer }"></ng-container>
         </div>
     </div>
+
+-->
     
     

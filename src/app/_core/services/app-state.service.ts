@@ -5,12 +5,20 @@ import { UUID } from 'angular2-uuid';
 
 import * as _ from 'lodash';
 
-import { User, Playlist, PlaylistItem, AppState } from 'core/models';
+import { User,
+         Playlist,
+         PlaylistItem,
+         AppState,
+         PlaylistFactory,
+         PlayListType,
+         PrivacyStatus, 
+         Thumbnail,
+         PlaylistItemFactory} from 'core/models';
 import { AuthService } from 'core/services/auth.service';
 import { DataService } from 'core/services/data.service';
 import { YoutubeService } from 'core/services/youtube.service';
 
-import * as testPlaylist from '../test-playlist.json';
+import * as DATA from '../test-playlist.json';
 
 @Injectable()
 export class AppStateService {
@@ -32,15 +40,104 @@ export class AppStateService {
         this.isFirstLoad = true;
 
         this.playlistsList = [];
-        this.dataSrv.playlistsList$.subscribe((pll) => {
-            this.playlistsList = pll;
-            this.saveAppState();
-            this.storeLocalPlaylists();
+        this.dataSrv.playlistsList$.subscribe((data) => {
+            this.playlistsList = data;
+            // this.saveAppState();
+            this.saveLocalPlaylists();
         });
 
         this.dataSrv.appState$.subscribe((data) => {
             this.appState = data;
             this.saveAppState();
+        });
+    }
+
+    initAppData() {
+
+        this.isFirstLoad = false;
+
+        const onPlayList     = PlaylistFactory.create(PlayListType.ONPLAY, <Playlist>{});
+        const historicList   = PlaylistFactory.create(PlayListType.HISTORIC, <Playlist>{});
+        const watchLaterList = PlaylistFactory.create(PlayListType.WATCHLATER, <Playlist>{});
+
+        this.dataSrv.setOnPlayList(onPlayList);
+        this.dataSrv.setHistoricList(historicList);
+        this.dataSrv.setWatchLaterList(watchLaterList);
+        this.dataSrv.setPlaylistsList([]);
+
+        if (this.isElectronApp) {
+            this.loadUser();
+            this.loadAppState2();
+            this.loadLocalPlaylist2();
+        } else {
+            this.insertFakeData();
+        }
+
+    }
+
+    loadUser() {
+        this.electronSrv.ipcRenderer.send('send-get-user');
+        this.electronSrv.ipcRenderer.on('get-user', (event, user) => {
+            if (user && user.token) {
+                // Check if user is authenticated
+                this.authSrv.checkAuth(user.token).subscribe((resp: any) => {
+                    if (resp.error) {
+                        this.dataSrv.setUser(null);
+                    } else {
+                        this.dataSrv.setUser(user);
+                        this.authSrv.storeToken(user.token);
+                        this.ytSrv.fetchYoutubePlaylists();
+                    }
+                });
+            }
+        });
+    }
+
+
+    /**
+     * 
+     * Save/load App state
+     * 
+     */
+
+    saveAppState() {
+        console.log('===== saveAppState');
+        if (this.isElectronApp && !this.isFirstLoad) {
+            this.electronSrv.ipcRenderer.send('send-save-app-state', this.appState);
+        }
+    }
+
+    loadAppState2() {
+        this.electronSrv.ipcRenderer.send('send-get-app-state');
+        this.electronSrv.ipcRenderer.on('get-app-state', (event, data) => {
+            if (data && Object.keys(data).length > 0) {
+                data.loading = false;
+                this.dataSrv.setAppState(data);
+            }
+        });
+    }
+
+
+    /**
+     * 
+     * Save/load Local playlist
+     * 
+     */
+
+    saveLocalPlaylists() {
+        if (this.isElectronApp && !this.isFirstLoad) {
+            const localPlaylists = _.filter(this.playlistsList, pl => pl.isLocal);
+            this.electronSrv.ipcRenderer.send('send-save-local-playlists', localPlaylists);
+        }
+    }
+
+    loadLocalPlaylist2() {
+        this.electronSrv.ipcRenderer.send('send-get-local-playlists');
+        this.electronSrv.ipcRenderer.on('get-local-playlists', (event, localPlaylist) => {
+            if (localPlaylist && localPlaylist.length > 0) {
+                const pll = [...this.playlistsList, ..._.map(localPlaylist, pl => this.fillPlaylist(pl))];
+                this.dataSrv.setPlaylistsList(pll);
+            }
         });
     }
 
@@ -85,22 +182,7 @@ export class AppStateService {
         }
     }
 
-    saveAppState() {
-        console.log('===== saveAppState');
-        if (this.isElectronApp && !this.isFirstLoad) {
-            this.electronSrv.ipcRenderer.send('send-save-app-state', this.appState);
-        }
-    }
-
-    // Retrieve and store local playlist
-    storeLocalPlaylists() {
-        if (this.isElectronApp && !this.isFirstLoad) {
-            // console.log('===== storeLocalPlaylists');
-            const localPlaylists = _.filter(this.playlistsList, pl => pl.isLocal);
-            this.electronSrv.ipcRenderer.send('send-save-local-playlists', localPlaylists);
-        }
-    }
-
+    
     loadLocalPlaylist() {
         if (this.isElectronApp) {
             // console.log('===== loadLocalPlaylist');
@@ -135,86 +217,54 @@ export class AppStateService {
     }
 
     fillPlaylist(pl: Playlist) {
-        return new Playlist(
-            pl.id,
-            pl.title,
-            pl.description,
-            pl.thumbUrl,
-            pl.thumbH,
-            pl.thumbW,
-            pl.publishedAt,
-            pl.privacyStatus,
-            pl.isLocal,
-            this.fillVideoList(pl.videolist),
-            pl.appId
-        );
+
+        const thumb: Thumbnail = {
+            url: pl.thumb.url,
+            height: pl.thumb.height,
+            width: pl.thumb.width,
+        };
+
+        const playlists = PlaylistFactory.create(PlayListType.ONPLAY, {
+            id: pl.id,
+            appId: pl.appId || UUID.UUID(),
+            title: pl.title,
+            description: pl.description,
+            thumb: thumb,
+            publishedAt: pl.publishedAt,
+            privacyStatus: pl.privacyStatus,
+            isLocal: pl.isLocal,
+            videolist: this.fillVideoList(pl.videolist),
+            
+        });
+
+        return playlists;
     }
 
     fillVideoList(videoList: PlaylistItem[]) {
-        const newVideoList: PlaylistItem[] = [];
+        let newVideoList: PlaylistItem[] = [];
         if (videoList || videoList.length > 0) {
-            videoList.forEach(video => {
-                const newVideo = new PlaylistItem(
-                    video.id,
-                    video.selected,
-                    video.title,
-                    video.description,
-                    video.thumbUrl,
-                    video.duration,
-                    video.channelTitle,
-                    video.publishedAt,
-                    video.appId,
-                );
-
-                newVideoList.push(newVideo);
+            newVideoList = _.map(videoList, (video) => {
+                return PlaylistItemFactory.create(video) 
             });
         }
         return newVideoList;
     }
 
-
-
      // Load a local playlist for development
      insertFakeData() {
-        /*
-        const arr = [];
-        for (let i = 0; i < 25; i++) {
-        arr.push(testPlaylist);
-        }
-        this.playlistsList = <Playlist[]>arr;
-        */
-        const videoList: PlaylistItem[] = [];
-        testPlaylist['testPlaylist']['videolist'].forEach(el => {
-            const video = new PlaylistItem(
-                el['id'],
-                el['selected'],
-                el['title'],
-                el['description'],
-                el['thumbUrl'],
-                el['duration'],
-                el['channelTitle'],
-                el['publishedAt'],
-                UUID.UUID()
-            );
 
-            for (let i = 0; i < 40; i++) {
-                videoList.push(video);
-            }
-        });
-        const datas = new Playlist(
-            testPlaylist['testPlaylist']['id'],
-            testPlaylist['testPlaylist']['title'],
-            testPlaylist['testPlaylist']['description'],
-            testPlaylist['testPlaylist']['thumbUrl'],
-            testPlaylist['testPlaylist']['thumbH'],
-            testPlaylist['testPlaylist']['thumbW'],
-            testPlaylist['testPlaylist']['publishedAt'],
-            testPlaylist['testPlaylist']['privacyStatus'],
-            true,
-            videoList,
-            UUID.UUID()
-        );
-        // this.playlistsList = <Playlist[]>[datas];
-        this.dataSrv.setPlaylistsList(<Playlist[]>[datas]);
+        var query = window.location.search.slice(1);
+        
+
+        let num = Number(query);
+        if (isNaN(num) || num === 0) num = 1;
+        let videolist = [];
+        for (let i = 0; i < num; i++) {
+            videolist = [...videolist, ...this.fillVideoList(DATA['videolist'])];
+        }
+
+        const playlist = this.fillPlaylist(DATA['playlist']);
+        playlist.videolist = videolist;
+        this.dataSrv.setPlaylistsList([playlist]);
     }
 }

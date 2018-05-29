@@ -176,6 +176,19 @@
             </app-toolbar>
 
 
+            <app-toolbar  [height]="'40px'" [margin]="'0 5px 0 0'" [padding]="'0 10px 0 10px'">
+                <button [hidden]="onDisplayPl !== 'playlist'" class="toolbarBtn btnHover" (click)="emptyOnPlayList()">
+                    <mat-icon svgIcon="delete-forever"></mat-icon>
+                    <span [translate]="'delete'"></span>
+                </button>
+
+                <button [hidden]="onDisplayPl !== 'historic'" class="toolbarBtn btnHover" (click)="emptyHistoricList()">
+                    <mat-icon svgIcon="delete-forever"></mat-icon>
+                    <span [translate]="'delete'"></span>
+                </button>
+            </app-toolbar>
+
+
             <!-- Toggle single/multi player
                 <app-toolbar [height]="'40px'" [margin]="'0 5px 0 0'">
                     <button class="toolbarBtn textBtn btnHover" (click)="appState?.multiPlayer = !appState?.multiPlayer">Full Size</button>
@@ -192,27 +205,32 @@
         </div>
 
 
-        <!-- Onplay list -->
+        <!-- Onplay list
+            [playlistId]="'onplay'"
+            [videoList]="onPlayList"
+            [config]="playListConfig"
+        -->
         <div #playerListScrollContainer
             [hidden]="onDisplayPl !== 'playlist'"
             class="scrollContainer plPlayerList">
             <app-video-list
-                [playlistId]="'onplay'"
-                [videoList]="onPlayList"
-                [config]="playListConfig"
+                [playlist]="onPlayList"
                 [canAddToPlaylist]="canAddToPlaylist">
+                
             </app-video-list>
         </div>
 
 
-        <!-- Historic list -->
+        <!-- Historic list
+            [playlistId]="'historic'"
+            [videoList]="historicList"
+            [config]="historicListConfig"
+        -->
         <div #plPlayerList
             [hidden]="onDisplayPl !== 'historic'"
             class="scrollContainer plPlayerList">
             <app-video-list
-                [playlistId]="'historic'"
-                [videoList]="historicList"
-                [config]="historicListConfig"
+                [playlist]="historicList"
                 [canAddToPlaylist]="canAddToPlaylist">
             </app-video-list>
         </div>

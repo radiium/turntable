@@ -1,6 +1,7 @@
 export * from './playlist';
 export * from './playlist-item';
 export * from './suggests';
+export * from './thumbnail';
 export * from './user';
 export * from './loader';
 export * from './app-state';

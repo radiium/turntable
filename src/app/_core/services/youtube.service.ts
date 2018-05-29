@@ -22,7 +22,12 @@ import { User,
          PlaylistItem,
          Suggests,
          Playlist,
-         SearchResults } from 'core/models';
+         SearchResults, 
+         PlaylistFactory,
+         PlayListType,
+         PrivacyStatus,
+         Thumbnail,
+         PlaylistItemFactory} from 'core/models';
 import { VideosApiService,
          ChannelsApiService,
          SubscriptionsApiService,
@@ -245,33 +250,43 @@ export class YoutubeService {
 
     // Parse and convert playlist object from YouTube api to app playlist object
     parsePlaylist(playlist: any, videolist?: PlaylistItem[]) {
-        return new Playlist(
-            playlist.id,
-            playlist.snippet.localized.title,
-            playlist.snippet.localized.description,
-            playlist.snippet.thumbnails.medium.url,
-            playlist.snippet.thumbnails.medium.height,
-            playlist.snippet.thumbnails.medium.width,
-            playlist.snippet.publishedAt,
-            playlist.status.privacyStatus,
-            false,
-            videolist,
-            UUID.UUID()
-        );
+
+        const thumb: Thumbnail = {
+            url: playlist.snippet.thumbnails.medium.url,
+            height: playlist.snippet.thumbnails.medium.height,
+            width: playlist.snippet.thumbnails.medium.width,
+        };
+
+        return PlaylistFactory.create(PlayListType.PLAYLIST, {
+            id: playlist.id,
+            appId: UUID.UUID(),
+            title: playlist.snippet.localized.title,
+            description: playlist.snippet.localized.description,
+            thumb: thumb,
+            publishedAt: playlist.snippet.publishedAt,
+            privacyStatus: PrivacyStatus.PRIVATE,
+            isLocal: false,
+            videolist: videolist
+        });
     }
 
     // Parse and convert video object from YouTube api to app video object
     parseVideo(video: any) {
-        return new PlaylistItem(
-            video.id,
-            false,
-            _.deburr(video.snippet.localized.title),
-            _.deburr(video.snippet.localized.description),
-            video.snippet.thumbnails.default.url,
-            moment.duration(video.contentDetails.duration).asMilliseconds(),
-            video.snippet.channelTitle,
-            video.snippet.publishedAt,
-            UUID.UUID()
-        );
+
+        const thumb: Thumbnail = {
+            url: video.snippet.thumbnails.default.url,
+        };
+
+        return PlaylistItemFactory.create({
+            id: video.id,
+            appId: UUID.UUID(),
+            title: _.deburr(video.snippet.localized.title),
+            description: _.deburr(video.snippet.localized.description),
+            thumb: thumb,
+            duration: moment.duration(video.contentDetails.duration).asMilliseconds(),
+            channelTitle: video.snippet.channelTitle,
+            publishedAt: video.snippet.publishedAt,
+            selected: false
+        });
     }
 }
