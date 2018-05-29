@@ -1,6 +1,5 @@
 language: node_js
 node_js:
-  - 10
   - "node"
 sudo: required
 addons:
@@ -12,7 +11,8 @@ install:
   - npm set progress=false
   - npm install
 script:
-#  - ng lint
+  - ng lint
 #  - npm run test
 #  - npm run e2e
   - npm run prepare:prod
+#  - npm run dist
