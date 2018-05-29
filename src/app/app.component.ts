@@ -33,9 +33,9 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     zIndex: number;
 
     onGrab: boolean;
-    @ViewChild('appp') appp: ElementRef
-    @ViewChild('sideNav') sideNav: ElementRef
-    @ViewChild('content') content: ElementRef
+    @ViewChild('appp') appp: ElementRef;
+    @ViewChild('sideNav') sideNav: ElementRef;
+    @ViewChild('content') content: ElementRef;
 
     constructor(
     private appStateSrv: AppStateService,
@@ -50,7 +50,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     private translate: TranslateService) {
 
 
-        
+
         this.zIndex = -1;
         this.miniNav = false;
         this.onGrab = false;
@@ -81,14 +81,14 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
             this.loader = data;
         });
 
-        //this.dndSrv.initDnd();
+        // this.dndSrv.initDnd();
         this.appStateSrv.initAppData();
 
         this.appStateSrv.getOs((os) => {
             console.log('PLATFORM', os);
             if (os === 'darwin') {
             }
-        })
+        });
     }
 
     ngOnInit() {
@@ -96,12 +96,11 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
             this.appp.nativeElement.addEventListener('mousemove', this.onMove.bind(this));
             this.appp.nativeElement.addEventListener('dragover', this.onMove.bind(this));
             this.appp.nativeElement.addEventListener('mouseup', this.onMouseUp.bind(this));
-            document.addEventListener("mouseout", this.onMouseOut.bind(this));
+            document.addEventListener('mouseout', this.onMouseOut.bind(this));
         });
     }
 
     ngAfterViewInit() {
-   
     }
 
     startConfettis() {
@@ -131,7 +130,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
             this.appp.nativeElement.removeEventListener('mousemove', this.onMove.bind(this));
             this.appp.nativeElement.removeEventListener('dragover', this.onMove.bind(this));
             this.appp.nativeElement.removeEventListener('mouseup', this.onMouseUp.bind(this));
-            document.removeEventListener("mouseout", this.onMouseOut.bind(this));
+            document.removeEventListener('mouseout', this.onMouseOut.bind(this));
         });
     }
 
@@ -215,22 +214,26 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
     onMouseOut(e: MouseEvent) {
         const evnt: any = e ? e : window.event;
-        var from = evnt.relatedTarget || evnt.toElement;
+        const from = evnt.relatedTarget || evnt.toElement;
         if (from === null) {
             this.onMouseUp(evnt);
         }
         if (evnt.clientX < 44) {
-            if (!this.onGrab) return;
-            this.resize(evnt.clientX)
+            if (!this.onGrab) {
+                return;
+            }
+            this.resize(evnt.clientX);
         }
     }
-    
+
     onDrag(event) {
         event.dataTransfer.setDragImage(new Image(), 0, 0);
     }
 
     onMove(event: MouseEvent) {
-        if (!this.onGrab) return;
+        if (!this.onGrab) {
+            return;
+        }
         this.resize(event.clientX);
     }
 
@@ -239,7 +242,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
             this.dataSrv.setIsMiniSideBar(true);
             this.sideNav.nativeElement.style.width = '40px';
 
-        } else if(x > 150 && x < 400) {
+        } else if (x > 150 && x < 400) {
             this.dataSrv.setIsMiniSideBar(false);
             this.sideNav.nativeElement.style.width = (x - 5) + 'px';
         }

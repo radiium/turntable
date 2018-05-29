@@ -1,4 +1,4 @@
-import { Thumbnail } from "core/models";
+import { Thumbnail } from 'core/models';
 
 export class PlaylistItem {
     constructor(
@@ -38,7 +38,6 @@ export class PlaylistItemFactory {
             plItem.channelTitle || '',
             plItem.publishedAt  || '',
             plItem.selected     || false,
-            
-        )
+        );
     }
 }

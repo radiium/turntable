@@ -8,7 +8,7 @@ import { DndService } from 'core/services/dnd.service';
 import { DataService } from 'core/services/data.service';
 import { YoutubeService } from 'core/services/youtube.service';
 import { Base64Images } from 'core/models/base64-images';
-import { DragImage } from "shared/modules/ngx-dnd/ngx-dnd.config";
+import { DragImage } from 'shared/modules/ngx-dnd/ngx-dnd.config';
 import { PlaylistService } from 'core/services/playlist.service';
 
 
@@ -64,12 +64,12 @@ export class VideoListComponent {
     private dataSrv: DataService,
     private playerState: PlayerStateService,
     private cdRef: ChangeDetectorRef) {
-        
+
         this._step = 5;
         this.dragImage = new DragImage(Base64Images.playlistItem, 20, 20);
     }
 
-   
+
     initVideoList() {
         if (this.disableInfiniteScroll) {
             this._items = this.playlist.videolist;
@@ -77,10 +77,10 @@ export class VideoListComponent {
         } else {
             this._videoList    = this.playlist.videolist;
             this._videoListLen = this.playlist.videolist.length;
-    
+
             this._itemsLen = (this._videoListLen < this._itemsLen)
                 ? this._videoListLen : this._step;
-    
+
             this._items = this.playlist.videolist.slice(0, this._itemsLen);
 
             if (this.listRef) {
@@ -125,7 +125,7 @@ export class VideoListComponent {
                 this.confirmDelete = false;
                 this.disableInfiniteScroll = true;
                 break;
-        
+
             default:
                 this.sortable = false;
                 this.deletable = false;
@@ -187,8 +187,10 @@ export class VideoListComponent {
 
     // Infinite scroll
     onScrollDown (ev) {
-        if (this._videoListLen === this._itemsLen) return;
-        
+        if (this._videoListLen === this._itemsLen) {
+            return;
+        }
+
         const start = this._itemsLen;
         this._itemsLen += this._step;
         if ((this._videoListLen) <= this._itemsLen) {
@@ -201,7 +203,7 @@ export class VideoListComponent {
 
             this._items = _.cloneDeep(this._items);
         }
-        //this._videoList.push.apply([...this.videoList.slice(start, this.sum)]);
+        // this._videoList.push.apply([...this.videoList.slice(start, this.sum)]);
         this.cdRef.detectChanges();
     }
 

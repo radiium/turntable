@@ -10,11 +10,11 @@ import {DragDropConfig} from './ngx-dnd.config';
 import {DragDropService, DragDropData} from './ngx-dnd.service';
 
 @Directive({
-    selector: '[dnd-droppable]'
+    selector: '[appDroppable]'
 })
-export class DroppableComponent extends AbstractComponent {
+export class DroppableComponentDirective extends AbstractComponent {
 
-    @Input('dropEnabled') set droppable(value:boolean) {
+    @Input('dropEnabled') set droppable(value: boolean) {
         this.dropEnabled = !!value;
     }
 
@@ -31,7 +31,7 @@ export class DroppableComponent extends AbstractComponent {
         this.allowDrop = value;
     }
 
-    @Input('dropZones') set dropzones(value:Array<string>) {
+    @Input('dropZones') set dropzones(value: Array<string>) {
         this.dropZones = value;
     }
 
@@ -73,7 +73,7 @@ export class DroppableComponent extends AbstractComponent {
             this._elem.classList.add(this._config.onDragOverClass);
             this.onDragOver.emit({dragData: this._dragDropService.dragData, mouseEvent: event});
         }
-    };
+    }
 
     _onDragLeaveCallback (event: MouseEvent) {
         if (this._dragDropService.isDragged) {
@@ -81,7 +81,7 @@ export class DroppableComponent extends AbstractComponent {
             this._elem.classList.remove(this._config.onDragEnterClass);
             this.onDragLeave.emit({dragData: this._dragDropService.dragData, mouseEvent: event});
         }
-    };
+    }
 
     _onDropCallback (event: MouseEvent) {
         if (this._dragDropService.isDragged) {

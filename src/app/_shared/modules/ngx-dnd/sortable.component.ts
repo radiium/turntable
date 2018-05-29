@@ -13,12 +13,12 @@ import { DragDropService, DragDropSortableService} from './ngx-dnd.service';
 
 
 @Directive({
-    selector: '[dnd-sortable-handle]'
+    selector: '[appSortableHandle]'
 })
-export class SortableHandleComponent extends AbstractHandleComponent {
+export class SortableHandleComponentDirective extends AbstractHandleComponent {
     private _el: HTMLElement;
 
-    @Input() set sortableComponent(component: SortableComponent) {
+    @Input() set sortableComponent(component: SortableComponentDirective) {
         component.setDragHandle(this._el);
     }
 
@@ -35,9 +35,9 @@ export class SortableHandleComponent extends AbstractHandleComponent {
 
 
 @Directive({
-    selector: '[dnd-sortable-container]'
+    selector: '[appSortableContainer]'
 })
-export class SortableContainer extends AbstractComponent {
+export class SortableContainerDirective extends AbstractComponent {
 
     @Input('dragEnabled') set draggable(value: boolean) {
         this.dragEnabled = !!value;
@@ -70,7 +70,7 @@ export class SortableContainer extends AbstractComponent {
 
     _onDragEnterCallback(event: Event) {
       if (this._sortableDataService.isDragged) {
-          let item: any = this._sortableDataService.sortableContainer
+          const item: any = this._sortableDataService.sortableContainer
               ._sortableData[this._sortableDataService.index];
 
             // Check does element exist in sortableData of this Container
@@ -94,13 +94,13 @@ export class SortableContainer extends AbstractComponent {
 }
 
 @Directive({
-    selector: '[dnd-sortable]',
+    selector: '[appSortable]',
     exportAs: 'dndSortable'
 })
-export class SortableComponent extends AbstractComponent {
+export class SortableComponentDirective extends AbstractComponent {
 
 
-    @ContentChildren(SortableHandleComponent, { read: ElementRef }) set dragHandle(handle) {
+    @ContentChildren(SortableHandleComponentDirective, { read: ElementRef }) set dragHandle(handle) {
         if (handle instanceof QueryList) {
             const handles = handle.toArray();
             if (handles.length > 0) {
@@ -108,9 +108,9 @@ export class SortableComponent extends AbstractComponent {
             }
         } else {
         }
-    };
+    }
 
-    @Input('sortableIndex') index: number;
+    @Input() index: number;
 
     @Input('dragEnabled') set draggable(value: boolean) {
         this.dragEnabled = !!value;
@@ -143,22 +143,20 @@ export class SortableComponent extends AbstractComponent {
      * Callback function called when the drag action ends with a valid drop action.
      * It is activated after the on-drop-success callback
      */
-    @Output('onDragSuccess') onDragSuccessCallback: EventEmitter<any> = new EventEmitter<any>();
-
-    @Output('onDragStart') onDragStartCallback: EventEmitter<any> = new EventEmitter<any>();
-    @Output('onDragOver') onDragOverCallback: EventEmitter<any> = new EventEmitter<any>();
-    @Output('onDragEnd') onDragEndCallback: EventEmitter<any> = new EventEmitter<any>();
-    @Output('onDropSuccess') onDropSuccessCallback: EventEmitter<any> = new EventEmitter<any>();
+    @Output() onDragSuccessCallback: EventEmitter<any> = new EventEmitter<any>();
+    @Output() onDragStartCallback: EventEmitter<any> = new EventEmitter<any>();
+    @Output() onDragOverCallback: EventEmitter<any> = new EventEmitter<any>();
+    @Output() onDragEndCallback: EventEmitter<any> = new EventEmitter<any>();
+    @Output() onDropSuccessCallback: EventEmitter<any> = new EventEmitter<any>();
 
     constructor(
     elemRef: ElementRef,
     private dragDropService: DragDropService,
     config: DragDropConfig,
     ngZone: NgZone,
-    private _sortableContainer: SortableContainer,
+    private _sortableContainer: SortableContainerDirective,
     private _sortableDataService: DragDropSortableService,
     cdr: ChangeDetectorRef) {
-        
         super(elemRef, dragDropService, config, cdr, ngZone);
         this.dropZones = this._sortableContainer.dropZones;
         this.dragEnabled = true;
@@ -209,8 +207,7 @@ export class SortableComponent extends AbstractComponent {
             this._sortableContainer.sortableData)
             ) {
             // Get item
-                let item: any = this._sortableDataService.sortableContainer
-                    .sortableData[this._sortableDataService.index];
+                const item: any = this._sortableDataService.sortableContainer.sortableData[this._sortableDataService.index];
                 // Remove item from previouse list
                 this._sortableDataService.sortableContainer.sortableData
                     .splice(this._sortableDataService.index, 1);

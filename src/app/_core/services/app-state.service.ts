@@ -11,7 +11,7 @@ import { User,
          AppState,
          PlaylistFactory,
          PlayListType,
-         PrivacyStatus, 
+         PrivacyStatus,
          Thumbnail,
          PlaylistItemFactory} from 'core/models';
 import { AuthService } from 'core/services/auth.service';
@@ -95,9 +95,9 @@ export class AppStateService {
 
 
     /**
-     * 
+     *
      * Save/load App state
-     * 
+     *
      */
 
     saveAppState() {
@@ -119,9 +119,9 @@ export class AppStateService {
 
 
     /**
-     * 
+     *
      * Save/load Local playlist
-     * 
+     *
      */
 
     saveLocalPlaylists() {
@@ -182,7 +182,7 @@ export class AppStateService {
         }
     }
 
-    
+
     loadLocalPlaylist() {
         if (this.isElectronApp) {
             // console.log('===== loadLocalPlaylist');
@@ -234,7 +234,7 @@ export class AppStateService {
             privacyStatus: pl.privacyStatus,
             isLocal: pl.isLocal,
             videolist: this.fillVideoList(pl.videolist),
-            
+
         });
 
         return playlists;
@@ -244,7 +244,7 @@ export class AppStateService {
         let newVideoList: PlaylistItem[] = [];
         if (videoList || videoList.length > 0) {
             newVideoList = _.map(videoList, (video) => {
-                return PlaylistItemFactory.create(video) 
+                return PlaylistItemFactory.create(video);
             });
         }
         return newVideoList;
@@ -253,11 +253,11 @@ export class AppStateService {
      // Load a local playlist for development
      insertFakeData() {
 
-        var query = window.location.search.slice(1);
-        
-
+        const query = window.location.search.slice(1);
         let num = Number(query);
-        if (isNaN(num) || num === 0) num = 1;
+        if (isNaN(num) || num === 0) {
+            num = 1;
+        }
         let videolist = [];
         for (let i = 0; i < num; i++) {
             videolist = [...videolist, ...this.fillVideoList(DATA['videolist'])];

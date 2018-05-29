@@ -10,10 +10,10 @@ import { DragDropConfig } from './ngx-dnd.config';
 import { DragDropService, DragDropData } from './ngx-dnd.service';
 
 @Directive({
-    selector: '[dnd-draggable]',
+    selector: '[appDraggable]',
     exportAs: 'dndDraggable'
 })
-export class DraggableComponent extends AbstractComponent {
+export class DraggableComponentDirective extends AbstractComponent {
 
     @Input('dragEnabled') set draggable(value: boolean) {
         this.dragEnabled = !!value;
@@ -34,9 +34,9 @@ export class DraggableComponent extends AbstractComponent {
      * Callback function called when the drag action ends with a valid drop action.
      * It is activated after the on-drop-success callback
      */
-    @Output('onDragSuccess') onDragSuccessCallback: EventEmitter<any> = new EventEmitter<any>();
+    @Output() onDragSuccessCallback: EventEmitter<any> = new EventEmitter<any>();
 
-    @Input('dropZones') set dropzones(value:Array<string>) {
+    @Input('dropZones') set dropzones(value: Array<string>) {
         this.dropZones = value;
     }
 
@@ -72,7 +72,7 @@ export class DraggableComponent extends AbstractComponent {
         this._dragDropService.dragData = this.dragData;
         this._dragDropService.onDragSuccessCallback = this.onDragSuccessCallback;
         this._elem.classList.add(this._config.onDragStartClass);
-        
+
         //
         this.onDragStart.emit({dragData: this.dragData, mouseEvent: event});
     }
@@ -82,7 +82,7 @@ export class DraggableComponent extends AbstractComponent {
         this._dragDropService.dragData = null;
         this._dragDropService.onDragSuccessCallback = null;
         this._elem.classList.remove(this._config.onDragStartClass);
-        
+
         //
         this.onDragEnd.emit({dragData: this.dragData, mouseEvent: event});
     }
@@ -90,12 +90,12 @@ export class DraggableComponent extends AbstractComponent {
 
 
 @Directive({
-    selector: '[dnd-draggable-handle]'
+    selector: '[appDraggableHandle]'
 })
-export class DraggableHandleComponent extends AbstractHandleComponent {
+export class DraggableHandleComponentDirective extends AbstractHandleComponent {
     private _el: HTMLElement;
 
-    @Input() set draggableComponent(component: DraggableComponent) {
+    @Input() set draggableComponent(component: DraggableComponentDirective) {
         component.setDragHandle(this._el);
     }
 

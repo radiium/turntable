@@ -78,12 +78,12 @@
                         </button>
                         <button class="sidenavBtn btnHover" (click)="onSelectTab(5)"
                             [class.activ]="appState.selectedTab === 5"
-                            dnd-droppable (onDropSuccess)="onDropSuccess($event)">
+                            appDroppable (onDropSuccessCallback)="onDropSuccess($event)">
                             <fa class="sidenavBtnIco" [name]="'play-circle'" [size]="1"></fa>
                             <span *ngIf="!isMiniSideBar" class="sidenavBtnLabel"  [translate]="'player'"></span>
                         </button>
                     </div>
-    
+
                     <!-- Playlists list -->
                     <div class="flexItem sectionLabel" [hidden]="isMiniSideBar">
                         <span [hidden]="isMiniSideBar" [translate]="'pl'"></span>
@@ -92,11 +92,11 @@
                         <fa class="refreshBtnIco" [name]="'refresh'" [size]="1"></fa>
                         </button>
                     </div>
-    
+
                     <app-playlist-button-list  [hidden]="isMiniSideBar" class="flexItem sidenavPlBtnList"></app-playlist-button-list>
-    
+
                     <div class="flexSpacer"></div>
-    
+
                     <!-- Creaye playlist button -->
                     <div class="flexItem">
                         <button class="sidenavBtn btnHover addBtn" (click)="createPlaylist()">
@@ -114,7 +114,7 @@
             <dir class="gutter"
                 (mousedown)="onMouseDown($event)">
             </dir>
-    
+
             <!-- Content -->
             <div #content class="appContent flexSpacer">
                 <div class="content flexSpacer" [class.withPlayerBar]="appState.showPlayerBar">
@@ -125,10 +125,10 @@
                     <app-player-panel     class="tabContent" [style.zIndex]="appState.selectedTab === 5 ? 1 : 0"></app-player-panel>
                     <app-settings         class="tabContent" [style.zIndex]="appState.selectedTab === 6 ? 1 : 0"></app-settings>
                 </div>
-    
+
                 <!-- Player control bar   *ngIf="isOnPlay" -->
                 <app-player-bar *ngIf="appState.showPlayerBar" class="playerBar" [class.toggleBar]="!appState.showPlayerBar"></app-player-bar>
-    
+
                 <!-- Panel loader -->
                 <app-loader [show]="loader.panel" [isGlobal]="false"></app-loader>
             </div>

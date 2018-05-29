@@ -9,9 +9,9 @@ import { DragDropService,
     dragDropServiceFactory,
     dragDropSortableServiceFactory } from './ngx-dnd.service';
 import { DragDropConfig } from './ngx-dnd.config';
-import { DraggableComponent, DraggableHandleComponent } from './draggable.component';
-import { DroppableComponent } from './droppable.component';
-import { SortableContainer, SortableComponent, SortableHandleComponent } from './sortable.component';
+import { DraggableComponentDirective, DraggableHandleComponentDirective } from './draggable.component';
+import { DroppableComponentDirective } from './droppable.component';
+import { SortableContainerDirective, SortableComponentDirective, SortableHandleComponentDirective } from './sortable.component';
 
 export let providers = [
     DragDropConfig,
@@ -28,20 +28,20 @@ export let providers = [
 
 @NgModule({
     declarations: [
-        DraggableComponent,
-        DraggableHandleComponent,
-        DroppableComponent,
-        SortableContainer,
-        SortableComponent,
-        SortableHandleComponent
+        DraggableComponentDirective,
+        DraggableHandleComponentDirective,
+        DroppableComponentDirective,
+        SortableContainerDirective,
+        SortableComponentDirective,
+        SortableHandleComponentDirective
     ],
     exports: [
-        DraggableComponent,
-        DraggableHandleComponent,
-        DroppableComponent,
-        SortableContainer,
-        SortableComponent,
-        SortableHandleComponent
+        DraggableComponentDirective,
+        DraggableHandleComponentDirective,
+        DroppableComponentDirective,
+        SortableContainerDirective,
+        SortableComponentDirective,
+        SortableHandleComponentDirective
     ]
 })
 export class NgxDndModule {

@@ -5,16 +5,12 @@
 import {Injectable, EventEmitter} from '@angular/core';
 
 import {DragDropConfig} from './ngx-dnd.config';
-import {isPresent} from './ngx-dnd.utils';
-import {SortableContainer} from './sortable.component';
+import { isPresent } from './ngx-dnd.utils';
+import { SortableContainerDirective } from './sortable.component';
 
 export class DragDropData {
     dragData: any;
     mouseEvent: MouseEvent;
-}
-
-export function dragDropServiceFactory(): DragDropService  {
-    return new DragDropService();
 }
 
 @Injectable()
@@ -25,14 +21,14 @@ export class DragDropService {
     isDragged: boolean;
 }
 
-export function dragDropSortableServiceFactory(config: DragDropConfig): DragDropSortableService  {
-    return new DragDropSortableService(config);
+export function dragDropServiceFactory(): DragDropService  {
+    return new DragDropService();
 }
 
 @Injectable()
 export class DragDropSortableService {
     index: number;
-    sortableContainer: SortableContainer;
+    sortableContainer: SortableContainerDirective;
     isDragged: boolean;
 
     private _elem: HTMLElement;
@@ -44,7 +40,7 @@ export class DragDropSortableService {
 
     markSortable(elem: HTMLElement) {
         // prev used class
-        //this._config.onSortableDragClass
+        // this._config.onSortableDragClass
 
         if (isPresent(this._elem)) {
             this._elem.classList.remove(this._config.onDragOverClass);
@@ -54,4 +50,8 @@ export class DragDropSortableService {
             this._elem.classList.add(this._config.onDragOverClass);
         }
     }
+}
+
+export function dragDropSortableServiceFactory(config: DragDropConfig): DragDropSortableService  {
+    return new DragDropSortableService(config);
 }

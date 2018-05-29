@@ -339,7 +339,7 @@ export class DndService implements OnDestroy {
             } else {
                 this.dataSrv.setPlaylistsList(this.playlistsList);
             }
-            
+
             // console.log('Item dropped');
             if (target === source) {
             }

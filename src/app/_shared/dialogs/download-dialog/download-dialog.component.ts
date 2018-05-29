@@ -108,7 +108,6 @@ export class DownloadDialogComponent implements AfterContentInit, AfterViewInit 
     }
 
     getProgress(event, data) {
-        let el;
         if (data.type === 'download') {
             this.progressType = data.type;
             if (data.progress) {

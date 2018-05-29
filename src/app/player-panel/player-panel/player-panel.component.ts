@@ -155,7 +155,7 @@ export class PlayerPanelComponent implements OnInit {
     }
 
     emptyOnPlayList() {
-        this.plSrv.deletePlayerList()
+        this.plSrv.deletePlayerList();
     }
 
     createPlaylistFromOnPlayList() {
@@ -163,7 +163,7 @@ export class PlayerPanelComponent implements OnInit {
     }
 
     emptyHistoricList() {
-        this.plSrv.deleteHistoricList()
+        this.plSrv.deleteHistoricList();
     }
 
     createPlaylistFromHistoricList() {

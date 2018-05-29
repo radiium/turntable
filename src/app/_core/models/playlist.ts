@@ -86,7 +86,7 @@ export class PlaylistFactory {
             pl.privacyStatus || PrivacyStatus.PRIVATE,
             pl.isLocal       || true,
             pl.videolist     || [],
-            
-        )
+
+        );
     }
 }

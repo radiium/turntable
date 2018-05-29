@@ -4,23 +4,23 @@
         <app-context-menu
         class="dropBtn"
         *ngFor="let pl of playlistsList; let i = index; trackBy: trackByFn;"
-        dnd-droppable [allowDrop]="allowDrop(pl.id)"
-        (onDropSuccess)="onDropSuccess($event, pl.id)">
+        appDroppable [allowDrop]="allowDrop(pl.id)"
+        (onDropSuccessCallback)="onDropSuccess($event, pl.id)">
 
             <div content>
                 <button
                     #btnRef
-                    
+
                     [id]="pl.id"
                     class="sidenavBtn btnHover dropBtn"
                     [class.activ]="appState.selectedTab === 4 && pl.id === appState.selectedPl"
-                    
-                    dnd-draggable
+
+                    appDraggable
                     [dragEnabled]="pl.videolist.length > 0"
                     [dragImage]="dragImage"
                     [dragData]="{ plId: pl.id, plType: pl.type, type: 'PlayList' }"
                     (click)="selectPlaylist(pl)">
-                    
+
                     <fa class="sidenavBtnIco dropBtn" [name]="'folder-open-o'" [size]="1"></fa>
                     <span class="sidenavBtnLabel noOverflow dropBtn">{{ pl.title }} </span>
                 </button>

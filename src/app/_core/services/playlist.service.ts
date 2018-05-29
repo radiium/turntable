@@ -26,7 +26,7 @@ import { PlaylistItem,
          PlayerPanelState,
          PlayerState,
          PlayerSide,
-         AppState, 
+         AppState,
          PlaylistFactory,
          PlayListType,
          PrivacyStatus} from 'core/models';
@@ -44,7 +44,7 @@ export class PlaylistService {
     onPlayList: Playlist;
     historicList: Playlist;
     watchLaterList: Playlist;
-    
+
     constructor(
     private electron: ElectronService,
     private dataSrv: DataService,
@@ -53,7 +53,7 @@ export class PlaylistService {
     public dialog: MatDialog) {
 
         this.isElectronApp = this.electron.isElectronApp;
-        
+
         this.dataSrv.appState$.subscribe(appState => {
             this.appState = appState;
         });
@@ -81,9 +81,9 @@ export class PlaylistService {
 
 
     /**
-     * 
+     *
      * PLAYER
-     * 
+     *
      */
     addToPlayerListByVideolist(videoList: PlaylistItem[]) {
         if (videoList && videoList.length) {
@@ -92,7 +92,7 @@ export class PlaylistService {
         }
     }
 
-    addToPlayerListByType(type: PlayListType ,plId: string) {
+    addToPlayerListByType(type: PlayListType, plId: string) {
 
         if (type) {
             let videoList = [];
@@ -100,18 +100,18 @@ export class PlaylistService {
                 case PlayListType.HISTORIC:
                     videoList = _.cloneDeep(this.historicList.videolist);
                     break;
-    
+
                 case PlayListType.WATCHLATER:
                     videoList = _.cloneDeep(this.watchLaterList.videolist);
                     break;
-    
+
                 case PlayListType.PLAYLIST:
                     if (plId) {
                         const playlist = this.getPlaylistById(plId);
                         videoList = _.cloneDeep(playlist.videolist);
                     }
                     break;
-    
+
                 case PlayListType.SEARCH:
                 case PlayListType.ONPLAY:
                 default:
@@ -124,7 +124,7 @@ export class PlaylistService {
     }
 
     addToPlayerList(data: any) {
-        let videoList = this.resolveVideoList(data);
+        const videoList = this.resolveVideoList(data);
         if (videoList && videoList.length) {
             // this.onPlayList.videolist.push.apply([...videoList]);
             this.onPlayList.videolist = [...this.onPlayList.videolist, ...videoList];
@@ -133,7 +133,7 @@ export class PlaylistService {
     }
 
     setPlayerList(data: any) {
-        let videoList = this.resolveVideoList(data);
+        const videoList = this.resolveVideoList(data);
         if (videoList && videoList.length) {
             this.dataSrv.setOnPlayList(videoList);
         }
@@ -146,14 +146,13 @@ export class PlaylistService {
 
 
     /**
-     * 
+     *
      * HISTORIC
-     * 
+     *
      */
 
     addToHistoricList(video: PlaylistItem) {
         if (video) {
-            this.historicList.videolist
             this.historicList.videolist.push(video);
             this.dataSrv.setHistoricList(this.historicList);
         }
@@ -165,9 +164,9 @@ export class PlaylistService {
     }
 
     /**
-     * 
-     *  PLAYLISTS 
-     * 
+     *
+     *  PLAYLISTS
+     *
      */
 
     createPlaylist(videoList?: PlaylistItem[]) {
@@ -254,7 +253,6 @@ export class PlaylistService {
     }
 
     updatePlaylist(playlist: Playlist) {
-        let videoList;
         switch (playlist.type) {
             case PlayListType.SEARCH:
                 break;
@@ -287,7 +285,6 @@ export class PlaylistService {
     }
 
     deletePlaylist(playlist: Playlist): void {
-        console.log('deletePlaylist')
         const dialogRef = this.dialog.open(DeletePlaylistDialogComponent, {
             panelClass: 'theme-' + this.appState.theme,
             data: { title: playlist.title }
@@ -306,9 +303,9 @@ export class PlaylistService {
     }
 
     /**
-     * 
+     *
      *  PLAYLIST ITEM Methods
-     * 
+     *
      */
 
     playVideo(video: PlaylistItem, index: number) {
@@ -349,31 +346,32 @@ export class PlaylistService {
     deleteVideo(index: number, type: PlayListType, plId: string) {
         if (type) {
             switch (type) {
-                
+
                 case PlayListType.ONPLAY:
                     this.onPlayList.videolist.splice(index, 1);
                     this.dataSrv.setOnPlayList(this.onPlayList);
                     break;
-    
+
                 case PlayListType.HISTORIC:
                     this.historicList.videolist.splice(index, 1);
                     this.dataSrv.setHistoricList(this.historicList);
                     break;
-    
+
                 case PlayListType.WATCHLATER:
                     this.watchLaterList.videolist.splice(index, 1);
                     this.dataSrv.setHistoricList(this.watchLaterList);
                     break;
-    
+
                 case PlayListType.PLAYLIST:
                     if (plId) {
                         const plIdx = this.getPlaylistIndexById(plId);
                         this.playlistsList[plIdx].videolist.splice(index, 1);
                         this.dataSrv.setPlaylistsList(this.playlistsList);
-                        break;
                     }
-    
+                    break;
+
                 case PlayListType.SEARCH:
+
                 default:
                     break;
             }
@@ -418,9 +416,9 @@ export class PlaylistService {
     }
 
     /**
-     * 
+     *
      * UTILS
-     * 
+     *
      */
 
     private move(from: number, to: number, videoList: PlaylistItem[]): PlaylistItem[] {
@@ -450,7 +448,7 @@ export class PlaylistService {
             if (pl) {
                 videoList = pl.videolist;
             }
-            //videoList = (<Playlist>data).videolist;
+            // videoList = (<Playlist>data).videolist;
         } else  if (data instanceof Playlist || (data.hasOwnProperty('type') && data['type'] === 'Playlist')) {
             videoList = (<Playlist>data).videolist;
         } else if (data instanceof PlaylistItem || (data.hasOwnProperty('type') && data['type'] === 'PlaylistItem')) {

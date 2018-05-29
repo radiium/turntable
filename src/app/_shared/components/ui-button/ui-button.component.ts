@@ -9,10 +9,10 @@ import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core
 export class UiButtonComponent implements OnInit {
 
 
-    @Input() text: string
+    @Input() text: string;
     @Input() icon: string;
     @Input() disabled: boolean;
-    
+
     constructor() { }
 
     ngOnInit() {

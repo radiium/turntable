@@ -15,7 +15,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { NgxDndModule } from './modules/ngx-dnd/ngx-dnd.module';
-import { InfiniteScrollModule } from "ngx-infinite-scroll";
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 import { CustomMaterialModule } from './modules/material/custom-material.module';
 import { YoutubePlayerModule } from './modules/youtube-player/youtube-player.module';

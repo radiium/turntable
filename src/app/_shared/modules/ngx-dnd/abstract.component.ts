@@ -122,18 +122,18 @@ export abstract class AbstractComponent implements OnInit, OnDestroy {
             this._dragDropService.allowedDropZones = this.dropZones;
             this._onDragStartCallback(event);
         }
-        
+
         if (event.dataTransfer != null) {
             event.dataTransfer.setData('text', JSON.stringify(this._dragDropService.dragData));
             event.dataTransfer.effectAllowed = this.effectAllowed || this._config.dragEffect.name;
-            
+
             if (this.dragImage) {
                 let img, x, y;
                 if (this.dragImage instanceof DragImage) {
                     img = this.dragImage.imageElement;
                     x = this.dragImage.xOffset;
                     y = this.dragImage.yOffset;
-                    
+
                 } else if (isString(this.dragImage)) {
                     img = new Image();
                     img.src = <string>this.dragImage;
@@ -147,7 +147,7 @@ export abstract class AbstractComponent implements OnInit, OnDestroy {
             }
 
             // Change drag cursor
-            let cursorelem = (this._dragHandle) ? this._dragHandle : this._elem;
+            const cursorelem = (this._dragHandle) ? this._dragHandle : this._elem;
 
             /*
             if (this._dragEnabled) {
@@ -164,12 +164,12 @@ export abstract class AbstractComponent implements OnInit, OnDestroy {
         if (this._elem.parentElement && this._dragHelper) {
             // this._elem.parentElement.removeChild(this._dragHelper);
         }
-        
+
         this._dragDropService.allowedDropZones = [];
         this._onDragEndCallback(event);
-        
+
         // Restore style of dragged element
-        let cursorelem = (this._dragHandle) ? this._dragHandle : this._elem;
+        const cursorelem = (this._dragHandle) ? this._dragHandle : this._elem;
         cursorelem.style.cursor = this._defaultCursor;
     }
 
@@ -204,8 +204,12 @@ export abstract class AbstractComponent implements OnInit, OnDestroy {
 
     _onDrop(event) {
         if (this._isDropAllowed) {
-            if (event.preventDefault) event.preventDefault();
-            if (event.stopPropagation) event.stopPropagation();
+            if (event.preventDefault) {
+                event.preventDefault();
+            }
+            if (event.stopPropagation) {
+                event.stopPropagation();
+            }
             this._onDropCallback(event);
             // this.detectChanges();
         }
@@ -259,7 +263,7 @@ export abstract class AbstractComponent implements OnInit, OnDestroy {
                 return true;
             }
             for (let i = 0; i < this._dragDropService.allowedDropZones.length; i++) {
-                let dragZone: string = this._dragDropService.allowedDropZones[i];
+                const dragZone: string = this._dragDropService.allowedDropZones[i];
                 if (this.dropZones.indexOf(dragZone) !== -1) {
                     return true;
                 }
@@ -268,11 +272,11 @@ export abstract class AbstractComponent implements OnInit, OnDestroy {
         return false;
     }
 
-    
+
 }
 
 export class AbstractHandleComponent {
-    
+
     _elem: HTMLElement;
     set component(component: AbstractComponent) {
         component.setDragHandle(this._elem);
