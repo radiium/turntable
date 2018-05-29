@@ -1,6 +1,8 @@
 
 <div #appp class="appWrapper theme-{{ appState.theme }}">
 
+    <canvas id="confettis" [style.zIndex]="zIndex" (click)="startConfettis()"></canvas>
+
     <!-- window title bar -->
     <div class="windowTitlebar"></div>
 
@@ -19,7 +21,7 @@
         </button>
 
         <!-- App title -->
-        <div class="appTitle ">
+        <div class="appTitle " (click)="startConfettis()">
         <span class="title">Turntable</span>
         </div>
 

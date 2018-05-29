@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild, ElementRef, NgZone } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef, NgZone, AfterViewInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ElectronService } from 'ngx-electron';
 import { OverlayContainer } from '@angular/cdk/overlay';
@@ -13,12 +13,13 @@ import { YoutubeService } from 'core/services/youtube.service';
 import { DndService } from 'core/services/dnd.service';
 import { PlaylistService } from 'core/services/playlist.service';
 
+
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit, OnDestroy {
+export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
     user: User;
     appState: AppState;
@@ -27,6 +28,9 @@ export class AppComponent implements OnInit, OnDestroy {
     miniNav: boolean;
     isMiniSideBar: boolean;
     loader: Loader;
+
+    confetti: any;
+    zIndex: number;
 
     onGrab: boolean;
     @ViewChild('appp') appp: ElementRef
@@ -45,6 +49,9 @@ export class AppComponent implements OnInit, OnDestroy {
     private dndSrv: DndService,
     private translate: TranslateService) {
 
+
+        
+        this.zIndex = -1;
         this.miniNav = false;
         this.onGrab = false;
         translate.setDefaultLang('en');
@@ -91,6 +98,32 @@ export class AppComponent implements OnInit, OnDestroy {
             this.appp.nativeElement.addEventListener('mouseup', this.onMouseUp.bind(this));
             document.addEventListener("mouseout", this.onMouseOut.bind(this));
         });
+    }
+
+    ngAfterViewInit() {
+   
+    }
+
+    startConfettis() {
+        if (this.confetti) {
+            this.confetti.clear();
+        }
+        const settings = {
+            target: 'confettis',
+            max: 700,
+            clock: 30
+        };
+        this.confetti = new window['ConfettiGenerator'](settings);
+        this.zIndex = 99999;
+        this.confetti.render();
+        setTimeout(() => {
+            if (this.confetti) {
+                this.confetti.clear();
+            }
+            this.confetti = null;
+            this.zIndex = -1;
+        }, 3000);
+
     }
 
     ngOnDestroy() {
@@ -167,7 +200,7 @@ export class AppComponent implements OnInit, OnDestroy {
         if (this.isMiniSideBar === true) {
             this.resize(250);
         } else if (this.isMiniSideBar === false) {
-            this.resize(44);
+            this.resize(40);
         }
     }
 
@@ -204,7 +237,7 @@ export class AppComponent implements OnInit, OnDestroy {
     resize(x) {
         if (x < 150) {
             this.dataSrv.setIsMiniSideBar(true);
-            this.sideNav.nativeElement.style.width = '44px';
+            this.sideNav.nativeElement.style.width = '40px';
 
         } else if(x > 150 && x < 400) {
             this.dataSrv.setIsMiniSideBar(false);

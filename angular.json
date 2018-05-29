@@ -32,7 +32,9 @@
               "node_modules/font-awesome/css/font-awesome.css",
               "src/styles/material-custom-theme.scss"
             ],
-            "scripts": []
+            "scripts": [
+              "node_modules/confetti-js/dist/index.min.js"
+            ]
           },
           "configurations": {
             "production": {
