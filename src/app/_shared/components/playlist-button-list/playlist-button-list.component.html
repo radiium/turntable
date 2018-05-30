@@ -5,7 +5,7 @@
         class="dropBtn"
         *ngFor="let pl of playlistsList; let i = index; trackBy: trackByFn;"
         appDroppable [allowDrop]="allowDrop(pl.id)"
-        (onDropSuccessCallback)="onDropSuccess($event, pl.id)">
+        (onDropSuccess)="onDropSuccess($event, pl.id)">
 
             <div content>
                 <button

@@ -78,7 +78,7 @@
                         </button>
                         <button class="sidenavBtn btnHover" (click)="onSelectTab(5)"
                             [class.activ]="appState.selectedTab === 5"
-                            appDroppable (onDropSuccessCallback)="onDropSuccess($event)">
+                            appDroppable (onDropSuccess)="onDropSuccess($event)">
                             <fa class="sidenavBtnIco" [name]="'play-circle'" [size]="1"></fa>
                             <span *ngIf="!isMiniSideBar" class="sidenavBtnLabel"  [translate]="'player'"></span>
                         </button>
