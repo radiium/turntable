@@ -165,15 +165,16 @@ const errorHandler = function(error) {
     }
     msg.detail = 'Please check the console log for more details.';
 
-    mainWindow.send('electron-toaster-message', msg);
-};
+    mainWindow.send('onElectronError', msg);
 
+    // handleError(error, mainWindow, msg);
+};
 process.on('uncaughtException', errorHandler);
 
 
 // ----------------------------------------------------------------------------
 // User management
-const userDataName = 'app-state';
+const userDataName = 'user';
 const saveUser = 'saveUser';
 const getUser = 'getUser';
 const getUserResp = 'getUserResp';
@@ -181,25 +182,42 @@ const removeUser = 'removeUser';
 
 // Store
 ipcMain.on(saveUser, (event, user) => {
+
+    /*
+    console.log('===================');
+    console.log(saveUser);
+    */
+
     storage.set(userDataName, user, (error) => {
-        if (error) { throw error; }
+        handleError(error, event.send);
     });
 
 });
 
 // Load
 ipcMain.on(getUser, (event, arg) => {
-    console.log('send-get-user');
-    storage.get(userDataName, (err, data) => {
-        if (err) { throw err; }
+
+    /*
+    console.log('===================');
+    console.log(getUser);
+    */
+
+    storage.get(userDataName, (error, data) => {
+        handleError(error, event.sender, data);
         event.sender.send(getUserResp, data);
     });
 });
 
 // Remove
 ipcMain.on(removeUser, (event, user) => {
+
+    /*
+    console.log('===================');
+    console.log(removeUser);
+    */
+
     storage.remove(userDataName, (error) => {
-        if (error) { throw error; }
+        handleError(error, event.sender);
     });
 });
 
@@ -207,7 +225,7 @@ ipcMain.on(removeUser, (event, user) => {
 
 // ----------------------------------------------------------------------------
 // Local playlist management
-const localPLDataName = 'app-state';
+const localPLDataName = 'local-playlists';
 const saveLocalPL = 'saveLocalPL';
 const getLocalPL = 'getLocalPL';
 const getLocalPLResp = 'getLocalPLResp';
@@ -215,23 +233,41 @@ const removeLocalPL = 'removeLocalPL';
 
 // Store
 ipcMain.on(saveLocalPL, (event, localPlaylists) => {
+
+    /*
+    console.log('===================');
+    console.log(saveLocalPL);
+    */
+
     storage.set(localPLDataName, resolveData(localPlaylists), (error) => {
-        handleError(event, error);
+        handleError(error, event.sender);
     });
 });
 
 // Load
 ipcMain.on(getLocalPL, (event) => {
-    storage.get(localPLDataName, (error, localPlaylists) => {
-        handleError(event, error);
-        event.sender.send(getLocalPLResp, localPlaylists);
+
+    /*
+    console.log('===================');
+    console.log(getLocalPL);
+    */
+
+    storage.get(localPLDataName, (error, data) => {
+        handleError(error, event.sender, data);
+        event.sender.send(getLocalPLResp, data);
     });
 });
 
 // Remove
-ipcMain.on('removeLocalPL', (event) => {
+ipcMain.on(removeLocalPL, (event) => {
+
+    /*
+    console.log('===================');
+    console.log(removeLocalPL);
+    */
+
     storage.remove(localPLDataName, (error) => {
-        handleError(event, error);
+        handleError(error, event.sender);
     });
 });
 
@@ -245,14 +281,26 @@ const getAppState = 'getAppState';
 const getAppStateResp = 'getAppStateResp';
 
 ipcMain.on(saveAppState, (event, data) => {
+
+    /*
+    console.log('===================');
+    console.log(saveAppState);
+    */
+
     storage.set(appStateDataName, resolveData(data), (error) => {
-        if (error) { throw error; }
+        handleError(error, event.sender, data);
     });
 });
 
 ipcMain.on(getAppState, (event, arg) => {
+
+    /*
+    console.log('===================');
+    console.log(getAppState);
+    */
+
     storage.get(appStateDataName, (error, data) => {
-        handleError(event, error);
+        handleError(error, event.sender, data);
         event.sender.send(getAppStateResp, data);
     });
 });
@@ -265,6 +313,12 @@ const getOsType = 'getOsType';
 const getOsTypeResp = 'getOsTypeResp';
 
 ipcMain.on(getOsType, (event, data) => {
+
+    /*
+    console.log('===================');
+    console.log(getOsType);
+    */
+
     event.sender.send(getOsTypeResp, process.platform);
 });
 
@@ -279,15 +333,15 @@ ipcMain.on('send-convert-video-to-mp3', (event, arg) => {
     let fileName = arg.fileName;
 
     if (!videoId) {
-        handleError(event, 'Error, wrong videoId: ' + videoId);
+        handleError('Error, wrong videoId: ' + videoId, event.sender);
     }
 
     if (!filePath) {
-        handleError(event, 'Error, wrong filePath: ' + filePath);
+        handleError('Error, wrong filePath: ' + filePath, event.sender);
     }
 
     if (!fileName) {
-        handleError(event, 'Error, wrong fileName: ' + fileName);
+        handleError('Error, wrong fileName: ' + fileName, event.sender);
     }
 
     if (!videoId || !fileName || !filePath) {
@@ -372,11 +426,16 @@ ipcMain.on('send-get-save-path', (event, arg) => {
 });
 
 
-const handleError = (event, error) => {
+const handleError = (error, sender, data?) => {
+    // ipcRenderer.send('onElectronError', error);
     if (error) {
+        const errorResp = {
+            error: error,
+            customData: data
+        };
+        sender.send('onElectronError', errorResp);
         throw error;
     }
-    event.sender.send('app-error', error);
 };
 
 /*

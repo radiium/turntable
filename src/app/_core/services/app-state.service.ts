@@ -56,8 +56,6 @@ export class AppStateService {
 
         console.log('Load app data');
 
-        this.isFirstLoad = false;
-
         const onPlayList     = PlaylistFactory.create(PlayListType.ONPLAY, <Playlist>{});
         const historicList   = PlaylistFactory.create(PlayListType.HISTORIC, <Playlist>{});
         const watchLaterList = PlaylistFactory.create(PlayListType.WATCHLATER, <Playlist>{});
@@ -72,6 +70,11 @@ export class AppStateService {
             this.loadAppState();
             this.loadLocalPlaylist();
             this.loadOsType();
+            this.initElectronErrorHandler();
+
+            setTimeout(() => {
+                this.isFirstLoad = false;
+            }, 2000);
 
         } else {
             this.insertFakeData();
@@ -144,7 +147,7 @@ export class AppStateService {
      */
 
     saveAppState() {
-        console.log('===== saveAppState');
+        // console.log('===== saveAppState');
         if (this.isElectronApp && !this.isFirstLoad) {
             this.electronSrv.ipcRenderer.send('saveAppState', JSON.stringify(this.appState));
         }
@@ -153,7 +156,7 @@ export class AppStateService {
     loadAppState() {
         this.electronSrv.ipcRenderer.send('getAppState');
         this.electronSrv.ipcRenderer.on('getAppStateResponse', (event, data) => {
-            console.log('===== loadAppState', data);
+            // console.log('===== loadAppState', data);
             if (data && Object.keys(data).length > 0) {
                 data.loading = false;
                 this.dataSrv.setAppState(data);
@@ -170,7 +173,7 @@ export class AppStateService {
 
     saveLocalPlaylists() {
         if (this.isElectronApp && !this.isFirstLoad) {
-            console.log('===== saveLocalPlaylists');
+            // console.log('===== saveLocalPlaylists');
             const localPlaylists = _.filter(this.playlistsList, pl => pl.isLocal);
             this.electronSrv.ipcRenderer.send('saveLocalPL', JSON.stringify({ localPlaylists: localPlaylists }));
         }
@@ -179,7 +182,7 @@ export class AppStateService {
     loadLocalPlaylist() {
         this.electronSrv.ipcRenderer.send('getLocalPL');
         this.electronSrv.ipcRenderer.on('getLocalPLResp', (event, data: any) => {
-            console.log('===== loadLocalPlaylist', data);
+            // console.log('===== loadLocalPlaylist', data);
             const lpl = data.localPlaylists;
             if (lpl && lpl.length > 0) {
                 const pll = [...this.playlistsList, ..._.map(lpl, pl => this.fillPlaylist(pl))];
@@ -205,8 +208,21 @@ export class AppStateService {
 
     loadOsType() {
         this.electronSrv.ipcRenderer.send('getOsType');
-        this.electronSrv.ipcRenderer.send('getOsTypeResp', (osType) => {
+        this.electronSrv.ipcRenderer.on('getOsTypeResp', (event, osType) => {
             console.log('osType', osType);
+        });
+    }
+
+
+    /**
+     *
+     * Init electron error handler
+     *
+     */
+
+    initElectronErrorHandler() {
+        this.electronSrv.ipcRenderer.on('onElectronError', (event, error) => {
+            // console.error('ELECTRON ERROR', error);
         });
     }
 

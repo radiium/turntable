@@ -1,8 +1,10 @@
 #confettis {
     position: absolute;
     background-color: transparent;
+    display: none;
 
     &.showed {
+        display: block !important;
         position: absolute;
         top: 0;
         left: 0;
