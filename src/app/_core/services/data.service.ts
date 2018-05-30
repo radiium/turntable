@@ -24,6 +24,10 @@ export class DataService {
     private isMiniSideBar  = new BehaviorSubject<boolean>(false);
     public  isMiniSideBar$ = this.isMiniSideBar.asObservable();
 
+    // Show Window Titlebar (only for mac os x)
+    private windowTitlebar  = new BehaviorSubject<boolean>(false);
+    public  windowTitlebar$ = this.windowTitlebar.asObservable();
+
     // Loading state
     private loader  = new BehaviorSubject<Loader>({panel: false, global: true});
     public  loader$ = this.loader.asObservable();
@@ -82,6 +86,10 @@ export class DataService {
 
     setIsMiniSideBar(data) {
         this.isMiniSideBar.next(data);
+    }
+
+    setWindowTitlebar(data) {
+        this.windowTitlebar.next(data);
     }
 
     setLoader(data) {

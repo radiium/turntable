@@ -28,6 +28,8 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     miniNav: boolean;
     isMiniSideBar: boolean;
     loader: Loader;
+    windowTitlebar: boolean;
+    windowContentSize: string;
     openAbout: boolean;
 
     onGrab: boolean;
@@ -47,6 +49,8 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     private dndSrv: DndService,
     private translate: TranslateService) {
 
+        this.windowTitlebar = false;
+        this.windowContentSize = 'calc(100% - 64px)';
         this.openAbout = false;
         this.miniNav = false;
         this.onGrab = false;
@@ -75,6 +79,13 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
         this.dataSrv.loader$.subscribe((data) => {
             this.loader = data;
+        });
+
+        this.dataSrv.windowTitlebar$.subscribe((data) => {
+            this.windowTitlebar = data;
+            this.windowContentSize = data
+                ? 'calc(100% - 64px - 20px)'
+                : 'calc(100% - 64px)';
         });
 
         // this.dndSrv.initDnd();

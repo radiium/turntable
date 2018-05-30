@@ -210,6 +210,9 @@ export class AppStateService {
         this.electronSrv.ipcRenderer.send('getOsType');
         this.electronSrv.ipcRenderer.on('getOsTypeResp', (event, osType) => {
             console.log('osType', osType);
+            if (osType === 'darwin') {
+                this.dataSrv.setWindowTitlebar(true);
+            }
         });
     }
 
