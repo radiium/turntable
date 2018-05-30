@@ -4,7 +4,7 @@ console.log(`Electron launching with NODE_ENV: ${process.env.NODE_ENV}`);
 
 
 // Import dependencies
-import { app, BrowserWindow, ipcMain, Menu, shell, dialog, session } from 'electron';
+import { app, BrowserWindow, ipcMain, ipcRenderer, Menu, shell, dialog, session } from 'electron';
 import contextMenu = require('electron-context-menu');
 import storage = require('electron-json-storage');
 import readline = require('readline');
@@ -17,7 +17,7 @@ import fs = require('fs');
 import { devMenuTemplate } from './menu/dev_menu.template';
 import { fileMenuTemplate } from './menu/file_menu.template';
 import { editMenuTemplate } from './menu/edit_menu.template';
-import { sanitize } from './utils';
+import { sanitize, resolveData } from './utils';
 
 
 // Init variable
@@ -141,29 +141,65 @@ app.on('before-quit', () => {
 });
 
 
+
+
+
+
+const errorHandler = function(error) {
+    console.error(error);
+    const msg: any = {
+        /*type : "error",
+        title : "Uncaught Exception",
+        buttons:["ok", "close"],*/
+        width : 400
+    };
+
+    switch (typeof error) {
+        case 'object':
+            msg.title = 'Uncaught Exception: ' + error.code;
+            msg.message = error.message;
+            break;
+        case 'string':
+            msg.message = error;
+            break;
+    }
+    msg.detail = 'Please check the console log for more details.';
+
+    mainWindow.send('electron-toaster-message', msg);
+};
+
+process.on('uncaughtException', errorHandler);
+
+
 // ----------------------------------------------------------------------------
 // User management
+const userDataName = 'app-state';
+const saveUser = 'saveUser';
+const getUser = 'getUser';
+const getUserResp = 'getUserResp';
+const removeUser = 'removeUser';
 
-// Store user at signin
-ipcMain.on('save-user', (event, user) => {
-    storage.set('user', user, (error) => {
+// Store
+ipcMain.on(saveUser, (event, user) => {
+    storage.set(userDataName, user, (error) => {
         if (error) { throw error; }
     });
 
 });
 
-// Remove user from storage at signout
-ipcMain.on('remove-user', (event, user) => {
-    storage.remove('user', (error) => {
-        if (error) { throw error; }
-    });
-});
-
-// Get user from storage
-ipcMain.on('send-get-user', (event, arg) => {
-    storage.get('user', (err, data) => {
+// Load
+ipcMain.on(getUser, (event, arg) => {
+    console.log('send-get-user');
+    storage.get(userDataName, (err, data) => {
         if (err) { throw err; }
-        event.sender.send('get-user', data);
+        event.sender.send(getUserResp, data);
+    });
+});
+
+// Remove
+ipcMain.on(removeUser, (event, user) => {
+    storage.remove(userDataName, (error) => {
+        if (error) { throw error; }
     });
 });
 
@@ -171,61 +207,71 @@ ipcMain.on('send-get-user', (event, arg) => {
 
 // ----------------------------------------------------------------------------
 // Local playlist management
+const localPLDataName = 'app-state';
+const saveLocalPL = 'saveLocalPL';
+const getLocalPL = 'getLocalPL';
+const getLocalPLResp = 'getLocalPLResp';
+const removeLocalPL = 'removeLocalPL';
 
-// Store local playlist
-ipcMain.on('send-save-local-playlists', (event, localPlaylists) => {
-    storage.set('localPlaylists', localPlaylists, (error) => {
-        if (error) { throw error; }
+// Store
+ipcMain.on(saveLocalPL, (event, localPlaylists) => {
+    storage.set(localPLDataName, resolveData(localPlaylists), (error) => {
+        handleError(event, error);
     });
 });
 
-// Get local playlist from storage
-ipcMain.on('send-get-local-playlists', (event) => {
-    storage.get('localPlaylists', (err, localPlaylists) => {
-        if (err) { throw err; }
-        event.sender.send('get-local-playlists', localPlaylists);
+// Load
+ipcMain.on(getLocalPL, (event) => {
+    storage.get(localPLDataName, (error, localPlaylists) => {
+        handleError(event, error);
+        event.sender.send(getLocalPLResp, localPlaylists);
     });
 });
 
-// Remove user from storage at signout
-ipcMain.on('send-remove-local-playlists', (event) => {
-    storage.remove('localPlaylists', (error) => {
-        if (error) { throw error; }
+// Remove
+ipcMain.on('removeLocalPL', (event) => {
+    storage.remove(localPLDataName, (error) => {
+        handleError(event, error);
     });
 });
 
-/*
-// Remove user from storage at signout
-ipcMain.on('remove-local-playlist', (event, user) => {
-    storage.remove('user', (error) => {
-        if (error) { throw error; }
-        console.log('user removed');
-    });
-});
-*/
 
 
 // ----------------------------------------------------------------------------
 // App state management
+const appStateDataName = 'app-state';
+const saveAppState = 'saveAppState';
+const getAppState = 'getAppState';
+const getAppStateResp = 'getAppStateResp';
 
-// Store app state
-ipcMain.on('send-save-app-state', (event, data) => {
-    storage.set('app-state', data, (error) => {
+ipcMain.on(saveAppState, (event, data) => {
+    storage.set(appStateDataName, resolveData(data), (error) => {
         if (error) { throw error; }
     });
-
 });
 
-// Get app state
-ipcMain.on('send-get-app-state', (event, arg) => {
-    storage.get('app-state', (err, data) => {
-        if (err) { throw err; }
-        event.sender.send('get-app-state', data);
+ipcMain.on(getAppState, (event, arg) => {
+    storage.get(appStateDataName, (error, data) => {
+        handleError(event, error);
+        event.sender.send(getAppStateResp, data);
     });
 });
 
 
-// Convert video to mp3
+
+// ----------------------------------------------------------------------------
+// Get os type management
+const getOsType = 'getOsType';
+const getOsTypeResp = 'getOsTypeResp';
+
+ipcMain.on(getOsType, (event, data) => {
+    event.sender.send(getOsTypeResp, process.platform);
+});
+
+
+
+// ----------------------------------------------------------------------------
+// Download and Convert video to mp3
 ipcMain.on('send-convert-video-to-mp3', (event, arg) => {
 
     const videoId = arg.videoId;
@@ -326,18 +372,12 @@ ipcMain.on('send-get-save-path', (event, arg) => {
 });
 
 
-function handleError(event, error) {
+const handleError = (event, error) => {
+    if (error) {
+        throw error;
+    }
     event.sender.send('app-error', error);
-}
-
-
-// ----------------------------------------------------------------------------
-// Get operating system
-
-ipcMain.on('send-get-os', (event, arg) => {
-    // event.sender.send('get-os', process.platform);
-});
-
+};
 
 /*
 // Ipc listening in main process.

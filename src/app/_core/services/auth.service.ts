@@ -7,6 +7,7 @@ import { Subject } from 'rxjs';
 import { UserInfosApiService } from 'core/services/api';
 import { DataService } from 'core/services/data.service';
 import { User } from 'core/models';
+import { AppStateService } from 'core/services/app-state.service';
 
 @Injectable()
 export class AuthService {
@@ -38,6 +39,7 @@ export class AuthService {
     constructor(
     private http: HttpClient,
     private dataSrv: DataService,
+    private appStateSrv: AppStateService,
     private userInfosService: UserInfosApiService,
     private electron: ElectronService) {
     }
@@ -55,7 +57,7 @@ export class AuthService {
         return this.http.post(logoutUrl, null , options)
         .subscribe((result) => {
             this.dataSrv.setUser(null);
-            this.electron.ipcRenderer.send('remove-user');
+            this.appStateSrv.removeUser();
         });
     }
 
@@ -83,7 +85,7 @@ export class AuthService {
                 this.userInfosService.getUserInfos(token)
                 .subscribe((resp: any) => {
                     const user = new User(resp.name, token, resp.picture, true);
-                    this.electron.ipcRenderer.send('save-user', user);
+                    this.appStateSrv.saveUser(user);
                     this.dataSrv.setUser(user);
                 });
 

@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { Subject } from 'rxjs';
 import { ElectronService } from 'ngx-electron';
 import { UUID } from 'angular2-uuid';
@@ -14,7 +15,6 @@ import { User,
          PrivacyStatus,
          Thumbnail,
          PlaylistItemFactory} from 'core/models';
-import { AuthService } from 'core/services/auth.service';
 import { DataService } from 'core/services/data.service';
 import { YoutubeService } from 'core/services/youtube.service';
 
@@ -31,10 +31,10 @@ export class AppStateService {
 
     constructor(
     private electron: ElectronService,
-    private authSrv: AuthService,
     private dataSrv: DataService,
     private electronSrv: ElectronService,
-    private ytSrv: YoutubeService
+    private ytSrv: YoutubeService,
+    private http: HttpClient
     ) {
         this.isElectronApp = this.electronSrv.isElectronApp;
         this.isFirstLoad = true;
@@ -54,6 +54,8 @@ export class AppStateService {
 
     initAppData() {
 
+        console.log('Load app data');
+
         this.isFirstLoad = false;
 
         const onPlayList     = PlaylistFactory.create(PlayListType.ONPLAY, <Playlist>{});
@@ -67,30 +69,71 @@ export class AppStateService {
 
         if (this.isElectronApp) {
             this.loadUser();
-            this.loadAppState2();
-            this.loadLocalPlaylist2();
+            this.loadAppState();
+            this.loadLocalPlaylist();
+            this.loadOsType();
+
         } else {
             this.insertFakeData();
         }
 
+        // Listen error
+        /*
+        this.electronSrv.ipcRenderer.on('electron-toaster-message', (args) => {
+            console.error('ERROR:', args);
+        });
+        */
+
     }
 
     loadUser() {
-        this.electronSrv.ipcRenderer.send('send-get-user');
-        this.electronSrv.ipcRenderer.on('get-user', (event, user) => {
+        this.electronSrv.ipcRenderer.send('getUser');
+        this.electronSrv.ipcRenderer.on('getUserResp', (event, user) => {
             if (user && user.token) {
                 // Check if user is authenticated
-                this.authSrv.checkAuth(user.token).subscribe((resp: any) => {
+                this.checkAuth(user.token).subscribe((resp: any) => {
                     if (resp.error) {
                         this.dataSrv.setUser(null);
                     } else {
                         this.dataSrv.setUser(user);
-                        this.authSrv.storeToken(user.token);
+                        this.storeToken(user.token);
                         this.ytSrv.fetchYoutubePlaylists();
                     }
                 });
             }
         });
+    }
+
+    saveUser(user: User) {
+        if (this.isElectronApp && !this.isFirstLoad) {
+            this.electron.ipcRenderer.send('saveUser', user);
+        }
+    }
+
+    removeUser() {
+        if (this.isElectronApp && !this.isFirstLoad) {
+            this.electron.ipcRenderer.send('removeUser');
+        }
+    }
+
+    // Save token on localStorage
+    storeToken(token) {
+        if (token) {
+            localStorage.setItem('id_token', token.id_token);
+            localStorage.setItem('access_token', token.access_token);
+            localStorage.setItem('token_type', token.token_type);
+            localStorage.setItem('expires_in', token.expires_in);
+            if (token.refresh_token) {
+                localStorage.setItem('refresh_token', token.refresh_token);
+            }
+        }
+    }
+
+    // Check if user is already auth
+    checkAuth(token) {
+        const tokenInfoUrl = 'https://www.googleapis.com/oauth2/v1/tokeninfo';
+        const URL = tokenInfoUrl + '?access_token=' + token;
+        return this.http.get(URL);
     }
 
 
@@ -103,13 +146,14 @@ export class AppStateService {
     saveAppState() {
         console.log('===== saveAppState');
         if (this.isElectronApp && !this.isFirstLoad) {
-            this.electronSrv.ipcRenderer.send('send-save-app-state', this.appState);
+            this.electronSrv.ipcRenderer.send('saveAppState', JSON.stringify(this.appState));
         }
     }
 
-    loadAppState2() {
-        this.electronSrv.ipcRenderer.send('send-get-app-state');
-        this.electronSrv.ipcRenderer.on('get-app-state', (event, data) => {
+    loadAppState() {
+        this.electronSrv.ipcRenderer.send('getAppState');
+        this.electronSrv.ipcRenderer.on('getAppStateResponse', (event, data) => {
+            console.log('===== loadAppState', data);
             if (data && Object.keys(data).length > 0) {
                 data.loading = false;
                 this.dataSrv.setAppState(data);
@@ -120,85 +164,32 @@ export class AppStateService {
 
     /**
      *
-     * Save/load Local playlist
+     * Save/load/remove Local playlist
      *
      */
 
     saveLocalPlaylists() {
         if (this.isElectronApp && !this.isFirstLoad) {
+            console.log('===== saveLocalPlaylists');
             const localPlaylists = _.filter(this.playlistsList, pl => pl.isLocal);
-            this.electronSrv.ipcRenderer.send('send-save-local-playlists', localPlaylists);
+            this.electronSrv.ipcRenderer.send('saveLocalPL', JSON.stringify({ localPlaylists: localPlaylists }));
         }
     }
 
-    loadLocalPlaylist2() {
-        this.electronSrv.ipcRenderer.send('send-get-local-playlists');
-        this.electronSrv.ipcRenderer.on('get-local-playlists', (event, localPlaylist) => {
-            if (localPlaylist && localPlaylist.length > 0) {
-                const pll = [...this.playlistsList, ..._.map(localPlaylist, pl => this.fillPlaylist(pl))];
+    loadLocalPlaylist() {
+        this.electronSrv.ipcRenderer.send('getLocalPL');
+        this.electronSrv.ipcRenderer.on('getLocalPLResp', (event, data: any) => {
+            console.log('===== loadLocalPlaylist', data);
+            const lpl = data.localPlaylists;
+            if (lpl && lpl.length > 0) {
+                const pll = [...this.playlistsList, ..._.map(lpl, pl => this.fillPlaylist(pl))];
                 this.dataSrv.setPlaylistsList(pll);
             }
         });
     }
 
-    loadAppState() {
-        if (this.isElectronApp) {
-            // console.log('===== loadAppState');
-            this.isFirstLoad = false;
-
-            // Retrieve previous user on start up and reload app
-            this.electronSrv.ipcRenderer.send('send-get-user');
-            this.electronSrv.ipcRenderer.on('get-user', (event, user) => {
-                if (user && user.token) {
-                    // Check if user is authenticated
-                    this.authSrv.checkAuth(user.token).subscribe((resp: any) => {
-                        if (resp.error) {
-                            this.dataSrv.setUser(null);
-                        } else {
-                            this.dataSrv.setUser(user);
-                            this.authSrv.storeToken(user.token);
-                            this.ytSrv.fetchYoutubePlaylists();
-                        }
-                    });
-                } else {
-                    this.dataSrv.setUser(null);
-                }
-            });
-
-            // Get app state
-            this.electronSrv.ipcRenderer.send('send-get-app-state');
-            this.electronSrv.ipcRenderer.on('get-app-state', (event, data) => {
-                // console.log('get-app-state', data);
-                if (data && Object.keys(data).length > 0) {
-                    data.loading = false;
-                    this.dataSrv.setAppState(data);
-                }
-            });
-
-            // Load local playlist on start up app
-            this.loadLocalPlaylist();
-        } else {
-            this.insertFakeData();
-        }
-    }
-
-
-    loadLocalPlaylist() {
-        if (this.isElectronApp) {
-            // console.log('===== loadLocalPlaylist');
-            this.electronSrv.ipcRenderer.send('send-get-local-playlists');
-            this.electronSrv.ipcRenderer.on('get-local-playlists', (event, localPlaylist) => {
-                if (localPlaylist && localPlaylist.length > 0) {
-                    const pll = [...this.playlistsList, ..._.map(localPlaylist, pl => this.fillPlaylist(pl))];
-                    this.dataSrv.setPlaylistsList(pll);
-                }
-            });
-        }
-    }
-
     removeLocalPlaylist() {
         if (this.isElectronApp) {
-            // console.log('===== removeLocalPlaylist');
             this.electronSrv.ipcRenderer.send('send-remove-local-playlists');
             const pll = _.filter(this.playlistsList, pl => pl.isLocal);
             this.dataSrv.setPlaylistsList(pll);
@@ -206,14 +197,35 @@ export class AppStateService {
     }
 
 
-    getOs(callback) {
-        if (this.isElectronApp) {
-            // console.log('===== removeLocalPlaylist');
-            this.electronSrv.ipcRenderer.send('send-get-os');
-            this.electronSrv.ipcRenderer.send('get-os', callback);
-        } else {
-            callback(null);
+    /**
+     *
+     * Load os type
+     *
+     */
+
+    loadOsType() {
+        this.electronSrv.ipcRenderer.send('getOsType');
+        this.electronSrv.ipcRenderer.send('getOsTypeResp', (osType) => {
+            console.log('osType', osType);
+        });
+    }
+
+    // Load a local playlist for development
+    insertFakeData() {
+
+        const query = window.location.search.slice(1);
+        let num = Number(query);
+        if (isNaN(num) || num === 0) {
+            num = 1;
         }
+        let videolist = [];
+        for (let i = 0; i < num; i++) {
+            videolist = [...videolist, ...this.fillVideoList(DATA['videolist'])];
+        }
+
+        const playlist = this.fillPlaylist(DATA['playlist']);
+        playlist.videolist = videolist;
+        this.dataSrv.setPlaylistsList([playlist]);
     }
 
     fillPlaylist(pl: Playlist) {
@@ -248,23 +260,5 @@ export class AppStateService {
             });
         }
         return newVideoList;
-    }
-
-     // Load a local playlist for development
-     insertFakeData() {
-
-        const query = window.location.search.slice(1);
-        let num = Number(query);
-        if (isNaN(num) || num === 0) {
-            num = 1;
-        }
-        let videolist = [];
-        for (let i = 0; i < num; i++) {
-            videolist = [...videolist, ...this.fillVideoList(DATA['videolist'])];
-        }
-
-        const playlist = this.fillPlaylist(DATA['playlist']);
-        playlist.videolist = videolist;
-        this.dataSrv.setPlaylistsList([playlist]);
     }
 }

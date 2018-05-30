@@ -83,12 +83,6 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
         // this.dndSrv.initDnd();
         this.appStateSrv.initAppData();
-
-        this.appStateSrv.getOs((os) => {
-            console.log('PLATFORM', os);
-            if (os === 'darwin') {
-            }
-        });
     }
 
     ngOnInit() {

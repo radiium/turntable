@@ -16,3 +16,21 @@ export function sanitize(input, replacement) {
         .replace(windowsTrailingRe, replacement);
     return sanitized;
 }
+
+
+// Try to parse json data
+export function resolveData(jsonStr) {
+    let data = {};
+    if (jsonStr) {
+        if (typeof jsonStr === 'string') {
+            try {
+                data = JSON.parse(jsonStr);
+            } catch (error) {
+                console.error(error);
+            }
+        } else if (typeof jsonStr === 'object') {
+            data = jsonStr;
+        }
+    }
+    return data;
+}
