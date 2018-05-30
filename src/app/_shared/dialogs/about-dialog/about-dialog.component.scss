@@ -1,0 +1,38 @@
+
+
+.aboutTitle {
+    font-family: 'paintcans' !important;
+    margin: 10px 0 10px 0;
+    font-size: 2.2rem;
+    text-align: center;
+}
+
+.aboutSubTitle {
+    font-size: 1.2rem;
+    text-align: center;
+    margin: 20px 0 20px 0;
+}
+
+.aboutVersion {
+    font-size: 1rem;
+    margin: 20px 0 20px 0;
+    text-align: center;
+}
+
+.aboutContent {
+    display: flex;
+    flex-direction: column;
+    margin: 20px 0 20px 0;
+    .row {
+        display: flex;
+        margin-bottom: 5px;
+        font-size: 0.9rem;
+        padding: 5px;
+
+        .text {
+            margin: 0 5px 0 5px;
+            display: flex;
+            align-self: center;
+        }
+    }
+}

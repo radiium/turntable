@@ -30,6 +30,7 @@ import { CreatePlaylistDialogComponent } from './dialogs/create-playlist-dialog/
 import { DeletePlaylistDialogComponent } from './dialogs/delete-playlist-dialog/delete-playlist-dialog.component';
 import { EditPlaylistDialogComponent } from './dialogs/edit-playlist-dialog/edit-playlist-dialog.component';
 import { SelectPlaylistDialogComponent } from './dialogs/select-playlist-dialog/select-playlist-dialog.component';
+import { AboutDialogComponent } from './dialogs/about-dialog/about-dialog.component';
 
 // Directives
 import { ClickOutsideDirective } from './directives/click-outside.directive';
@@ -47,6 +48,7 @@ import { PlaylistControlComponent } from './components/playlist-control/playlist
 import { ContextMenuComponent } from './components/context-menu/context-menu.component';
 import { LoaderComponent } from './components/loader/loader.component';
 import { UiButtonComponent } from './components/ui-button/ui-button.component';
+import { AboutComponent } from './components/about/about.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -61,6 +63,7 @@ export function HttpLoaderFactory(http: HttpClient) {
         DeletePlaylistDialogComponent,
         EditPlaylistDialogComponent,
         SelectPlaylistDialogComponent,
+        AboutDialogComponent,
         ContextMenuComponent
     ],
     declarations: [
@@ -75,6 +78,7 @@ export function HttpLoaderFactory(http: HttpClient) {
         DeletePlaylistDialogComponent,
         EditPlaylistDialogComponent,
         SelectPlaylistDialogComponent,
+        AboutDialogComponent,
 
         SearchBarComponent,
         PlayerBarComponent,
@@ -83,6 +87,7 @@ export function HttpLoaderFactory(http: HttpClient) {
         PlaylistButtonListComponent,
         ContextMenuComponent,
         LoaderComponent,
+        AboutComponent,
         PlaylistControlComponent,
         UiButtonComponent
     ],
@@ -137,6 +142,7 @@ export function HttpLoaderFactory(http: HttpClient) {
         PlaylistButtonListComponent,
         ContextMenuComponent,
         LoaderComponent,
+        AboutComponent,
         PlaylistControlComponent,
         NgxDndModule,
         InfiniteScrollModule

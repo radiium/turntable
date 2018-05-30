@@ -28,9 +28,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     miniNav: boolean;
     isMiniSideBar: boolean;
     loader: Loader;
-
-    confetti: any;
-    zIndex: number;
+    openAbout: boolean;
 
     onGrab: boolean;
     @ViewChild('appp') appp: ElementRef;
@@ -49,9 +47,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     private dndSrv: DndService,
     private translate: TranslateService) {
 
-
-
-        this.zIndex = -1;
+        this.openAbout = false;
         this.miniNav = false;
         this.onGrab = false;
         translate.setDefaultLang('en');
@@ -95,28 +91,6 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     ngAfterViewInit() {
-    }
-
-    startConfettis() {
-        if (this.confetti) {
-            this.confetti.clear();
-        }
-        const settings = {
-            target: 'confettis',
-            max: 700,
-            clock: 30
-        };
-        this.confetti = new window['ConfettiGenerator'](settings);
-        this.zIndex = 99999;
-        this.confetti.render();
-        setTimeout(() => {
-            if (this.confetti) {
-                this.confetti.clear();
-            }
-            this.confetti = null;
-            this.zIndex = -1;
-        }, 3000);
-
     }
 
     ngOnDestroy() {

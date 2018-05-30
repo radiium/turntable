@@ -1,0 +1,37 @@
+<div>
+    <div class="aboutTitle">Turntable</div>
+    <mat-divider></mat-divider>
+
+    <div class="aboutSubTitle">
+        <div> Multiplatform Youtube DJ app</div>
+        <div>made with Electron and Angular 6</div>
+    </div>
+    <mat-divider></mat-divider>
+
+    <div class="aboutVersion">Version: {{ version }}  ---  MIT license</div>
+    <mat-divider></mat-divider>
+
+    <div mat-dialog-content class="aboutContent">
+
+        <div class="row btnHover" (click)="openExternal(homepage)">
+            <mat-icon svgIcon="github-box"></mat-icon>
+            <span class="text">Source code @Github</span>
+        </div>
+
+        <div class="row btnHover" (click)="openExternal('https://github.com/radiium/')">
+            <span class="text">Developped with</span>
+            <mat-icon svgIcon="heart-circle-outline"></mat-icon>
+            <span class="text">by {{ author.name }}</span>
+        </div>
+
+        <div class="row btnHover" (click)="openExternal('mailto:' + author.email + '?subject=Say Hello')">
+            <mat-icon svgIcon="email-outline"></mat-icon>
+            <span class="text">Contact me</span>
+        </div>
+
+    </div>
+
+    <mat-dialog-actions>
+    <button class="accept"  mat-button [mat-dialog-close]="true">close</button>
+    </mat-dialog-actions>
+</div>
